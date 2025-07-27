@@ -8,9 +8,13 @@
 
 
 import numpy as np
-from math import gamma, pi
+from math import pi
 from scipy.optimize import root_scalar
-from scipy.special import betainc
+from scipy.special import betainc, gamma
+
+
+# Tolerance for comparisons close to zero.
+tolerance = np.finfo(np.float32).eps
 
 
 def asfloat(x):
@@ -124,7 +128,7 @@ def cart2polar2(x):
     # Project any x onto the unit sphere S^2 by normalizing (except for origin)
     norms = np.linalg.norm(x, axis=0)
     # If one or more points is the origin, raise ValueError
-    if not norms.all():
+    if np.any(norms < tolerance):
         raise ValueError("Input x must not contain the origin")
     x_proj = x / norms
 
@@ -181,7 +185,7 @@ def polar2cart(s):
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
     r = np.linalg.norm(x, axis=0)
-    mask = r != 1
+    mask = np.abs(r - 1) < tolerance
     if np.any(mask):
         x[:, mask] = x[:, mask] / r[mask]
     return x
@@ -396,7 +400,7 @@ def area_of_sphere(dim):
     """
     dim = np.asarray(dim)
     power = (dim + 1) / 2
-    area = np.asarray(2.0 * pi ** power / np.vectorize(gamma)(power))
+    area = np.asarray(2.0 * pi ** power / gamma(power))
     return asfloat(area)
 
 
@@ -495,7 +499,7 @@ def area_of_cap(dim, s_cap):
     The area is defined via the Lebesgue measure on S^dim inherited from
     its embedding in R^(dim+1).
 
-    For dim <= 2, and for dim==3 (when pi/6 <= s_cap <= pi*5/6),
+    For dim <= 2, and for dim==3 (when pi/6 <= s_cap <= 5*pi/6),
     AREA is calculated in closed form, using the analytic solution of
     the definite integral.
 
@@ -511,7 +515,7 @@ def area_of_cap(dim, s_cap):
 
     Examples
     --------
-    >>> print(f"{area_of_cap(2, pi/2.0):.4f}")
+    >>> print(f"{area_of_cap(2, pi/2):.4f}")
     6.2832
     >>> np.set_printoptions(precision=4, suppress=True)
     >>> print(area_of_cap(3, np.linspace(0, pi, 5)))
@@ -526,7 +530,9 @@ def area_of_cap(dim, s_cap):
         shape = s_cap.shape
         s_cap_flat = s_cap.ravel()
         area = np.zeros_like(s_cap_flat, dtype=np.float64)
-        near_pole = (s_cap_flat < pi/6) | (s_cap_flat > pi*5/6)
+        MIN_TROPICAL = pi / 6
+        MAX_TROPICAL = 5 * pi / 6
+        near_pole = (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL)
         # Use incomplete beta function ratio near poles
         area[near_pole] = area_of_sphere(dim) * betainc(
             dim/2,
