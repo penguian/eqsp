@@ -1,63 +1,136 @@
+"""
+    EQSP: Recursive Zonal Equal Area Sphere Partitioning.
+    Copyright 2025 Paul Leopardi.
+    For licensing, see COPYING.
+    For references, see AUTHORS.
+    For revision history, see CHANGELOG.
+"""
+
+
 import numpy as np
 from math import gamma, pi
 from scipy.optimize import root_scalar
 from scipy.special import betainc
 
 
-def as_float(x):
-    return float(x) if len(np.shape(x)) == 0 else x
+def asfloat(x):
+    """
+    a = asfloat(x)
+
+    Convert from a Numpy array to a float when this makes sense.
+
+    Parameters
+    ----------
+    x : ndarray or float
+
+    Returns
+    -------
+    a : ndarray or float
+        If x is a (), or (1,) or (1,1) array, then a is returned as a float.
+        Otherwise a is just x as a Numpy array.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> np.set_printoptions(precision=4, suppress=True)
+    >>> x0 = 12.789
+    >>> a0 = asfloat(x0)
+    >>> print(a0)
+    12.789
+    >>> x1 = [[22.546]]
+    >>> a1 = asfloat(x1)
+    >>> print(a1)
+    22.546
+    >>> x2 = [12.789, 22.546]
+    >>> a2 = asfloat(x2)
+    >>> print(a2)
+    [12.789 22.546]
+    >>> x3 = np.array([12.789, 22.546])
+    >>> a3 = asfloat(x3)
+    >>> print(a3)
+    [12.789 22.546]
+    """
+    a = np.asarray(x, dtype=float)
+    match a.shape:
+        case ():
+            return float(a)
+        case (1,):
+            return float(a[0])
+        case (1,1):
+            return float(a[0, 0])
+        case _:
+            return a
 
 
 def cart2polar2(x):
     """
+    s = cart2polar2(x)
+
     Convert from Cartesian to spherical coordinates on sphere S^2.
 
     Parameters
     ----------
-    x : np.ndarray
-        Array of real numbers of size (3, N), where N is any positive integer.
+    x : ndarray
+        An array of real numbers of shape (3, N), where N is any positive integer.
+        Each column represents a point in 3D Cartesian coordinates.
 
     Returns
     -------
-    s : np.ndarray
-        Array of size (2, N):
-        rows are [phi; theta], phi in [0, 2*pi), theta in [0, pi].
+    s : ndarray
+        An array of shape (2, N), where for each point:
+        - s[0, :] is the longitude phi in [0, 2*pi),
+        - s[1, :] is the colatitude theta in [0, pi].
+
+    See Also
+    --------
+    polar2cart
 
     Notes
     -----
-    cart2polar2(x) projects any x in R^3 onto the sphere S^2 via a line through
-    the origin. The origin [0 0 0]' is itself projected onto a point on the
-    equator such that
-
-        polar2cart(cart2polar2([0, 0, 0])) == [1, 0, 0]
+    This function projects any X in R^3 onto the unit sphere S^2 via a line
+    through the origin [0, 0, 0]'.
+    If X includes the origin, this results in a ValueError exception.
 
     Examples
     --------
-    >>> x = np.array([[0, 0, 0, 0],
-    ...               [0, 1, -1, 0],
-    ...               [1, 0, 0, -1]])
-    >>> s = cart2polar2(x)
-    >>> np.set_printoptions(precision=4, suppress=True)
-    >>> s
-    array([[0.    , 1.5708, 4.7124, 0.    ],
-           [0.    , 1.5708, 1.5708, 3.1416]])
+    >>> import numpy as np
+    >>> x0 = np.array([[ 0., 0.,  0.,  0.],
+    ...                [ 0., 1., -1.,  0.],
+    ...                [ 1., 0.,  0., -1.]])
+    >>> s0 = cart2polar2(x0)
+    >>> print(s0)
+    [[0.     1.5708 4.7124 0.    ]
+     [0.     1.5708 1.5708 3.1416]]
+    >>> x1 = np.array([[ 0., 0.,  0.,  0.],
+    ...                [ 0., 1., -1.,  0.],
+    ...                [ 0., 0.,  0.,  0.],
+    ...                [ 1., 0.,  0., -1.]])
+    >>> s1 = cart2polar2(x1)
+    Traceback (most recent call last):
+        ...
+    ValueError: Input x must have shape (3, N)
+    >>> x2 = np.array([[ 0., 0.,  0.,  0.],
+    ...                [ 0., 0., -1.,  0.],
+    ...                [ 1., 0.,  0., -1.]])
+    >>> s2 = cart2polar2(x2)
+    Traceback (most recent call last):
+        ...
+    ValueError: Input x must not contain the origin
     """
-    x = np.asarray(x, dtype=float)
+    x = np.asarray(x)
     if x.shape[0] != 3:
         raise ValueError("Input x must have shape (3, N)")
 
-    # Project zeros to [1, 0, 0]
-    x_proj = x.copy()
-    zero_mask = np.all(x == 0, axis=0)
-    x_proj[:, zero_mask] = np.array([[1], [0], [0]])
+    # Project any x onto the unit sphere S^2 by normalizing (except for origin)
+    norms = np.linalg.norm(x, axis=0)
+    # If one or more points is the origin, raise ValueError
+    if not norms.all():
+        raise ValueError("Input x must not contain the origin")
+    x_proj = x / norms
 
-    # Normalize to unit sphere
-    norms = np.linalg.norm(x_proj, axis=0)
-    x_unit = x_proj / norms
-
-    # cart2sph: phi is azimuth, theta is elevation
-    phi = np.arctan2(x_unit[1, :], x_unit[0, :]) % (2 * pi)
-    theta = np.arccos(x_unit[2, :])  # angle from z+ axis, in [0, pi]
+    # Spherical coordinates: phi = atan2(y, x), theta = arccos(z)
+    phi = np.arctan2(x_proj[1, :], x_proj[0, :]) % (2 * np.pi)
+    theta = np.arccos(x_proj[2, :])
 
     s = np.vstack((phi, theta))
     return s
@@ -65,88 +138,59 @@ def cart2polar2(x):
 
 def polar2cart(s):
     """
-    Convert spherical polar coordinates to Cartesian coordinates.
+    x = polar2cart(s)
+
+    Convert spherical polar to Cartesian coordinates.
 
     Parameters
     ----------
-    s : np.ndarray
-        Array of shape (dim, N) representing N points of S^dim
-        in spherical polar coordinates.
+    s : numpy.ndarray
+        Array of real numbers of shape (dim, N) representing N points of S^dim
+        in spherical polar coordinates, where dim and N are positive integers.
 
     Returns
     -------
-    x : np.ndarray
-        Array of shape (dim+1, N) representing the Cartesian coordinates.
+    x : numpy.ndarray
+        Array of shape (dim+1, N) containing the Cartesian coordinates of the
+        points represented by the spherical polar coordinates s.
+
+    See Also
+    --------
+    cart2polar2
 
     Examples
     --------
     >>> import numpy as np
-    >>> s = np.array([[0, 1.5708, 4.7124, 0],
-    ...               [0, 1.5708, 1.5708, 3.1416]])
-    >>> x = polar2cart(s)
     >>> np.set_printoptions(precision=4, suppress=True)
-    >>> x
-    array([[ 0., -0.,  0., -0.],
-           [ 0.,  1., -1., -0.],
-           [ 1., -0., -0., -1.]])
+    >>> s = np.array([
+    ...     [0, pi/2, 3*pi/2, 0],
+    ...     [0, pi/2, pi/2,   pi]])
+    >>> x = polar2cart(s)
+    >>> print(x)
+    [[ 0.  0. -0.  0.]
+     [ 0.  1. -1.  0.]
+     [ 1.  0.  0. -1.]]
     """
-    s = np.asarray(s, dtype=float)
+    s = np.asarray(s)
     dim, n = s.shape
-    x = np.zeros((dim+1, n))
+    x = np.zeros((dim + 1, n))
     sinprod = np.ones(n)
-
     for k in range(dim, 1, -1):
-        x[k, :] = sinprod * np.cos(s[k-1, :])
-        sinprod = sinprod * np.sin(s[k-1, :])
-
+        x[k, :] = sinprod * np.cos(s[k - 1, :])
+        sinprod = sinprod * np.sin(s[k - 1, :])
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
-
-    r = np.sqrt(np.sum(x**2, axis=0))
-    mask = (r != 1)
+    r = np.sqrt(np.sum(x ** 2, axis=0))
+    mask = r != 1
     if np.any(mask):
         x[:, mask] = x[:, mask] / r[mask]
-
     return x
-
-
-def euclidean_dist(x, y):
-    """
-    Compute the Euclidean distance between two N-vectors.
-
-    Parameters
-    ----------
-    x : array_like
-        First input vector. Must be one-dimensional.
-    y : array_like
-        Second input vector. Must be one-dimensional.
-
-    Returns
-    -------
-    d : float
-        The Euclidean distance between x and y.
-
-    Examples
-    --------
-    >>> euclidean_dist([0, 0], [1, 0])
-    1.0
-    >>> euclidean_dist([1, 2, 3], [4, 5, 6])
-    5.196152422706632
-    >>> x = np.array([1, 0, 0])
-    >>> y = np.array([0, 1, 0])
-    >>> euclidean_dist(x, y)
-    1.4142135623730951
-    """
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
-    if x.shape != y.shape or x.ndim != 1:
-        raise ValueError(
-            "Both x and y must be one-dimensional arrays of the same length.")
-    return as_float(np.linalg.norm(x - y))
 
 
 def euc2sph_dist(e):
     """
+    s = euc2sph_dist(e)
+
     Convert Euclidean to spherical distance.
 
     Parameters
@@ -167,71 +211,22 @@ def euc2sph_dist(e):
     Examples
     --------
     >>> np.set_printoptions(precision=4, suppress=True)
-    >>> euc2sph_dist(2)
-    3.141592653589793
-    >>> euc2sph_dist(np.arange(0, 2.5, 0.5))
-    array([0.    , 0.5054, 1.0472, 1.6961, 3.1416])
-    >>> euc2sph_dist(-2)
-    -3.141592653589793
+    >>> print(f"{euc2sph_dist(2):.4f}")
+    3.1416
+    >>> euc2sph_dist(np.array([0, np.sqrt(2), 2.0]))
+    array([0.    , 1.5708, 3.1416])
+    >>> print(f"{euc2sph_dist(-2):.4f}")
+    -3.1416
     """
     e = np.asarray(e)
-    s = 2 * np.arcsin(e / 2)
-    return as_float(s)
-
-
-def spherical_dist(x, y):
-    """
-    Returns the spherical distance between two points x and y.
-
-    Compute the spherical distances (angles in radians) between
-    multiple pairs of points on S^M given in Cartesian coordinates,
-    with arrays of shape (M, N).
-
-    Parameters
-    ----------
-    x : array_like
-        Array of shape (M, N), each column is a Cartesian vector.
-    y : array_like
-        Array of shape (M, N), each column is a Cartesian vector.
-
-    Returns
-    -------
-    d : ndarray
-        Array of shape (N,), containing spherical distances (in radians)
-        between corresponding pairs.
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> np.set_printoptions(precision=4, suppress=True)
-    >>> x = np.array([[1, 0, 1], [0, 0, 0], [0, 1, 0]])
-    >>> y = np.array([[0, 0, 1], [1, 0, 0], [0, -1, 0]])
-    >>> spherical_dist(x, y)
-    array([1.5708, 3.1416, 0.    ])
-
-    >>> x = np.array([[1, 1], [0, 0], [0, 0]])
-    >>> y = np.array([[0.5, 1], [np.sqrt(3)/2, 0], [0, 0]])
-    >>> spherical_dist(x, y)
-    array([1.0472, 0.    ])
-    """
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
-    if x.shape != y.shape:
-        raise ValueError("x and y must both have shape (M, N)")
-
-    # Normalize to unit vectors along columns
-    x_norm = x / np.linalg.norm(x, axis=0, keepdims=True)
-    y_norm = y / np.linalg.norm(y, axis=0, keepdims=True)
-    # Dot product for each pair (across columns)
-    dots = np.sum(x_norm * y_norm, axis=0)
-    # Clamp for numerical stability
-    dots = np.clip(dots, -1.0, 1.0)
-    d = np.arccos(dots)
-    return as_float(d)
+    s = 2.0 * np.arcsin(e / 2.0)
+    return asfloat(s)
 
 
 def sph2euc_dist(s):
     """
+    e = sph2euc_dist(s)
+
     Convert spherical distance to Euclidean distance on the unit sphere.
 
     Parameters
@@ -253,53 +248,166 @@ def sph2euc_dist(s):
     0.0
     >>> sph2euc_dist(pi)
     2.0
-    >>> sph2euc_dist(np.array([0, pi/2, pi]))
-    array([0.    , 1.4142, 2.    ])
+    >>> print(sph2euc_dist(np.array([0, pi/4, pi/2, 3*pi/4, pi])))
+    [0.     0.7654 1.4142 1.8478 2.    ]
     >>> print(f"{sph2euc_dist(-pi/2):.4f}")
     -1.4142
     """
     s = np.asarray(s)
     e = 2.0 * np.sin(s / 2.0)
-    return as_float(e)
+    return asfloat(e)
+
+
+def euclidean_dist(x, y):
+    """
+    d = euclidean_dist(x, y)
+
+    Euclidean distance between two points in Cartesian coordinates.
+
+    Parameters
+    ----------
+    x : array_like, shape (M, N)
+        First set of N points in M-dimensional Cartesian coordinates.
+    y : array_like, shape (M, N)
+        Second set of N points in M-dimensional Cartesian coordinates.
+        The shapes of x and y must be identical.
+
+    Returns
+    -------
+    d : ndarray, shape (N,)
+        The spherical distance between corresponding pairs of points in `x` and `y`.
+
+    See Also
+    --------
+    spherical_dist
+    euc2sph_dist
+    sph2euc_dist
+
+
+    Examples
+    --------
+    >>> x = np.array([[0,     0,      0,     0],
+    ...               [0,     1,     -1,     0],
+    ...               [1,     0,      0,    -1]])
+    >>> y = np.array([[ 0,    0,      0,     0],
+    ...               [-0.5,  0.866, -0.866, 0.5],
+    ...               [ 0.866,0.5,   -0.5,  -0.866]])
+    >>> euclidean_dist(x, y)
+    array([0.5176, 0.5176, 0.5176, 0.5176])
+
+
+    """
+
+    x = np.asarray(x)
+    y = np.asarray(y)
+    if x.shape != y.shape:
+        raise ValueError("Input arrays x and y must have the same shape.")
+
+    # Compute the Euclidean distance
+    return asfloat(np.sqrt(np.sum((x - y) ** 2, axis=0)))
+
+
+def spherical_dist(x, y):
+    """
+    d = spherical_dist(x, y)
+
+    Returns the spherical distance between two arrays of points x and y.
+
+    The arguments x and x must be arrays of the same size, M by N, where M and N
+    are positive integers. Each of x and y is assumed to represent N points on
+    the sphere S^(M-1) in R^M, in Cartesian coordinates.
+    The result is a float when N==1, otherwise a 1 by N array.
+
+    Parameters
+    ----------
+    x : array_like
+        Array of shape (M, N), where each column is a Cartesian vector.
+    y : array_like
+        Array of shape (M, N), where each column is a Cartesian vector.
+
+    Returns
+    -------
+    d : ndarray
+        Array of shape (N,), containing spherical distances (in radians)
+        between corresponding pairs.
+
+    See Also
+    --------
+    euclidean_dist
+    euc2sph_dist
+    sph2euc_dist
+
+    Examples
+    --------
+    >>> x0 = np.array([[0,     0,      0,     0],
+    ...                [0,     1,     -1,     0],
+    ...                [1,     0,      0,    -1]])
+    >>> y0 = np.array([[ 0,    0,      0,     0],
+    ...                [-0.5,  0.866, -0.866, 0.5],
+    ...                [ 0.866,0.5,   -0.5,  -0.866]])
+    >>> print(spherical_dist(x0, y0))
+    [0.5236 0.5236 0.5236 0.5236]
+    """
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    if x.shape != y.shape:
+        raise ValueError("x and y must both have shape (M, N)")
+
+    # Compute dot product for each point (across columns)
+    dots = np.sum(x * y, axis=0)
+    # Clip dot product to [-1, 1] to avoid numerical errors outside acos domain
+    dots = np.clip(dots, -1.0, 1.0)
+    return asfloat(np.arccos(dots))
 
 
 def area_of_sphere(dim):
     """
-    Returns the area of the unit sphere S^dim.
+    a = area_of_sphere(dim)
 
-    The area is calculated as:
-        area = 2 * pi^((dim+1)/2) / gamma((dim+1)/2)
+    Returns the area of the unit sphere S^dim.
 
     Parameters
     ----------
     dim : int or array-like of int
-        Positive integer(s) indicating the sphere dimension(s).
+        Dimension(s) of the sphere(s). Must be positive integer(s).
 
     Returns
     -------
-    area : float or np.ndarray
+    a : float or np.ndarray
         Area(s) of the unit sphere(s).
+
+    Notes
+    -----
+    The area of S^dim is defined via the Lebesgue measure on S^dim
+    inherited from its embedding in R^(dim+1).
+
+    The area is calculated as:
+        a = 2 * pi^((dim+1)/2) / gamma((dim+1)/2)
+
+    References
+    ----------
+    [Mue98] p39.
+
+    See Also
+    --------
+    volume_of_ball
+
 
     Examples
     --------
-    >>> print(f"{area_of_sphere(1):.4f}")
-    6.2832
-    >>> print(f"{area_of_sphere(2):.4f}")
-    12.5664
-    >>> print(f'{area_of_sphere(3):.4f}')
-    19.7392
-    >>> np.set_printoptions(precision=4, suppress=True)
-    >>> area_of_sphere(np.arange(1, 8))
+    >>> area_of_sphere(range(1, 8))
     array([ 6.2832, 12.5664, 19.7392, 26.3189, 31.0063, 33.0734, 32.4697])
     """
     dim = np.asarray(dim)
     power = (dim + 1) / 2
     area = np.asarray(2.0 * pi ** power / np.vectorize(gamma)(power))
-    return as_float(area)
+    return asfloat(area)
 
 
 def volume_of_ball(dim):
     """
+    v = volume_of_ball(dim)
+
     Volume of the unit ball B^dim in R^dim.
 
     Parameters
@@ -309,31 +417,39 @@ def volume_of_ball(dim):
 
     Returns
     -------
-    volume : float or ndarray
+    v : float or ndarray
         Volume(s) of the unit ball(s).
 
     Notes
     -----
     The volume of B^dim is defined via the Lebesgue measure on R^dim.
 
+    References
+    ----------
+    [WeiMW].
+
+    See Also
+    --------
+    area_of_sphere
+
     Examples
     --------
     >>> import numpy as np
-    >>> np.set_printoptions(precision=4, suppress=True)
-    >>> volume_of_ball(np.arange(1, 8))
+    >>> volume_of_ball(range(1, 8))
     array([2.    , 3.1416, 4.1888, 4.9348, 5.2638, 5.1677, 4.7248])
     """
     dim = np.asarray(dim)
-    return as_float(area_of_sphere(dim - 1) / dim)
+    return asfloat(area_of_sphere(dim - 1) / dim)
 
 
 def area_of_ideal_region(dim, N):
     """
+    a = area_of_ideal_region(dim, N)
+
     Area of one region of an EQ partition.
 
-    AREA = area_of_ideal_region(dim, N) returns the area
-    of one of N equal-area regions on the surface of a unit sphere S^dim,
-    i.e., 1/N times area_of_sphere(dim).
+    This function returns the area of one of N equal-area regions of
+    a unit sphere S^dim, i.e., 1/N times area_of_sphere(dim).
 
     Parameters
     ----------
@@ -344,24 +460,26 @@ def area_of_ideal_region(dim, N):
 
     Returns
     -------
-    area : float or numpy.ndarray
+    a : float or numpy.ndarray with the same shape as N
         Area(s) of the ideal region(s).
+
+    See Also
+    --------
+    area_of_sphere
 
     Examples
     --------
-    >>> import numpy as np
-    >>> np.set_printoptions(precision=4, suppress=True)
-    >>> area_of_ideal_region(3, 1)
-    19.739208802178716
-    >>> area_of_ideal_region(3, np.arange(1, 7))
+    >>> area_of_ideal_region(3, range(1, 7))
     array([19.7392,  9.8696,  6.5797,  4.9348,  3.9478,  3.2899])
     """
     area = area_of_sphere(dim) / np.array(N)
-    return as_float(area)
+    return asfloat(area)
 
 
 def area_of_cap(dim, s_cap):
     """
+    a = area_of_cap(dim, s_cap)
+
     Area of spherical cap on S^dim of spherical radius s_cap.
 
     Parameters
@@ -391,16 +509,17 @@ def area_of_cap(dim, s_cap):
     ----------
     [LeGS01 Lemma 4.1 p255]
 
+    See Also
+    --------
+    sradius_of_cap
+
     Examples
     --------
-    >>> from math import pi
-    >>> import numpy as np
-    >>> np.set_printoptions(precision=4, suppress=True)
     >>> print(f"{area_of_cap(2, pi/2.0):.4f}")
     6.2832
-
-    >>> area_of_cap(3, np.arange(0, pi+0.01, pi/4))
-    array([ 0.    ,  1.7932,  9.8696, 17.946 , 19.7392])
+    >>> np.set_printoptions(precision=4, suppress=True)
+    >>> print(area_of_cap(3, np.linspace(0, pi, 5)))
+    [ 0.      1.7932  9.8696 17.946  19.7392]
     """
     s_cap = np.asarray(s_cap)
     if dim == 1:
@@ -427,11 +546,13 @@ def area_of_cap(dim, s_cap):
             dim/2,
             dim/2,
             np.sin(s_cap/2)**2)
-    return as_float(area)
+    return asfloat(area)
 
 
 def sradius_of_cap(dim, area):
     """
+    s_cap = sradius_of_cap(dim, area)
+
     Spherical radius of a spherical cap of given area on S^dim.
 
     Parameters
@@ -451,6 +572,10 @@ def sradius_of_cap(dim, area):
     For dim <= 2, the result is exact (closed form).
     For dim > 2, the result is found numerically.
 
+    See Also
+    --------
+    area_of_cap
+
     Examples
     --------
 
@@ -460,7 +585,7 @@ def sradius_of_cap(dim, area):
     >>> print(f"{sradius_of_cap(2, area):.4f}")
     1.5708
 
-    >>> areas = np.arange(0, 5) * area_of_sphere(3) / 4
+    >>> areas = np.linspace(0, 4, 5) * area_of_sphere(3) / 4
     >>> sradius_of_cap(3, areas)
     array([0.    , 1.1549, 1.5708, 1.9867, 3.1416])
     """
@@ -495,12 +620,14 @@ def sradius_of_cap(dim, area):
                 sk = result.root
                 s_cap[k] = pi - sk if flipped else sk
         s_cap = s_cap.reshape(orig_shape)
-    return as_float(s_cap)
+    return asfloat(s_cap)
 
 
 def area_of_collar(dim, a_top, a_bot):
     """
-    Area of spherical collar.
+    a = area_of_collar(dim, a_top, a_bot)
+
+    Area of a spherical collar.
 
     Parameters
     ----------
@@ -513,7 +640,7 @@ def area_of_collar(dim, a_top, a_bot):
 
     Returns
     -------
-    area : float or ndarray
+    a : float or ndarray
         Area(s) of the spherical collar(s).
 
     Notes
@@ -526,6 +653,10 @@ def area_of_collar(dim, a_top, a_bot):
     ----------
     [LeGS01 Lemma 4.1 p255]
 
+    See Also
+    --------
+    area_of_cap
+
     Examples
     --------
     >>> import numpy as np
@@ -535,4 +666,4 @@ def area_of_collar(dim, a_top, a_bot):
     """
     a_top = np.asarray(a_top)
     a_bot = np.asarray(a_bot)
-    return as_float(area_of_cap(dim, a_bot) - area_of_cap(dim, a_top))
+    return asfloat(area_of_cap(dim, a_bot) - area_of_cap(dim, a_top))
