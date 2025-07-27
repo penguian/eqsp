@@ -185,7 +185,7 @@ def polar2cart(s):
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
     r = np.linalg.norm(x, axis=0)
-    mask = np.abs(r - 1) < tolerance
+    mask = np.abs(r - 1) > tolerance
     if np.any(mask):
         x[:, mask] = x[:, mask] / r[mask]
     return x
