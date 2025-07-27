@@ -128,7 +128,7 @@ def cart2polar2(x):
     # Project any x onto the unit sphere S^2 by normalizing (except for origin)
     norms = np.linalg.norm(x, axis=0)
     # If one or more points is the origin, raise ValueError
-    if np.any(norms < tolerance):
+    if np.min(norms) < tolerance:
         raise ValueError("Input x must not contain the origin")
     x_proj = x / norms
 
@@ -184,10 +184,6 @@ def polar2cart(s):
         sinprod = sinprod * np.sin(s[k - 1, :])
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
-    r = np.linalg.norm(x, axis=0)
-    mask = np.abs(r - 1) > tolerance
-    if np.any(mask):
-        x[:, mask] = x[:, mask] / r[mask]
     return x
 
 
