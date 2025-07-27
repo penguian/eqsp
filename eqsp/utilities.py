@@ -522,31 +522,33 @@ def area_of_cap(dim, s_cap):
     [ 0.      1.7932  9.8696 17.946  19.7392]
     """
     s_cap = np.asarray(s_cap)
-    if dim == 1:
-        area = 2.0 * s_cap
-    elif dim == 2:
-        area = 4.0 * pi * np.sin(s_cap / 2.0) ** 2
-    elif dim == 3:
-        shape = s_cap.shape
-        s_cap_flat = s_cap.ravel()
-        area = np.zeros_like(s_cap_flat, dtype=np.float64)
-        MIN_TROPICAL = pi / 6
-        MAX_TROPICAL = 5 * pi / 6
-        near_pole = (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL)
-        # Use incomplete beta function ratio near poles
-        area[near_pole] = area_of_sphere(dim) * betainc(
-            dim/2,
-            dim/2,
-            np.sin(s_cap_flat[near_pole]/2)**2)
-        # Use closed form in the tropics
-        s_cap_trop = s_cap_flat[~near_pole]
-        area[~near_pole] = (2 * s_cap_trop - np.sin(2 * s_cap_trop)) * pi
-        area = area.reshape(shape)
-    else:
-        area = area_of_sphere(dim) * betainc(
-            dim/2,
-            dim/2,
-            np.sin(s_cap/2)**2)
+    match dim:
+        case 1:
+            area = 2.0 * s_cap
+        case 2:
+            area = 4.0 * pi * np.sin(s_cap / 2.0) ** 2
+        case 3:
+            shape = s_cap.shape
+            s_cap_flat = s_cap.ravel()
+            area = np.zeros_like(s_cap_flat, dtype=np.float64)
+            MIN_TROPICAL = pi / 6
+            MAX_TROPICAL = 5 * pi / 6
+            near_pole = (
+                (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL))
+            # Use incomplete beta function ratio near poles
+            area[near_pole] = area_of_sphere(dim) * betainc(
+                dim/2,
+                dim/2,
+                np.sin(s_cap_flat[near_pole]/2)**2)
+            # Use closed form in the tropics
+            s_cap_trop = s_cap_flat[~near_pole]
+            area[~near_pole] = (2 * s_cap_trop - np.sin(2 * s_cap_trop)) * pi
+            area = area.reshape(shape)
+        case _:
+            area = area_of_sphere(dim) * betainc(
+                dim/2,
+                dim/2,
+                np.sin(s_cap/2)**2)
     return asfloat(area)
 
 
