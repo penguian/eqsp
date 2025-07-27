@@ -14,7 +14,7 @@ from scipy.special import betainc, gamma
 
 
 # Tolerance for comparisons close to zero.
-tolerance = np.finfo(np.float32).eps
+tolerance = float(np.finfo(np.float32).eps)
 
 
 def asfloat(x):
@@ -595,7 +595,7 @@ def sradius_of_cap(dim, area):
     if dim == 1:
         s_cap = area / 2
     elif dim == 2:
-        s_cap = 2 * np.arcsin(np.sqrt(area / pi) / 2)
+        s_cap = 2 * np.arcsin(np.sqrt(area / (4*pi)))
     else:
         orig_shape = area.shape
         flat_area = area.flatten()
