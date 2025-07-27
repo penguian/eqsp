@@ -21,7 +21,7 @@ def asfloat(x):
 
     Parameters
     ----------
-    x : ndarray or float
+    x : array_like
 
     Returns
     -------
@@ -180,7 +180,7 @@ def polar2cart(s):
         sinprod = sinprod * np.sin(s[k - 1, :])
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
-    r = np.sqrt(np.sum(x ** 2, axis=0))
+    r = np.linalg.norm(x, axis=0)
     mask = r != 1
     if np.any(mask):
         x[:, mask] = x[:, mask] / r[mask]
@@ -267,15 +267,15 @@ def euclidean_dist(x, y):
     Parameters
     ----------
     x : array_like, shape (M, N)
-        First set of N points in M-dimensional Cartesian coordinates.
+        Array of shape (M, N), where each column is a Cartesian vector.
     y : array_like, shape (M, N)
-        Second set of N points in M-dimensional Cartesian coordinates.
+        Array of shape (M, N), where each column is a Cartesian vector.
         The shapes of x and y must be identical.
 
     Returns
     -------
     d : ndarray, shape (N,)
-        The spherical distance between corresponding pairs of points in `x` and `y`.
+        The Euclidean distance between corresponding pairs of points in x and y.
 
     See Also
     --------
@@ -313,17 +313,13 @@ def spherical_dist(x, y):
 
     Returns the spherical distance between two arrays of points x and y.
 
-    The arguments x and x must be arrays of the same size, M by N, where M and N
-    are positive integers. Each of x and y is assumed to represent N points on
-    the sphere S^(M-1) in R^M, in Cartesian coordinates.
-    The result is a float when N==1, otherwise a 1 by N array.
-
     Parameters
     ----------
     x : array_like
         Array of shape (M, N), where each column is a Cartesian vector.
     y : array_like
         Array of shape (M, N), where each column is a Cartesian vector.
+        The shapes of x and y must be identical.
 
     Returns
     -------
@@ -530,16 +526,15 @@ def area_of_cap(dim, s_cap):
         shape = s_cap.shape
         s_cap_flat = s_cap.ravel()
         area = np.zeros_like(s_cap_flat, dtype=np.float64)
-        pole = (s_cap_flat < pi/6) | (s_cap_flat > pi*5/6)
+        near_pole = (s_cap_flat < pi/6) | (s_cap_flat > pi*5/6)
         # Use incomplete beta function ratio near poles
-        area[pole] = area_of_sphere(dim) * betainc(
+        area[near_pole] = area_of_sphere(dim) * betainc(
             dim/2,
             dim/2,
-            np.sin(s_cap_flat[pole]/2)**2)
+            np.sin(s_cap_flat[near_pole]/2)**2)
         # Use closed form in the tropics
-        trop_idx = ~pole
-        trop = s_cap_flat[trop_idx]
-        area[trop_idx] = (2 * trop - np.sin(2 * trop)) * pi
+        s_cap_trop = s_cap_flat[~near_pole]
+        area[~near_pole] = (2 * s_cap_trop - np.sin(2 * s_cap_trop)) * pi
         area = area.reshape(shape)
     else:
         area = area_of_sphere(dim) * betainc(
