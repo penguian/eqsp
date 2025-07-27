@@ -600,14 +600,14 @@ def sradius_of_cap(dim, area):
         orig_shape = area.shape
         flat_area = area.flatten()
         s_cap = np.zeros(flat_area.shape)
+        sphere_area = area_of_sphere(dim)
         for k, ak in enumerate(flat_area):
-            asph = area_of_sphere(dim)
-            if ak >= asph:
+            if ak >= sphere_area:
                 s_cap[k] = pi
             else:
                 flipped = False
-                if 2 * ak > asph:
-                    ak = asph - ak
+                if 2 * ak > sphere_area:
+                    ak = sphere_area - ak
                     flipped = True
 
                 def area_diff(s):
