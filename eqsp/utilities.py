@@ -666,3 +666,47 @@ def area_of_collar(dim, a_top, a_bot):
     a_top = np.asarray(a_top)
     a_bot = np.asarray(a_bot)
     return asfloat(area_of_cap(dim, a_bot) - area_of_cap(dim, a_top))
+
+
+
+def ideal_collar_angle(dim, N):
+    """
+    Calculate the ideal angle for spherical collars of an EQ partition.
+
+    Syntax:
+        angle = ideal_collar_angle(dim, N)
+
+    Description:
+        Sets `angle` to the ideal angle for the spherical collars of an EQ
+        partition of the unit sphere S^dim into N regions.
+
+    Parameters:
+        dim (int): A positive integer specifying the dimension.
+        N (int or array-like): A positive integer or an array of positive
+            integers.
+
+    Returns:
+        numpy.ndarray: An array of the same shape as `N`, containing the
+        calculated angles.
+
+    Notes:
+        The ideal collar angle is determined by the side of a dim-dimensional
+        hypercube of the same volume as the area of a single region of an N
+        region equal area partition of S^dim.
+
+        Since the EQ partition for N < 3 has no spherical collars, the
+        recursive zonal equal area sphere partitioning algorithm does not use
+        `ideal_collar_angle(dim, N)` for N < 3.
+
+    Examples:
+        >>> import numpy as np
+        >>> np.round(ideal_collar_angle(2, 10), 5)
+        array([1.121])
+        >>> np.round(ideal_collar_angle(3, np.arange(1, 7)), 5)
+        array([2.7026, 2.145 , 1.8739, 1.7025, 1.5805, 1.4873])
+
+    See Also:
+        area_of_ideal_region
+    """
+    from area_of_ideal_region import area_of_ideal_region
+    return np.power(area_of_ideal_region(dim, N), 1.0 / dim)
