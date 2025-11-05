@@ -2,9 +2,12 @@ import math
 import numpy as np
 from math import gcd
 
-from .area_of_ideal_region import area_of_ideal_region
-from .sradius_of_cap import sradius_of_cap
-from .area_of_collar import area_of_collar
+from utilities import (
+    area_of_collar,
+    area_of_ideal_region,
+    sradius_of_cap,
+)
+
 
 def bot_cap_region(dim, a_cap):
     """

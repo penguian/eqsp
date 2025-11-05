@@ -6,7 +6,6 @@
     For revision history, see CHANGELOG.
 """
 
-
 import numpy as np
 from math import pi
 from scipy.optimize import root_scalar
@@ -470,6 +469,41 @@ def area_of_ideal_region(dim, N):
     """
     area = area_of_sphere(dim) / np.array(N)
     return asfloat(area)
+
+
+def ideal_collar_angle(dim,N):
+    """
+    The ideal angle for spherical collars of an EQ partition.
+
+    Parameters
+    ----------
+    dim : int
+        Dimension of sphere.
+    N : int or array-like
+        Number of regions.
+
+    Returns
+    -------
+    angle : float or np.ndarray
+        The ideal angle(s).
+
+    Notes
+    -----
+    The ideal collar angle is determined by the side of a dim-dimensional
+    hypercube of the same volume as the area of single region of S^dim.
+
+    See Also
+    --------
+    area_of_ideal_region
+
+    Examples
+    --------
+    >>> np.round(ideal_collar_angle(2, 10), 4)
+    1.1210
+    >>> np.round(ideal_collar_angle(3, np.arange(1,7)), 4)
+    array([2.7026, 2.145 , 1.8739, 1.7025, 1.5805, 1.4873])
+    """
+    return area_of_ideal_region(dim, N) ** (1 / dim)
 
 
 def area_of_cap(dim, s_cap):

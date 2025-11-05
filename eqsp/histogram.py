@@ -1,7 +1,8 @@
 import numpy as np
-from eq_regions import eq_regions
-from eq_caps import eq_caps
-from lookup_s2_region import lookup_s2_region
+
+from histogram_private import lookup_s2_region
+from partitions import eq_regions, eq_caps
+
 
 def eq_count_points_by_s2_region(s_point, N):
     """
@@ -29,7 +30,7 @@ def eq_count_points_by_s2_region(s_point, N):
     Examples
     --------
     >>> import numpy as np
-    >>> from eq_point_set_polar import eq_point_set_polar
+    >>> from partitions import eq_point_set_polar
     >>> points_s = eq_point_set_polar(2, 8)
     >>> eq_count_points_by_s2_region(points_s, 8)
     array([1, 1, 1, 1, 1, 1, 1, 1])
@@ -71,7 +72,7 @@ def eq_find_s2_region(s_point, N):
 
     Examples
     --------
-    >>> from eq_point_set_polar import eq_point_set_polar
+    >>> from partitions import eq_point_set_polar
     >>> points_s = eq_point_set_polar(2, 8)
     >>> eq_find_s2_region(points_s, 8)
     array([1, 2, 3, 4, 5, 6, 7, 8])
@@ -110,8 +111,7 @@ def in_s2_region(s_point, region):
 
     Examples
     --------
-    >>> from eq_point_set_polar import eq_point_set_polar
-    >>> from eq_regions import eq_regions
+    >>> from partitions import eq_point_set_polar, eq_regions
     >>> points_s = eq_point_set_polar(2, 8)
     >>> s_regions = eq_regions(2, 5)
     >>> region = s_regions[:, :, 2]

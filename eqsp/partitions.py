@@ -9,24 +9,20 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-from polar_colat import polar_colat
-from ideal_collar_angle import ideal_collar_angle
-from num_collars import num_collars
-from ideal_region_list import ideal_region_list
-from round_to_naturals import round_to_naturals
-from cap_colats import cap_colats
-from polar2cart import polar2cart
-from partition_options import partition_options
-from s2_offset import s2_offset
-from cart2polar2 import cart2polar2
-from circle_offset import circle_offset
-from centres_of_regions import centres_of_regions
-from top_cap_region import top_cap_region
-from bot_cap_region import bot_cap_region
-from sphere_region import sphere_region
-from project_s2_partition import project_s2_partition
-from illustration_options import illustration_options
-from option_arguments import option_arguments
+from partitions_private import (
+    bot_cap_region,
+    cap_colats,
+    centres_of_regions,
+    circle_offset,
+    ideal_region_list,
+    num_collars,
+    polar_colat,
+    round_to_naturals,
+    s2_offset,
+    sphere_region,
+    top_cap_region,
+)
+from utilities import cart2polar2, polar2cart, ideal_collar_angle
 
 
 def eq_caps(dim, N):
@@ -456,248 +452,194 @@ def eq_regions(dim, N, *args):
     return regions, dim_1_rot
 
 
-def illustrate_eq_algorithm(dim, N, *args):
+def duplicate_error(option_name, *varargin):
     """
-    Illustrate the EQ partition algorithm with matplotlib subplots.
+    Prints duplicate option error and calls option_error.
 
     Parameters
     ----------
-    dim : int
-        The spatial dimension of the sphere.
-    N : int
-        The number of regions.
-    *args :
-        Options forwarded to partition_options and illustration_options.
+    option_name : str
+        The name of the duplicate option.
+    *varargin
+        Additional arguments forwarded to option_error.
+
+    Raises
+    ------
+    Exception
+        Always after printing error message.
+
+    See Also
+    --------
+    option_error
 
     Notes
     -----
-    Produces a 2x2 subplot illustration:
-    1. Steps 1 and 2
-    2. Steps 3 to 5
-    3. Steps 6 and 7
-    4. Lower dimensional partitions for dim 2 or 3
+    Prints message and calls option_error.
 
     Examples
     --------
-    >>> illustrate_eq_algorithm(3, 99)  # doctest: +SKIP
+    >>> duplicate_error('offset', 'offset', 'extra')
+    Traceback (most recent call last):
+        ...
+    Exception: Please check "help partition_options" for options
     """
-    pdefault = {"extra_offset": False}
-    popt = partition_options(pdefault, *args)
+    print(f'Duplicate option {option_name}')
+    option_error(*varargin)
 
-    gdefault = {
-        "fontsize": 16,
-        "show_title": True,
-        "long_title": False,
-        "stereo": False,
-        "show_points": True,
-    }
-    gopt = illustration_options(gdefault, *args)
-    opt_args = option_arguments(popt, gopt)
-
-    plt.subplot(2, 2, 1)
-    plt.axis("off")
-    illustrate_steps_1_2(dim, N, *opt_args)
-
-    plt.subplot(2, 2, 2)
-    plt.axis("off")
-    illustrate_steps_3_5(dim, N, *opt_args)
-
-    plt.subplot(2, 2, 3)
-    plt.axis("off")
-    illustrate_steps_6_7(dim, N, *opt_args)
-
-    plt.subplot(2, 2, 4)
-    plt.axis("off")
-    plt.cla()
-
-    gopt2 = gopt.copy()
-    gopt2["fontsize"] = 32
-
-    if dim == 2:
-        project_s2_partition(N, *option_arguments(popt, gopt2))
-    elif dim == 3:
-        # Extract caps and display a few collars as examples
-        _, m = eq_caps(dim, N)
-        max_collar = min(4, int(np.size(m) - 2))
-        for k in range(1, max_collar + 1):
-            subn = 9 + 2 * k - ((k - 1) % 2)
-            plt.subplot(4, 4, subn)
-            plt.axis("off")
-            project_s2_partition(int(m[0 + k]), *option_arguments(popt, gopt2))
-
-
-def illustrate_steps_1_2(dim, N, *args):
+def value_error(value, *varargin):
     """
-    Illustrate steps 1 and 2 of the EQ partition on a circle representation.
+    Prints invalid value error and calls option_error.
 
     Parameters
     ----------
-    dim : int
-        The dimension of the sphere.
-    N : int
-        The number of regions.
-    *args :
-        Options forwarded to illustration_options.
+    value
+        The invalid value encountered.
+    *varargin
+        Additional arguments forwarded to option_error.
+
+    Raises
+    ------
+    Exception
+        Always after printing error message.
+
+    See Also
+    --------
+    option_error
 
     Notes
     -----
-    Produces a 2D plot showing the polar cap colatitude and the ideal collar
-    angle.
+    Prints message and calls option_error.
 
     Examples
     --------
-    >>> illustrate_steps_1_2(3, 10)  # doctest: +SKIP
+    >>> value_error('bad_value', 'offset', 'bad_value')
+    Traceback (most recent call last):
+        ...
+    Exception: Please check "help partition_options" for options
     """
-    gdefault = {"fontsize": 14, "show_title": True, "long_title": False}
-    gopt = illustration_options(gdefault, *args)
+    print('Invalid option value', end=' ')
+    print(value)
+    option_error(*varargin)
 
-    h = np.linspace(0.0, 1.0, 91)
-    Phi = h * 2.0 * math.pi
-    plt.plot(np.sin(Phi), np.cos(Phi), "k", linewidth=1)
-    plt.axis("equal")
-    plt.axis("off")
-    plt.hold(False) if hasattr(plt, "hold") else None
-    plt.hold(True) if hasattr(plt, "hold") else None
-
-    c_polar = polar_colat(dim, N)
-
-    k = np.linspace(-1.0, 1.0, 21)
-    j = np.ones_like(k)
-
-    # Bounding parallels of the polar caps
-    plt.plot(np.sin(c_polar) * k, np.cos(c_polar) * j, "r", linewidth=2)
-    plt.plot(np.sin(c_polar) * k, -np.cos(c_polar) * j, "r", linewidth=2)
-
-    # North-South axis
-    plt.plot(np.zeros_like(j), k, "b", linewidth=1)
-    # Polar angle
-    plt.plot(np.sin(c_polar) * h, np.cos(c_polar) * h, "b", linewidth=2)
-    plt.text(0.05, 2.0 / 3.0, r"$\theta_c$", fontsize=gopt["fontsize"])
-
-    # Ideal collar angle
-    Delta_I = ideal_collar_angle(dim, N)
-    theta = c_polar + Delta_I
-    plt.plot(np.sin(theta) * h, np.cos(theta) * h, "b", linewidth=2)
-
-    mid = c_polar + Delta_I / 2.0
-    plt.text(np.sin(mid) * 2.0 / 3.0, np.cos(mid) * 2.0 / 3.0, r"$\Delta_I$",
-             fontsize=gopt["fontsize"])
-
-    # Arc to indicate angles
-    theta = h * (c_polar + Delta_I)
-    plt.plot(np.sin(theta) / 5.0, np.cos(theta) / 5.0, "b", linewidth=1)
-
-    plt.text(
-        -0.9,
-        -0.1,
-        f"V(\\theta_c) = V_R \\n    = \\sigma(S^{dim})/{N}",
-        fontsize=gopt["fontsize"],
-    )
-
-    caption_angle = min(mid + 2.0 * Delta_I, math.pi - c_polar)
-    plt.text(
-        np.sin(caption_angle) / 3.0,
-        np.cos(caption_angle) / 3.0,
-        rf"$\Delta_I = V_R^{{1/{dim}}}$",
-        fontsize=gopt["fontsize"],
-    )
-
-    if gopt["show_title"]:
-        title_str = f"EQ({dim},{N}) Steps 1 to 2\n"
-        plt.title(title_str, fontsize=gopt["fontsize"])
-
-
-def illustrate_steps_3_5(dim, N, *args):
+def option_error(*varargin):
     """
-    Illustrate steps 3 to 5 of the EQ partition.
+    Prints an option error and raises an exception.
 
     Parameters
     ----------
-    dim : int
-        The spatial dimension.
-    N : int
-        Number of regions.
-    *args :
-        Options forwarded to illustration_options.
+    *varargin
+        Arguments related to the error.
+
+    Raises
+    ------
+    Exception
+        Always after printing error message.
+
+    See Also
+    --------
+    duplicate_error
+    value_error
+
+    Notes
+    -----
+    Raises Exception after displaying error and inputs.
 
     Examples
     --------
-    >>> illustrate_steps_3_5(3, 50)  # doctest: +SKIP
+    >>> option_error('offset', 'extra')
+    Traceback (most recent call last):
+        ...
+    Exception: Please check "help partition_options" for options
     """
-    gdefault = {"fontsize": 14, "show_title": True, "long_title": False}
-    gopt = illustration_options(gdefault, *args)
+    print('Error in options:')
+    print(list(varargin))
+    raise Exception('Please check "help partition_options" for options')
 
-    h = np.linspace(0.0, 1.0, 91)
-    Phi = h * 2.0 * math.pi
-    plt.plot(np.sin(Phi), np.cos(Phi), "k", linewidth=1)
-    plt.axis("equal")
-    plt.axis("off")
-
-    c_polar = polar_colat(dim, N)
-    n_collars = num_collars(N, c_polar, ideal_collar_angle(dim, N))
-    r_regions = ideal_region_list(dim, N, c_polar, n_collars)
-    s_cap = cap_colats(dim, N, c_polar, r_regions)
-
-    k = np.linspace(-1.0, 1.0, 21)
-    j = np.ones_like(k)
-    plt.plot(np.sin(c_polar) * k, np.cos(c_polar) * j, "r", linewidth=2)
-    plt.plot(np.zeros_like(j), k, "b", linewidth=1)
-
-    for collar_n in range(0, n_collars + 1):
-        zone_n = 1 + collar_n
-        theta = s_cap[zone_n - 1]
-        plt.plot(np.sin(theta) * h, np.cos(theta) * h, "b", linewidth=2)
-        theta_str = rf"\theta_{{F,{zone_n}}}"
-        plt.text(np.sin(theta) * 1.1, np.cos(theta) * 1.1, theta_str,
-                 fontsize=gopt["fontsize"])
-        if collar_n != 0:
-            plt.plot(np.sin(theta) * k, np.cos(theta) * j, "r", linewidth=2)
-            theta_p = s_cap[collar_n - 1]
-            arc = theta_p + (theta - theta_p) * h
-            plt.plot(np.sin(arc) / 5.0, np.cos(arc) / 5.0, "b", linewidth=1)
-            mid = (theta_p + theta) / 2.0
-            plt.text(np.sin(mid) / 2.0, np.cos(mid) / 2.0, r"$\Delta_F$",
-                     fontsize=gopt["fontsize"])
-            y_str = f"y_{{{collar_n}}} = {r_regions[zone_n-1]:3.1f}..."
-            plt.text(-np.sin(mid) + 1.0 / 20.0, np.cos(mid) + (mid - math.pi) / 30.0,
-                     y_str, fontsize=gopt["fontsize"])
-
-    if gopt["show_title"]:
-        title_str = f"EQ({dim},{N}) Steps 3 to 5\n"
-        plt.title(title_str, fontsize=gopt["fontsize"])
-
-
-def illustrate_steps_6_7(dim, N, *args):
+def partition_options(pdefault, *varargin):
     """
-    Illustrate steps 6 and 7 of the EQ partition.
+    Options for EQ partition.
 
     Parameters
     ----------
-    dim : int
-        The spatial dimension.
-    N : int
-        Number of regions.
-    *args :
-        Options forwarded to illustration_options.
+    pdefault : dict
+        A dictionary of default option values. Should contain keys such as
+        'extra_offset'.
+    *varargin
+        Options specified as name-value pairs or as a shortcut string/bool.
+
+    Returns
+    -------
+    popt : dict
+        Options dictionary populated according to user input.
+
+    Raises
+    ------
+    Exception
+        If options are invalid, duplicated, or not recognized.
+
+    See Also
+    --------
+    duplicate_error
+    value_error
+    option_error
+
+    Notes
+    -----
+    Some shortcuts are provided.
+    - partition_options(pdefault) just sets popt to pdefault.
+    - The following are equivalent to partition_options(pdefault,'offset','extra'):
+      partition_options(pdefault, True)
+      partition_options(pdefault, 'extra')
+    - The following are equivalent to partition_options(pdefault,'offset','normal'):
+      partition_options(pdefault, False)
+      partition_options(pdefault, 'normal')
 
     Examples
     --------
-    >>> illustrate_steps_6_7(3, 50)  # doctest: +SKIP
+    >>> pdefault = {'extra_offset': False}
+    >>> partition_options(pdefault, 'offset', 'extra')
+    {'extra_offset': True}
+    >>> partition_options(pdefault, False)
+    {'extra_offset': False}
+    >>> partition_options(pdefault, 'normal')
+    {'extra_offset': False}
     """
-    gdefault = {"fontsize": 14, "show_title": True, "long_title": False}
-    gopt = illustration_options(gdefault, *args)
+    popt = pdefault.copy()
+    nargs = len(varargin)
 
-    h = np.linspace(0.0, 1.0, 91)
-    Phi = h * 2.0 * math.pi
-    plt.plot(np.sin(Phi), np.cos(Phi), "k", linewidth=1)
-    plt.axis("equal")
-    plt.axis("off")
+    if nargs == 1:
+        value = varargin[0]
+        if value is True:
+            popt['extra_offset'] = True
+        elif value is False:
+            popt['extra_offset'] = False
+        elif value == 'extra':
+            popt['extra_offset'] = True
+        elif value == 'normal':
+            popt['extra_offset'] = False
+        else:
+            value_error(value, *varargin)
+        return popt
 
-    c_polar = polar_colat(dim, N)
-    # The original MATLAB file continues here with further plotting of the
-    # final steps of the algorithm. The full body was truncated in the
-    # provided input. Implementers should complete plotting consistent
-    # with illustrate_steps_1_2 and _3_5 based on the original MATLAB file.
-    raise NotImplementedError(
-        "illustrate_steps_6_7 translation incomplete; source was truncated."
-    )
+    nopts = nargs // 2
+    opt_args = list(varargin[0:2*nopts:2])
+    for k in range(nopts):
+        if not isinstance(opt_args[k], str):
+            print('Option names must be character strings')
+            option_error(*varargin)
+    opt_vals = list(varargin[1:2*nopts:2])
+
+    option_name = 'offset'
+    pos_list = [idx for idx, val in enumerate(opt_args) if val == option_name]
+    if pos_list:
+        if len(pos_list) == 1:
+            value = opt_vals[pos_list[0]]
+        else:
+            duplicate_error(option_name, *varargin)
+        if value == 'extra':
+            popt['extra_offset'] = True
+        elif value == 'normal':
+            popt['extra_offset'] = False
+        else:
+            value_error(value, *varargin)
+    return popt
