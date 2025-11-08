@@ -5,9 +5,9 @@
 # that every undefined function be imported rather than stubbed.
 
 import math
-
-import matplotlib.pyplot as plt
 import numpy as np
+
+from math import pi
 
 from partitions_private import (
     bot_cap_region,
@@ -24,6 +24,7 @@ from partitions_private import (
 )
 from utilities import cart2polar2, polar2cart, ideal_collar_angle
 
+TAU = 2.0 * pi
 
 def eq_caps(dim, N):
     """
@@ -64,10 +65,14 @@ def eq_caps(dim, N):
 
     Examples
     --------
-    >>> eq_caps(2, 10)  # doctest: +ELLIPSIS
-    (array([0.6435..., 1.5708..., 2.4981..., 3.1416...]), array([1, 4, 4, 1]))
-    >>> eq_caps(3, 6)  # doctest: +ELLIPSIS
-    (array([0.9845..., 2.1571..., 3.1416...]), array([1, 4, 1]))
+    >>> import numpy as np
+    >>> np.round(eq_caps(2,10),4)
+    array([[0.6435, 1.5708, 2.4981, 3.1416],
+           [1.    , 4.    , 4.    , 1.    ]])
+
+    >>> np.round(eq_caps(3,6), 4)
+    array([[0.9845, 2.1571, 3.1416],
+           [1.    , 4.    , 1.    ]])
     """
     if not (isinstance(dim, (int, np.integer)) and dim >= 1):
         raise ValueError("dim must be a positive integer")
@@ -77,11 +82,11 @@ def eq_caps(dim, N):
     if dim == 1:
         # Circle: return the angles of N equal sectors.
         sector = np.arange(1, N + 1)
-        s_cap = sector * 2.0 * math.pi / N
+        s_cap = sector * TAU / N
         n_regions = np.ones_like(sector, dtype=int)
     elif N == 1:
         # Only one region: whole sphere.
-        s_cap = np.array([math.pi])
+        s_cap = np.array([pi])
         n_regions = np.array([1], dtype=int)
     else:
         # Determine polar colatitude
@@ -98,7 +103,7 @@ def eq_caps(dim, N):
     return np.asarray(s_cap), np.asarray(n_regions)
 
 
-def eq_point_set(dim, N, *args):
+def eq_point_set(dim, N, extra_offset=False):
     """
     Center points of regions of EQ partition, in Cartesian coordinates.
 
@@ -108,8 +113,8 @@ def eq_point_set(dim, N, *args):
         The number of dimensions.
     N : int
         The number of regions.
-    *args :
-        Optional partition options passed to eq_point_set_polar.
+    extra_offset : bool
+        If True, enables experimental extra offsets for dim 2 and 3.
 
     Returns
     -------
@@ -138,12 +143,12 @@ def eq_point_set(dim, N, *args):
     >>> points.shape
     (3, 4)
     """
-    points_polar = eq_point_set_polar(dim, N, *args)
+    points_polar = eq_point_set_polar(dim, N, extra_offset=extra_offset)
     points_x = polar2cart(points_polar)
     return points_x
 
 
-def eq_point_set_polar(dim, N, *args):
+def eq_point_set_polar(dim, N, extra_offset=False):
     """
     Center points of regions of an EQ partition in polar coordinates.
 
@@ -153,9 +158,8 @@ def eq_point_set_polar(dim, N, *args):
         The spatial dimension of the sphere (S^dim in R^{dim+1}).
     N : int
         The number of regions.
-    *args :
-        Optional arguments forwarded to partition_options. The option
-        'offset','extra' enables experimental extra offsets for dim 2 and 3.
+    extra_offset : bool
+        If True, enables experimental extra offsets for dim 2 and 3.
 
     Returns
     -------
@@ -170,7 +174,7 @@ def eq_point_set_polar(dim, N, *args):
 
     See Also
     --------
-    partition_options, eq_point_set, polar2cart, cart2polar2
+    eq_point_set, polar2cart, cart2polar2
 
     Notes
     -----
@@ -185,17 +189,6 @@ def eq_point_set_polar(dim, N, *args):
     >>> pts.shape
     (2, 4)
     """
-    # Default options
-    pdefault = {"extra_offset": False}
-    if len(args) == 0:
-        extra_offset = pdefault["extra_offset"]
-    else:
-        popt = partition_options(pdefault, *args)
-        # Accept either attribute or dict style
-        extra_offset = getattr(
-            popt, "extra_offset", popt.get("extra_offset", pdefault["extra_offset"])
-        )
-
     # Extra offsets not used for dim > 3
     if dim > 3:
         extra_offset = False
@@ -214,7 +207,7 @@ def eq_point_set_polar(dim, N, *args):
 
     if dim == 1:
         # Circle: points placed half way along each sector
-        points_s = a_cap - math.pi / N
+        points_s = a_cap - pi / N
         points_s = np.asarray(points_s).reshape((1, N))
         return points_s
 
@@ -271,10 +264,14 @@ def eq_point_set_polar(dim, N, *args):
         if dim == 2:
             # 1D angles on circle
             pts = points_1[:, :].flatten()
-            pts = np.mod(pts + 2.0 * math.pi * offset, 2.0 * math.pi)
+            pts = np.mod(pts + TAU * offset, TAU)
             points_s[0, point_idx] = pts
             # Update offset
-            next_n = int(n_regions[collar_n + 1]) if (collar_n + 1) < len(n_regions) else 0
+            next_n = (
+                int(n_regions[collar_n + 1])
+                if (collar_n + 1) < len(n_regions)
+                else 0
+            )
             offset = offset + circle_offset(n_in_collar, next_n, extra_offset)
             offset = offset - math.floor(offset)
         else:
@@ -285,11 +282,11 @@ def eq_point_set_polar(dim, N, *args):
 
     # Bottom polar cap centre
     points_s[:, point_n] = 0.0
-    points_s[dim - 1, point_n] = math.pi
+    points_s[dim - 1, point_n] = pi
     return points_s
 
 
-def eq_regions(dim, N, *args):
+def eq_regions(dim, N, extra_offset=False):
     """
     Recursive zonal equal area (EQ) partition of sphere.
 
@@ -299,9 +296,8 @@ def eq_regions(dim, N, *args):
         The spatial dimension of the sphere (S^dim).
     N : int
         The number of regions.
-    *args :
-        Optional arguments forwarded to partition_options. Recognizes the
-        'offset','extra' option.
+    extra_offset : bool
+        If True, enables experimental extra offsets for dim 2 and 3.
 
     Returns
     -------
@@ -309,7 +305,7 @@ def eq_regions(dim, N, *args):
         Array of shape (dim, 2, N) representing the regions. Each region is
         a pair of vertex points in spherical polar coordinates. regions[:,0,k]
         and regions[:,1,k] give the lower and upper limits of the k-th region.
-    dim_1_rot : list
+    dim_1_rot : list (optional)
         If requested (by caller), a list of N rotation matrices, each of size
         (dim, dim), describing R^dim rotations needed to place regions when
         extra offsets are used (only meaningful for dim == 3).
@@ -321,7 +317,7 @@ def eq_regions(dim, N, *args):
 
     See Also
     --------
-    eq_point_set, partition_options, centres_of_regions
+    eq_point_set, centres_of_regions
 
     Notes
     -----
@@ -335,15 +331,6 @@ def eq_regions(dim, N, *args):
     >>> regs.shape
     (2, 2, 4)
     """
-    # Default options
-    pdefault = {"extra_offset": False}
-    if len(args) == 0:
-        extra_offset = pdefault["extra_offset"]
-    else:
-        popt = partition_options(pdefault, *args)
-        extra_offset = getattr(
-            popt, "extra_offset", popt.get("extra_offset", pdefault["extra_offset"])
-        )
 
     if dim > 3:
         extra_offset = False
@@ -354,8 +341,7 @@ def eq_regions(dim, N, *args):
         raise ValueError("N must be a positive integer")
 
     dim_1_rot = None
-    # Prepare output rotation containers if caller wants them; Python
-    # alternative: always prepare and return.
+    # Prepare output rotation containers if caller wants them.
     dim_1_rot = [None] * N
 
     if N == 1:
@@ -424,15 +410,15 @@ def eq_regions(dim, N, *args):
             region_n += 1
             if dim == 2:
                 r_top = np.array(
-                    [np.mod(regions_1[0, 0, region_1_n] + 2.0 * math.pi * offset, 2.0 * math.pi),
+                    [np.mod(regions_1[0, 0, region_1_n] + TAU * offset, TAU),
                      c_top]
                 )
                 r_bot = np.array(
-                    [np.mod(regions_1[0, 1, region_1_n] + 2.0 * math.pi * offset, 2.0 * math.pi),
+                    [np.mod(regions_1[0, 1, region_1_n] + TAU * offset, TAU),
                      c_bot]
                 )
                 if r_bot[0] < r_top[0]:
-                    r_bot[0] = r_bot[0] + 2.0 * math.pi
+                    r_bot[0] = r_bot[0] + TAU
                 regions[:, :, region_n] = np.vstack((r_top, r_bot)).T
             else:
                 regions[0:dim - 1, :, region_n] = regions_1[:, :, region_1_n]
@@ -442,204 +428,18 @@ def eq_regions(dim, N, *args):
                 dim_1_rot[region_n] = R
 
         if dim == 2:
-            next_n = int(n_regions[collar_n + 1]) if (collar_n + 1) < len(n_regions) else 0
+            next_n = (
+                int(n_regions[collar_n + 1])
+                if (collar_n + 1) < len(n_regions)
+                else 0
+            )
             offset = offset + circle_offset(n_in_collar, next_n, extra_offset)
             offset = offset - math.floor(offset)
 
     # Bottom cap
     regions[:, :, N - 1] = bot_cap_region(dim, s_cap[0])
-    dim_1_rot[N - 1] = np.eye(dim)
-    return regions, dim_1_rot
-
-
-def duplicate_error(option_name, *varargin):
-    """
-    Prints duplicate option error and calls option_error.
-
-    Parameters
-    ----------
-    option_name : str
-        The name of the duplicate option.
-    *varargin
-        Additional arguments forwarded to option_error.
-
-    Raises
-    ------
-    Exception
-        Always after printing error message.
-
-    See Also
-    --------
-    option_error
-
-    Notes
-    -----
-    Prints message and calls option_error.
-
-    Examples
-    --------
-    >>> duplicate_error('offset', 'offset', 'extra')
-    Traceback (most recent call last):
-        ...
-    Exception: Please check "help partition_options" for options
-    """
-    print(f'Duplicate option {option_name}')
-    option_error(*varargin)
-
-def value_error(value, *varargin):
-    """
-    Prints invalid value error and calls option_error.
-
-    Parameters
-    ----------
-    value
-        The invalid value encountered.
-    *varargin
-        Additional arguments forwarded to option_error.
-
-    Raises
-    ------
-    Exception
-        Always after printing error message.
-
-    See Also
-    --------
-    option_error
-
-    Notes
-    -----
-    Prints message and calls option_error.
-
-    Examples
-    --------
-    >>> value_error('bad_value', 'offset', 'bad_value')
-    Traceback (most recent call last):
-        ...
-    Exception: Please check "help partition_options" for options
-    """
-    print('Invalid option value', end=' ')
-    print(value)
-    option_error(*varargin)
-
-def option_error(*varargin):
-    """
-    Prints an option error and raises an exception.
-
-    Parameters
-    ----------
-    *varargin
-        Arguments related to the error.
-
-    Raises
-    ------
-    Exception
-        Always after printing error message.
-
-    See Also
-    --------
-    duplicate_error
-    value_error
-
-    Notes
-    -----
-    Raises Exception after displaying error and inputs.
-
-    Examples
-    --------
-    >>> option_error('offset', 'extra')
-    Traceback (most recent call last):
-        ...
-    Exception: Please check "help partition_options" for options
-    """
-    print('Error in options:')
-    print(list(varargin))
-    raise Exception('Please check "help partition_options" for options')
-
-def partition_options(pdefault, *varargin):
-    """
-    Options for EQ partition.
-
-    Parameters
-    ----------
-    pdefault : dict
-        A dictionary of default option values. Should contain keys such as
-        'extra_offset'.
-    *varargin
-        Options specified as name-value pairs or as a shortcut string/bool.
-
-    Returns
-    -------
-    popt : dict
-        Options dictionary populated according to user input.
-
-    Raises
-    ------
-    Exception
-        If options are invalid, duplicated, or not recognized.
-
-    See Also
-    --------
-    duplicate_error
-    value_error
-    option_error
-
-    Notes
-    -----
-    Some shortcuts are provided.
-    - partition_options(pdefault) just sets popt to pdefault.
-    - The following are equivalent to partition_options(pdefault,'offset','extra'):
-      partition_options(pdefault, True)
-      partition_options(pdefault, 'extra')
-    - The following are equivalent to partition_options(pdefault,'offset','normal'):
-      partition_options(pdefault, False)
-      partition_options(pdefault, 'normal')
-
-    Examples
-    --------
-    >>> pdefault = {'extra_offset': False}
-    >>> partition_options(pdefault, 'offset', 'extra')
-    {'extra_offset': True}
-    >>> partition_options(pdefault, False)
-    {'extra_offset': False}
-    >>> partition_options(pdefault, 'normal')
-    {'extra_offset': False}
-    """
-    popt = pdefault.copy()
-    nargs = len(varargin)
-
-    if nargs == 1:
-        value = varargin[0]
-        if value is True:
-            popt['extra_offset'] = True
-        elif value is False:
-            popt['extra_offset'] = False
-        elif value == 'extra':
-            popt['extra_offset'] = True
-        elif value == 'normal':
-            popt['extra_offset'] = False
-        else:
-            value_error(value, *varargin)
-        return popt
-
-    nopts = nargs // 2
-    opt_args = list(varargin[0:2*nopts:2])
-    for k in range(nopts):
-        if not isinstance(opt_args[k], str):
-            print('Option names must be character strings')
-            option_error(*varargin)
-    opt_vals = list(varargin[1:2*nopts:2])
-
-    option_name = 'offset'
-    pos_list = [idx for idx, val in enumerate(opt_args) if val == option_name]
-    if pos_list:
-        if len(pos_list) == 1:
-            value = opt_vals[pos_list[0]]
-        else:
-            duplicate_error(option_name, *varargin)
-        if value == 'extra':
-            popt['extra_offset'] = True
-        elif value == 'normal':
-            popt['extra_offset'] = False
-        else:
-            value_error(value, *varargin)
-    return popt
+    if (dim == 3) and extra_offset:
+        dim_1_rot[N - 1] = np.eye(dim)
+        return regions, dim_1_rot
+    else:
+        return regions

@@ -498,12 +498,12 @@ def ideal_collar_angle(dim,N):
 
     Examples
     --------
-    >>> np.round(ideal_collar_angle(2, 10), 4)
-    1.1210
+    >>> print(f"{ideal_collar_angle(2, 10):.4g}")
+    1.121
     >>> np.round(ideal_collar_angle(3, np.arange(1,7)), 4)
     array([2.7026, 2.145 , 1.8739, 1.7025, 1.5805, 1.4873])
     """
-    return area_of_ideal_region(dim, N) ** (1 / dim)
+    return asfloat(area_of_ideal_region(dim, N) ** (1 / dim))
 
 
 def area_of_cap(dim, s_cap):
