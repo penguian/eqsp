@@ -1,10 +1,11 @@
 import numpy as np
 
-from eq_sphere_partitions import eq_regions
-from eq_sphere_partitions import sph2euc_dist
-from eq_sphere_partitions import polar2cart
-from eq_sphere_partitions import euclidean_dist
-
+from partitions import eq_regions
+from utilities import (
+    euclidean_dist,
+    polar2cart,
+    sph2euc_dist,
+)
 
 def expand_region_for_diam(region):
     """

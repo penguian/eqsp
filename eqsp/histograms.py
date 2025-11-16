@@ -1,6 +1,6 @@
 import numpy as np
 
-from histogram_private import lookup_s2_region
+from _private._histograms import lookup_s2_region
 from partitions import eq_regions, eq_caps
 
 

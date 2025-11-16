@@ -1,6 +1,5 @@
-import math
 import numpy as np
-from math import gcd
+from math import cos, gcd, pi, sin
 
 from utilities import (
     area_of_collar,
@@ -41,23 +40,24 @@ def bot_cap_region(dim, a_cap):
 
     Examples
     --------
-    >>> import math
-    >>> bot_cap_region(1, math.pi/6)
-    array([[5.75958653, 6.28318531]])
-    >>> bot_cap_region(2, math.pi/6)
-    array([[0.        , 6.28318531],
-           [2.61803399, 3.14159265]])
-    >>> bot_cap_region(3, math.pi/6)
-    array([[0.        , 6.28318531],
-           [0.        , 3.14159265],
-           [2.61803399, 3.14159265]])
+    >>> np.set_printoptions(precision=4)
+    >>> bot_cap_region(1, pi/6)
+    array([[5.7596, 6.2832]])
+    >>> bot_cap_region(2, pi/6)
+    array([[0.    , 6.2832],
+           [2.618 , 3.1416]])
+    >>> bot_cap_region(3, pi/6)
+    array([[0.    , 6.2832],
+           [0.    , 3.1416],
+           [2.618 , 3.1416]])
     """
     if dim == 1:
-        return np.array([[2 * math.pi - a_cap, 2 * math.pi]])
+        return np.array([[2 * pi - a_cap, 2 * pi]])
     sphere_region_1 = sphere_region(dim - 1)
-    first_col = np.append(sphere_region_1[:, 0], math.pi - a_cap)
-    second_col = np.append(sphere_region_1[:, 1], math.pi)
+    first_col = np.append(sphere_region_1[:, 0], pi - a_cap)
+    second_col = np.append(sphere_region_1[:, 1], pi)
     return np.column_stack([first_col, second_col])
+
 
 def cap_colats(dim, N, c_polar, n_regions):
     """
@@ -94,13 +94,13 @@ def cap_colats(dim, N, c_polar, n_regions):
 
     Examples
     --------
-    >>> import math
+    >>> np.set_printoptions(precision=4)
     >>> dim = 2
     >>> N = 4
     >>> c_polar = polar_colat(dim, N)
     >>> n_regions = np.array([1, 2, 1])
     >>> cap_colats(dim, N, c_polar, n_regions)
-    array([1.04719755, 2.0943951 , 3.14159265])
+    array([1.0472, 2.0944, 3.1416])
     """
     n_regions = np.asarray(n_regions)
     c_caps = np.zeros_like(n_regions, dtype=float)
@@ -113,8 +113,9 @@ def cap_colats(dim, N, c_polar, n_regions):
         c_caps[collar_n] = sradius_of_cap(
             dim, subtotal_n_regions * ideal_region_area
         )
-    c_caps[1 + n_collars] = math.pi
+    c_caps[1 + n_collars] = pi
     return c_caps
+
 
 def centres_of_regions(regions):
     """
@@ -145,10 +146,10 @@ def centres_of_regions(regions):
 
     Examples
     --------
-    >>> import numpy as np
     >>> regions = np.array([[[0, 1], [2, 3]], [[0, 1], [2, 3]]])
-    >>> centres_of_regions(regions)  # doctest: +SKIP
-    array([[...],[...]])
+    >>> centres_of_regions(regions)
+    array([[1., 2.],
+           [0., 2.]])
     """
     tol = np.finfo(float).eps * 2 ** 5
     regions = np.asarray(regions, dtype=float)
@@ -160,25 +161,26 @@ def centres_of_regions(regions):
     top = regions[:, 0, :]
     bot = regions[:, 1, :]
     zero_bot = np.abs(bot[0, :]) < tol
-    bot[0, zero_bot] = 2 * math.pi
+    bot[0, zero_bot] = 2 * pi
     equal_bot = np.abs(bot[0, :] - top[0, :]) < tol
-    bot[0, equal_bot] = top[0, equal_bot] + 2 * math.pi
-    twopi_bot = np.abs(bot[0, :] - top[0, :] - 2 * math.pi) < tol
+    bot[0, equal_bot] = top[0, equal_bot] + 2 * pi
+    twopi_bot = np.abs(bot[0, :] - top[0, :] - 2 * pi) < tol
     points[0, twopi_bot] = 0.0
     mask_other = ~twopi_bot
     points[0, mask_other] = np.mod(
-        (bot[0, mask_other] + top[0, mask_other]) / 2.0, 2 * math.pi
+        (bot[0, mask_other] + top[0, mask_other]) / 2.0, 2 * pi
     )
     for k in range(1, dim):
-        pi_bot = np.abs(bot[k, :] - math.pi) < tol
-        points[k, pi_bot] = math.pi
+        pi_bot = np.abs(bot[k, :] - pi) < tol
+        points[k, pi_bot] = pi
         zero_top = np.abs(top[k, :]) < tol
         points[k, zero_top] = 0.0
         all_else = ~(zero_top | pi_bot)
         points[k, all_else] = np.mod(
-            (top[k, all_else] + bot[k, all_else]) / 2.0, math.pi
+            (top[k, all_else] + bot[k, all_else]) / 2.0, pi
         )
     return points
+
 
 def circle_offset(n_top, n_bot, extra_twist=False):
     """
@@ -208,12 +210,14 @@ def circle_offset(n_top, n_bot, extra_twist=False):
 
     Examples
     --------
-    >>> circle_offset(3, 4)
-    6.938893903907228e-18
-    >>> circle_offset(3, 4, extra_twist=True)
+    >>> def disp(x):
+    ...     print(f'{x:.5g}')
+    >>> disp(circle_offset(3, 4))
+    6.9389e-18
+    >>> disp(circle_offset(3, 4, extra_twist=True))
     1.5
-    >>> circle_offset(7, 11)
-    -0.01951219512195122
+    >>> disp(circle_offset(7, 11))
+    -0.019481
     """
     if n_top == 0 or n_bot == 0:
         raise ValueError("n_top and n_bot must be positive integers")
@@ -224,6 +228,7 @@ def circle_offset(n_top, n_bot, extra_twist=False):
         twist = 6
         offset = offset + twist / float(n_bot)
     return offset
+
 
 def ideal_region_list(dim, N, c_polar, n_collars):
     """
@@ -265,7 +270,7 @@ def ideal_region_list(dim, N, c_polar, n_collars):
     r_regions = np.zeros(2 + int(n_collars), dtype=float)
     r_regions[0] = 1.0
     if n_collars > 0:
-        a_fitting = (math.pi - 2.0 * c_polar) / float(n_collars)
+        a_fitting = (pi - 2.0 * c_polar) / float(n_collars)
         ideal_region_area = area_of_ideal_region(dim, N)
         for collar_n in range(1, n_collars + 1):
             a1 = c_polar + (collar_n - 1) * a_fitting
@@ -274,6 +279,7 @@ def ideal_region_list(dim, N, c_polar, n_collars):
             r_regions[collar_n] = ideal_collar_area / ideal_region_area
     r_regions[-1] = 1.0
     return r_regions
+
 
 def num_collars(N, c_polar, a_ideal):
     """
@@ -316,12 +322,13 @@ def num_collars(N, c_polar, a_ideal):
     n_collars = np.zeros_like(N_arr, dtype=int)
     enough = (N_arr > 2) & (a_ideal_arr > 0)
     if np.any(enough):
-        val = np.round((math.pi - 2.0 * c_polar_arr[enough]) / a_ideal_arr[enough])
+        val = np.round((pi - 2.0 * c_polar_arr[enough]) / a_ideal_arr[enough])
         val = np.maximum(1, val).astype(int)
         n_collars[enough] = val
     if np.isscalar(N):
         return int(n_collars)
     return n_collars
+
 
 def polar_colat(dim, N):
     """
@@ -349,29 +356,32 @@ def polar_colat(dim, N):
 
     Examples
     --------
-    >>> polar_colat(2, 4)
-    1.0471975511965976
-    >>> polar_colat(2, 10)
-    0.6435011087932844
-    >>> polar_colat(3, 6)
-    0.984497...
+    >>> def disp(x):
+    ...     print(f'{x:.5g}')
+    >>> disp(polar_colat(2, 4))
+    1.0472
+    >>> disp(polar_colat(2, 10))
+    0.6435
+    >>> disp(polar_colat(3, 6))
+    0.98448
     """
     if np.isscalar(N):
         if N == 1:
-            return math.pi
+            return pi
         if N == 2:
-            return math.pi / 2.0
+            return pi / 2.0
         area = area_of_ideal_region(dim, N)
         return sradius_of_cap(dim, area)
     N_arr = np.asarray(N)
     c_polar = np.zeros_like(N_arr, dtype=float)
-    c_polar[N_arr == 1] = math.pi
-    c_polar[N_arr == 2] = math.pi / 2.0
+    c_polar[N_arr == 1] = pi
+    c_polar[N_arr == 2] = pi / 2.0
     mask = N_arr > 2
     if np.any(mask):
         areas = area_of_ideal_region(dim, N_arr[mask])
         c_polar[mask] = sradius_of_cap(dim, areas)
     return c_polar
+
 
 def rot3(axis, angle):
     """
@@ -391,13 +401,21 @@ def rot3(axis, angle):
 
     Examples
     --------
-    >>> rot3(1, math.pi/6)
-    array([[ 1.       ,  0.       ,  0.       ],
-           [ 0.       ,  0.8660254, -0.5      ],
-           [ 0.       ,  0.5      ,  0.8660254]])
+    >>> rot3(1, pi/6)
+    array([[ 1.   ,  0.   ,  0.   ],
+           [ 0.   ,  0.866, -0.5  ],
+           [ 0.   ,  0.5  ,  0.866]])
+    >>> rot3(2, pi/6)
+    array([[ 0.866,  0.   , -0.5  ],
+           [ 0.   ,  1.   ,  0.   ],
+           [ 0.5  ,  0.   ,  0.866]])
+    >>> rot3(3, pi/6)
+    array([[ 0.866, -0.5  ,  0.   ],
+           [ 0.5  ,  0.866,  0.   ],
+           [ 0.   ,  0.   ,  1.   ]])
     """
-    c = math.cos(angle)
-    s = math.sin(angle)
+    c = cos(angle)
+    s = sin(angle)
     if axis == 1:
         R = np.array([[1.0, 0.0, 0.0], [0.0, c, -s], [0.0, s, c]])
     elif axis == 2:
@@ -407,6 +425,7 @@ def rot3(axis, angle):
     else:
         raise ValueError("axis must be 1, 2, or 3")
     return R
+
 
 def round_to_naturals(N, r_regions):
     """
@@ -447,6 +466,7 @@ def round_to_naturals(N, r_regions):
     assert n_regions.sum() == int(N), "Sum of result n_regions does not equal N==%g" % N
     return n_regions
 
+
 def s2_offset(points_1):
     """
     Experimental offset rotation of S^2.
@@ -473,8 +493,10 @@ def s2_offset(points_1):
     --------
     >>> s = np.array([[0., 0.785398, 2.356194, 3.9270, 5.49778, 0.],
     ...               [0., 1.570796, 1.570796, 1.570796, 1.570796, 3.1416]])
-    >>> s2_offset(s)  # doctest: +SKIP
-    array([[...],[...],[...]])
+    >>> s2_offset(s)
+    array([[ 2.3108e-07,  7.0711e-01,  7.0711e-01],
+           [-1.0000e+00,  3.2679e-07,  0.0000e+00],
+           [-2.3108e-07, -7.0711e-01,  7.0711e-01]])
     """
     points_1 = np.asarray(points_1, dtype=float)
     n_in_collar = points_1.shape[1]
@@ -482,12 +504,13 @@ def s2_offset(points_1):
         if (n_in_collar > 3) and (points_1[1, 1] == points_1[1, 2]):
             a_3 = (points_1[0, 1] + points_1[0, 2]) / 2.0
         else:
-            a_3 = points_1[0, 1] + math.pi
+            a_3 = points_1[0, 1] + pi
         a_2 = points_1[1, 1] / 2.0
     else:
         a_3 = 0.0
-        a_2 = math.pi / 2.0
+        a_2 = pi / 2.0
     return np.dot(rot3(2, -a_2), rot3(3, -a_3))
+
 
 def sphere_region(dim):
     """
@@ -510,21 +533,22 @@ def sphere_region(dim):
     Examples
     --------
     >>> sphere_region(1)
-    array([[0.        , 6.28318531]])
+    array([[0.    , 6.2832]])
     >>> sphere_region(2)
-    array([[0.        , 6.28318531],
-           [0.        , 3.14159265]])
+    array([[0.    , 6.2832],
+           [0.    , 3.1416]])
     >>> sphere_region(3)
-    array([[0.        , 6.28318531],
-           [0.        , 3.14159265],
-           [0.        , 3.14159265]])
+    array([[0.    , 6.2832],
+           [0.    , 3.1416],
+           [0.    , 3.1416]])
     """
     if dim == 1:
-        return np.array([[0.0, 2.0 * math.pi]])
+        return np.array([[0.0, 2.0 * pi]])
     sphere_region_1 = sphere_region(dim - 1)
     first_col = np.append(sphere_region_1[:, 0], 0.0)
-    second_col = np.append(sphere_region_1[:, 1], math.pi)
+    second_col = np.append(sphere_region_1[:, 1], pi)
     return np.column_stack([first_col, second_col])
+
 
 def top_cap_region(dim, a_cap):
     """
@@ -554,15 +578,16 @@ def top_cap_region(dim, a_cap):
     Examples
     --------
     >>> import math
-    >>> top_cap_region(1, math.pi/6)
-    array([[0.        , 0.52359878]])
-    >>> top_cap_region(2, math.pi/6)
-    array([[0.        , 6.28318531],
-           [0.        , 0.52359878]])
-    >>> top_cap_region(3, math.pi/6)
-    array([[0.        , 6.28318531],
-           [0.        , 3.14159265],
-           [0.        , 0.52359878]])
+    >>> top_cap_region(1, pi/6)
+    array([[0.    , 0.5236]])
+    >>> top_cap_region(2, pi/6)
+    array([[0.    , 6.2832],
+           [0.    , 0.5236]])
+
+    >>> top_cap_region(3, pi/6)
+    array([[0.    , 6.2832],
+           [0.    , 3.1416],
+           [0.    , 0.5236]])
     """
     if dim == 1:
         return np.array([[0.0, a_cap]])

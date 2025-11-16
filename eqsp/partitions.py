@@ -1,15 +1,9 @@
-# Translated from partitions.m (partial)
-# NOTE: This module imports a number of helper functions which must be
-# available as Python modules in the same package or on sys.path.  The
-# original MATLAB code used separately defined functions; the user asked
-# that every undefined function be imported rather than stubbed.
-
 import math
 import numpy as np
 
 from math import pi
 
-from partitions_private import (
+from _private._partitions import (
     bot_cap_region,
     cap_colats,
     centres_of_regions,
@@ -22,9 +16,16 @@ from partitions_private import (
     sphere_region,
     top_cap_region,
 )
-from utilities import cart2polar2, polar2cart, ideal_collar_angle
+from utilities import (
+    asfloat,
+    cart2polar2,
+    ideal_collar_angle,
+    polar2cart,
+)
+
 
 TAU = 2.0 * pi
+
 
 def eq_caps(dim, N):
     """
@@ -66,13 +67,18 @@ def eq_caps(dim, N):
     Examples
     --------
     >>> import numpy as np
-    >>> np.round(eq_caps(2,10),4)
-    array([[0.6435, 1.5708, 2.4981, 3.1416],
-           [1.    , 4.    , 4.    , 1.    ]])
+    >>> np.set_printoptions(precision=4)
+    >>> s_cap, n_regions = eq_caps(2,10)
+    >>> s_cap
+    array([0.6435, 1.5708, 2.4981, 3.1416])
+    >>> n_regions
+    array([1., 4., 4., 1.])
 
-    >>> np.round(eq_caps(3,6), 4)
-    array([[0.9845, 2.1571, 3.1416],
-           [1.    , 4.    , 1.    ]])
+    >>> s_cap, n_regions = eq_caps(3,6)
+    >>> s_cap
+    array([0.9845, 2.1571, 3.1416])
+    >>> n_regions
+    array([1., 4., 1.])
     """
     if not (isinstance(dim, (int, np.integer)) and dim >= 1):
         raise ValueError("dim must be a positive integer")
@@ -100,7 +106,7 @@ def eq_caps(dim, N):
         # Colatitudes of cap tops
         s_cap = cap_colats(dim, N, c_polar, n_regions)
 
-    return np.asarray(s_cap), np.asarray(n_regions)
+    return asfloat(s_cap), asfloat(n_regions)
 
 
 def eq_point_set(dim, N, extra_offset=False):
