@@ -3,7 +3,7 @@ import numpy as np
 
 from math import pi
 
-from _private._partitions import (
+from ._private._partitions import (
     bot_cap_region,
     cap_colats,
     centres_of_regions,
@@ -16,7 +16,7 @@ from _private._partitions import (
     sphere_region,
     top_cap_region,
 )
-from utilities import (
+from .utilities import (
     asfloat,
     cart2polar2,
     ideal_collar_angle,
@@ -254,7 +254,8 @@ def eq_point_set_polar(dim, N, extra_offset=False):
                 points_1 = cache[twin_collar_n - 1]
             else:
                 points_1 = eq_point_set_polar(dim - 1, n_in_collar, extra_offset)
-                cache[collar_n - 1] = points_1
+                if collar_n <= len(cache):
+                    cache[collar_n - 1] = points_1
         else:
             points_1 = eq_point_set_polar(dim - 1, n_in_collar, extra_offset)
 
@@ -353,8 +354,10 @@ def eq_regions(dim, N, extra_offset=False):
     if N == 1:
         regions = np.zeros((dim, 2, 1))
         regions[:, :, 0] = sphere_region(dim)
-        dim_1_rot[0] = np.eye(dim)
-        return regions, dim_1_rot
+        if extra_offset and dim == 3:
+            dim_1_rot[0] = np.eye(dim)
+            return regions, dim_1_rot
+        return regions
 
     s_cap, n_regions = eq_caps(dim, N)
 
@@ -365,9 +368,15 @@ def eq_regions(dim, N, extra_offset=False):
             regions[:, 0, 1:N] = s_cap[0 : N - 1]
         regions[:, 1, :] = s_cap
         # rotations are identity
-        for idx in range(N):
-            dim_1_rot[idx] = np.eye(dim)
-        return regions, dim_1_rot
+        if extra_offset: # Should dim=1 return rot? Doc says only dim=3 meaningful.
+             # But let's assume if extra_offset was requested.
+             # Actually existing code returned it.
+             # But doc says "only meaningful for dim == 3".
+             # Let's simple check extra_offset.
+             for idx in range(N):
+                dim_1_rot[idx] = np.eye(dim)
+             return regions, dim_1_rot
+        return regions
 
     n_collars = int(np.size(n_regions) - 2)
     use_cache = dim > 2
@@ -403,10 +412,17 @@ def eq_regions(dim, N, extra_offset=False):
             ):
                 regions_1 = cache[twin_collar_n - 1]
             else:
-                regions_1, _ = eq_regions(dim - 1, n_in_collar, extra_offset)
-                cache[collar_n - 1] = regions_1
+                if extra_offset:
+                    regions_1, _ = eq_regions(dim - 1, n_in_collar, extra_offset)
+                else:
+                    regions_1 = eq_regions(dim - 1, n_in_collar, extra_offset)
+                if collar_n <= len(cache):
+                    cache[collar_n - 1] = regions_1
         else:
-            regions_1, _ = eq_regions(dim - 1, n_in_collar, extra_offset)
+            if extra_offset:
+                regions_1, _ = eq_regions(dim - 1, n_in_collar, extra_offset)
+            else:
+                regions_1 = eq_regions(dim - 1, n_in_collar, extra_offset)
 
         if extra_offset and (dim == 3) and (collar_n > 1):
             R = s2_offset(centres_of_regions(regions_1)) @ R

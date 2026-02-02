@@ -81,11 +81,11 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
         # Lookup by colatitude.
         c_idx = lookup_table(s_cap, s_point[1, p_idx])
         if c_idx > 0 and c_idx < n_caps - 1:
-            min_r_idx = c_regions[c_idx] + 1
-            max_r_idx = c_regions[c_idx + 1]
-            s_longs = np.squeeze(s_regions[0:2, :, min_r_idx:max_r_idx + 1])
+            min_r_idx = int(c_regions[c_idx - 1]) + 1
+            max_r_idx = int(c_regions[c_idx])
+            s_longs = s_regions[0, :, min_r_idx - 1 : max_r_idx].copy()
             if s_longs[0, 0] >= 2 * np.pi:
-                s_longs[0, 0] -= 2 * np.pi
+                s_longs[:, 0] -= 2 * np.pi
             n_longs = s_longs.shape[1]
             # Lookup by longitude.
             l_idx = lookup_table(s_longs[1, :], s_point[0, p_idx]) % n_longs
@@ -165,8 +165,9 @@ def lookup_table(table, y, opt=None):
             maximum = np.max(np.concatenate([table, y])) + 1
             extended_table = np.append(table, maximum)
             idx = np.array(
-                [np.searchsorted(extended_table, val, side="left") - 1 for val in y]
+                [np.searchsorted(extended_table, val, side="right") for val in y]
             )
+            idx[idx < 0] = 0
         else:
             print("LOOKUP_TABLE: Decreasing case is not yet implemented")
             raise NotImplementedError(

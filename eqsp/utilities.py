@@ -175,6 +175,11 @@ def polar2cart(s):
      [ 1.  0.  0. -1.]]
     """
     s = np.asarray(s)
+    if s.ndim == 1:
+        s = s[:, np.newaxis]
+        was_1d = True
+    else:
+        was_1d = False
     dim, n = s.shape
     x = np.zeros((dim + 1, n))
     sinprod = np.ones(n)
@@ -183,6 +188,8 @@ def polar2cart(s):
         sinprod = sinprod * np.sin(s[k - 1, :])
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
+    if was_1d:
+        return x.flatten()
     return x
 
 

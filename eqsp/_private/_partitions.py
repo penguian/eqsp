@@ -1,7 +1,7 @@
 import numpy as np
 from math import cos, gcd, pi, sin
 
-from utilities import (
+from ..utilities import (
     area_of_collar,
     area_of_ideal_region,
     sradius_of_cap,

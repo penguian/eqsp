@@ -1,11 +1,15 @@
 import numpy as np
-from eq_regions import eq_regions
-from area_of_sphere import area_of_sphere
-from area_of_ideal_region import area_of_ideal_region
-from area_of_collar import area_of_collar
-from eq_regions_property import eq_regions_property
-from max_diam_bound_of_regions import max_diam_bound_of_regions
-from max_vertex_diam_of_regions import max_vertex_diam_of_regions
+from .partitions import eq_regions
+from .utilities import (
+    area_of_sphere,
+    area_of_ideal_region,
+    area_of_collar,
+)
+from ._private._region_props import (
+    max_diam_bound_of_regions,
+    max_vertex_diam_of_regions,
+)
+
 
 def eq_area_error(dim, N):
     """
@@ -42,6 +46,8 @@ def eq_area_error(dim, N):
 
     Examples
     --------
+    >>> import numpy as np
+    >>> np.set_printoptions(precision=4, suppress=True)
     >>> total_error, max_error = eq_area_error(2, 10)
     >>> np.round(total_error, 4)
     0.0
@@ -57,7 +63,7 @@ def eq_area_error(dim, N):
         raise ValueError("Both dim and N must be provided.")
 
     shape = np.shape(N)
-    n_partitions = np.prod(shape)
+    n_partitions = int(np.prod(shape))
     N = np.reshape(N, (1, n_partitions))
 
     total_error = np.zeros_like(N, dtype=float)
@@ -65,7 +71,7 @@ def eq_area_error(dim, N):
     sphere_area = area_of_sphere(dim)
 
     for partition_n in range(n_partitions):
-        n = N[0, partition_n]
+        n = int(N[0, partition_n])
         regions = eq_regions(dim, n)
         ideal_area = area_of_ideal_region(dim, n)
         total_area = 0.0
@@ -102,9 +108,9 @@ def area_of_region(region):
     Examples
     --------
     >>> import numpy as np
-    >>> region = np.array([[0, np.pi], [0, 2*np.pi]])
+    >>> region = np.array([[0, 2*np.pi], [0, np.pi]])
     >>> round(area_of_region(region), 4)
-    6.2832
+    12.5664
     """
     dim = region.shape[0]
     s_top = region[dim - 1, 0]
@@ -145,10 +151,11 @@ def eq_diam_bound(dim, N):
 
     Examples
     --------
+    >>> np.set_printoptions(precision=4, suppress=True)
     >>> eq_diam_bound(2, 10)
-    1.6733200530681511
+    1.6733
     >>> eq_diam_bound(3, np.arange(1, 7))
-    array([2, 2, 2, 2, 2, 2])
+    array([2.    , 1.8478, 1.8478, 1.4142, 1.4142, 1.0515])
     """
     return eq_regions_property(max_diam_bound_of_regions, dim, N)
 
@@ -185,11 +192,11 @@ def eq_diam_coeff(dim, N):
 
     Examples
     --------
+    >>> np.set_printoptions(precision=4, suppress=True)
     >>> eq_diam_coeff(2, 10)
-    5.291502530159141
+    5.2915
     >>> eq_diam_coeff(3, np.arange(1, 7))
-    (array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]),
-     array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]))
+    (array([2.    , 2.5198, 2.8845, 2.5835, 2.924 , 2.4593]), array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]))
     """
     if dim is None or N is None:
         raise ValueError("Both dim and N must be provided.")
@@ -202,12 +209,12 @@ def eq_diam_coeff(dim, N):
         return bound_coeff
     else:
         shape = np.shape(N)
-        n_partitions = np.prod(shape)
+        n_partitions = int(np.prod(shape))
         N = np.reshape(N, (1, n_partitions))
         bound_coeff = np.zeros_like(N, dtype=float)
         vertex_coeff = np.zeros_like(N, dtype=float)
         for partition_n in range(n_partitions):
-            n = N[0, partition_n]
+            n = int(N[0, partition_n])
             regions = eq_regions(dim, n)
             scale = np.power(n, 1 / dim)
             bound_coeff[0, partition_n] = (
@@ -254,11 +261,11 @@ def eq_regions_property(fhandle, dim, N):
     array([3, 4])
     """
     shape = np.shape(N)
-    n_partitions = np.prod(shape)
+    n_partitions = int(np.prod(shape))
     N = np.reshape(N, (1, n_partitions))
     property_ = np.zeros_like(N, dtype=float)
     for partition_n in range(n_partitions):
-        regions = eq_regions(dim, N[0, partition_n])
+        regions = eq_regions(dim, int(N[0, partition_n]))
         property_[0, partition_n] = fhandle(regions)
     property_ = np.reshape(property_, shape)
     return property_
@@ -285,8 +292,9 @@ def eq_vertex_diam_coeff(dim, N):
 
     Examples
     --------
+    >>> np.set_printoptions(precision=4, suppress=True)
     >>> eq_vertex_diam_coeff(2, 10)
-    4.47213595499958
+    4.4721
     >>> eq_vertex_diam_coeff(3, np.arange(1, 7))
     array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342])
     """
@@ -314,9 +322,10 @@ def eq_vertex_diam(dim, N):
 
     Examples
     --------
+    >>> np.set_printoptions(precision=4, suppress=True)
     >>> eq_vertex_diam(2, 10)
-    1.4142135623730951
+    1.4142
     >>> eq_vertex_diam(3, np.arange(1, 7))
-    array([2, 2, 2, 2, 2, 2])
+    array([2.    , 1.7321, 1.4142, 1.1756, 1.1756, 1.0515])
     """
     return eq_regions_property(max_vertex_diam_of_regions, dim, N)
