@@ -23,6 +23,12 @@ dependencies = [
 ]
 requires-python = ">=3.8"
 
+[project.optional-dependencies]
+mayavi = [
+    "mayavi",
+    "PyQt5",
+]
+
 [project.urls]
 "Homepage" = "http://eqsp.sourceforge.net"
 
