@@ -30,18 +30,12 @@ from __future__ import annotations
 import matplotlib.pyplot as plt
 import numpy as np
 
-from . import (
-    cap_colats,
-    eq_caps,
-    ideal_collar_angle,
-    ideal_region_list,
-    num_collars,
-    partition_options,
-    polar_colat,
-    project_s2_partition,
-    round_to_naturals,
-    illustration_options,
-)
+from .partitions import eq_caps
+from .utilities import ideal_collar_angle
+from ._private._partitions import cap_colats, ideal_region_list, num_collars, polar_colat, round_to_naturals
+from .partition_options import partition_options
+from .illustrations import project_s2_partition
+from .illustration_options import illustration_options
 
 
 def illustrate_eq_algorithm(dim, N, *varargin):
@@ -131,12 +125,13 @@ def illustrate_eq_algorithm(dim, N, *varargin):
     elif dim == 3:
         opt_args = option_arguments(popt, gopt)
         _, m = eq_caps(dim, N)
-        max_collar = min(4, m.shape[1] - 2)
+        # m is n_regions (1D array)
+        max_collar = min(4, m.size - 2)
         for k in range(1, max_collar + 1):
             subn = 9 + 2 * k - ((k - 1) % 2)
             plt.subplot(4, 4, subn)
             plt.axis("off")
-            project_s2_partition(int(m[0, k]), *opt_args)
+            project_s2_partition(int(m[k]), *opt_args)
 
 
 def illustrate_steps_1_2(dim, N, *varargin):

@@ -26,7 +26,7 @@ from .utilities import (
     area_of_collar,
 )
 
-from .partition_options import partition_options
+from .illustration_options import illustration_options
 
 from ._private._partitions import (
    polar_colat,
@@ -36,5 +36,14 @@ from ._private._partitions import (
    round_to_naturals,
 )
 
-# illustration_options might be missing too?
-# Let's check where illustration_options is.
+from .illustrations import (
+    show_s2_partition,
+    project_s2_partition,
+    project_s3_partition,
+    project_point_set,
+    x2stereo,
+    x2eqarea,
+    show_s2_region,
+    show_s2_sphere,
+    show_r3_point_set,
+)

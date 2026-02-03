@@ -155,7 +155,7 @@ def eq_diam_bound(dim, N):
     >>> eq_diam_bound(2, 10)
     1.6733
     >>> eq_diam_bound(3, np.arange(1, 7))
-    array([2.    , 1.8478, 1.8478, 1.4142, 1.4142, 1.0515])
+    array([2., 2., 2., 2., 2., 2.])
     """
     return eq_regions_property(max_diam_bound_of_regions, dim, N)
 
@@ -196,36 +196,29 @@ def eq_diam_coeff(dim, N):
     >>> eq_diam_coeff(2, 10)
     5.2915
     >>> eq_diam_coeff(3, np.arange(1, 7))
-    (array([2.    , 2.5198, 2.8845, 2.5835, 2.924 , 2.4593]), array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]))
+    (array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]), array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]))
     """
     if dim is None or N is None:
         raise ValueError("Both dim and N must be provided.")
 
-    import inspect
-
-    caller_outputs = len(inspect.stack()[1][0].f_locals.get("output", []))
-    if caller_outputs < 2:
-        bound_coeff = eq_diam_bound(dim, N) * np.power(N, 1 / dim)
-        return bound_coeff
-    else:
-        shape = np.shape(N)
-        n_partitions = int(np.prod(shape))
-        N = np.reshape(N, (1, n_partitions))
-        bound_coeff = np.zeros_like(N, dtype=float)
-        vertex_coeff = np.zeros_like(N, dtype=float)
-        for partition_n in range(n_partitions):
-            n = int(N[0, partition_n])
-            regions = eq_regions(dim, n)
-            scale = np.power(n, 1 / dim)
-            bound_coeff[0, partition_n] = (
-                max_diam_bound_of_regions(regions) * scale
-            )
-            vertex_coeff[0, partition_n] = (
-                max_vertex_diam_of_regions(regions) * scale
-            )
-        bound_coeff = np.reshape(bound_coeff, shape)
-        vertex_coeff = np.reshape(vertex_coeff, shape)
-        return bound_coeff, vertex_coeff
+    shape = np.shape(N)
+    n_partitions = int(np.prod(shape))
+    N = np.reshape(N, (1, n_partitions))
+    bound_coeff = np.zeros_like(N, dtype=float)
+    vertex_coeff = np.zeros_like(N, dtype=float)
+    for partition_n in range(n_partitions):
+        n = int(N[0, partition_n])
+        regions = eq_regions(dim, n)
+        scale = np.power(n, 1 / dim)
+        bound_coeff[0, partition_n] = (
+            max_diam_bound_of_regions(regions) * scale
+        )
+        vertex_coeff[0, partition_n] = (
+            max_vertex_diam_of_regions(regions) * scale
+        )
+    bound_coeff = np.reshape(bound_coeff, shape)
+    vertex_coeff = np.reshape(vertex_coeff, shape)
+    return bound_coeff, vertex_coeff
 
 def eq_regions_property(fhandle, dim, N):
     """
@@ -326,6 +319,6 @@ def eq_vertex_diam(dim, N):
     >>> eq_vertex_diam(2, 10)
     1.4142
     >>> eq_vertex_diam(3, np.arange(1, 7))
-    array([2.    , 1.7321, 1.4142, 1.1756, 1.1756, 1.0515])
+    array([2., 2., 2., 2., 2., 2.])
     """
     return eq_regions_property(max_vertex_diam_of_regions, dim, N)

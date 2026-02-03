@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eqsp"
+version = "0.0.1"
+description = "Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox"
+readme = "README.md"
+authors = [
+  { name = "Paul Leopardi", email = "paul.leopardi@gmail.com" },
+]
+license = { file = "COPYING" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+]
+requires-python = ">=3.8"
+
+[project.urls]
+"Homepage" = "http://eqsp.sourceforge.net"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eqsp*"]

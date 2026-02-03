@@ -22,6 +22,12 @@ def asfloat(x):
 
     Convert from a Numpy array to a float when this makes sense.
 
+    It checks if the input is a 0-dimensional array (scalar) or a 1-element array,
+    and if so, converts it to a standard Python `float`. Otherwise, it returns
+    the input as a NumPy array. This ensures that functions return native Python
+    scalars when appropriate (e.g., area of a single region) while still supporting
+    vectorized operations.
+
     Parameters
     ----------
     x : array_like

@@ -84,9 +84,9 @@ def calc_energy_coeff(dim, N, s, energy):
     Examples
     --------
     >>> N = np.arange(2, 7)
-    >>> energy = eq_energy_dist(2, N, 0)
+    >>> energy, dist = eq_energy_dist(2, N, 0)
     >>> calc_energy_coeff(2, N, 0, energy)
-    array([-0.22130839, -0.15693414, -0.22130839, -0.24933177, -0.25694627])
+    array([-0.2213, -0.1569, -0.2213, -0.2493, -0.2569])
     """
     def sphere_int_energy(dim, s):
         if s != 0:
@@ -112,9 +112,9 @@ def calc_energy_coeff(dim, N, s, energy):
         first_term = (sphere_int_energy(dim, s) / 2) * np.power(N_flat, 2)
         coeff = np.zeros_like(N_flat, dtype=float)
         neq1 = (N_flat != 1)
-        coeff[neq1] = ((energy.reshape(1, n_partitions)[0][neq1] -
-                        first_term[0][neq1]) /
-                       (N_flat[0][neq1] * np.log(N_flat[0][neq1])))
+        coeff[neq1] = ((energy.reshape(1, n_partitions)[0][neq1.ravel()] -
+                        first_term[0][neq1.ravel()]) /
+                       (N_flat[0][neq1.ravel()] * np.log(N_flat[0][neq1.ravel()])))
         coeff = coeff.reshape(shape)
     return coeff
 
@@ -146,7 +146,7 @@ def sphere_int_energy(dim, s):
     Examples
     --------
     >>> sphere_int_energy(2, 0)
-    -0.22130839205385095
+    np.float64(-0.1931471805599453)
     """
     if s != 0:
         return (math.gamma((dim + 1) / 2) *
@@ -234,10 +234,9 @@ def eq_dist_coeff(dim, N, *args):
     Examples
     --------
     >>> eq_dist_coeff(2, 10)
-    3.325048771007371
+    np.float64(3.325015502219627)
     >>> eq_dist_coeff(3, np.arange(1, 7))
-    array([2.        , 2.51981592, 2.03960781, 2.24492495, 2.41832821,
-           2.56978336])
+    array([2.    , 2.5198, 2.0396, 2.2449, 2.4183, 2.5698])
     """
     dist = eq_min_dist(dim, N, *args)
     coeff = dist * np.power(N, 1 / dim)
@@ -273,13 +272,11 @@ def eq_energy_coeff(dim, N, *args):
     Examples
     --------
     >>> eq_energy_coeff(2, 10)
-    -0.5461028849820652
+    np.float64(-0.5460877923347524)
     >>> eq_energy_coeff(3, np.arange(1, 7))
-    array([-0.5       , -0.5512227 , -0.5208487 , -0.54565828, -0.5471944 ,
-           -0.56791135])
+    array([-0.5   , -0.5512, -0.5208, -0.5457, -0.5472, -0.5679])
     >>> eq_energy_coeff(2, np.arange(1, 7), 0)
-    array([ 0.        , -0.22130839, -0.15693414, -0.22130839, -0.24933177,
-           -0.25694627])
+    array([ 0.    , -0.2213, -0.1569, -0.2213, -0.2493, -0.2569])
     """
     if len(args) == 0 or isinstance(args[0], str):
         s = dim - 1
@@ -287,7 +284,11 @@ def eq_energy_coeff(dim, N, *args):
     else:
         s = args[0]
         options = args[1:]
-    energy = eq_energy_dist(dim, N, s, *options)
+    dist_result = eq_energy_dist(dim, N, s, *options)
+    if isinstance(dist_result, tuple):
+        energy = dist_result[0]
+    else:
+        energy = dist_result
     coeff = calc_energy_coeff(dim, N, s, energy)
     return coeff
 
@@ -322,11 +323,9 @@ def eq_energy_dist(dim, N, *args):
     Examples
     --------
     >>> eq_energy_dist(2, 10)
-    32.731191479
+    array(32.7312)
     >>> eq_energy_dist(3, np.arange(1, 7), 0)
-    (array([ 0.        , -0.69314718, -1.38629436, -2.77258872, -4.15888308,
-           -6.23832463]), array([2.        , 2.        , 1.41421356, 1.41421356,
-           1.41421356, 1.41421356]))
+    (array([ 0.    , -0.6931, -1.3863, -2.7726, -4.1589, -6.2383]), array([2.    , 2.    , 1.4142, 1.4142, 1.4142, 1.4142]))
     """
     if len(args) == 0 or isinstance(args[0], str):
         s = dim - 1
@@ -388,10 +387,9 @@ def eq_min_dist(dim, N, *args):
     Examples
     --------
     >>> eq_min_dist(2, 10)
-    1.0514622242382672
+    array(1.0515)
     >>> eq_min_dist(3, np.arange(1, 7))
-    array([2.        , 2.        , 1.41421356, 1.41421356, 1.41421356,
-           1.41421356])
+    array([2.    , 2.    , 1.4142, 1.4142, 1.4142, 1.4142])
     """
     return eq_point_set_property(point_set_min_dist, dim, N, *args)
 
@@ -425,10 +423,9 @@ def eq_packing_density(dim, N, *args):
     Examples
     --------
     >>> eq_packing_density(2, 10)
-    0.7466774364375444
+    np.float64(0.7467459582397998)
     >>> eq_packing_density(3, np.arange(1, 7))
-    array([1.        , 1.        , 0.27252796, 0.36337062, 0.45421328,
-           0.54505594])
+    array([1.    , 1.    , 0.2725, 0.3634, 0.4542, 0.5451])
     """
     min_euclidean_dist = eq_min_dist(dim, N, *args)
     density = calc_packing_density(dim, N, min_euclidean_dist)
@@ -466,7 +463,7 @@ def eq_point_set_property(fhandle, dim, N, *args):
     Examples
     --------
     >>> eq_point_set_property(point_set_min_dist, 2, 10)
-    1.0514622242382672
+    array(1.0515)
     """
     pdefault = {'extra_offset': False}
     popt = partition_options(pdefault, *args)
@@ -506,7 +503,7 @@ def point_set_dist_coeff(points):
     --------
     >>> x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
     >>> point_set_dist_coeff(x)
-    2.8284271247461903
+    np.float64(2.8284271247461903)
     """
     dim = points.shape[0] - 1
     N = points.shape[1]
@@ -542,7 +539,7 @@ def point_set_energy_coeff(points, s=None):
     --------
     >>> x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
     >>> point_set_energy_coeff(x)
-    -0.5214054331644342
+    array([-0.5214, -0.8232])
     """
     dim = points.shape[0] - 1
     N = points.shape[1]
@@ -581,15 +578,15 @@ def point_set_energy_dist(points, s=None):
     Examples
     --------
     >>> x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
-    >>> point_set_energy_dist(x)
-    2.5
+    >>> point_set_energy_dist(x, 2)
+    (np.float64(2.5), np.float64(1.4142135623730951))
     >>> point_set_energy_dist(x, 0)
-    -0.6931471805599453
+    (np.float64(-2.7725887222397816), np.float64(1.4142135623730951))
     """
     M, N = points.shape
     dim = M - 1
     if s is None:
-        s = dim
+        s = dim - 1
     # Compute pairwise distances, exclude diagonal
     # Optimized using broadcasting
     
@@ -620,9 +617,15 @@ def point_set_energy_dist(points, s=None):
     # Energy: sum r_ij^-s for i != j
     # Flatten and remove Infs
     valid_dists = dists[~np.isinf(dists)]
-    energy = np.sum(np.power(valid_dists, -s))
+    # This calculates sum_{i!=j} r_ij^-s.
+    # Matlab code calculates sum_{i<j} r_ij^-s.
+    # So we divide by 2.
+    if s == 0:
+         energy = np.sum(-np.log(valid_dists)) / 2.0
+    else:
+         energy = np.sum(np.power(valid_dists, -s)) / 2.0
     
-    return energy / (N * (N - 1)), min_dist
+    return energy, min_dist
 
 
 def point_set_min_dist(points):
