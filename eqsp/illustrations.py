@@ -15,7 +15,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from .utilities import polar2cart, area_of_cap, volume_of_ball, area_of_sphere
 from .partitions import eq_point_set, eq_regions, eq_caps
-from .partition_options import partition_options
+from .partitions import eq_point_set, eq_regions, eq_caps
 
 
 def x2stereo(x):
@@ -211,21 +211,43 @@ def show_s2_region(region, N, ax=None, fidelity=21):
         ax.plot_surface(X, Y, Z, color='k', alpha=1.0, linewidth=0, shade=True)
 
 
-def show_s2_partition(N, *args, **kwargs):
+def show_s2_partition(N, *, extra_offset=False, fontsize=16, title='long',
+                      show_points=True, show_sphere=True, **kwargs):
     """
     3D illustration of an EQ partition of S^2 into N regions.
+
+    Parameters
+    ----------
+    N : int
+        Number of regions.
+    extra_offset : bool, optional
+        If True, use extra rotation offsets for regions. Default is False.
+    fontsize : int, optional
+        Font size for the title. Default is 16.
+    title : {'long', 'short', 'none'}, optional
+        Type of title to display. 'long' (default), 'short', or 'none'.
+    show_points : bool, optional
+        If True (default), show the center points of regions.
+    show_sphere : bool, optional
+        If True (default), show the unit sphere surface.
+    **kwargs
+        Additional arguments passed to underlying plotting functions.
+
+    Returns
+    -------
+    ax : Axes3D
+        The matplotlib 3D axes object.
+
+    Examples
+    --------
+    >>> from eqsp.illustrations import show_s2_partition
+    >>> import matplotlib.pyplot as plt
+    >>> plt.switch_backend('Agg') # Use non-interactive backend for doctest
+    >>> ax = show_s2_partition(4, title='short', show_points=False)
+    >>> ax.get_title()
+    'Recursive zonal equal area partition of S^2\\ninto 4 regions.'
     """
-    flat_args = list(args)
-    for k, v in kwargs.items():
-        flat_args.extend([k, v])
-        
-    pdefault = {'extra_offset': False}
-    popt = partition_options(pdefault, *flat_args)
-    
-    show_sphere = kwargs.get('show_sphere', True)
-    show_points = kwargs.get('show_points', True)
-    show_title = kwargs.get('show_title', True)
-    fontsize = kwargs.get('fontsize', 16)
+    show_title = title != 'none'
     
     dim = 2
     fig = plt.figure(figsize=(10, 10))
@@ -235,26 +257,58 @@ def show_s2_partition(N, *args, **kwargs):
     
     if show_title:
         title_text = f"Recursive zonal equal area partition of S^2\ninto {N} regions."
-        ax.set_title(title_text, fontsize=fontsize)
+        ax.set_title(title_text, fontsize=fontsize, color='k')
         
     if show_sphere:
         show_s2_sphere(ax)
         
-    R = eq_regions(dim, N, popt['extra_offset'])
+    R = eq_regions(dim, N, extra_offset)
     for i in range(N-1, 0, -1):
         show_s2_region(R[:, :, i], N, ax=ax)
         
     if show_points:
-        points = eq_point_set(dim, N, popt['extra_offset'])
+        points = eq_point_set(dim, N, extra_offset)
         show_r3_point_set(points, ax=ax, show_sphere=False)
         
-    plt.show()
+    if plt.get_backend() != 'Agg':
+        plt.show()
     return ax
 
 
-def project_point_set(points, ax=None, proj='stereo', **kwargs):
+def project_point_set(points, ax=None, proj='stereo', scale_factor=0.05, color=None, **kwargs):
     """
     Use projection to illustrate a point set of S^2 or S^3.
+
+    Parameters
+    ----------
+    points : ndarray
+        Points in R^3 (S^2) or R^4 (S^3).
+    ax : Axes, optional
+        Matplotlib axes (2D or 3D). If None, a new figure is created.
+    proj : {'stereo', 'eqarea'}, optional
+        Projection type. Default is 'stereo'.
+    scale_factor : float, optional
+        Scale factor for points (unused in matplotlib implementation, kept for compatibility/kwargs).
+    color : color spec, optional
+        Color of points. Default is 'k' for 2D, 'r' for 3D.
+    **kwargs
+        Passed to `ax.scatter`.
+
+    Returns
+    -------
+    ax : Axes
+        The axes object.
+
+    Examples
+    --------
+    >>> from eqsp.illustrations import project_point_set
+    >>> import numpy as np
+    >>> import matplotlib.pyplot as plt
+    >>> plt.switch_backend('Agg')
+    >>> points = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).T
+    >>> ax = project_point_set(points, proj='eqarea')
+    >>> len(ax.collections)
+    1
     """
     points = np.asarray(points)
     dim = points.shape[0] - 1
@@ -275,32 +329,57 @@ def project_point_set(points, ax=None, proj='stereo', **kwargs):
             ax = fig.add_subplot(111)
             ax.set_aspect('equal')
             ax.set_axis_off()
-        ax.scatter(t[0, :], t[1, :], s=20, c='k', **kwargs)
+        c = color if color is not None else 'k'
+        ax.scatter(t[0, :], t[1, :], s=20, c=c, **kwargs)
         
     elif dim == 3:
         t = projector(points)
         if ax is None:
             fig = plt.figure()
             ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(t[0, :], t[1, :], t[2, :], s=20, c='r', **kwargs)
+        c = color if color is not None else 'r'
+        ax.scatter(t[0, :], t[1, :], t[2, :], s=20, c=c, **kwargs)
         
     return ax
 
 
-def project_s2_partition(N, *args, **kwargs):
+def project_s2_partition(N, *, extra_offset=False, fontsize=16, title='long',
+                         proj='stereo', show_points=False, **kwargs):
     """
     Use projection to illustrate an EQ partition of S^2.
+
+    Parameters
+    ----------
+    N : int
+        Number of regions.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
+    fontsize : int, optional
+        Font size for title. Default 16.
+    title : {'long', 'short', 'none'}, optional
+        Title mode. Default 'long'.
+    proj : {'stereo', 'eqarea'}, optional
+        Projection type. Default 'stereo'.
+    show_points : bool, optional
+        Show center points of regions. Default False.
+    **kwargs
+        Passed to underlying plot functions.
+
+    Returns
+    -------
+    ax : Axes
+        The axes object.
+
+    Examples
+    --------
+    >>> from eqsp.illustrations import project_s2_partition
+    >>> import matplotlib.pyplot as plt
+    >>> plt.switch_backend('Agg')
+    >>> ax = project_s2_partition(4, proj='eqarea', title='none', show_points=True)
+    >>> ax.get_title()
+    ''
     """
-    flat_args = list(args)
-    for k, v in kwargs.items():
-        flat_args.extend([k, v])
-        
-    pdefault = {'extra_offset': False}
-    popt = partition_options(pdefault, *flat_args)
-    
-    fontsize = kwargs.get('fontsize', 16)
-    show_title = kwargs.get('show_title', True)
-    proj = kwargs.get('proj', 'stereo')
+    show_title = title != 'none'
     
     if proj == 'stereo':
         projector = x2stereo
@@ -310,7 +389,7 @@ def project_s2_partition(N, *args, **kwargs):
         raise ValueError("proj must be 'stereo' or 'eqarea'")
 
     dim = 2
-    R = eq_regions(dim, N, popt['extra_offset'])
+    R = eq_regions(dim, N, extra_offset)
     
     fig = plt.figure(figsize=(8, 8))
     ax = fig.add_subplot(111)
@@ -358,80 +437,117 @@ def project_s2_partition(N, *args, **kwargs):
              mask = np.isfinite(p_curve[0, :])
              ax.plot(p_curve[0, mask], p_curve[1, mask], color=color, linewidth=0.5)
 
+    if show_points:
+        points = eq_point_set(dim, N, extra_offset)
+        project_point_set(points, ax=ax, proj=proj, color='r', **kwargs)
+
     if show_title:
         title_text = f"EQ(2,{N}) {proj} projection"
-        ax.set_title(title_text, fontsize=fontsize)
+        ax.set_title(title_text, fontsize=fontsize, color='k')
         
-    plt.show()
+    if plt.get_backend() != 'Agg':
+        plt.show()
     return ax
 
 
-def project_s3_partition(N, *args, **kwargs):
+def project_s3_partition(N, *, extra_offset=False, title='long', proj='stereo',
+                         show_points=True, show_surfaces=True, **kwargs):
     """
     Use projection to illustrate an EQ partition of S^3.
+
+    Parameters
+    ----------
+    N : int
+        Number of regions.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
+    title : {'long', 'short', 'none'}, optional
+        Title mode. Default 'long'.
+    proj : {'stereo', 'eqarea'}, optional
+        Projection type. Default 'stereo'.
+    show_points : bool, optional
+        Show center points of regions. Default True.
+    show_surfaces : bool, optional
+        Show surfaces of regions. Default True.
+    **kwargs
+        Passed to underlying plot functions.
+
+    Returns
+    -------
+    ax : Axes3D
+        The 3D axes object.
+
+    Examples
+    --------
+    >>> from eqsp.illustrations import project_s3_partition
+    >>> import matplotlib.pyplot as plt
+    >>> plt.switch_backend('Agg')
+    >>> ax = project_s3_partition(4, proj='stereo', show_points=False)
     """
-    flat_args = list(args)
-    for k, v in kwargs.items():
-        flat_args.extend([k, v])
-        
-    pdefault = {'extra_offset': False}
-    popt = partition_options(pdefault, *flat_args)
+    show_title = title != 'none'
     
-    proj = kwargs.get('proj', 'stereo')
     if proj == 'stereo': projector = x2stereo
-    else: projector = x2eqarea
+    elif proj == 'eqarea': projector = x2eqarea
+    else: raise ValueError("proj must be 'stereo' or 'eqarea'")
         
     dim = 3
-    # Note: Extra offsets for Dim 3 not fully ported (needs rotation matrices return from eq_regions)
-    R = eq_regions(dim, N, popt['extra_offset'])
     
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111, projection='3d')
     try: ax.set_box_aspect([1,1,1])
     except: pass
     
-    for i in range(1, N):
-         region = R[:, :, i]
-         dim_reg = 3
-         t = region[:, 0]
-         b = region[:, 1]
-         if abs(b[0]) < 1e-10: b[0] = 2*np.pi
-         pseudo = (abs(t[0]) < 1e-10 and abs(b[0] - 2*np.pi) < 1e-10)
-         
-         for k in range(dim_reg):
-             if pseudo and k >= 2: continue
-             j = np.arange(dim_reg)
-             j = np.roll(j, -k)
+    if show_surfaces:
+        # Note: Extra offsets for Dim 3 not fully ported (needs rotation matrices return from eq_regions)
+        R = eq_regions(dim, N, extra_offset)
+        for i in range(1, N):
+             region = R[:, :, i]
+             dim_reg = 3
+             t = region[:, 0]
+             b = region[:, 1]
+             if abs(b[0]) < 1e-10: b[0] = 2*np.pi
+             pseudo = (abs(t[0]) < 1e-10 and abs(b[0] - 2*np.pi) < 1e-10)
              
-             h_grid = np.linspace(0, 1, 10)
-             H1, H2 = np.meshgrid(h_grid, h_grid)
-             
-             s_face = np.zeros((dim_reg, 10, 10))
-             idx_vary1, idx_vary2, idx_fixed = j[0], j[1], j[2]
-             
-             s_face[idx_vary1, :, :] = t[idx_vary1] + (b[idx_vary1] - t[idx_vary1]) * H1
-             s_face[idx_vary2, :, :] = t[idx_vary2] + (b[idx_vary2] - t[idx_vary2]) * H2
-             s_face[idx_fixed, :, :] = t[idx_fixed]
-             
-             s_flat = s_face.reshape(dim_reg, -1)
-             x_flat = polar2cart(s_flat)
-             p_flat = projector(x_flat)
-             
-             PX = p_flat[0, :].reshape(10, 10)
-             PY = p_flat[1, :].reshape(10, 10)
-             PZ = p_flat[2, :].reshape(10, 10)
-             
-             if np.any(np.isnan(PX)): continue
-             
-             # Mimic Matlab: color based on t[2] (jet), alpha = (t[2]/pi)/2
-             cmap = plt.get_cmap('jet')
-             # t[2] is effectively polar angle in [0, pi]
-             # Map t[2] to [0, 1] for colormap
-             c_val = t[2] / np.pi
-             color = cmap(c_val)
-             alpha = (t[2] / np.pi) / 2.0
-             
-             ax.plot_surface(PX, PY, PZ, alpha=alpha, color=color)
-             
-    plt.show()
+             for k in range(dim_reg):
+                 if pseudo and k >= 2: continue
+                 j = np.arange(dim_reg)
+                 j = np.roll(j, -k)
+                 
+                 h_grid = np.linspace(0, 1, 10)
+                 H1, H2 = np.meshgrid(h_grid, h_grid)
+                 
+                 s_face = np.zeros((dim_reg, 10, 10))
+                 idx_vary1, idx_vary2, idx_fixed = j[0], j[1], j[2]
+                 
+                 s_face[idx_vary1, :, :] = t[idx_vary1] + (b[idx_vary1] - t[idx_vary1]) * H1
+                 s_face[idx_vary2, :, :] = t[idx_vary2] + (b[idx_vary2] - t[idx_vary2]) * H2
+                 s_face[idx_fixed, :, :] = t[idx_fixed]
+                 
+                 s_flat = s_face.reshape(dim_reg, -1)
+                 x_flat = polar2cart(s_flat)
+                 p_flat = projector(x_flat)
+                 
+                 PX = p_flat[0, :].reshape(10, 10)
+                 PY = p_flat[1, :].reshape(10, 10)
+                 PZ = p_flat[2, :].reshape(10, 10)
+                 
+                 if np.any(np.isnan(PX)): continue
+                 
+                 # Mimic Matlab: color based on t[2] (jet), alpha = (t[2]/pi)/2
+                 cmap = plt.get_cmap('jet')
+                 # t[2] is effectively polar angle in [0, pi]
+                 # Map t[2] to [0, 1] for colormap
+                 c_val = t[2] / np.pi
+                 color = cmap(c_val)
+                 alpha = (t[2] / np.pi) / 2.0
+                 
+                 ax.plot_surface(PX, PY, PZ, alpha=alpha, color=color)
+                 
+    if show_points:
+        points = eq_point_set(dim, N, extra_offset)
+        # Use simple color for points, or let project_point_set handle it
+        project_point_set(points, ax=ax, proj=proj, color='r', **kwargs)
+
+    if plt.get_backend() != 'Agg':
+        plt.show()
     return ax

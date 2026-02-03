@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from .partitions import eq_point_set
-from .partition_options import partition_options
+from .partitions import eq_point_set
 from .utilities import (
     area_of_cap,
     area_of_sphere,
@@ -83,6 +83,7 @@ def calc_energy_coeff(dim, N, s, energy):
 
     Examples
     --------
+    >>> np.set_printoptions(precision=4, suppress=True)
     >>> N = np.arange(2, 7)
     >>> energy, dist = eq_energy_dist(2, N, 0)
     >>> calc_energy_coeff(2, N, 0, energy)
@@ -204,7 +205,7 @@ def calc_packing_density(dim, N, min_euclidean_dist):
     density = N * area_of_cap(dim, s_cap) / area_of_sphere(dim)
     return density
 
-def eq_dist_coeff(dim, N, *args):
+def eq_dist_coeff(dim, N, extra_offset=False):
     """
     Coefficient of minimum distance of an EQ point set.
 
@@ -214,35 +215,19 @@ def eq_dist_coeff(dim, N, *args):
         Number of dimensions.
     N : int or array-like
         Number of regions.
-    *args : optional
-        Options, e.g. 'offset', 'extra'.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
 
     Returns
     -------
     coeff : array-like
         Coefficient(s), same shape as N.
-
-    Notes
-    -----
-    The expression for the lower bound on minimum distance of a minimum r^(-s)
-    energy point set on S^dim was given in various references.
-
-    See Also
-    --------
-    partition_options, eq_min_dist
-
-    Examples
-    --------
-    >>> eq_dist_coeff(2, 10)
-    np.float64(3.325015502219627)
-    >>> eq_dist_coeff(3, np.arange(1, 7))
-    array([2.    , 2.5198, 2.0396, 2.2449, 2.4183, 2.5698])
     """
-    dist = eq_min_dist(dim, N, *args)
+    dist = eq_min_dist(dim, N, extra_offset=extra_offset)
     coeff = dist * np.power(N, 1 / dim)
     return coeff
 
-def eq_energy_coeff(dim, N, *args):
+def eq_energy_coeff(dim, N, s=None, extra_offset=False):
     """
     Coefficient in expansion of energy of an EQ point set.
 
@@ -252,39 +237,19 @@ def eq_energy_coeff(dim, N, *args):
         Number of dimensions.
     N : int or array-like
         Number of regions.
-    *args : optional
-        s parameter and options.
+    s : float, optional
+        Exponent parameter. Defaults to dim-1.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
 
     Returns
     -------
     coeff : array-like
         Coefficient(s), same shape as N.
-
-    Notes
-    -----
-    The default value of s is dim-1.
-    The energy expansion is not valid for N == 1.
-
-    See Also
-    --------
-    partition_options, eq_energy_dist, calc_energy_coeff
-
-    Examples
-    --------
-    >>> eq_energy_coeff(2, 10)
-    np.float64(-0.5460877923347524)
-    >>> eq_energy_coeff(3, np.arange(1, 7))
-    array([-0.5   , -0.5512, -0.5208, -0.5457, -0.5472, -0.5679])
-    >>> eq_energy_coeff(2, np.arange(1, 7), 0)
-    array([ 0.    , -0.2213, -0.1569, -0.2213, -0.2493, -0.2569])
     """
-    if len(args) == 0 or isinstance(args[0], str):
+    if s is None:
         s = dim - 1
-        options = args
-    else:
-        s = args[0]
-        options = args[1:]
-    dist_result = eq_energy_dist(dim, N, s, *options)
+    dist_result = eq_energy_dist(dim, N, s=s, extra_offset=extra_offset)
     if isinstance(dist_result, tuple):
         energy = dist_result[0]
     else:
@@ -292,7 +257,7 @@ def eq_energy_coeff(dim, N, *args):
     coeff = calc_energy_coeff(dim, N, s, energy)
     return coeff
 
-def eq_energy_dist(dim, N, *args):
+def eq_energy_dist(dim, N, s=None, extra_offset=False):
     """
     Energy and minimum distance of an EQ point set.
 
@@ -302,8 +267,10 @@ def eq_energy_dist(dim, N, *args):
         Number of dimensions.
     N : int or array-like
         Number of regions.
-    *args : optional
-        s parameter, options, e.g. 'offset', 'extra'.
+    s : float, optional
+        Exponent parameter. Defaults to dim-1.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
 
     Returns
     -------
@@ -311,34 +278,9 @@ def eq_energy_dist(dim, N, *args):
         Energy values, same shape as N.
     dist : array-like, optional
         Minimum Euclidean distance(s), same shape as N.
-
-    Notes
-    -----
-    The default value of s is dim-1.
-
-    See Also
-    --------
-    eq_point_set, partition_options, point_set_energy_dist, eq_min_dist
-
-    Examples
-    --------
-    >>> eq_energy_dist(2, 10)
-    array(32.7312)
-    >>> eq_energy_dist(3, np.arange(1, 7), 0)
-    (array([ 0.    , -0.6931, -1.3863, -2.7726, -4.1589, -6.2383]), array([2.    , 2.    , 1.4142, 1.4142, 1.4142, 1.4142]))
     """
-    if len(args) == 0 or isinstance(args[0], str):
+    if s is None:
         s = dim - 1
-        options = args
-    else:
-        s = args[0]
-        options = args[1:]
-    pdefault = {'extra_offset': False}
-    if len(options) == 0:
-        extra_offset = pdefault['extra_offset']
-    else:
-        popt = partition_options(pdefault, *options)
-        extra_offset = popt['extra_offset']
 
     shape = np.shape(N)
     N_flat = np.reshape(N, (1, int(np.prod(shape))))
@@ -357,7 +299,7 @@ def eq_energy_dist(dim, N, *args):
     else:
         return energy
 
-def eq_min_dist(dim, N, *args):
+def eq_min_dist(dim, N, extra_offset=False):
     """
     Minimum distance between center points of an EQ partition.
 
@@ -367,33 +309,17 @@ def eq_min_dist(dim, N, *args):
         Number of dimensions.
     N : int or array-like
         Number of regions.
-    *args : optional
-        Options, e.g. 'offset', 'extra'.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
 
     Returns
     -------
     dist : array-like
         Minimum Euclidean distance(s), same shape as N.
-
-    Notes
-    -----
-    For dim == 2 or dim == 3, uses experimental extra rotation offsets
-    with 'offset', 'extra' arguments.
-
-    See Also
-    --------
-    partition_options, eq_energy_dist
-
-    Examples
-    --------
-    >>> eq_min_dist(2, 10)
-    array(1.0515)
-    >>> eq_min_dist(3, np.arange(1, 7))
-    array([2.    , 2.    , 1.4142, 1.4142, 1.4142, 1.4142])
     """
-    return eq_point_set_property(point_set_min_dist, dim, N, *args)
+    return eq_point_set_property(point_set_min_dist, dim, N, extra_offset=extra_offset)
 
-def eq_packing_density(dim, N, *args):
+def eq_packing_density(dim, N, extra_offset=False):
     """
     Density of packing given by minimum distance of EQ point set.
 
@@ -403,35 +329,19 @@ def eq_packing_density(dim, N, *args):
         Number of dimensions.
     N : int or array-like
         Number of regions.
-    *args : optional
-        Options, e.g. 'offset', 'extra'.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
 
     Returns
     -------
     density : array-like
         Density values, same shape as N.
-
-    Notes
-    -----
-    The packing density is the sum of the areas of spherical caps
-    divided by the area of the unit sphere S^dim.
-
-    See Also
-    --------
-    eq_min_dist, area_of_cap, area_of_sphere, partition_options
-
-    Examples
-    --------
-    >>> eq_packing_density(2, 10)
-    np.float64(0.7467459582397998)
-    >>> eq_packing_density(3, np.arange(1, 7))
-    array([1.    , 1.    , 0.2725, 0.3634, 0.4542, 0.5451])
     """
-    min_euclidean_dist = eq_min_dist(dim, N, *args)
+    min_euclidean_dist = eq_min_dist(dim, N, extra_offset=extra_offset)
     density = calc_packing_density(dim, N, min_euclidean_dist)
     return density
 
-def eq_point_set_property(fhandle, dim, N, *args):
+def eq_point_set_property(fhandle, dim, N, extra_offset=False):
     """
     Property of an EQ point set.
 
@@ -443,31 +353,14 @@ def eq_point_set_property(fhandle, dim, N, *args):
         Number of dimensions.
     N : int or array-like
         Number of regions.
-    *args : optional
-        Options, e.g. 'offset', 'extra'.
+    extra_offset : bool, optional
+        Use extra offsets. Default False.
 
     Returns
     -------
     property : array-like
         Property value(s), same shape as N.
-
-    Notes
-    -----
-    For dim == 2 or 3, uses experimental extra rotation offsets
-    with 'offset', 'extra' arguments.
-
-    See Also
-    --------
-    eq_point_set, partition_options
-
-    Examples
-    --------
-    >>> eq_point_set_property(point_set_min_dist, 2, 10)
-    array(1.0515)
     """
-    pdefault = {'extra_offset': False}
-    popt = partition_options(pdefault, *args)
-    extra_offset = popt['extra_offset']
     shape = np.shape(N)
     N_flat = np.reshape(N, (1, int(np.prod(shape))))
     property_vals = np.zeros_like(N_flat, dtype=float)

@@ -26,7 +26,7 @@ from .utilities import (
     area_of_collar,
 )
 
-from .illustration_options import illustration_options
+
 
 from ._private._partitions import (
    polar_colat,
