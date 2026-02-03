@@ -29,6 +29,8 @@ Requires Python 3.8+ and the following dependencies:
 - `numpy`
 - `scipy`
 - `matplotlib`
+- `mayavi`
+- `PyQt5`
 
 To install in editable mode (recommended for development):
 ```bash
@@ -38,6 +40,11 @@ pip install -e .
 To install directly:
 ```bash
 pip install .
+```
+
+To install with Mayavi support:
+```bash
+pip install ".[mayavi]"
 ```
 
 ## Quick Start & Examples
@@ -116,8 +123,22 @@ Illustrate the EQ algorithm steps for the partition of $S^d$ into $N$ regions:
 ```python
 from eqsp.illustrations import illustrate_eq_algorithm
 illustrate_eq_algorithm(3, 10)
+illustrate_eq_algorithm(3, 10)
 plt.show()
 ```
+
+#### 5. High-Quality 3D Illustrations (Mayavi)
+
+Use Mayavi for superior 3D rendering (smooth tubes for boundaries, real 3D spheres for points):
+
+```python
+from eqsp import illustrations_mayavi as ill_m
+ill_m.show_s2_partition(99)
+# Opens a native GUI window
+```
+
+> [!NOTE]
+> Mayavi and PyQt5 are optional dependencies. To use them, install with `pip install .[mayavi]` or install `mayavi` and `PyQt5` separately.
 
 ## Frequently Asked Questions
 
@@ -144,7 +165,8 @@ See the docstrings for these functions for more details (e.g. `help(eqsp.illustr
 - `eqsp.utilities`: Geometric utilities (`area_of_cap`, `volume_of_ball`, `polar2cart`, etc.).
 - `eqsp.point_set_props`: Properties of point sets (energy, min distance).
 - `eqsp.region_props`: Properties of regions (diameter, vertex max dist).
-- `eqsp.illustrations`: logic for visualizing partitions and point sets.
+- `eqsp.illustrations`: logic for visualizing partitions and point sets (Matplotlib).
+- `eqsp.illustrations_mayavi`: logic for visualizing partitions and point sets (Mayavi).
 
 ## Citation
 

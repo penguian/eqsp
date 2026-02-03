@@ -11,6 +11,8 @@ The package depends on:
 -   `numpy`
 -   `scipy`
 -   `matplotlib`
+-   `mayavi` (optional)
+-   `PyQt5` (optional)
 
 These dependencies will be installed automatically when installing via `pip`.
 
@@ -48,6 +50,11 @@ To install the package in the current environment:
 pip install .
 ```
 
+To install with Mayavi support:
+```bash
+pip install ".[mayavi]"
+```
+
 ### Step 3: Install in Editable Mode (For Developers)
 
 If you intend to modify the code and want changes to be reflected immediately without reinstalling:
@@ -55,6 +62,23 @@ If you intend to modify the code and want changes to be reflected immediately wi
 ```bash
 pip install -e .
 ```
+
+### Using System-Installed Mayavi (e.g., via apt on Ubuntu)
+
+If you have Mayavi installed via your system package manager (e.g., `sudo apt install python3-mayavi`), you can use it with `eqsp` by creating a virtual environment that accesses system site packages:
+
+1.  Create a virtual environment with system site packages enabled:
+    ```bash
+    python3 -m venv --system-site-packages venv
+    ```
+2.  Activate the environment:
+    ```bash
+    source venv/bin/activate
+    ```
+3.  Install `eqsp` (standard install, no extras needed as Mayavi is already present):
+    ```bash
+    pip install .
+    ```
 
 ## Verification
 

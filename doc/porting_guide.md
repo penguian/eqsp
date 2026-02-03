@@ -40,11 +40,16 @@ This project began with a partial port of the Matlab toolbox created with the as
 - **Tests:** `tests/test_utilities.py`.
 - **Coverage:** Added explicit tests for all utility functions to ensure they match doctest behavior, including `asfloat`, `area_of_ideal_region`, and distance conversions.
 
+### 3.5 Illustrations (`eqsp.illustrations`, `eqsp.illustrations_mayavi`)
+- **Matplotlib (`eqsp.illustrations`):** Full port of original 2D and 3D plotting functions.
+    - `show_s2_partition`, `project_s2_partition`, `illustrate_eq_algorithm`, etc.
+- **Mayavi (`eqsp.illustrations_mayavi`):** Added support for high-quality 3D rendering (optional dependency).
+    - `show_s2_sphere`, `show_r3_point_set`, `show_s2_partition` (with tubes).
+
 ## 4. Testing Strategy
 - **Framework:** `pytest`.
 - **Source:** Tests were ported from the original `eq_test/` Matlab scripts.
 - **Doctest Parity:** A specific effort was made to ensure every example in the Python docstrings has a corresponding regression test in the `tests/` directory.
 
 ## 5. Future Work
-- **Visualization:** Porting of `eqsp.illustrations` and related plotting functions (requires `matplotlib` or similar).
 - **Documentation:** Building full Sphinx documentation.
