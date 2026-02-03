@@ -45,6 +45,10 @@ This project began with a partial port of the Matlab toolbox created with the as
     - `show_s2_partition`, `project_s2_partition`, `illustrate_eq_algorithm`, etc.
 - **Mayavi (`eqsp.illustrations_mayavi`):** Added support for high-quality 3D rendering (optional dependency).
     - `show_s2_sphere`, `show_r3_point_set`, `show_s2_partition` (with tubes).
+- **Refactoring & Parity:**
+    - Replaced Matlab-style Name/Value pairs with Pythonic keyword arguments across all illustration functions.
+    - Added `show_points` and `show_surfaces` arguments to `project_s3_partition` (both backends) and `project_s2_partition` to closely match Matlab's `points` and `surf` options.
+    - Removed `illustration_options` and `partition_options` helper modules favor of explicit arguments.
 
 ## 4. Testing Strategy
 - **Framework:** `pytest`.
