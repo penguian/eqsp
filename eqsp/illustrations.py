@@ -333,6 +333,13 @@ def project_s2_partition(N, *args, **kwargs):
         fidelity = 33
         h = np.linspace(0, 1, fidelity)
         
+        # Color based on colatitude t[1]
+        # t[1] ranges from 0 to pi.
+        # Mimic Matlab's project_s3_partition which uses t(dim) for color data and jet colormap.
+        cmap = plt.get_cmap('jet')
+        c_val = t[1] / np.pi
+        color = cmap(c_val)
+
         for k in range(dim):
              if pseudo and k >= 1: continue
              j = np.arange(dim)
@@ -349,7 +356,7 @@ def project_s2_partition(N, *args, **kwargs):
              p_curve = projector(x_curve)
              
              mask = np.isfinite(p_curve[0, :])
-             ax.plot(p_curve[0, mask], p_curve[1, mask], 'k-', linewidth=0.5)
+             ax.plot(p_curve[0, mask], p_curve[1, mask], color=color, linewidth=0.5)
 
     if show_title:
         title_text = f"EQ(2,{N}) {proj} projection"
@@ -415,7 +422,16 @@ def project_s3_partition(N, *args, **kwargs):
              PZ = p_flat[2, :].reshape(10, 10)
              
              if np.any(np.isnan(PX)): continue
-             ax.plot_surface(PX, PY, PZ, alpha=0.5, color='b')
+             
+             # Mimic Matlab: color based on t[2] (jet), alpha = (t[2]/pi)/2
+             cmap = plt.get_cmap('jet')
+             # t[2] is effectively polar angle in [0, pi]
+             # Map t[2] to [0, 1] for colormap
+             c_val = t[2] / np.pi
+             color = cmap(c_val)
+             alpha = (t[2] / np.pi) / 2.0
+             
+             ax.plot_surface(PX, PY, PZ, alpha=alpha, color=color)
              
     plt.show()
     return ax
