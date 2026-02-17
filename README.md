@@ -179,7 +179,7 @@ If you use this software in research, please cite the original work:
 ## License
 
 This software is released under the **MIT License**. See the `COPYING` file for details.
-ab Toolbox
+
 
 The original Matlab implementation can be found at:
 http://eqsp.sourceforge.net
