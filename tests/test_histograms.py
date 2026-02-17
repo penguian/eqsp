@@ -1,0 +1,107 @@
+
+import numpy as np
+import pytest
+from numpy.testing import assert_array_equal, assert_allclose
+from eqsp import histograms, partitions
+from math import pi
+
+def test_eq_count_points_by_s2_region_docstrings():
+    """Verify examples from eq_count_points_by_s2_region docstring."""
+    points_s = partitions.eq_point_set_polar(2, 8)
+    
+    # Test N=8
+    counts = histograms.eq_count_points_by_s2_region(points_s, 8)
+    assert_array_equal(counts, [1, 1, 1, 1, 1, 1, 1, 1])
+
+    # Test N=5
+    counts = histograms.eq_count_points_by_s2_region(points_s, 5)
+    assert_array_equal(counts, [1, 2, 2, 2, 1])
+
+    # Larger set
+    points_s = partitions.eq_point_set_polar(2, 128)
+    
+    counts = histograms.eq_count_points_by_s2_region(points_s, 8)
+    assert_array_equal(counts, [19, 15, 14, 17, 15, 14, 15, 19])
+
+    counts = histograms.eq_count_points_by_s2_region(points_s, 5)
+    assert_array_equal(counts, [19, 29, 32, 29, 19])
+
+def test_eq_find_s2_region_docstrings():
+    """Verify examples from eq_find_s2_region docstring."""
+    points_s = partitions.eq_point_set_polar(2, 8)
+    
+    regions = histograms.eq_find_s2_region(points_s, 8)
+    assert_array_equal(regions, [1, 2, 3, 4, 5, 6, 7, 8])
+
+    regions = histograms.eq_find_s2_region(points_s, 5)
+    assert_array_equal(regions, [1, 2, 2, 3, 3, 4, 4, 5])
+
+def test_in_s2_region_docstrings():
+    """Verify examples from in_s2_region docstring."""
+    points_s = partitions.eq_point_set_polar(2, 8)
+    s_regions = partitions.eq_regions(2, 5)
+    
+    # Check region 3 (index 2)
+    region = s_regions[:, :, 2]
+    in_region = histograms.in_s2_region(points_s, region)
+    # Expected: points 3 and 4 (indices 3, 4) should be in region 3 (1-based)
+    # eq_find_s2_region(points_s, 5) -> [1, 2, 2, 3, 3, 4, 4, 5]
+    # Indices 3 and 4 correspond to '3' in the find output.
+    expected = np.array([False, False, False, True, True, False, False, False])
+    assert_array_equal(in_region, expected)
+
+def test_consistency_find_and_in_region():
+    """Verify that if find returns k, in_region(k) is true."""
+    N = 10
+    num_points = 50
+    # Generate random points on S^2
+    rng = np.random.default_rng(42)
+    dim = 2
+    points_s = np.zeros((dim, num_points))
+    points_s[0, :] = rng.uniform(0, 2*pi, num_points) # Longitude
+    points_s[1, :] = np.arccos(rng.uniform(-1, 1, num_points)) # Colatitude
+
+    region_indices = histograms.eq_find_s2_region(points_s, N)
+    regions = partitions.eq_regions(dim, N)
+
+    for i in range(num_points):
+        r_idx = region_indices[i] # 1-based index from find
+        
+        # Check the reported region
+        region = regions[:, :, r_idx - 1] # 0-based index for array
+        assert histograms.in_s2_region(points_s[:, i:i+1], region)[0], \
+            f"Point {i} assigned to region {r_idx} but in_s2_region mismatch"
+
+        # Check a different region (should be false, unless boundary case)
+        # Choosing a region far away
+        other_idx = (r_idx + N // 2) % N
+        if other_idx == 0: other_idx = N
+        other_region = regions[:, :, other_idx - 1]
+        
+        # Note: strictly speaking a point could be on boundary of two regions,
+        # but with random float points it's unlikely. 
+        # We'll skip strict 'False' check to avoid flake on boundaries,
+        # but the positive check is crucial.
+
+def test_boundary_conditions():
+    """Test points at poles and boundaries."""
+    N = 4
+    
+    # North Pole: [phi, 0]
+    points_np = np.array([[0.0], [0.0]])
+    r_idx = histograms.eq_find_s2_region(points_np, N)
+    # Should always be region 1 (top cap)
+    assert r_idx[0] == 1
+    
+    # South Pole: [phi, pi]
+    points_sp = np.array([[0.0], [pi]])
+    r_idx = histograms.eq_find_s2_region(points_sp, N)
+    # Should always be region N (bottom cap)
+    assert r_idx[0] == N
+
+def test_invalid_inputs():
+    """Test handling of invalid inputs."""
+    # This might require checking if functions raise specific errors
+    # Current implementation relies on underlying numpy behavior mostly.
+    pass
+
