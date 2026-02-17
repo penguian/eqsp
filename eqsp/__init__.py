@@ -46,4 +46,6 @@ from .illustrations import (
     show_s2_region,
     show_s2_sphere,
     show_r3_point_set,
+    illustrate_eq_algorithm,
+
 )
