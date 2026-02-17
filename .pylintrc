@@ -1,0 +1,13 @@
+[MAIN]
+# Allow N, X, Y, Z, M as valid variable names (math notation)
+good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R
+
+[FORMAT]
+max-line-length=88
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    C0103, # invalid-name (handled by good-names, but often too noisy for math code)
+    R0913, # too-many-arguments (often necessary for complex math functions)
+    R0914, # too-many-locals (often necessary for complex math logic)
