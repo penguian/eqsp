@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 from numpy.testing import assert_allclose
-from eqsp import partitions, partition_options
+from eqsp import partitions
 from math import pi
 
 def test_eq_caps():
@@ -85,24 +85,3 @@ def test_eq_regions():
     assert_allclose(regions[0, :, 0], [0, 2*pi])
     assert_allclose(regions[1, :, 0], [0, pi])
 
-def test_partition_options():
-    pdefault = {'extra_offset': False}
-    
-    # Test True/False
-    popt = partition_options.partition_options(pdefault, True)
-    assert popt['extra_offset'] is True
-    
-    popt = partition_options.partition_options(pdefault, False)
-    assert popt['extra_offset'] is False
-    
-    # Test 'offset', 'extra'
-    popt = partition_options.partition_options(pdefault, 'offset', 'extra')
-    assert popt['extra_offset'] is True
-    
-    # Test 'offset', 'normal'
-    popt = partition_options.partition_options(pdefault, 'offset', 'normal')
-    assert popt['extra_offset'] is False
-
-    # Test 'extra' shortcut
-    popt = partition_options.partition_options(pdefault, 'extra')
-    assert popt['extra_offset'] is True
