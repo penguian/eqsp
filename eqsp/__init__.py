@@ -1,49 +1,29 @@
-"""
-EQSP Package
-"""
 
-from .partitions import (
-    eq_caps,
-    eq_point_set,
-    eq_point_set_polar,
-    eq_regions,
-)
+"""
+Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox.
 
-from .utilities import (
-    asfloat,
-    cart2polar2,
-    polar2cart,
-    euc2sph_dist,
-    sph2euc_dist,
-    euclidean_dist,
-    spherical_dist,
-    area_of_sphere,
+This module provides functions forEQ sphere partitioning, including:
+- Creating partitions (`eq_regions`, `eq_point_set`, `eq_caps`)
+- Calculating properties (`point_set_props`, `region_props`)
+- Utilities (`utilities`)
+- Illustrations (`illustrations`)
+"""
+from eqsp.partitions import eq_regions, eq_point_set, eq_point_set_polar, eq_caps
+from eqsp.utilities import (
     volume_of_ball,
-    area_of_ideal_region,
-    ideal_collar_angle,
+    area_of_sphere,
     area_of_cap,
-    sradius_of_cap,
     area_of_collar,
+    polar2cart,
+    cart2polar2,
 )
-
-
-from ._private._partitions import (
-    polar_colat,
-    num_collars,
-    ideal_region_list,
-    cap_colats,
-    round_to_naturals,
+from eqsp.point_set_props import (
+    eq_min_dist,
+    eq_dist_coeff,
+    eq_energy_dist,
+    eq_energy_coeff,
 )
+from eqsp.region_props import eq_diam_bound
 
-from .illustrations import (
-    show_s2_partition,
-    project_s2_partition,
-    project_s3_partition,
-    project_point_set,
-    x2stereo,
-    x2eqarea,
-    show_s2_region,
-    show_s2_sphere,
-    show_r3_point_set,
-    illustrate_eq_algorithm,
-)
+# Define version
+__version__ = "0.98.0"

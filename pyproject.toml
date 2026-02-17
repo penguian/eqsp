@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eqsp"
-version = "0.0.1"
+version = "0.98.0"
 description = "Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox"
 readme = "README.md"
 authors = [
@@ -27,6 +27,11 @@ requires-python = ">=3.8"
 mayavi = [
     "mayavi",
     "PyQt5",
+]
+docs = [
+    "sphinx>=5.0",
+    "sphinx_rtd_theme",
+    "myst_parser",
 ]
 
 [project.urls]
