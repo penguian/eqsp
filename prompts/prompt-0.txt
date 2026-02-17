@@ -1,1 +1,0 @@
-Translate each function in this Matlab file to the equivalent Python function without type hints. Assume that every undefined function can be imported. Change each Matlab help comment into a Python docstring in Numpy style, changing each Examples into a Python doctest.
