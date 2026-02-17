@@ -208,7 +208,7 @@ def euc2sph_dist(e):
     Parameters
     ----------
     e : float or array-like
-        A real number or array of real numbers, with |e| <= 2.
+        A real number or array of real numbers, with ``abs(e) <= 2``.
 
     Returns
     -------
