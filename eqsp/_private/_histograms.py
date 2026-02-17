@@ -155,6 +155,7 @@ def lookup_table(table, y, opt=None):
     y = np.atleast_1d(y)
     if is_octave():
         from octave_functions import lookup  # Assume importable
+
         if opt is not None:
             idx = lookup(table, y, opt)
         else:
@@ -170,9 +171,7 @@ def lookup_table(table, y, opt=None):
             idx[idx < 0] = 0
         else:
             print("LOOKUP_TABLE: Decreasing case is not yet implemented")
-            raise NotImplementedError(
-                "Strictly decreasing tables are not implemented."
-            )
+            raise NotImplementedError("Strictly decreasing tables are not implemented.")
     if idx.size == 1:
         return idx[0]
     return idx
@@ -198,6 +197,7 @@ def is_octave():
     """
     try:
         import octave_functions  # Assume importable
+
         return True
     except ImportError:
         return False

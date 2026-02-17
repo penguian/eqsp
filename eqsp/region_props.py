@@ -1,3 +1,7 @@
+"""
+EQSP Region Properties module.
+"""
+
 import numpy as np
 from .partitions import eq_regions
 from .utilities import (
@@ -87,6 +91,7 @@ def eq_area_error(dim, N):
     max_error = np.reshape(max_error, shape)
     return total_error, max_error
 
+
 def area_of_region(region):
     """
     Area of given region.
@@ -129,6 +134,7 @@ def area_of_region(region):
         area = s_bot - s_top
     return area
 
+
 def eq_diam_bound(dim, N):
     """
     Maximum per-region diameter bound of EQ partition.
@@ -158,6 +164,7 @@ def eq_diam_bound(dim, N):
     array([2., 2., 2., 2., 2., 2.])
     """
     return eq_regions_property(max_diam_bound_of_regions, dim, N)
+
 
 def eq_diam_coeff(dim, N):
     """
@@ -196,7 +203,8 @@ def eq_diam_coeff(dim, N):
     >>> eq_diam_coeff(2, 10)
     5.2915
     >>> eq_diam_coeff(3, np.arange(1, 7))
-    (array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]), array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]))
+    (array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]),
+     array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342]))
     """
     if dim is None or N is None:
         raise ValueError("Both dim and N must be provided.")
@@ -210,15 +218,12 @@ def eq_diam_coeff(dim, N):
         n = int(N[0, partition_n])
         regions = eq_regions(dim, n)
         scale = np.power(n, 1 / dim)
-        bound_coeff[0, partition_n] = (
-            max_diam_bound_of_regions(regions) * scale
-        )
-        vertex_coeff[0, partition_n] = (
-            max_vertex_diam_of_regions(regions) * scale
-        )
+        bound_coeff[0, partition_n] = max_diam_bound_of_regions(regions) * scale
+        vertex_coeff[0, partition_n] = max_vertex_diam_of_regions(regions) * scale
     bound_coeff = np.reshape(bound_coeff, shape)
     vertex_coeff = np.reshape(vertex_coeff, shape)
     return bound_coeff, vertex_coeff
+
 
 def eq_regions_property(fhandle, dim, N):
     """
@@ -263,6 +268,7 @@ def eq_regions_property(fhandle, dim, N):
     property_ = np.reshape(property_, shape)
     return property_
 
+
 def eq_vertex_diam_coeff(dim, N):
     """
     Coefficient of maximum vertex diameter of EQ partition.
@@ -292,6 +298,7 @@ def eq_vertex_diam_coeff(dim, N):
     array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342])
     """
     return eq_vertex_diam(dim, N) * np.power(N, 1 / dim)
+
 
 def eq_vertex_diam(dim, N):
     """

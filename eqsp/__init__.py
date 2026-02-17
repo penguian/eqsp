@@ -27,13 +27,12 @@ from .utilities import (
 )
 
 
-
 from ._private._partitions import (
-   polar_colat,
-   num_collars,
-   ideal_region_list,
-   cap_colats,
-   round_to_naturals,
+    polar_colat,
+    num_collars,
+    ideal_region_list,
+    cap_colats,
+    round_to_naturals,
 )
 
 from .illustrations import (
@@ -47,5 +46,4 @@ from .illustrations import (
     show_s2_sphere,
     show_r3_point_set,
     illustrate_eq_algorithm,
-
 )

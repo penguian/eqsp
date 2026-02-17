@@ -7,6 +7,7 @@ from ..utilities import (
     sph2euc_dist,
 )
 
+
 def expand_region_for_diam(region):
     """
     The set of 2^d vertices of a region.
@@ -119,9 +120,7 @@ def max_diam_bound_of_regions(regions):
             top = regions[:, 0, region_n]
             if np.linalg.norm(top[1:dim] - colatitude) != 0:
                 colatitude = top[1:dim]
-                diam_bound = max(
-                    diam_bound, diam_bound_region(regions[:, :, region_n])
-                )
+                diam_bound = max(diam_bound, diam_bound_region(regions[:, :, region_n]))
     return diam_bound
 
 
@@ -149,7 +148,7 @@ def diam_bound_region(region):
     >>> round(diam_bound_region(regions[:, :, 0]), 4)
     1.6733
     """
-    tol = np.finfo(float).eps * 2 ** 5
+    tol = np.finfo(float).eps * 2**5
     pseudo_region = pseudo_region_for_diam(region)
     dim = pseudo_region.shape[0]
     top = pseudo_region[:, 0]
@@ -167,7 +166,7 @@ def diam_bound_region(region):
         else:
             region_1 = np.column_stack([top[: dim - 1], bot[: dim - 1]])
             diam_bound_1 = max_sin * diam_bound_region(region_1)
-            diam_bound = min(2, np.sqrt(e ** 2 + diam_bound_1 ** 2))
+            diam_bound = min(2, np.sqrt(e**2 + diam_bound_1**2))
     return diam_bound
 
 
@@ -286,7 +285,7 @@ def pseudo_region_for_diam(region):
     array([[0.    , 1.5708],
            [0.6435, 1.5708]])
     """
-    tol = np.finfo(float).eps * 2 ** 5
+    tol = np.finfo(float).eps * 2**5
     phi_top = region[0, 0]
     phi_bot = region[0, 1]
     if phi_bot == 0:

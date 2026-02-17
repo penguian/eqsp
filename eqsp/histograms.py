@@ -1,3 +1,7 @@
+"""
+EQSP Histograms module.
+"""
+
 import numpy as np
 
 from ._private._histograms import lookup_s2_region
@@ -46,6 +50,7 @@ def eq_count_points_by_s2_region(s_point, N):
     count_v = np.histogram(r_idx, bins=np.arange(1, N + 2))[0]
     return count_v
 
+
 def eq_find_s2_region(s_point, N):
     """
     Partition S^2 into N regions and find the index for each point.
@@ -84,6 +89,7 @@ def eq_find_s2_region(s_point, N):
     c_regions = np.cumsum(n_regions)
     r_idx = lookup_s2_region(s_point, s_regions, s_cap, c_regions)
     return r_idx
+
 
 def in_s2_region(s_point, region):
     """
@@ -124,17 +130,19 @@ def in_s2_region(s_point, region):
         longitude = s_point[0, p_idx]
         min_long = region[0, 0]
         max_long = region[0, 1]
-        in_long = (min_long < longitude <= max_long)
+        in_long = min_long < longitude <= max_long
         if not in_long:
             longitude = longitude + 2 * np.pi
-            in_long = (min_long < longitude <= max_long)
+            in_long = min_long < longitude <= max_long
         colatitude = s_point[1, p_idx]
         min_colat = region[1, 0]
         max_colat = region[1, 1]
         in_colat = True
-        if (min_colat == 0.0 and colatitude < min_colat) or \
-           (min_colat > 0.0 and colatitude <= min_colat) or \
-           (max_colat < colatitude):
+        if (
+            (min_colat == 0.0 and colatitude < min_colat)
+            or (min_colat > 0.0 and colatitude <= min_colat)
+            or (max_colat < colatitude)
+        ):
             in_colat = False
         result[p_idx] = in_long and in_colat
     return result

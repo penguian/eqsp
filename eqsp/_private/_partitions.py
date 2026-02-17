@@ -110,9 +110,7 @@ def cap_colats(dim, N, c_polar, n_regions):
     subtotal_n_regions = 1
     for collar_n in range(1, n_collars + 1):
         subtotal_n_regions = subtotal_n_regions + n_regions[collar_n]
-        c_caps[collar_n] = sradius_of_cap(
-            dim, subtotal_n_regions * ideal_region_area
-        )
+        c_caps[collar_n] = sradius_of_cap(dim, subtotal_n_regions * ideal_region_area)
     c_caps[1 + n_collars] = pi
     return c_caps
 
@@ -151,7 +149,7 @@ def centres_of_regions(regions):
     array([[1., 2.],
            [0., 2.]])
     """
-    tol = np.finfo(float).eps * 2 ** 5
+    tol = np.finfo(float).eps * 2**5
     regions = np.asarray(regions, dtype=float)
     if regions.ndim == 2:
         regions = regions[:, :, np.newaxis]
@@ -176,9 +174,7 @@ def centres_of_regions(regions):
         zero_top = np.abs(top[k, :]) < tol
         points[k, zero_top] = 0.0
         all_else = ~(zero_top | pi_bot)
-        points[k, all_else] = np.mod(
-            (top[k, all_else] + bot[k, all_else]) / 2.0, pi
-        )
+        points[k, all_else] = np.mod((top[k, all_else] + bot[k, all_else]) / 2.0, pi)
     return points
 
 

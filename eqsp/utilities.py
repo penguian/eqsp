@@ -1,9 +1,9 @@
 """
-    EQSP: Recursive Zonal Equal Area Sphere Partitioning.
-    Copyright 2025 Paul Leopardi.
-    For licensing, see COPYING.
-    For references, see AUTHORS.
-    For revision history, see CHANGELOG.
+EQSP: Recursive Zonal Equal Area Sphere Partitioning.
+Copyright 2025 Paul Leopardi.
+For licensing, see COPYING.
+For references, see AUTHORS.
+For revision history, see CHANGELOG.
 """
 
 import numpy as np
@@ -65,7 +65,7 @@ def asfloat(x):
             return float(a)
         case (1,):
             return float(a[0])
-        case (1,1):
+        case (1, 1):
             return float(a[0, 0])
         case _:
             return a
@@ -408,7 +408,7 @@ def area_of_sphere(dim):
     """
     dim = np.asarray(dim)
     power = (dim + 1) / 2
-    area = np.asarray(2.0 * pi ** power / gamma(power))
+    area = np.asarray(2.0 * pi**power / gamma(power))
     return asfloat(area)
 
 
@@ -484,7 +484,7 @@ def area_of_ideal_region(dim, N):
     return asfloat(area)
 
 
-def ideal_collar_angle(dim,N):
+def ideal_collar_angle(dim, N):
     """
     The ideal angle for spherical collars of an EQ partition.
 
@@ -576,22 +576,19 @@ def area_of_cap(dim, s_cap):
             area = np.zeros_like(s_cap_flat, dtype=np.float64)
             MIN_TROPICAL = pi / 6
             MAX_TROPICAL = 5 * pi / 6
-            near_pole = (
-                (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL))
+            near_pole = (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL)
             # Use incomplete beta function ratio near poles
             area[near_pole] = area_of_sphere(dim) * betainc(
-                dim/2,
-                dim/2,
-                np.sin(s_cap_flat[near_pole]/2)**2)
+                dim / 2, dim / 2, np.sin(s_cap_flat[near_pole] / 2) ** 2
+            )
             # Use closed form in the tropics
             s_cap_trop = s_cap_flat[~near_pole]
             area[~near_pole] = (2 * s_cap_trop - np.sin(2 * s_cap_trop)) * pi
             area = area.reshape(shape)
         case _:
             area = area_of_sphere(dim) * betainc(
-                dim/2,
-                dim/2,
-                np.sin(s_cap/2)**2)
+                dim / 2, dim / 2, np.sin(s_cap / 2) ** 2
+            )
     return asfloat(area)
 
 
@@ -640,7 +637,7 @@ def sradius_of_cap(dim, area):
     if dim == 1:
         s_cap = area / 2
     elif dim == 2:
-        s_cap = 2 * np.arcsin(np.sqrt(area / (4*pi)))
+        s_cap = 2 * np.arcsin(np.sqrt(area / (4 * pi)))
     else:
         orig_shape = area.shape
         flat_area = area.flatten()
@@ -658,11 +655,9 @@ def sradius_of_cap(dim, area):
                 def area_diff(s):
                     # Define the difference function for root finding.
                     return area_of_cap(dim, s) - ak
+
                 # Find root in [0, pi]
-                result = root_scalar(
-                    area_diff,
-                    bracket=[0, pi],
-                    method='bisect')
+                result = root_scalar(area_diff, bracket=[0, pi], method="bisect")
                 sk = result.root
                 s_cap[k] = pi - sk if flipped else sk
         s_cap = s_cap.reshape(orig_shape)

@@ -1,6 +1,9 @@
-import numpy as np
+"""
+EQSP Point Set Properties module.
+"""
+
 import math
-from .partitions import eq_point_set
+import numpy as np
 from .partitions import eq_point_set
 from .utilities import (
     area_of_cap,
@@ -47,6 +50,7 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
     """
     return min_euclidean_dist * np.power(N, 1 / dim)
 
+
 def calc_energy_coeff(dim, N, s, energy):
     """
     Coefficient of second term in expansion of energy.
@@ -89,35 +93,39 @@ def calc_energy_coeff(dim, N, s, energy):
     >>> calc_energy_coeff(2, N, 0, energy)
     array([-0.2213, -0.1569, -0.2213, -0.2493, -0.2569])
     """
-    def sphere_int_energy(dim, s):
-        if s != 0:
-            return (math.gamma((dim + 1) / 2) *
-                    math.gamma(dim - s) /
-                    (math.gamma((dim - s + 1) / 2) *
-                     math.gamma(dim - s / 2)))
-        elif dim != 1:
+
+    def sphere_int_energy_inner(dim, s_val):
+        if s_val != 0:
+            return (
+                math.gamma((dim + 1) / 2)
+                * math.gamma(dim - s_val)
+                / (math.gamma((dim - s_val + 1) / 2) * math.gamma(dim - s_val / 2))
+            )
+        if dim != 1:
             from scipy.special import psi
+
             return (psi(dim) - psi(dim / 2) - math.log(4)) / 2
-        else:
-            return 0
+        return 0
 
     N = np.asarray(N)
     energy = np.asarray(energy)
     if s > 0:
-        first_term = (sphere_int_energy(dim, s) / 2) * np.power(N, 2)
+        first_term = (sphere_int_energy_inner(dim, s) / 2) * np.power(N, 2)
         coeff = (energy - first_term) / np.power(N, 1 + s / dim)
     else:
         shape = N.shape
         n_partitions = int(np.prod(shape))
         N_flat = N.reshape(1, n_partitions)
-        first_term = (sphere_int_energy(dim, s) / 2) * np.power(N_flat, 2)
+        first_term = (sphere_int_energy_inner(dim, s) / 2) * np.power(N_flat, 2)
         coeff = np.zeros_like(N_flat, dtype=float)
-        neq1 = (N_flat != 1)
-        coeff[neq1] = ((energy.reshape(1, n_partitions)[0][neq1.ravel()] -
-                        first_term[0][neq1.ravel()]) /
-                       (N_flat[0][neq1.ravel()] * np.log(N_flat[0][neq1.ravel()])))
+        neq1 = N_flat != 1
+        coeff[neq1] = (
+            energy.reshape(1, n_partitions)[0][neq1.ravel()]
+            - first_term[0][neq1.ravel()]
+        ) / (N_flat[0][neq1.ravel()] * np.log(N_flat[0][neq1.ravel()]))
         coeff = coeff.reshape(shape)
     return coeff
+
 
 def sphere_int_energy(dim, s):
     """
@@ -150,15 +158,17 @@ def sphere_int_energy(dim, s):
     np.float64(-0.1931471805599453)
     """
     if s != 0:
-        return (math.gamma((dim + 1) / 2) *
-                math.gamma(dim - s) /
-                (math.gamma((dim - s + 1) / 2) *
-                 math.gamma(dim - s / 2)))
-    elif dim != 1:
+        return (
+            math.gamma((dim + 1) / 2)
+            * math.gamma(dim - s)
+            / (math.gamma((dim - s + 1) / 2) * math.gamma(dim - s / 2))
+        )
+    if dim != 1:
         from scipy.special import psi
+
         return (psi(dim) - psi(dim / 2) - math.log(4)) / 2
-    else:
-        return 0
+    return 0
+
 
 def calc_packing_density(dim, N, min_euclidean_dist):
     """
@@ -205,6 +215,7 @@ def calc_packing_density(dim, N, min_euclidean_dist):
     density = N * area_of_cap(dim, s_cap) / area_of_sphere(dim)
     return density
 
+
 def eq_dist_coeff(dim, N, extra_offset=False):
     """
     Coefficient of minimum distance of an EQ point set.
@@ -226,6 +237,7 @@ def eq_dist_coeff(dim, N, extra_offset=False):
     dist = eq_min_dist(dim, N, extra_offset=extra_offset)
     coeff = dist * np.power(N, 1 / dim)
     return coeff
+
 
 def eq_energy_coeff(dim, N, s=None, extra_offset=False):
     """
@@ -256,6 +268,7 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False):
         energy = dist_result
     coeff = calc_energy_coeff(dim, N, s, energy)
     return coeff
+
 
 def eq_energy_dist(dim, N, s=None, extra_offset=False):
     """
@@ -296,8 +309,8 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False):
     dist = dist.reshape(shape)
     if len(dist.shape) > 0:
         return energy, dist
-    else:
-        return energy
+    return energy
+
 
 def eq_min_dist(dim, N, extra_offset=False):
     """
@@ -318,6 +331,7 @@ def eq_min_dist(dim, N, extra_offset=False):
         Minimum Euclidean distance(s), same shape as N.
     """
     return eq_point_set_property(point_set_min_dist, dim, N, extra_offset=extra_offset)
+
 
 def eq_packing_density(dim, N, extra_offset=False):
     """
@@ -340,6 +354,7 @@ def eq_packing_density(dim, N, extra_offset=False):
     min_euclidean_dist = eq_min_dist(dim, N, extra_offset=extra_offset)
     density = calc_packing_density(dim, N, min_euclidean_dist)
     return density
+
 
 def eq_point_set_property(fhandle, dim, N, extra_offset=False):
     """
@@ -369,6 +384,7 @@ def eq_point_set_property(fhandle, dim, N, extra_offset=False):
         property_vals[0, i] = fhandle(points)
     property_vals = property_vals.reshape(shape)
     return property_vals
+
 
 def point_set_dist_coeff(points):
     """
@@ -403,6 +419,7 @@ def point_set_dist_coeff(points):
     min_euclidean_dist = point_set_min_dist(points)
     coeff = calc_dist_coeff(dim, N, min_euclidean_dist)
     return coeff
+
 
 def point_set_energy_coeff(points, s=None):
     """
@@ -441,6 +458,7 @@ def point_set_energy_coeff(points, s=None):
     energy = point_set_energy_dist(points, s)
     coeff = calc_energy_coeff(dim, N, s, energy)
     return coeff
+
 
 def point_set_energy_dist(points, s=None):
     """
@@ -482,7 +500,7 @@ def point_set_energy_dist(points, s=None):
         s = dim - 1
     # Compute pairwise distances, exclude diagonal
     # Optimized using broadcasting
-    
+
     # Handle N=1 case
     if N <= 1:
         return 0.0, 2.0
@@ -490,23 +508,23 @@ def point_set_energy_dist(points, s=None):
     # Expand dims to (M, N, 1) and (M, 1, N) for broadcasting
     # diffs[i, j, k] = points[i, j] - points[i, k]
     # We want dists[j, k] = norm(points[:, j] - points[:, k])
-    
+
     # points: (M, N)
     # Use standard numpy trick for pairwise distance matrix
     # But for large N this might be memory intensive.
     # However, N is usually small in this context (thousands?)
-    
+
     # Efficient pairwise distance
     # dist terms: x^2 + y^2 - 2xy. On sphere x^2=1. So 2 - 2xy = 2(1 - x.y).
     # But points might not be exactly on sphere if modified or numerical error.
     # Safe Euclidean:
     dists = np.linalg.norm(points[:, :, None] - points[:, None, :], axis=0)
-    
+
     # Mask diagonal
     np.fill_diagonal(dists, np.inf)
-    
+
     min_dist = np.min(dists)
-    
+
     # Energy: sum r_ij^-s for i != j
     # Flatten and remove Infs
     valid_dists = dists[~np.isinf(dists)]
@@ -514,10 +532,10 @@ def point_set_energy_dist(points, s=None):
     # Matlab code calculates sum_{i<j} r_ij^-s.
     # So we divide by 2.
     if s == 0:
-         energy = np.sum(-np.log(valid_dists)) / 2.0
+        energy = np.sum(-np.log(valid_dists)) / 2.0
     else:
-         energy = np.sum(np.power(valid_dists, -s)) / 2.0
-    
+        energy = np.sum(np.power(valid_dists, -s)) / 2.0
+
     return energy, min_dist
 
 
@@ -535,5 +553,5 @@ def point_set_min_dist(points):
     min_dist : float
         Minimum Euclidean distance.
     """
-    _, min_dist = point_set_energy_dist(points, s=0) # s doesn't matter for min_dist
+    _, min_dist = point_set_energy_dist(points, s=0)  # s doesn't matter for min_dist
     return min_dist

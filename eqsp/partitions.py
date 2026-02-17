@@ -275,9 +275,7 @@ def eq_point_set_polar(dim, N, extra_offset=False):
             points_s[0, point_idx] = pts
             # Update offset
             next_n = (
-                int(n_regions[collar_n + 1])
-                if (collar_n + 1) < len(n_regions)
-                else 0
+                int(n_regions[collar_n + 1]) if (collar_n + 1) < len(n_regions) else 0
             )
             offset = offset + circle_offset(n_in_collar, next_n, extra_offset)
             offset = offset - math.floor(offset)
@@ -368,14 +366,14 @@ def eq_regions(dim, N, extra_offset=False):
             regions[:, 0, 1:N] = s_cap[0 : N - 1]
         regions[:, 1, :] = s_cap
         # rotations are identity
-        if extra_offset: # Should dim=1 return rot? Doc says only dim=3 meaningful.
-             # But let's assume if extra_offset was requested.
-             # Actually existing code returned it.
-             # But doc says "only meaningful for dim == 3".
-             # Let's simple check extra_offset.
-             for idx in range(N):
+        if extra_offset:  # Should dim=1 return rot? Doc says only dim=3 meaningful.
+            # But let's assume if extra_offset was requested.
+            # Actually existing code returned it.
+            # But doc says "only meaningful for dim == 3".
+            # Let's simple check extra_offset.
+            for idx in range(N):
                 dim_1_rot[idx] = np.eye(dim)
-             return regions, dim_1_rot
+            return regions, dim_1_rot
         return regions
 
     n_collars = int(np.size(n_regions) - 2)
@@ -432,18 +430,16 @@ def eq_regions(dim, N, extra_offset=False):
             region_n += 1
             if dim == 2:
                 r_top = np.array(
-                    [np.mod(regions_1[0, 0, region_1_n] + TAU * offset, TAU),
-                     c_top]
+                    [np.mod(regions_1[0, 0, region_1_n] + TAU * offset, TAU), c_top]
                 )
                 r_bot = np.array(
-                    [np.mod(regions_1[0, 1, region_1_n] + TAU * offset, TAU),
-                     c_bot]
+                    [np.mod(regions_1[0, 1, region_1_n] + TAU * offset, TAU), c_bot]
                 )
                 if r_bot[0] < r_top[0]:
                     r_bot[0] = r_bot[0] + TAU
                 regions[:, :, region_n] = np.vstack((r_top, r_bot)).T
             else:
-                regions[0:dim - 1, :, region_n] = regions_1[:, :, region_1_n]
+                regions[0 : dim - 1, :, region_n] = regions_1[:, :, region_1_n]
                 regions[dim - 1, :, region_n] = np.array([c_top, c_bot])
 
             if dim_1_rot is not None:
@@ -451,9 +447,7 @@ def eq_regions(dim, N, extra_offset=False):
 
         if dim == 2:
             next_n = (
-                int(n_regions[collar_n + 1])
-                if (collar_n + 1) < len(n_regions)
-                else 0
+                int(n_regions[collar_n + 1]) if (collar_n + 1) < len(n_regions) else 0
             )
             offset = offset + circle_offset(n_in_collar, next_n, extra_offset)
             offset = offset - math.floor(offset)
