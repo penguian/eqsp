@@ -43,21 +43,30 @@ def show_s2_sphere(*args, **kwargs):
     """
     Illustrate the unit sphere S^2 (Moved to eqsp.visualizations).
     """
-    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
+    raise NotImplementedError(
+        "3D plotting has been moved to eqsp.visualizations. "
+        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+    )
 
 
 def show_r3_point_set(*args, **kwargs):
     """
     3D illustration of a point set (Moved to eqsp.visualizations).
     """
-    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
+    raise NotImplementedError(
+        "3D plotting has been moved to eqsp.visualizations. "
+        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+    )
 
 
 def show_s2_region(*args, **kwargs):
     """
     Illustrate a region of S^2 (Moved to eqsp.visualizations).
     """
-    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
+    raise NotImplementedError(
+        "3D plotting has been moved to eqsp.visualizations. "
+        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+    )
 
 
 def show_s2_partition(
@@ -72,6 +81,10 @@ def show_s2_partition(
 ):
     """
     3D illustration of an EQ partition of S^2 into N regions.
+    
+    This function is a legacy Matplotlib-based implementation. It is considered
+    deprecated for 3D use and currently raises NotImplementedError.
+    Use `eqsp.visualizations.show_s2_partition` for high-quality 3D rendering.
 
     Parameters
     ----------
@@ -102,7 +115,10 @@ def show_s2_partition(
     >>> with pytest.raises(NotImplementedError):
     ...     show_s2_partition(4)
     """
-    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
+    raise NotImplementedError(
+        "3D plotting has been moved to eqsp.visualizations. "
+        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+    )
 
 
 def project_point_set(
@@ -316,7 +332,10 @@ def project_s3_partition(*args, **kwargs):
     """
     Use projection to illustrate an EQ partition of S^3 (Moved to eqsp.visualizations).
     """
-    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
+    raise NotImplementedError(
+        "3D plotting has been moved to eqsp.visualizations. "
+        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+    )
 
 
 def illustrate_eq_algorithm(

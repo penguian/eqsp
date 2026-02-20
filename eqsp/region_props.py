@@ -30,7 +30,7 @@ def eq_area_error(dim, N):
     -------
     total_error : ndarray
         Absolute difference between total area of all regions and the area
-        of S^dim.
+        of $S^{dim}$. Total error should be near 0.
     max_error : ndarray
         Maximum absolute difference between the area of any region and the
         ideal area.
@@ -47,6 +47,8 @@ def eq_area_error(dim, N):
     Notes
     -----
     The results will be arrays of the same size as N.
+    Note that both total_error and max_error are returned as native floats
+    if N is a scalar, otherwise as NumPy arrays.
 
     Examples
     --------

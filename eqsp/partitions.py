@@ -29,7 +29,7 @@ TAU = 2.0 * pi
 
 def eq_caps(dim, N):
     """
-    Partition a sphere into to nested spherical caps.
+    Partition a sphere into two nested spherical caps.
 
     Parameters
     ----------
@@ -307,9 +307,11 @@ def eq_regions(dim, N, extra_offset=False):
     Returns
     -------
     regions : ndarray
-        Array of shape (dim, 2, N) representing the regions. Each region is
-        a pair of vertex points in spherical polar coordinates. regions[:,0,k]
-        and regions[:,1,k] give the lower and upper limits of the k-th region.
+        An array of shape (dim, 2, N) containing the boundaries of the N regions
+        in spherical polar coordinates.
+        For each region r in 0..N-1:
+        - regions[i, 0, r] is the lower bound of the i-th coordinate,
+        - regions[i, 1, r] is the upper bound of the i-th coordinate.
     dim_1_rot : list (optional)
         If requested (by caller), a list of N rotation matrices, each of size
         (dim, dim), describing R^dim rotations needed to place regions when

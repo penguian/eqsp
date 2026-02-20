@@ -33,7 +33,7 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
     Notes
     -----
     The expression for the lower bound on minimum distance of a minimum
-    r^(-s) energy point set on S^dim was given by [RakSZ95] for s == 0,
+    $r^{-s}$ energy point set on $S^{dim}$ was given by [RakSZ95] for s == 0,
     dim = 2, [Dahl78] for s == dim-1, [KuiSS04 Theorem 8] for dim-1 <= s < dim,
     and [KuiS98 (1.12) p. 525] for s > dim.
 
@@ -74,10 +74,10 @@ def calc_energy_coeff(dim, N, s, energy):
     Notes
     -----
     The energy expansion is not valid for N == 1,
-    and in particular, EQ_ENERGY_COEFF(dim, N, 0, energy) := 0.
+    and in particular, eq_energy_coeff(dim, N, 0, energy) := 0.
 
     For s > 0, [KuiS98 (1.6) p524] has
-    E(dim, N, s) == (SPHERE_INT_ENERGY(dim, s)/2) N^2 + COEFF N^(1+s/dim) + ...
+    E(dim, N, s) == (sphere_int_energy(dim, s)/2) N^2 + COEFF N^(1+s/dim) + ...
 
     For s == 0 (logarithmic potential), see [SafK97 (4) p7].
 
@@ -191,7 +191,7 @@ def calc_packing_density(dim, N, min_euclidean_dist):
     Notes
     -----
     The packing density is defined as the sum of the areas of the spherical
-    caps divided by the area of the unit sphere S^dim.
+    caps divided by the area of the unit sphere $S^{dim}$.
 
     The spherical radius of the caps is half the minimum spherical distance.
     For N == 1, the spherical radius is pi.
