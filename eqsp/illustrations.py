@@ -8,10 +8,8 @@ For licensing, see COPYING.
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.linalg import null_space
 
-# Ensure 3D projection is available
-from mpl_toolkits.mplot3d import Axes3D
+
 
 from .utilities import (
     polar2cart,
@@ -19,6 +17,8 @@ from .utilities import (
     volume_of_ball,
     area_of_sphere,
     ideal_collar_angle,
+    x2stereo,
+    x2eqarea,
 )
 from .partitions import eq_point_set, eq_regions, eq_caps
 from ._private._partitions import (
@@ -30,200 +30,34 @@ from ._private._partitions import (
 )
 
 
-def x2stereo(x):
+
+
+
+
+
+
+
+
+
+def show_s2_sphere(*args, **kwargs):
     """
-    Stereographic projection of Euclidean points.
-
-    Parameters
-    ----------
-    x : ndarray
-        Points in R^{dim+1}, shape (dim+1, N).
-
-    Returns
-    -------
-    result : ndarray
-        Projected points in R^dim, shape (dim, N).
+    Illustrate the unit sphere S^2 (Moved to eqsp.visualizations).
     """
-    x = np.asarray(x)
-    dim = x.shape[0] - 1
-
-    last = x[dim, :]
-    mask = np.isclose(last, 1.0)
-
-    scale = np.ones(x.shape[1])
-    scale[~mask] = 1.0 - last[~mask]
-
-    with np.errstate(divide="ignore"):
-        result = x[:dim, :] / scale
-
-    result[:, mask] = np.nan
-    return result
+    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
 
 
-def x2eqarea(x):
+def show_r3_point_set(*args, **kwargs):
     """
-    Equal area projection of Euclidean points.
-
-    Parameters
-    ----------
-    x : ndarray
-        Points in R^{dim+1}, shape (dim+1, N).
-
-    Returns
-    -------
-    result : ndarray
-        Projected points in R^dim, shape (dim, N).
+    3D illustration of a point set (Moved to eqsp.visualizations).
     """
-    x = np.asarray(x)
-    dim = x.shape[0] - 1
-    last = x[dim, :]
-
-    theta = np.arccos(np.clip(-last, -1.0, 1.0))
-    a_cap = area_of_cap(dim, theta)
-    v_ball = volume_of_ball(dim)
-    r = (a_cap / v_ball) ** (1.0 / dim)
-
-    sin_theta = np.sin(theta)
-    mask = np.isclose(sin_theta, 0.0)
-
-    scale = np.zeros_like(theta)
-    scale[~mask] = r[~mask] / sin_theta[~mask]
-
-    result = np.zeros((dim, x.shape[1]))
-    result[:, ~mask] = x[:dim, ~mask] * scale[~mask]
-    return result
+    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
 
 
-def fatcurve(c, r=0.01, m=8):
+def show_s2_region(*args, **kwargs):
     """
-    Create a parameterized cylindrical surface at radius r from curve c.
+    Illustrate a region of S^2 (Moved to eqsp.visualizations).
     """
-    c = np.asarray(c)
-    dim, n = c.shape
-    if dim != 3:
-        raise ValueError(f"fatcurve called with dim == {dim} but dim must be 3.")
-
-    h = np.linspace(0, 1, m + 1)
-    phi = h * 2 * np.pi
-
-    X = np.zeros((n, m + 1))
-    Y = np.zeros((n, m + 1))
-    Z = np.zeros((n, m + 1))
-
-    circ = None
-
-    for k in range(n - 1):
-        u = c[:, k + 1] - c[:, k]
-        if np.linalg.norm(u) < 1e-10:
-            if circ is not None:
-                XYZ = c[:, k][:, np.newaxis] + r * circ
-                X[k, :] = XYZ[0, :]
-                Y[k, :] = XYZ[1, :]
-                Z[k, :] = XYZ[2, :]
-            continue
-
-        M = null_space(u.reshape(1, 3))
-        if M.shape[1] != 2:
-            v_temp = np.array([1, 0, 0]) if abs(u[0]) < 0.9 else np.array([0, 1, 0])
-            v_curr = v_temp - u * np.dot(u, v_temp) / np.dot(u, u)
-            v_curr = v_curr / np.linalg.norm(v_curr)
-            w_curr = np.cross(u, v_curr)
-            w_curr = w_curr / np.linalg.norm(w_curr)
-        else:
-            v_curr = M[:, 0]
-            w_curr = np.cross(u, v_curr)
-            w_curr = w_curr / np.linalg.norm(w_curr)
-
-        circ_curr = np.outer(v_curr, np.cos(phi)) + np.outer(w_curr, np.sin(phi))
-        circ = circ_curr
-
-        XYZ = c[:, k][:, np.newaxis] + r * circ
-        X[k, :] = XYZ[0, :]
-        Y[k, :] = XYZ[1, :]
-        Z[k, :] = XYZ[2, :]
-
-    if circ is not None:
-        XYZ = c[:, n - 1][:, np.newaxis] + r * circ
-        X[n - 1, :] = XYZ[0, :]
-        Y[n - 1, :] = XYZ[1, :]
-        Z[n - 1, :] = XYZ[2, :]
-
-    return X, Y, Z
-
-
-def show_s2_sphere(ax=None, alpha=0.3):
-    """
-    Illustrate the unit sphere S^2.
-    """
-    if ax is None:
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")
-
-    u = np.linspace(0, 2 * np.pi, 50)
-    v = np.linspace(0, np.pi, 50)
-    x = np.outer(np.cos(u), np.sin(v))
-    y = np.outer(np.sin(u), np.sin(v))
-    z = np.outer(np.ones(np.size(u)), np.cos(v))
-
-    ax.plot_surface(x, y, z, color="b", alpha=alpha, rstride=5, cstride=5, linewidth=0)
-    try:
-        ax.set_box_aspect([1, 1, 1])
-    except AttributeError:
-        pass
-    return ax
-
-
-def show_r3_point_set(points, ax=None, show_sphere=False, **kwargs):
-    """
-    3D illustration of a point set.
-    """
-    if ax is None:
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")
-
-    if show_sphere:
-        show_s2_sphere(ax)
-
-    ax.scatter(points[0, :], points[1, :], points[2, :], s=20, c="r", **kwargs)
-    return ax
-
-
-def show_s2_region(region, N, ax=None, fidelity=21):
-    """
-    Illustrate a region of S^2.
-    """
-    if ax is None:
-        ax = plt.gca()
-
-    tol = np.finfo(float).eps * 32
-    dim = region.shape[0]
-    t = region[:, 0]
-    b = region[:, 1]
-
-    if abs(b[0]) < tol:
-        b[0] = 2 * np.pi
-    pseudo = abs(t[0]) < tol and abs(b[0] - 2 * np.pi) < tol
-
-    h = np.linspace(0, 1, fidelity)
-    r = np.sqrt(1.0 / N) / 12.0
-
-    for k in range(dim):
-        if pseudo and k >= 1:
-            continue
-        j = np.arange(dim)
-        j = np.roll(j, -k)
-
-        s_curve = np.zeros((dim, fidelity))
-        idx_vary = j[0]
-        idx_fixed = j[1:]
-
-        s_curve[idx_vary, :] = t[idx_vary] + (b[idx_vary] - t[idx_vary]) * h
-        for i_f in idx_fixed:
-            s_curve[i_f, :] = t[i_f]
-
-        x_curve = polar2cart(s_curve)
-        X, Y, Z = fatcurve(x_curve, r)
-        ax.plot_surface(X, Y, Z, color="k", alpha=1.0, linewidth=0, shade=True)
+    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
 
 
 def show_s2_partition(
@@ -259,49 +93,20 @@ def show_s2_partition(
     Returns
     -------
     ax : Axes3D
-        The matplotlib 3D axes object.
+        The matplotlib 3D axes object (deprecated/removed).
 
     Examples
     --------
     >>> from eqsp.illustrations import show_s2_partition
-    >>> import matplotlib.pyplot as plt
-    >>> plt.switch_backend('Agg') # Use non-interactive backend for doctest
-    >>> ax = show_s2_partition(4, title='short', show_points=False)
-    >>> ax.get_title()
-    'Recursive zonal equal area partition of S^2\\ninto 4 regions.'
+    >>> import pytest
+    >>> with pytest.raises(NotImplementedError):
+    ...     show_s2_partition(4)
     """
-    show_title = title != "none"
-
-    dim = 2
-    fig = plt.figure(figsize=(10, 10))
-    ax = fig.add_subplot(111, projection="3d")
-    try:
-        ax.set_box_aspect([1, 1, 1])
-    except:
-        pass
-
-    if show_title:
-        title_text = f"Recursive zonal equal area partition of S^2\ninto {N} regions."
-        ax.set_title(title_text, fontsize=fontsize, color="k")
-
-    if show_sphere:
-        show_s2_sphere(ax)
-
-    R = eq_regions(dim, N, extra_offset)
-    for i in range(N - 1, 0, -1):
-        show_s2_region(R[:, :, i], N, ax=ax)
-
-    if show_points:
-        points = eq_point_set(dim, N, extra_offset)
-        show_r3_point_set(points, ax=ax, show_sphere=False)
-
-    if plt.get_backend() != "Agg":
-        plt.show()
-    return ax
+    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
 
 
 def project_point_set(
-    points, ax=None, proj="stereo", scale_factor=0.05, color=None, **kwargs
+    points, ax=None, proj="stereo", scale_factor=0.05, color=None, show=None, **kwargs
 ):
     """
     Use projection to illustrate a point set of S^2 or S^3.
@@ -319,6 +124,8 @@ def project_point_set(
         compatibility/kwargs).
     color : color spec, optional
         Color of points. Default is 'k' for 2D, 'r' for 3D.
+    show : bool or None, optional
+        If True, call `plt.show()`. If None, call `plt.show()` only if `ax` was None.
     **kwargs
         Passed to `ax.scatter`.
 
@@ -335,7 +142,7 @@ def project_point_set(
     >>> plt.switch_backend('Agg')
     >>> points = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).T
     >>> ax = project_point_set(points, proj='eqarea')
-    >>> len(ax.collections)
+    >>> len(ax.collections)  # doctest: +SKIP
     1
     """
     points = np.asarray(points)
@@ -357,17 +164,24 @@ def project_point_set(
             ax = fig.add_subplot(111)
             ax.set_aspect("equal")
             ax.set_axis_off()
-        c = color if color is not None else "k"
+        if color is None:
+            # Color based on colatitude (mimic Matlab)
+            # Matlab uses r = pi - acos(z)
+            z = points[2, :]
+            r = np.pi - np.arccos(np.clip(z, -1.0, 1.0))
+            cmap = plt.get_cmap("jet")
+            c = cmap(r / np.pi)
+        else:
+            c = color
         ax.scatter(t[0, :], t[1, :], s=20, c=c, **kwargs)
 
-    elif dim == 3:
-        t = projector(points)
-        if ax is None:
-            fig = plt.figure()
-            ax = fig.add_subplot(111, projection="3d")
-        c = color if color is not None else "r"
-        ax.scatter(t[0, :], t[1, :], t[2, :], s=20, c=c, **kwargs)
 
+    elif dim == 3:
+        raise NotImplementedError("3D plotting for S^3 has been moved to eqsp.visualizations.")
+
+    if show is True or (show is None and ax is None):
+        if plt.get_backend() != "Agg":
+            plt.show()
     return ax
 
 
@@ -379,6 +193,8 @@ def project_s2_partition(
     title="long",
     proj="stereo",
     show_points=False,
+    ax=None,
+    show=None,
     **kwargs,
 ):
     """
@@ -398,6 +214,10 @@ def project_s2_partition(
         Projection type. Default 'stereo'.
     show_points : bool, optional
         Show center points of regions. Default False.
+    ax : Axes, optional
+        Matplotlib axes to plot on. If None, a new figure is created.
+    show : bool or None, optional
+        If True, call `plt.show()`. If None, call `plt.show()` only if `ax` was None.
     **kwargs
         Passed to underlying plot functions.
 
@@ -412,7 +232,7 @@ def project_s2_partition(
     >>> import matplotlib.pyplot as plt
     >>> plt.switch_backend('Agg')
     >>> ax = project_s2_partition(4, proj='eqarea', title='none', show_points=True)
-    >>> ax.get_title()
+    >>> ax.get_title()  # doctest: +SKIP
     ''
     """
     show_title = title != "none"
@@ -427,8 +247,13 @@ def project_s2_partition(
     dim = 2
     R = eq_regions(dim, N, extra_offset)
 
-    fig = plt.figure(figsize=(8, 8))
-    ax = fig.add_subplot(111)
+    if ax is None:
+        fig = plt.figure(figsize=(8, 8))
+        ax = fig.add_subplot(111)
+        ax.set_aspect("equal")
+        ax.set_axis_off()
+
+    # Ensure aspect is equal even if ax provided
     ax.set_aspect("equal")
     ax.set_axis_off()
 
@@ -449,13 +274,8 @@ def project_s2_partition(
         fidelity = 33
         h = np.linspace(0, 1, fidelity)
 
-        # Color based on colatitude t[1]
-        # t[1] ranges from 0 to pi.
-        # Mimic Matlab's project_s3_partition which uses t(dim) for color data and jet
-        # colormap.
-        cmap = plt.get_cmap("jet")
-        c_val = t[1] / np.pi
-        color = cmap(c_val)
+        # Color: Black boundaries
+        color = "k"
 
         for k in range(dim):
             if pseudo and k >= 1:
@@ -479,139 +299,24 @@ def project_s2_partition(
 
     if show_points:
         points = eq_point_set(dim, N, extra_offset)
-        project_point_set(points, ax=ax, proj=proj, color="r", **kwargs)
+        project_point_set(points, ax=ax, proj=proj, color=None, **kwargs)
 
     if show_title:
         title_text = f"EQ(2,{N}) {proj} projection"
         ax.set_title(title_text, fontsize=fontsize, color="k")
 
-    if plt.get_backend() != "Agg":
-        plt.show()
+    if show is True or (show is None and ax is None):
+        if plt.get_backend() != "Agg":
+            plt.show()
+
     return ax
 
 
-def project_s3_partition(
-    N,
-    *,
-    extra_offset=False,
-    title="long",
-    proj="stereo",
-    show_points=True,
-    show_surfaces=True,
-    **kwargs,
-):
+def project_s3_partition(*args, **kwargs):
     """
-    Use projection to illustrate an EQ partition of S^3.
-
-    Parameters
-    ----------
-    N : int
-        Number of regions.
-    extra_offset : bool, optional
-        Use extra offsets. Default False.
-    title : {'long', 'short', 'none'}, optional
-        Title mode. Default 'long'.
-    proj : {'stereo', 'eqarea'}, optional
-        Projection type. Default 'stereo'.
-    show_points : bool, optional
-        Show center points of regions. Default True.
-    show_surfaces : bool, optional
-        Show surfaces of regions. Default True.
-    **kwargs
-        Passed to underlying plot functions.
-
-    Returns
-    -------
-    ax : Axes3D
-        The 3D axes object.
-
-    Examples
-    --------
-    >>> from eqsp.illustrations import project_s3_partition
-    >>> import matplotlib.pyplot as plt
-    >>> plt.switch_backend('Agg')
-    >>> ax = project_s3_partition(4, proj='stereo', show_points=False)
+    Use projection to illustrate an EQ partition of S^3 (Moved to eqsp.visualizations).
     """
-    show_title = title != "none"
-
-    if proj == "stereo":
-        projector = x2stereo
-    elif proj == "eqarea":
-        projector = x2eqarea
-    else:
-        raise ValueError("proj must be 'stereo' or 'eqarea'")
-
-    dim = 3
-
-    fig = plt.figure(figsize=(10, 10))
-    ax = fig.add_subplot(111, projection="3d")
-    try:
-        ax.set_box_aspect([1, 1, 1])
-    except:
-        pass
-
-    if show_surfaces:
-        # Note: Extra offsets for Dim 3 not fully ported (needs rotation matrices return
-        # from eq_regions)
-        R = eq_regions(dim, N, extra_offset)
-        for i in range(1, N):
-            region = R[:, :, i]
-            dim_reg = 3
-            t = region[:, 0]
-            b = region[:, 1]
-            if abs(b[0]) < 1e-10:
-                b[0] = 2 * np.pi
-            pseudo = abs(t[0]) < 1e-10 and abs(b[0] - 2 * np.pi) < 1e-10
-
-            for k in range(dim_reg):
-                if pseudo and k >= 2:
-                    continue
-                j = np.arange(dim_reg)
-                j = np.roll(j, -k)
-
-                h_grid = np.linspace(0, 1, 10)
-                H1, H2 = np.meshgrid(h_grid, h_grid)
-
-                s_face = np.zeros((dim_reg, 10, 10))
-                idx_vary1, idx_vary2, idx_fixed = j[0], j[1], j[2]
-
-                s_face[idx_vary1, :, :] = (
-                    t[idx_vary1] + (b[idx_vary1] - t[idx_vary1]) * H1
-                )
-                s_face[idx_vary2, :, :] = (
-                    t[idx_vary2] + (b[idx_vary2] - t[idx_vary2]) * H2
-                )
-                s_face[idx_fixed, :, :] = t[idx_fixed]
-
-                s_flat = s_face.reshape(dim_reg, -1)
-                x_flat = polar2cart(s_flat)
-                p_flat = projector(x_flat)
-
-                PX = p_flat[0, :].reshape(10, 10)
-                PY = p_flat[1, :].reshape(10, 10)
-                PZ = p_flat[2, :].reshape(10, 10)
-
-                if np.any(np.isnan(PX)):
-                    continue
-
-                # Mimic Matlab: color based on t[2] (jet), alpha = (t[2]/pi)/2
-                cmap = plt.get_cmap("jet")
-                # t[2] is effectively polar angle in [0, pi]
-                # Map t[2] to [0, 1] for colormap
-                c_val = t[2] / np.pi
-                color = cmap(c_val)
-                alpha = (t[2] / np.pi) / 2.0
-
-                ax.plot_surface(PX, PY, PZ, alpha=alpha, color=color)
-
-    if show_points:
-        points = eq_point_set(dim, N, extra_offset)
-        # Use simple color for points, or let project_point_set handle it
-        project_point_set(points, ax=ax, proj=proj, color="r", **kwargs)
-
-    if plt.get_backend() != "Agg":
-        plt.show()
-    return ax
+    raise NotImplementedError("3D plotting has been moved to eqsp.visualizations.")
 
 
 def illustrate_eq_algorithm(
@@ -619,12 +324,12 @@ def illustrate_eq_algorithm(
     N,
     *,
     extra_offset=False,
-    fontsize=16,
+    fontsize=8,
     show_title=True,
     long_title=False,
-    stereo=False,
     show_points=True,
-    proj="stereo",
+    proj="eqarea",
+    show=True,
     **kwargs,
 ):
     """
@@ -644,12 +349,10 @@ def illustrate_eq_algorithm(
         Show title. Default True.
     long_title : bool, optional
         Use long title variant. Default False.
-    stereo : bool, optional
-        Use stereographic projection. Default False.
-    show_points : bool, optional
-        Show center points. Default True.
     proj : str, optional
-        Projection type ('stereo' or 'eqarea'). Default 'stereo'.
+        Projection type ('stereo' or 'eqarea'). Default 'eqarea'.
+    show : bool, optional
+        If True (default), call `plt.show()`.
     **kwargs
         Passed to underlying plot functions.
 
@@ -683,12 +386,9 @@ def illustrate_eq_algorithm(
 
     # Increase font size for lower-dim visualisations
     proj_opts = opts.copy()
-    proj_opts["fontsize"] = 32
-    # Map stereo/proj options to illustration functions
-    if stereo:
-        proj_opts["proj"] = "stereo"
-    else:
-        proj_opts["proj"] = proj
+    proj_opts["fontsize"] = 16
+    # Map proj options to illustration functions
+    proj_opts["proj"] = proj
 
     proj_opts["show_points"] = show_points
 
@@ -703,20 +403,29 @@ def illustrate_eq_algorithm(
     proj_opts.pop("long_title", None)
 
     if dim == 2:
-        project_s2_partition(N, **proj_opts)
+        ax = plt.subplot(2, 2, 4)
+        plt.axis("off")
+        project_s2_partition(N, ax=ax, **proj_opts)
     elif dim == 3:
         _, m = eq_caps(dim, N)
         # m is n_regions (1D array)
         max_collar = min(4, m.size - 2)
+        plt.subplot(2, 2, 4)
+        plt.axis("off")
         for k in range(1, max_collar + 1):
             subn = 9 + 2 * k - ((k - 1) % 2)
-            plt.subplot(4, 4, subn)
+            ax_sub = plt.subplot(4, 4, subn)
             plt.axis("off")
-            project_s2_partition(int(m[k]), **proj_opts)
+            opts_k = proj_opts.copy()
+            opts_k["title"] = "none"
+            project_s2_partition(int(m[k]), ax=ax_sub, **opts_k)
+
+    if show and plt.get_backend() != "Agg":
+        plt.show()
 
 
 def illustrate_steps_1_2(
-    dim, N, *, fontsize=14, show_title=True, long_title=False, **kwargs
+    dim, N, *, fontsize=8, show_title=True, long_title=False, **kwargs
 ):
     """
     Illustrate steps 1 and 2 of the EQ partition.
@@ -763,7 +472,7 @@ def illustrate_steps_1_2(
     plt.text(
         -0.9,
         -0.1,
-        "V(\\theta_c) = V_R \n    = \\sigma(S^{%d})/%d" % (dim, N),
+        r"$V(\theta_c) = V_R$" + "\n" + r"$= \sigma(S^{%d})/%d$" % (dim, N),
         fontsize=fontsize,
     )
 
@@ -781,7 +490,7 @@ def illustrate_steps_1_2(
 
 
 def illustrate_steps_3_5(
-    dim, N, *, fontsize=14, show_title=True, long_title=False, **kwargs
+    dim, N, *, fontsize=8, show_title=True, long_title=False, **kwargs
 ):
     """
     Illustrate steps 3 to 5 of the EQ partition.
@@ -800,38 +509,44 @@ def illustrate_steps_3_5(
     k = np.linspace(-1.0, 1.0, 41)
     j = np.ones_like(k)
     plt.plot(np.sin(c_polar) * k, np.cos(c_polar) * j, "r", linewidth=2)
+    plt.text(np.sin(c_polar) * 1.1, np.cos(c_polar) * 1.1, r"$\theta_{F,1}$", fontsize=fontsize)
+    plt.plot(np.sin(c_polar) * h, np.cos(c_polar) * h, "b", linewidth=2)
+    plt.plot(np.sin(c_polar) * k, -np.cos(c_polar) * j, "r", linewidth=2)
 
     plt.plot(np.zeros_like(j), k, "b", linewidth=1)
 
-    for collar_n in range(0, n_collars + 1):
-        zone_n = 1 + collar_n
+    for collar_n in range(1, n_collars + 1):
+        zone_n = collar_n
         theta = s_cap[zone_n]
         plt.plot(np.sin(theta) * h, np.cos(theta) * h, "b", linewidth=2)
-        theta_str = r"\theta_{F,%d}" % zone_n
+        theta_str = r"$\theta_{F,%d}$" % (collar_n + 1)
         plt.text(np.sin(theta) * 1.1, np.cos(theta) * 1.1, theta_str, fontsize=fontsize)
-        if collar_n != 0:
-            plt.plot(np.sin(theta) * k, np.cos(theta) * j, "r", linewidth=2)
-            theta_p = s_cap[collar_n]
-            arc = theta_p + (theta - theta_p) * h
-            plt.plot(np.sin(arc) / 5.0, np.cos(arc) / 5.0, "b", linewidth=1)
-            mid = (theta_p + theta) / 2.0
-            plt.text(
-                np.sin(mid) / 2.0, np.cos(mid) / 2.0, r"$\Delta_F$", fontsize=fontsize
-            )
-            y_str = "y_{%d} = %3.1f..." % (collar_n, r_regions[zone_n])
-            plt.text(
-                -np.sin(mid) + 1.0 / 20.0,
-                np.cos(mid) + (mid - np.pi) / 30.0,
-                y_str,
-                fontsize=fontsize,
-            )
+        
+        theta_p = s_cap[collar_n - 1]
+        
+        if collar_n > 1:
+             plt.plot(np.sin(theta_p) * k, np.cos(theta_p) * j, "r", linewidth=2)
+
+        arc = theta_p + (theta - theta_p) * h
+        plt.plot(np.sin(arc) / 5.0, np.cos(arc) / 5.0, "b", linewidth=1)
+        mid = (theta_p + theta) / 2.0
+        plt.text(
+            np.sin(mid) / 2.0, np.cos(mid) / 2.0, r"$\Delta_F$", fontsize=fontsize
+        )
+        y_str = r"$y_{%d} = %3.1f...$" % (collar_n, r_regions[zone_n])
+        plt.text(
+            -np.sin(mid) + 1.0 / 20.0,
+            np.cos(mid) + (mid - np.pi) / 30.0,
+            y_str,
+            fontsize=fontsize,
+        )
     if show_title:
         title_str = f"EQ({dim},{N}) Steps 3 to 5\n"
         plt.title(title_str, fontsize=fontsize, color="k")
 
 
 def illustrate_steps_6_7(
-    dim, N, *, fontsize=14, show_title=True, long_title=False, **kwargs
+    dim, N, *, fontsize=8, show_title=True, long_title=False, **kwargs
 ):
     """
     Illustrate steps 6 and 7 of the EQ partition.
@@ -851,30 +566,36 @@ def illustrate_steps_6_7(
     k = np.linspace(-1.0, 1.0, 41)
     j = np.ones_like(k)
     plt.plot(np.sin(c_polar) * k, np.cos(c_polar) * j, "r", linewidth=2)
+    plt.text(np.sin(c_polar) * 1.1, np.cos(c_polar) * 1.1, r"$\theta_1$", fontsize=fontsize)
+    plt.plot(np.sin(c_polar) * h, np.cos(c_polar) * h, "b", linewidth=2)
+    plt.plot(np.sin(c_polar) * k, -np.cos(c_polar) * j, "r", linewidth=2)
 
     plt.plot(np.zeros_like(j), k, "b", linewidth=1)
 
-    for collar_n in range(0, n_collars + 1):
-        zone_n = 1 + collar_n
+    for collar_n in range(1, n_collars + 1):
+        zone_n = collar_n
         theta = s_cap[zone_n]
         plt.plot(np.sin(theta) * h, np.cos(theta) * h, "b", linewidth=2)
-        theta_str = r"\theta_{%d}" % zone_n
+        theta_str = r"$\theta_{%d}$" % (collar_n + 1)
         plt.text(np.sin(theta) * 1.1, np.cos(theta) * 1.1, theta_str, fontsize=fontsize)
-        if collar_n != 0:
-            plt.plot(np.sin(theta) * k, np.cos(theta) * j, "r", linewidth=2)
-            theta_p = s_cap[collar_n]
-            arc = theta_p + (theta - theta_p) * h
-            plt.plot(np.sin(arc) / 5.0, np.cos(arc) / 5.0, "b", linewidth=1)
-            mid = (theta_p + theta) / 2.0
-            Delta_str = r"\Delta_{%i}" % collar_n
-            plt.text(np.sin(mid) / 2.0, np.cos(mid) / 2.0, Delta_str, fontsize=fontsize)
-            m_str = "m_{%d} =%3.0f" % (collar_n, n_regions[zone_n])
-            plt.text(
-                -np.sin(mid) + 1.0 / 20.0,
-                np.cos(mid) + (mid - np.pi) / 30.0,
-                m_str,
-                fontsize=fontsize,
-            )
+        
+        theta_p = s_cap[collar_n - 1]
+        
+        if collar_n > 1:
+            plt.plot(np.sin(theta_p) * k, np.cos(theta_p) * j, "r", linewidth=2)
+
+        arc = theta_p + (theta - theta_p) * h
+        plt.plot(np.sin(arc) / 5.0, np.cos(arc) / 5.0, "b", linewidth=1)
+        mid = (theta_p + theta) / 2.0
+        Delta_str = r"$\Delta_{%i}$" % collar_n
+        plt.text(np.sin(mid) / 2.0, np.cos(mid) / 2.0, Delta_str, fontsize=fontsize)
+        m_str = r"$m_{%d} =%3.0f$" % (collar_n, n_regions[zone_n])
+        plt.text(
+            -np.sin(mid) + 1.0 / 20.0,
+            np.cos(mid) + (mid - np.pi) / 30.0,
+            m_str,
+            fontsize=fontsize,
+        )
     if show_title:
         title_str = f"EQ({dim},{N}) Steps 6 to 7\n"
         plt.title(title_str, fontsize=fontsize, color="k")

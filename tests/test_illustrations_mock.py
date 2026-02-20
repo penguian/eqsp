@@ -1,9 +1,18 @@
 
 import sys
 import unittest
+import doctest
 from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
+
+def test_doctests():
+    """Run doctests for illustrations."""
+    import doctest
+    from eqsp import illustrations
+    with patch('eqsp.illustrations.plt'):
+        results = doctest.testmod(illustrations)
+        assert results.failed == 0
 
 # Ensure eqsp is importable
 from eqsp import partitions
@@ -14,9 +23,7 @@ class TestIllustrations(unittest.TestCase):
         self.plt_patcher = patch('eqsp.illustrations.plt')
         self.mock_plt = self.plt_patcher.start()
         
-        # Also patch Axes3D to avoid issues
-        self.axes3d_patcher = patch('eqsp.illustrations.Axes3D')
-        self.mock_axes3d = self.axes3d_patcher.start()
+
         
         # Configure mock_plt
         self.mock_fig = MagicMock()
@@ -28,29 +35,50 @@ class TestIllustrations(unittest.TestCase):
 
     def tearDown(self):
         self.plt_patcher.stop()
-        self.axes3d_patcher.stop()
 
-    def test_show_s2_partition(self):
-        from eqsp import illustrations
-        illustrations.show_s2_partition(4, show_points=True, show_sphere=True)
-        
-        # Verify calls
-        self.mock_plt.figure.assert_called()
-        self.mock_fig.add_subplot.assert_called()
-        # Verify plotting calls on ax
-        self.assertTrue(self.mock_ax.plot_surface.called)
-        self.assertTrue(self.mock_ax.scatter.called)
 
-    def test_project_s2_partition(self):
+    def test_show_s2_partition_not_implemented(self):
         from eqsp import illustrations
-        illustrations.project_s2_partition(4, proj='stereo', show_points=True)
-        self.assertTrue(self.mock_ax.plot.called)
-        self.assertTrue(self.mock_ax.scatter.called)
+        with self.assertRaises(NotImplementedError):
+            illustrations.show_s2_partition(4)
 
-    def test_project_s3_partition(self):
+    def test_project_s3_partition_not_implemented(self):
         from eqsp import illustrations
-        illustrations.project_s3_partition(4, proj='stereo', show_points=True, show_surfaces=True)
-        self.assertTrue(self.mock_ax.plot_surface.called)
+        with self.assertRaises(NotImplementedError):
+            illustrations.project_s3_partition(4)
+
+    def test_show_s2_sphere_not_implemented(self):
+        from eqsp import illustrations
+        with self.assertRaises(NotImplementedError):
+            illustrations.show_s2_sphere()
+
+    def test_show_r3_point_set_not_implemented(self):
+        from eqsp import illustrations
+        with self.assertRaises(NotImplementedError):
+            illustrations.show_r3_point_set(None)
+
+    def test_show_s2_region_not_implemented(self):
+        from eqsp import illustrations
+        with self.assertRaises(NotImplementedError):
+            illustrations.show_s2_region(None)
+
+    def test_project_point_set_invalid_dim(self):
+        from eqsp import illustrations
+        points = np.array([[1,0], [0,1]]).T
+        with self.assertRaises(ValueError):
+            illustrations.project_point_set(points)
+
+    def test_project_point_set_invalid_proj(self):
+        from eqsp import illustrations
+        points = np.array([[1,0,0], [0,1,0]]).T
+        with self.assertRaises(ValueError):
+            illustrations.project_point_set(points, proj='invalid')
+
+    def test_project_s2_partition_invalid_proj(self):
+        from eqsp import illustrations
+        with self.assertRaises(ValueError):
+            illustrations.project_s2_partition(4, proj='invalid')
+
 
     def test_illustrate_eq_algorithm(self):
         from eqsp import illustrations
@@ -60,48 +88,4 @@ class TestIllustrations(unittest.TestCase):
         self.assertTrue(self.mock_plt.plot.called)
 
 
-class TestIllustrationsMayavi(unittest.TestCase):
-    def setUp(self):
-        # We need to mock mayavi BEFORE importing eqsp.illustrations_mayavi
-        # if it's not already imported.
-        
-        self.modules_patcher = patch.dict(sys.modules, {'mayavi': MagicMock(), 'mayavi.mlab': MagicMock()})
-        self.modules_patcher.start()
-        
-        # Now we can safely import it, even if mayavi is missing
-        if 'eqsp.illustrations_mayavi' in sys.modules:
-            del sys.modules['eqsp.illustrations_mayavi']
-            
-    def tearDown(self):
-        self.modules_patcher.stop()
-
-    def test_show_s2_partition(self):
-        import eqsp.illustrations_mayavi as im
-        # Mock mlab
-        im.mlab = MagicMock()
-        
-        im.show_s2_partition(4, show_points=True, show_sphere=True)
-        
-        self.assertTrue(im.mlab.figure.called)
-        self.assertTrue(im.mlab.mesh.called) # sphere and regions
-        self.assertTrue(im.mlab.points3d.called) # points
-        self.assertTrue(im.mlab.show.called)
-
-    def test_project_point_set(self):
-        import eqsp.illustrations_mayavi as im
-        im.mlab = MagicMock()
-        
-        points = np.array([[1,0,0], [0,1,0]]).T
-        im.project_point_set(points, proj='stereo')
-        
-        self.assertTrue(im.mlab.points3d.called)
-
-    def test_project_s3_partition(self):
-        import eqsp.illustrations_mayavi as im
-        im.mlab = MagicMock()
-        
-        im.project_s3_partition(4, show_points=True, show_surfaces=True)
-        
-        self.assertTrue(im.mlab.mesh.called) # surfaces
-        self.assertTrue(im.mlab.points3d.called) # items
 

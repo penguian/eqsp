@@ -1,5 +1,5 @@
 """
-EQSP Mayavi Illustrations module.
+EQSP Visualizations module.
 Mirror of eq_sphere_partitions/eq_illustrations but using Mayavi.
 
 Copyright 2025 Paul Leopardi.
@@ -16,76 +16,28 @@ except ImportError:
         "Mayavi is not installed. " "Please install it with: pip install 'eqsp[mayavi]'"
     )
 
-from .utilities import polar2cart, area_of_cap, volume_of_ball
+PROJ_NAME = {"eqarea": "equal area", "stereo": "stereographic"}
+
+from .utilities import (
+    polar2cart,
+    area_of_cap,
+    volume_of_ball,
+    x2stereo,
+    x2eqarea,
+)
 from .partitions import eq_point_set, eq_regions
-from .partitions import eq_point_set, eq_regions
 
 
-def x2stereo(x):
-    """
-    Stereographic projection of Euclidean points.
-
-    Parameters
-    ----------
-    x : ndarray
-        Points in R^{dim+1}, shape (dim+1, N).
-
-    Returns
-    -------
-    result : ndarray
-        Projected points in R^dim, shape (dim, N).
-    """
-    x = np.asarray(x)
-    dim = x.shape[0] - 1
-
-    last = x[dim, :]
-    mask = np.isclose(last, 1.0)
-
-    scale = np.ones(x.shape[1])
-    scale[~mask] = 1.0 - last[~mask]
-
-    with np.errstate(divide="ignore"):
-        result = x[:dim, :] / scale
-
-    result[:, mask] = np.nan
-    return result
 
 
-def x2eqarea(x):
-    """
-    Equal area projection of Euclidean points.
-
-    Parameters
-    ----------
-    x : ndarray
-        Points in R^{dim+1}, shape (dim+1, N).
-
-    Returns
-    -------
-    result : ndarray
-        Projected points in R^dim, shape (dim, N).
-    """
-    x = np.asarray(x)
-    dim = x.shape[0] - 1
-    last = x[dim, :]
-
-    theta = np.arccos(np.clip(-last, -1.0, 1.0))
-    a_cap = area_of_cap(dim, theta)
-    v_ball = volume_of_ball(dim)
-    r = (a_cap / v_ball) ** (1.0 / dim)
-
-    sin_theta = np.sin(theta)
-    mask = np.isclose(sin_theta, 0.0)
-
-    scale = np.zeros_like(theta)
-    scale[~mask] = r[~mask] / sin_theta[~mask]
-
-    result = np.zeros((dim, x.shape[1]))
-    result[:, ~mask] = x[:dim, ~mask] * scale[~mask]
-    return result
 
 
-def show_s2_sphere(opacity=0.9, color=(0, 1, 0)):
+
+
+
+
+
+def show_s2_sphere(opacity=0.95, color=(0, 1, 0)):
     """
     Illustrate the unit sphere S^2.
     """
@@ -97,7 +49,7 @@ def show_s2_sphere(opacity=0.9, color=(0, 1, 0)):
     mlab.mesh(x, y, z, color=color, opacity=opacity)
 
 
-def show_r3_point_set(points, show_sphere=False, scale_factor=0.05, **kwargs):
+def show_r3_point_set(points, show_sphere=False, scale_factor=0.1, save_file=None, **kwargs):
     """
     3D illustration of a point set.
     """
@@ -113,6 +65,9 @@ def show_r3_point_set(points, show_sphere=False, scale_factor=0.05, **kwargs):
         color=(1, 0, 0),
         **kwargs,
     )
+    
+    if save_file:
+        mlab.savefig(save_file)
 
 
 def show_s2_region(region, N, fidelity=32):
@@ -152,7 +107,7 @@ def show_s2_region(region, N, fidelity=32):
 
 
 def show_s2_partition(
-    N, *, extra_offset=False, show_points=True, show_sphere=True, title="long", **kwargs
+    N, *, extra_offset=False, show_points=True, show_sphere=True, title="long", show=True, save_file=None, **kwargs
 ):
     """
     3D illustration of an EQ partition of S^2 into N regions.
@@ -173,7 +128,7 @@ def show_s2_partition(
 
     Examples
     --------
-    >>> from eqsp.illustrations_mayavi import show_s2_partition
+    >>> from eqsp.visualizations import show_s2_partition
     >>> from mayavi import mlab
     >>> mlab.options.offscreen = True
     >>> try:
@@ -185,10 +140,12 @@ def show_s2_partition(
     """
     show_title = title != "none"
 
-    mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
+    # Set default figure size if none exists
+    if mlab.get_engine().current_scene is None:
+        mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
 
     if show_sphere:
-        show_s2_sphere(opacity=0.9)
+        show_s2_sphere(opacity=0.95)
 
     R = eq_regions(2, N, extra_offset)
     for i in range(N - 1, 0, -1):
@@ -200,13 +157,19 @@ def show_s2_partition(
 
     if show_title:
         title_text = f"Recursive zonal equal area partition of S^2\ninto {N} regions."
-        mlab.title(title_text, color=(0, 0, 0))
+        # Use mlab.text for precise control over size and position (top center)
+        # x = 0.5 - width/2, y = 0.85 (lower due to 2 lines)
+        mlab.text(0.2, 0.85, title_text, width=0.6, color=(0, 0, 0))
 
-    mlab.show()
+    if save_file:
+        mlab.savefig(save_file)
+
+    if show:
+        mlab.show()
 
 
 def project_point_set(
-    points, proj="stereo", scale_factor=0.05, color=(1, 0, 0), **kwargs
+    points, proj="stereo", scale_factor=0.1, color=(1, 0, 0), show=True, save_file=None, **kwargs
 ):
     """
     Use projection to illustrate a point set of S^2 or S^3.
@@ -221,7 +184,7 @@ def project_point_set(
 
     Examples
     --------
-    >>> from eqsp.illustrations_mayavi import project_point_set
+    >>> from eqsp.visualizations import project_point_set
     >>> import numpy as np
     >>> from mayavi import mlab
     >>> mlab.options.offscreen = True
@@ -245,6 +208,10 @@ def project_point_set(
     else:
         raise ValueError("proj must be 'stereo' or 'eqarea'")
 
+    # Set default figure size if none exists
+    if mlab.get_engine().current_scene is None:
+        mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
+
     t = projector(points)
 
     # Mayavi points3d
@@ -266,6 +233,12 @@ def project_point_set(
         mlab.points3d(
             t[0, :], t[1, :], t[2, :], scale_factor=scale_factor, color=color, **kwargs
         )
+    
+    if save_file:
+        mlab.savefig(save_file)
+
+    if show:
+        mlab.show()
 
 
 def project_s3_partition(
@@ -276,6 +249,8 @@ def project_s3_partition(
     proj="stereo",
     show_points=True,
     show_surfaces=True,
+    show=True,
+    save_file=None,
     **kwargs,
 ):
     """
@@ -295,7 +270,7 @@ def project_s3_partition(
 
     Examples
     --------
-    >>> from eqsp.illustrations_mayavi import project_s3_partition
+    >>> from eqsp.visualizations import project_s3_partition
     >>> from mayavi import mlab
     >>> mlab.options.offscreen = True
     >>> try:
@@ -314,7 +289,9 @@ def project_s3_partition(
 
     show_title = title != "none"
 
-    mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
+    # Set default figure size if none exists
+    if mlab.get_engine().current_scene is None:
+        mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
 
     dim = 3
 
@@ -375,11 +352,17 @@ def project_s3_partition(
     if show_points:
         points = eq_point_set(dim, N, extra_offset)
         project_point_set(
-            points, proj=proj, color=(1, 0, 0), scale_factor=0.05, **kwargs
+            points, proj=proj, color=(1, 0, 0), scale_factor=0.1, show=False, **kwargs
         )
 
     if show_title:
-        title_text = f"EQ(3,{N}) {proj} projection"
-        mlab.title(title_text, color=(0, 0, 0))
+        title_text = f"EQ(3,{N}) {PROJ_NAME.get(proj, proj)} projection"
+        # width=0.6 gives a reasonable size for this longer string
+        # x = 0.5 - 0.6/2 = 0.2, y = 0.9
+        mlab.text(0.2, 0.9, title_text, width=0.6, color=(0, 0, 0))
 
-    mlab.show()
+    if save_file:
+        mlab.savefig(save_file)
+
+    if show:
+        mlab.show()
