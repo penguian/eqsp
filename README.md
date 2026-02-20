@@ -47,6 +47,8 @@ To install with Mayavi support:
 pip install ".[mayavi]"
 ```
 
+For detailed step-by-step instructions and environment setup, see [INSTALL.md](INSTALL.md).
+
 ## Quick Start & Examples
 
 ### Which file to begin with?

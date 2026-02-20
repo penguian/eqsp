@@ -2,7 +2,7 @@
 """
 Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox.
 
-This module provides functions forEQ sphere partitioning, including:
+This module provides functions for equal area sphere partitioning, including:
 - Creating partitions (`eq_regions`, `eq_point_set`, `eq_caps`)
 - Calculating properties (`point_set_props`, `region_props`)
 - Utilities (`utilities`)

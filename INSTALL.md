@@ -88,8 +88,20 @@ print(eqsp.__version__)
 You can also run the illustration verification script if you have the source code:
 
 ```bash
-python verify_illustrations.py
+python tests/inspect_illustrations.py
 ```
+
+## Building Documentation
+
+To build the HTML documentation locally, ensure you have the `docs` dependencies installed:
+
+```bash
+pip install ".[docs]"
+cd doc
+make html
+```
+
+The rendered documentation will be available in `doc/_build/html/index.html`.
 
 ## Uninstalling
 
