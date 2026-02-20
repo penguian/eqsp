@@ -1,9 +1,16 @@
 
 import numpy as np
 import pytest
+import doctest
 from numpy.testing import assert_array_equal, assert_allclose
 from eqsp import histograms, partitions
 from math import pi
+
+def test_doctests():
+    """Load doctests from histograms into this test file's suite."""
+    import doctest
+    results = doctest.testmod(histograms)
+    assert results.failed == 0
 
 def test_eq_count_points_by_s2_region_docstrings():
     """Verify examples from eq_count_points_by_s2_region docstring."""

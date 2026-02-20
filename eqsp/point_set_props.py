@@ -45,8 +45,8 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
     --------
     >>> N = np.arange(2, 7)
     >>> dist = eq_min_dist(2, N)
-    >>> calc_dist_coeff(2, N, dist)
-    array([2.82842712, 2.44948974, 2.82842712, 3.16227766, 3.46410162])
+    >>> np.round(calc_dist_coeff(2, N, dist), 4)
+    array([2.8284, 2.4495, 2.8284, 3.1623, 3.4641])
     """
     return min_euclidean_dist * np.power(N, 1 / dim)
 
@@ -154,8 +154,8 @@ def sphere_int_energy(dim, s):
 
     Examples
     --------
-    >>> sphere_int_energy(2, 0)
-    np.float64(-0.1931471805599453)
+    >>> float(sphere_int_energy(2, 0))
+    -0.1931471805599453
     """
     if s != 0:
         return (
@@ -233,6 +233,11 @@ def eq_dist_coeff(dim, N, extra_offset=False):
     -------
     coeff : array-like
         Coefficient(s), same shape as N.
+
+    Examples
+    --------
+    >>> np.round(eq_dist_coeff(2, np.arange(2, 5)), 4)
+    array([2.8284, 2.4495, 2.8284])
     """
     dist = eq_min_dist(dim, N, extra_offset=extra_offset)
     coeff = dist * np.power(N, 1 / dim)
@@ -258,6 +263,11 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False):
     -------
     coeff : array-like
         Coefficient(s), same shape as N.
+
+    Examples
+    --------
+    >>> float(np.round(eq_energy_coeff(2, 4), 4))
+    -0.5214
     """
     if s is None:
         s = dim - 1
@@ -350,6 +360,11 @@ def eq_packing_density(dim, N, extra_offset=False):
     -------
     density : array-like
         Density values, same shape as N.
+
+    Examples
+    --------
+    >>> float(np.round(eq_packing_density(2, 4), 4))
+    0.5858
     """
     min_euclidean_dist = eq_min_dist(dim, N, extra_offset=extra_offset)
     density = calc_packing_density(dim, N, min_euclidean_dist)
@@ -411,8 +426,8 @@ def point_set_dist_coeff(points):
     Examples
     --------
     >>> x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
-    >>> point_set_dist_coeff(x)
-    np.float64(2.8284271247461903)
+    >>> float(point_set_dist_coeff(x))
+    2.8284271247461903
     """
     dim = points.shape[0] - 1
     N = points.shape[1]
@@ -489,10 +504,12 @@ def point_set_energy_dist(points, s=None):
     Examples
     --------
     >>> x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
-    >>> point_set_energy_dist(x, 2)
-    (np.float64(2.5), np.float64(1.4142135623730951))
-    >>> point_set_energy_dist(x, 0)
-    (np.float64(-2.7725887222397816), np.float64(1.4142135623730951))
+    >>> energy, dist = point_set_energy_dist(x, 2)
+    >>> (float(energy), float(dist))
+    (2.5, 1.4142135623730951)
+    >>> energy, dist = point_set_energy_dist(x, 0)
+    >>> (float(energy), float(dist))
+    (-2.7725887222397816, 1.4142135623730951)
     """
     M, N = points.shape
     dim = M - 1
@@ -555,3 +572,8 @@ def point_set_min_dist(points):
     """
     _, min_dist = point_set_energy_dist(points, s=0)  # s doesn't matter for min_dist
     return min_dist
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

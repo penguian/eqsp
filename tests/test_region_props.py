@@ -1,8 +1,16 @@
 import numpy as np
 import pytest
+import doctest
 from numpy.testing import assert_allclose
 from eqsp import region_props
 from math import pi
+
+
+def test_doctests():
+    """Run doctests for region_props."""
+    import doctest
+    results = doctest.testmod(region_props)
+    assert results.failed == 0
 
 
 def test_eq_area_error():
@@ -13,11 +21,6 @@ def test_eq_area_error():
 
     N = np.arange(1, 7)
     total_error, max_error = region_props.eq_area_error(3, N)
-
-    # Tolerance needs to be adjusted as these are very small errors
-    # Doctest values seem to be from a different environment.
-    # We verify that errors are reasonably small (< 1e-10).
-    # Note that Python implementation gives errors around 1e-11 for some cases.
     assert_allclose(total_error, 0, atol=1e-10)
     assert_allclose(max_error, 0, atol=1e-10)
 
@@ -29,8 +32,6 @@ def test_eq_diam_bound():
 
     N = np.arange(1, 7)
     bound = region_props.eq_diam_bound(3, N)
-    # The docstring values seem incorrect (1.0515 is min_dist for 2,10).
-    # Logic suggests for small N in dim 3, regions often span pi longitude, so diam is 2.
     expected = np.array([2.0, 2.0, 2.0, 2.0, 2.0, 2.0])
     assert_allclose(bound, expected, atol=1e-4)
 
@@ -42,7 +43,6 @@ def test_eq_vertex_diam():
 
     N = np.arange(1, 7)
     vdiam = region_props.eq_vertex_diam(3, N)
-    # Similar to diam_bound, code returns 2.0 for these small N
     expected = np.array([2.0, 2.0, 2.0, 2.0, 2.0, 2.0])
     assert_allclose(vdiam, expected, atol=1e-4)
 
@@ -52,8 +52,6 @@ def test_eq_diam_coeff():
     bound_coeff, vertex_coeff = region_props.eq_diam_coeff(2, 10)
     assert_allclose(bound_coeff, 5.2915, atol=1e-4)
 
-    # Test array return
-    # bound_coeff and vertex_coeff should be 2.0 * N^(1/3) for these N where diam=2.0
     N = np.arange(1, 7)
     bound_coeff, vertex_coeff = region_props.eq_diam_coeff(3, N)
     expected_coeff = 2.0 * np.power(N, 1 / 3)
@@ -83,11 +81,7 @@ def test_eq_regions_property():
 
 
 def test_area_of_region():
-    # Example from doctest
-    # region spanning 0 to 2pi longitude, 0 to pi colatitude -> whole sphere S^2
-    # dim=2
     region = np.array([[0, 2 * np.pi], [0, np.pi]])
     area = region_props.area_of_region(region)
-    # Area of S^2 is 4pi
     assert_allclose(area, 4 * np.pi, atol=1e-4)
     assert_allclose(area, 12.5664, atol=1e-4)

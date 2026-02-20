@@ -708,3 +708,72 @@ def area_of_collar(dim, a_top, a_bot):
     a_top = np.asarray(a_top)
     a_bot = np.asarray(a_bot)
     return asfloat(area_of_cap(dim, a_bot) - area_of_cap(dim, a_top))
+
+
+def x2stereo(x):
+    """
+    Stereographic projection of Euclidean points.
+
+    Parameters
+    ----------
+    x : ndarray
+        Points in R^{dim+1}, shape (dim+1, N).
+
+    Returns
+    -------
+    result : ndarray
+        Projected points in R^dim, shape (dim, N).
+    """
+    x = np.asarray(x)
+    dim = x.shape[0] - 1
+
+    last = x[dim, :]
+    mask = np.isclose(last, 1.0)
+
+    scale = np.ones(x.shape[1])
+    scale[~mask] = 1.0 - last[~mask]
+
+    with np.errstate(divide="ignore"):
+        result = x[:dim, :] / scale
+
+    result[:, mask] = np.nan
+    return result
+
+
+def x2eqarea(x):
+    """
+    Equal area projection of Euclidean points.
+
+    Parameters
+    ----------
+    x : ndarray
+        Points in R^{dim+1}, shape (dim+1, N).
+
+    Returns
+    -------
+    result : ndarray
+        Projected points in R^dim, shape (dim, N).
+    """
+    x = np.asarray(x)
+    dim = x.shape[0] - 1
+    last = x[dim, :]
+
+    theta = np.arccos(np.clip(-last, -1.0, 1.0))
+    a_cap = area_of_cap(dim, theta)
+    v_ball = volume_of_ball(dim)
+    r = (a_cap / v_ball) ** (1.0 / dim)
+
+    sin_theta = np.sin(theta)
+    mask = np.isclose(sin_theta, 0.0)
+
+    scale = np.zeros_like(theta)
+    scale[~mask] = r[~mask] / sin_theta[~mask]
+
+    result = np.zeros((dim, x.shape[1]))
+    result[:, ~mask] = x[:dim, ~mask] * scale[~mask]
+    return result
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

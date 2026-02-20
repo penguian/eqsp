@@ -60,21 +60,10 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     import numpy as np
 
     n_caps = len(s_cap)
-    if n_caps != len(c_regions):
-        msg = (
-            "LOOKUP_S2_REGION: Mismatch between length of s_cap (=={}) and "
-            "length of c_regions (=={})"
-        )
-        print(msg.format(n_caps, len(c_regions)))
-        raise ValueError(msg.format(n_caps, len(c_regions)))
+    assert n_caps == len(c_regions), "LOOKUP_S2_REGION: Mismatch between length of s_cap and c_regions"
+    
     n_regions = s_regions.shape[2]
-    if c_regions[n_caps - 1] != n_regions:
-        msg = (
-            "LOOKUP_S2_REGION: Mismatch between c_regions[-1] (=={}) and "
-            "length of s_regions (=={})"
-        )
-        print(msg.format(c_regions[n_caps - 1], n_regions))
-        raise ValueError(msg.format(c_regions[n_caps - 1], n_regions))
+    assert c_regions[n_caps - 1] == n_regions, "LOOKUP_S2_REGION: Mismatch between c_regions[-1] and length of s_regions"
     n_points = s_point.shape[1]
     r_idx = np.zeros(n_points, dtype=int)
     for p_idx in range(n_points):
@@ -101,7 +90,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     return r_idx
 
 
-def lookup_table(table, y, opt=None):
+def lookup_table(table, y):
     """
     Lookup values in a sorted table. Usually used as a prelude to interpolation.
 
@@ -120,9 +109,6 @@ def lookup_table(table, y, opt=None):
         Sequence of real values, assumed to be strictly increasing or decreasing.
     y : array_like or float
         Sequence of real values to be looked up in table.
-    opt : any, optional
-        Options to be passed to Octave lookup, if we are in Octave, otherwise
-        ignored.
 
     Returns
     -------
@@ -153,51 +139,18 @@ def lookup_table(table, y, opt=None):
 
     table = np.asarray(table)
     y = np.atleast_1d(y)
-    if is_octave():
-        from octave_functions import lookup  # Assume importable
 
-        if opt is not None:
-            idx = lookup(table, y, opt)
-        else:
-            idx = lookup(table, y)
-    else:
-        if table[-1] >= table[0]:
-            # Nondecreasing table.
-            maximum = np.max(np.concatenate([table, y])) + 1
-            extended_table = np.append(table, maximum)
-            idx = np.array(
-                [np.searchsorted(extended_table, val, side="right") for val in y]
-            )
-            idx[idx < 0] = 0
-        else:
-            print("LOOKUP_TABLE: Decreasing case is not yet implemented")
-            raise NotImplementedError("Strictly decreasing tables are not implemented.")
+    # Nondecreasing table.
+    maximum = np.max(np.concatenate([table, y])) + 1
+    extended_table = np.append(table, maximum)
+    idx = np.array(
+        [np.searchsorted(extended_table, val, side="right") for val in y]
+    )
+    idx[idx < 0] = 0
+    
     if idx.size == 1:
-        return idx[0]
+        return int(idx[0])
     return idx
 
 
-def is_octave():
-    """
-    Checks if running in Octave.
 
-    Returns
-    -------
-    bool
-        True if in Octave, False otherwise.
-
-    See Also
-    --------
-    octave_functions
-
-    Examples
-    --------
-    >>> is_octave()
-    False
-    """
-    try:
-        import octave_functions  # Assume importable
-
-        return True
-    except ImportError:
-        return False

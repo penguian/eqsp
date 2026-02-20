@@ -1,8 +1,16 @@
 import numpy as np
 import pytest
+import doctest
 from numpy.testing import assert_allclose
 from eqsp import partitions
 from math import pi
+
+
+def test_doctests():
+    """Load doctests from partitions into this test file's suite."""
+    import doctest
+    results = doctest.testmod(partitions)
+    assert results.failed == 0
 
 
 def test_eq_caps():
@@ -87,3 +95,76 @@ def test_eq_regions():
     # dim=2: [0, 2pi], [0, pi]
     assert_allclose(regions[0, :, 0], [0, 2 * pi])
     assert_allclose(regions[1, :, 0], [0, pi])
+
+
+def test_extra_offsets():
+    # Test dim=2, N=10 with extra_offset
+    points_s = partitions.eq_point_set_polar(2, 10, extra_offset=True)
+    assert points_s.shape == (2, 10)
+
+    # Test dim=3, N=10 with extra_offset (exercises s2_offset, rot3)
+    points_s = partitions.eq_point_set_polar(3, 10, extra_offset=True)
+    assert points_s.shape == (3, 10)
+    
+    # eq_regions with extra_offset
+    regs, rots = partitions.eq_regions(2, 4, extra_offset=True)
+    assert regs.shape == (2, 2, 4)
+    assert len(rots) == 4
+    
+    # dim=3 regions with rotations
+    regs, rots = partitions.eq_regions(3, 4, extra_offset=True)
+    assert regs.shape == (3, 2, 4)
+    assert len(rots) == 4
+
+
+def test_vectorized_helpers():
+    from eqsp._private._partitions import polar_colat, num_collars
+
+    # Vectorized polar_colat
+    Ns = np.array([1, 2, 4, 10])
+    colats = polar_colat(2, Ns)
+    assert len(colats) == 4
+    assert colats[0] == pi
+    assert colats[1] == pi / 2.0
+
+    # Vectorized num_collars
+    c_polars = polar_colat(2, Ns)
+    a_ideals = np.array([1.0, 1.0, 1.0, 1.0])
+    collars = num_collars(Ns, c_polars, a_ideals)
+    assert len(collars) == 4
+
+
+def test_private_helpers():
+    from eqsp._private._partitions import (
+        top_cap_region,
+        bot_cap_region,
+        sphere_region,
+        centres_of_regions,
+        circle_offset,
+    )
+
+    # dim=1 cases
+    assert top_cap_region(1, pi / 6).shape == (1, 2)
+    assert bot_cap_region(1, pi / 6).shape == (1, 2)
+    assert sphere_region(1).shape == (1, 2)
+
+    # circle_offset with extra_twist
+    off = circle_offset(4, 4, extra_twist=True)
+    assert off != 0
+
+    # centres_of_regions
+    # 2D input (single region)
+    reg = np.array([[0.1, 0.5], [1.0, 2.0]])  # (2, 2)
+    center = centres_of_regions(reg)
+    assert center.shape == (2, 1)
+    assert_allclose(center[:, 0], [0.3, 1.5])
+
+    # Polar cap center (theta=0)
+    reg_polar = np.array([[0, 2 * pi], [0, 0.5]])[:, :, np.newaxis]
+    center_polar = centres_of_regions(reg_polar)
+    assert_allclose(center_polar[1, 0], 0.0)
+
+    # South pole cap center (theta=pi)
+    reg_south = np.array([[0, 2 * pi], [pi - 0.5, pi]])[:, :, np.newaxis]
+    center_south = centres_of_regions(reg_south)
+    assert_allclose(center_south[1, 0], pi)

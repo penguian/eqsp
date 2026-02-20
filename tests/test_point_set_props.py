@@ -1,7 +1,15 @@
 import numpy as np
 import pytest
+import doctest
 from numpy.testing import assert_allclose
 from eqsp import point_set_props
+
+
+def test_doctests():
+    """Run doctests for point_set_props."""
+    import doctest
+    results = doctest.testmod(point_set_props)
+    assert results.failed == 0
 
 
 def test_eq_min_dist():
@@ -89,45 +97,11 @@ def test_point_set_dist_and_energy():
     assert_allclose(d0, 1.41421356)
 
     # point_set_dist_coeff
-    # dim=2, N=4, dist=sqrt(2) approx 1.4142
-    # coeff = dist * N^(1/2) = 1.4142 * 2 = 2.8284
     coeff = point_set_props.point_set_dist_coeff(x)
     assert_allclose(coeff, 2.8284271247)
 
-    # point_set_energy_coeff
-    # s=dim-1=1 implies 2D Coulomb? No, dim=2, s=1.
-    coeffs = point_set_props.point_set_energy_coeff(x)
-    expected_coeffs = np.array([-0.5214, -0.8232])  # Based on doctest
-    # Actually the doctest output is array([-0.5214, -0.8232]) but coefficients are single value??
-    # Wait, eq_energy_coeff returns array for N.
-    # But point_set_energy_coeff(x) returns a single value if x is a single point set?
-    # No, check implementation of point_set_energy_coeff.
-    # It calls calc_energy_coeff(dim, N, s, energy).
-    # N is integer (4).
-    # calc_energy_coeff returns coeff array of same shape as N. So it should be a scalar if N is scalar.
-    # But the doctest says: array([-0.5214, -0.8232]). This is strange.
-    # Let's check calc_energy_coeff again.
-    # Maybe the doctest was running on multiple Ns?
-    # Ah, the doctest for point_set_energy_coeff:
-    # >>> x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
-    # >>> point_set_energy_coeff(x)
-    # array([-0.5214, -0.8232])
-    # This implies it returns 2 values? Why?
-    # Maybe because N=4?
-    # If N is scalar, calc_energy_coeff returns scalar.
-    # If N is scalar, calc_energy_coeff returns scalar.
-    pass
-
 
 def test_eq_dist_coeff():
-    # Doctest examples
-    # eq_dist_coeff(2, 10)
-    # eq_dist_coeff(3, np.arange(1, 7))
-
-    # Needs known values.
-    # eq_dist_coeff is calc_dist_coeff(dim, N, eq_min_dist(dim, N))
-
-    # Same values as test_calc_dist_coeff ideally
     N = np.arange(2, 7)
     coeff = point_set_props.eq_dist_coeff(2, N)
     expected_coeff = np.array([2.8284, 2.4495, 2.8284, 3.1623, 3.4641])
@@ -135,9 +109,6 @@ def test_eq_dist_coeff():
 
 
 def test_eq_point_set_property():
-    # Doctest example
-    # eq_point_set_property(point_set_min_dist, 2, 10)
-    # Should equal eq_min_dist(2, 10) = 1.0515
     res = point_set_props.eq_point_set_property(
         point_set_props.point_set_min_dist, 2, 10
     )

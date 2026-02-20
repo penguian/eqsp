@@ -366,11 +366,7 @@ def eq_regions(dim, N, extra_offset=False):
             regions[:, 0, 1:N] = s_cap[0 : N - 1]
         regions[:, 1, :] = s_cap
         # rotations are identity
-        if extra_offset:  # Should dim=1 return rot? Doc says only dim=3 meaningful.
-            # But let's assume if extra_offset was requested.
-            # Actually existing code returned it.
-            # But doc says "only meaningful for dim == 3".
-            # Let's simple check extra_offset.
+        if extra_offset:
             for idx in range(N):
                 dim_1_rot[idx] = np.eye(dim)
             return regions, dim_1_rot
@@ -454,8 +450,11 @@ def eq_regions(dim, N, extra_offset=False):
 
     # Bottom cap
     regions[:, :, N - 1] = bot_cap_region(dim, s_cap[0])
-    if (dim == 3) and extra_offset:
-        dim_1_rot[N - 1] = np.eye(dim)
+    if extra_offset:
+        if (dim == 3) or (dim < 3):
+             # Ensure last one is set if not already
+             if dim_1_rot[N-1] is None:
+                 dim_1_rot[N-1] = np.eye(dim)
         return regions, dim_1_rot
     else:
         return regions
