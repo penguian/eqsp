@@ -20,10 +20,10 @@ eqsp.illustrations module
    :show-inheritance:
    :undoc-members:
 
-eqsp.illustrations\_mayavi module
----------------------------------
+eqsp.visualizations module
+--------------------------
 
-.. automodule:: eqsp.illustrations_mayavi
+.. automodule:: eqsp.visualizations
    :members:
    :show-inheritance:
    :undoc-members:

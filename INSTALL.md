@@ -65,20 +65,16 @@ pip install -e .
 
 ### Using System-Installed Mayavi (e.g., via apt on Ubuntu)
 
-If you have Mayavi installed via your system package manager (e.g., `sudo apt install python3-mayavi`), you can use it with `eqsp` by creating a virtual environment that accesses system site packages:
+If you have Mayavi installed via your system package manager (e.g., `sudo apt install python3-mayavi`), you can use it with `eqsp` by creating a virtual environment that accesses system site packages.
 
-1.  Create a virtual environment with system site packages enabled:
-    ```bash
-    python3 -m venv --system-site-packages venv
-    ```
-2.  Activate the environment:
-    ```bash
-    source venv/bin/activate
-    ```
-3.  Install `eqsp` (standard install, no extras needed as Mayavi is already present):
-    ```bash
-    pip install .
-    ```
+For detailed instructions on setting up this environment (`venv_sys`) and using it with Jupyter Notebook, please refer to [doc/python_environments.md](doc/python_environments.md).
+
+Quick setup summary:
+```bash
+python3 -m venv --system-site-packages venv_sys
+source venv_sys/bin/activate
+pip install .
+```
 
 ## Verification
 

@@ -17,6 +17,8 @@ extensions = [
     'sphinx_rtd_theme',
 ]
 
+autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]
+
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 

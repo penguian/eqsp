@@ -16,10 +16,15 @@ Most core functions retain their names. The main differences are in coordinate c
 | `pol2cart` | `utilities.polar2cart` | Renamed for clarity. |
 | `cart2pol` | `utilities.cart2polar2` | Renamed. Handles arrays. |
 | `area_of_sphere` | `utilities.area_of_sphere` | |
-| **Illustrations** | | |
-| `illustrate_eq_algorithm` | `illustrations.illustrate_eq_algorithm` | Moved to `illustrations` module. |
-| `plot_s2_partition` | `illustrations.show_s2_partition` | 3D Plotting. |
-| `project_s2_partition` | `illustrations.project_s2_partition` | 2D Projection. |
+| **Histograms** | | |
+| `eq_count_points_by_s2_region` | `histograms.eq_count_points_by_s2_region` | New in Python port. |
+| `eq_find_s2_region` | `histograms.eq_find_s2_region` | New in Python port. |
+| **2D Illustrations** | | |
+| `illustrate_eq_algorithm` | `illustrations.illustrate_eq_algorithm` | Matplotlib. |
+| `project_s2_partition` | `illustrations.project_s2_partition` | Matplotlib, 2D projection. |
+| **3D Visualizations** | | |
+| `plot_s2_partition` | `visualizations.show_s2_partition` | Mayavi (optional). |
+| `project_s3_partition` | `visualizations.project_s3_partition` | Mayavi (optional). |
 
 ## 2. API & Usage Differences
 
@@ -53,13 +58,22 @@ Some functions have been refactored to return consistent types, avoiding fragile
 *   Input arrays are generally handled as Numpy arrays.
 *   Functions are vectorized where appropriate, similar to Matlab.
 
+### 2.5 3D Plotting: `illustrations` vs. `visualizations`
+The Python port uses two separate modules for plotting, unlike the single Matlab illustration module:
+
+*   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`). Functions that require 3D rendering raise `NotImplementedError` and direct you to `eqsp.visualizations`.
+*   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi; see §4.1 for installation notes.
+
 ## 3. Module Structure
 The package is organized into logical modules:
+
 *   `eqsp.partitions`: Core partition algorithms (`eq_regions`, `eq_point_set`).
 *   `eqsp.utilities`: Math helpers and coordinate conversions.
 *   `eqsp.region_props`: Properties of regions (area, diameter).
 *   `eqsp.point_set_props`: Properties of point sets (energy, distance).
-*   `eqsp.illustrations`: Plotting tools (using Matplotlib).
+*   `eqsp.histograms`: Point-in-region lookup and counting for S^2.
+*   `eqsp.illustrations`: 2D Matplotlib plotting and algorithm diagrams.
+*   `eqsp.visualizations`: 3D Mayavi visualizations (optional dependency).
 
 ## 4. Installation & Getting Started
 Install via:
@@ -75,6 +89,14 @@ import numpy as np
 # Generate 10 points on S^2
 points = eqsp.eq_point_set(2, 10)
 
-# View them
-eqsp.illustrations.show_r3_point_set(points)
+# 2D projected view (Matplotlib, no extra dependencies)
+from eqsp import illustrations as ill
+ill.project_s2_partition(10, proj='eqarea')
+
+# 3D interactive view (requires Mayavi)
+from eqsp import visualizations as vis
+vis.show_s2_partition(10)
 ```
+
+### 4.1 System Packages (Advanced)
+If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/python_environments.md](python_environments.md) for instructions on setting up a compatible virtual environment (`venv_sys`).

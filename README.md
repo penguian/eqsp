@@ -123,18 +123,17 @@ Illustrate the EQ algorithm steps for the partition of $S^d$ into $N$ regions:
 ```python
 from eqsp.illustrations import illustrate_eq_algorithm
 illustrate_eq_algorithm(3, 10)
-illustrate_eq_algorithm(3, 10)
 plt.show()
-```
 
 #### 5. High-Quality 3D Illustrations (Mayavi)
 
-Use Mayavi for superior 3D rendering (smooth tubes for boundaries, real 3D spheres for points):
+### 3D Visualizations
+
+3D plotting functions have been moved to `eqsp.visualizations`. They require Mayavi.
 
 ```python
-from eqsp import illustrations_mayavi as ill_m
-ill_m.show_s2_partition(99)
-# Opens a native GUI window
+from eqsp import visualizations
+visualizations.show_s2_partition(4)  # Opens a native GUI window
 ```
 
 > [!NOTE]
@@ -165,8 +164,8 @@ See the docstrings for these functions for more details (e.g. `help(eqsp.illustr
 - `eqsp.utilities`: Geometric utilities (`area_of_cap`, `volume_of_ball`, `polar2cart`, etc.).
 - `eqsp.point_set_props`: Properties of point sets (energy, min distance).
 - `eqsp.region_props`: Properties of regions (diameter, vertex max dist).
-- `eqsp.illustrations`: logic for visualizing partitions and point sets (Matplotlib).
-- `eqsp.illustrations_mayavi`: logic for visualizing partitions and point sets (Mayavi).
+- `eqsp.illustrations`: Logic for 2D visualizations (Matplotlib).
+- `eqsp.visualizations`: Logic for 3D visualizations (Mayavi).
 
 ## Citation
 
