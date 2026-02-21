@@ -36,7 +36,7 @@ export QT_API="pyqt5"
 export QT_QPA_PLATFORM="xcb"
 ```
 
-> **Note:** The `QT_API` and `QT_QPA_PLATFORM` exports are often necessary on modern Linux systems (like Kubuntu) to ensure Mayavi uses the correct Qt bindings and display platform.
+> **Note:** The `QT_API` and `QT_QPA_PLATFORM` exports are often necessary on modern Linux systems to ensure Mayavi uses the correct Qt bindings and display platform. This specific configuration was tested on **Kubuntu Linux 25.10**. Other environments may require different values or additional variables altogether.
 
 Now, install `eqsp`. For developers, we recommend "editable" mode so changes to source code are reflected immediately:
 

@@ -9,3 +9,4 @@ eqsp documentation
    User Migration Guide <user_migration_guide.md>
    Testing Guide <testing_guide.md>
    Python Environments <python_environments.md>
+   Thesis Examples <thesis-examples.md>

@@ -57,6 +57,23 @@ You can run tests at three levels of granularity:
     python3 tests/inspect_visualizations.py
     ```
 
+### 3.3 Visual Verification (Thesis Examples)
+
+The `thesis-examples/` directory contains high-fidelity scripts that reproduce figures from the canonical PhD thesis. Use these to verify that the library's results match the originally published data:
+
+```bash
+cd thesis-examples
+# Run a numerical plot (Agg backend, saves PNG)
+python3 fig_4_2_min_dist_s2.py --n-max 5000
+
+# Run a 3D visualization (Mayavi, requires venv_sys)
+python3 fig_3_1_partition_s2_33.py
+```
+
+> **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
+
+See [Thesis Example Reproductions](thesis-examples.md) for a full mapping of scripts to thesis figures.
+
 ## 4. Code Coverage
 
 To generate a full coverage report, use the provided helper script:

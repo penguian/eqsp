@@ -69,6 +69,8 @@ If you have Mayavi installed via your system package manager (e.g., `sudo apt in
 
 For detailed instructions on setting up this environment (`venv_sys`) and using it with Jupyter Notebook, please refer to [doc/python_environments.md](doc/python_environments.md).
 
+> **Note:** The `venv_sys` configuration and associated environment variables (like `QT_API` and `QT_QPA_PLATFORM`) described in this documentation were specifically tested on **Kubuntu Linux 25.10**. Other Linux distributions or versions may require different environment variable values or additional configuration.
+
 Quick setup summary:
 ```bash
 python3 -m venv --system-site-packages venv_sys

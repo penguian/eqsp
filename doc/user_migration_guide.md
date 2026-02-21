@@ -100,3 +100,9 @@ vis.show_s2_partition(10)
 
 ### 4.1 System Packages (Advanced)
 If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/python_environments.md](python_environments.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
+
+> **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
+
+## 5. Learning from Examples
+
+For a deep dive into how the Python API corresponds to the original Matlab implementation, see the [Thesis Example Reproductions](thesis-examples.md) document.

@@ -36,6 +36,15 @@ Maple and Matlab code is based on work by:
 - **[Zho95]** Y. M. Zhou, *"Arrangement of points on the sphere"*, PhD thesis, University of South Florida, 1995.
 - **[Zho98]** Y. M. Zhou, *"Equidistribution and extremal energy of N points on the sphere"*, Modelling and computation for applications in mathematics, science, and engineering (Evanston, IL, 1996), pp. 39--57, Numer. Math. Sci. Comput., Oxford Univ. Press, New York, 1998.
 
+## Research Context
+
+The `eqsp` repository is the software implementation of research into Recursive Zonal Equal Area (EQ) sphere partitioning. The mathematical foundation and original context for this software are provided by the following works:
+
+- **PhD Thesis (2007)**: *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*. This thesis describes the partition of the unit sphere into regions of equal area and bounded diameter, establishing the theoretical bounds that justify the partitioning algorithm.
+- **Publications**: The core algorithms and diameter bounds are described and proven in **Leopardi (2006)** and **Leopardi (2009)**. A more recent case study, **Leopardi (2024)**, examines the applicability and impact of these constructions.
+
+The `eqsp` toolbox is the modern Python-native incarnation of the research presented in these documents, evolving from the original Matlab implementation to provide an open-source tool for the scientific community.
+
 ## Installation and Utilities (Matlab Original)
 
 - **Toolbox Installer 2.2**, 2003-07-22 by Rasmus Anthin.
