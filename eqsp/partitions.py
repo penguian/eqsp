@@ -424,24 +424,30 @@ def eq_regions(dim, N, extra_offset=False):
             R = s2_offset(centres_of_regions(regions_1)) @ R
 
         # Append regions for this collar
-        for region_1_n in range(regions_1.shape[2]):
-            region_n += 1
-            if dim == 2:
-                r_top = np.array(
-                    [np.mod(regions_1[0, 0, region_1_n] + TAU * offset, TAU), c_top]
-                )
-                r_bot = np.array(
-                    [np.mod(regions_1[0, 1, region_1_n] + TAU * offset, TAU), c_bot]
-                )
-                if r_bot[0] < r_top[0]:
-                    r_bot[0] = r_bot[0] + TAU
-                regions[:, :, region_n] = np.vstack((r_top, r_bot)).T
-            else:
-                regions[0 : dim - 1, :, region_n] = regions_1[:, :, region_1_n]
-                regions[dim - 1, :, region_n] = np.array([c_top, c_bot])
+        n_regions_1 = regions_1.shape[2]
+        idx_start = region_n + 1
+        idx_end = region_n + 1 + n_regions_1
 
-            if dim_1_rot is not None:
-                dim_1_rot[region_n] = R
+        if dim == 2:
+            r_top_0 = np.mod(regions_1[0, 0, :] + TAU * offset, TAU)
+            r_bot_0 = np.mod(regions_1[0, 1, :] + TAU * offset, TAU)
+            
+            mask = r_bot_0 < r_top_0
+            r_bot_0[mask] += TAU
+            
+            regions[0, 0, idx_start:idx_end] = r_top_0
+            regions[0, 1, idx_start:idx_end] = r_bot_0
+            regions[1, 0, idx_start:idx_end] = c_top
+            regions[1, 1, idx_start:idx_end] = c_bot
+        else:
+            regions[0 : dim - 1, :, idx_start:idx_end] = regions_1
+            regions[dim - 1, 0, idx_start:idx_end] = c_top
+            regions[dim - 1, 1, idx_start:idx_end] = c_bot
+
+        if dim_1_rot is not None:
+            dim_1_rot[idx_start:idx_end] = [R] * n_regions_1
+
+        region_n += n_regions_1
 
         if dim == 2:
             next_n = (
