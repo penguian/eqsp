@@ -4,6 +4,7 @@ EQSP Point Set Properties module.
 
 import math
 import numpy as np
+from scipy.spatial.distance import cdist
 from .partitions import eq_point_set
 from .utilities import (
     area_of_cap,
@@ -522,20 +523,8 @@ def point_set_energy_dist(points, s=None):
     if N <= 1:
         return 0.0, 2.0
 
-    # Expand dims to (M, N, 1) and (M, 1, N) for broadcasting
-    # diffs[i, j, k] = points[i, j] - points[i, k]
-    # We want dists[j, k] = norm(points[:, j] - points[:, k])
-
-    # points: (M, N)
-    # Use standard numpy trick for pairwise distance matrix
-    # But for large N this might be memory intensive.
-    # However, N is usually small in this context (thousands?)
-
-    # Efficient pairwise distance
-    # dist terms: x^2 + y^2 - 2xy. On sphere x^2=1. So 2 - 2xy = 2(1 - x.y).
-    # But points might not be exactly on sphere if modified or numerical error.
-    # Safe Euclidean:
-    dists = np.linalg.norm(points[:, :, None] - points[:, None, :], axis=0)
+    # Efficient pairwise distance using optimized scipy C-extension
+    dists = cdist(points.T, points.T, metric="euclidean")
 
     # Mask diagonal
     np.fill_diagonal(dists, np.inf)
@@ -576,4 +565,5 @@ def point_set_min_dist(points):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

@@ -50,6 +50,16 @@ def eq_area_error(dim, N):
     Note that both total_error and max_error are returned as native floats
     if N is a scalar, otherwise as NumPy arrays.
 
+    Implementation
+    --------------
+    To accurately measure the accumulated rounding error of the partitioning 
+    algorithm itself, this function computes the area for every single region 
+    independently based on the exact geometric boundaries (`s_top` and `s_bot`) 
+    produced by the algorithm. It does not assume regions within a given collar 
+    are strictly identical, nor does it substitute theoretical ideal areas.
+    The calculations are vectorized using NumPy arrays for performance while
+    maintaining strict geometric fidelity to the algorithm's actual output.
+
     Examples
     --------
     >>> import numpy as np
@@ -79,13 +89,15 @@ def eq_area_error(dim, N):
         n = int(N[0, partition_n])
         regions = eq_regions(dim, n)
         ideal_area = area_of_ideal_region(dim, n)
-        total_area = 0.0
-        for region_n in range(regions.shape[2]):
-            area = area_of_region(regions[:, :, region_n])
-            total_area += area
-            region_error = abs(area - ideal_area)
-            if region_error > max_error[0, partition_n]:
-                max_error[0, partition_n] = region_error
+
+        areas = area_of_region(regions)
+        total_area = np.sum(areas)
+
+        # max_error logic
+        region_errors = np.abs(areas - ideal_area)
+        if np.size(region_errors) > 0:
+            max_error[0, partition_n] = np.max(region_errors)
+
         total_error[0, partition_n] = abs(sphere_area - total_area)
 
     total_error = np.reshape(total_error, shape)
@@ -95,17 +107,17 @@ def eq_area_error(dim, N):
 
 def area_of_region(region):
     """
-    Area of given region.
+    Area of given region(s).
 
     Parameters
     ----------
     region : ndarray
-        Region, typically of shape (dim, 2).
+        Region(s), typically of shape (dim, 2) or (dim, 2, N).
 
     Returns
     -------
-    area : float
-        Area of the region.
+    area : float or ndarray
+        Area of the region(s).
 
     See Also
     --------
@@ -119,20 +131,27 @@ def area_of_region(region):
     12.566370614359172
     """
     dim = region.shape[0]
-    s_top = region[dim - 1, 0]
-    s_bot = region[dim - 1, 1]
+    s_top = region[dim - 1, 0, ...]
+    s_bot = region[dim - 1, 1, ...]
     if dim > 1:
         area = (
             area_of_collar(dim, s_top, s_bot)
-            * area_of_region(region[: dim - 1, :])
+            * area_of_region(region[: dim - 1, ...])
             / area_of_sphere(dim - 1)
         )
     else:
-        if s_bot == 0:
-            s_bot = 2 * np.pi
-        if s_top == s_bot:
-            s_bot = s_top + 2 * np.pi
-        area = s_bot - s_top
+        if np.ndim(s_bot) == 0:
+            if s_bot == 0:
+                s_bot = 2 * np.pi
+            if s_top == s_bot:
+                s_bot = s_top + 2 * np.pi
+            area = s_bot - s_top
+        else:
+            s_bot = np.copy(s_bot)
+            s_bot[s_bot == 0] = 2 * np.pi
+            mask = s_top == s_bot
+            s_bot[mask] = s_top[mask] + 2 * np.pi
+            area = s_bot - s_top
     return area
 
 
@@ -332,4 +351,5 @@ def eq_vertex_diam(dim, N):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
