@@ -1,4 +1,7 @@
 [MAIN]
+# Ignore optional dependencies not present in CI environment
+ignored-modules=mayavi,mayavi.mlab,PyQt5
+
 # Allow N, X, Y, Z, M as valid variable names (math notation)
 good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R
 
