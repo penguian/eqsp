@@ -142,14 +142,14 @@ visualizations.show_s2_partition(4)  # Opens a native GUI window
 
 ## Thesis Examples
 
-For users interested in reproducing the results from the original PhD thesis, a collection of high-fidelity reproduction scripts is available in the `thesis-examples/` directory.
+For users interested in reproducing the results from the original PhD thesis, a collection of high-fidelity reproduction scripts is available in the `examples/phd-thesis/` directory.
 
 Each script reproduces a specific figure from the thesis:
 - **Numerical Plots**: Diameter bounds, packing density, and energy calculations.
 - **3D Visualizations**: High-quality Mayavi renderings of partitions and codes.
 - **Argparse Support**: All scripts support `--help` and parameters like `--n-max`.
 
-For more details, see the [Thesis Example Reproductions](doc/thesis-examples.md).
+For more details, see the [Thesis Example Reproductions](doc/phd-thesis-examples.md).
 
 ## Frequently Asked Questions
 

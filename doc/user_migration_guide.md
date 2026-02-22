@@ -105,4 +105,5 @@ If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/pyt
 
 ## 5. Learning from Examples
 
-For a deep dive into how the Python API corresponds to the original Matlab implementation, see the [Thesis Example Reproductions](thesis-examples.md) document.
+For a deep dive into how the Python API corresponds to the original Matlab implementation, see the [PhD Thesis Example Reproductions](phd-thesis-examples.md)
+ document.

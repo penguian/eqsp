@@ -90,7 +90,7 @@ print(eqsp.__version__)
 You can also run the illustration verification script if you have the source code:
 
 ```bash
-python tests/inspect_illustrations.py
+python tests/src/inspect_illustrations.py
 ```
 
 ## Building Documentation

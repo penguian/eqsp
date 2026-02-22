@@ -8,13 +8,13 @@ The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard u
 
 ### 1.1 Test Categories
 
-1.  **Unit Tests (`tests/test_*.py`)**:
+1.  **Unit Tests (`tests/src/test_*.py`)**:
     *   Verify core mathematical logic using static assertions.
     *   Compare results against known-good values from the original Matlab implementation.
-2.  **Mock Tests (`tests/*_mock.py`)**:
+2.  **Mock Tests (`tests/src/*_mock.py`)**:
     *   Verify library interaction (e.g., Mayavi/Matplotlib) without needing a display.
     *   Check if the correct arguments are passed to the plotting engines.
-3.  **Extra Tests (`tests/*_extra.py`)**:
+3.  **Extra Tests (`tests/src/*_extra.py`)**:
     *   Introspective integration tests.
     *   Use non-interactive backends (like Matplotlib's `Agg`) to verify that the rendered plot objects contain the expected mathematical labels and data properties.
 4.  **Doctests**:
@@ -43,7 +43,7 @@ You can run tests at three levels of granularity:
 1.  **By Module (Bridge)**:
     Runs both manual unit tests and bridged doctests for that module.
     ```bash
-    pytest tests/test_point_set_props.py
+    pytest tests/src/test_point_set_props.py
     ```
 2.  **By File (Direct)**:
     Runs **only** the doctests localized in that source file.
@@ -53,16 +53,16 @@ You can run tests at three levels of granularity:
 3.  **Interactive Inspection**:
     To visually verify 2D or 3D output on your local machine:
     ```bash
-    python3 tests/inspect_illustrations.py
-    python3 tests/inspect_visualizations.py
+    python3 tests/src/inspect_illustrations.py
+    python3 tests/src/inspect_visualizations.py
     ```
 
 ### 3.3 Visual Verification (Thesis Examples)
 
-The `thesis-examples/` directory contains high-fidelity scripts that reproduce figures from the canonical PhD thesis. Use these to verify that the library's results match the originally published data:
+The `examples/phd-thesis/` directory contains high-fidelity scripts that reproduce figures from the canonical PhD thesis. Use these to verify that the library's results match the originally published data:
 
 ```bash
-cd thesis-examples
+cd examples/phd-thesis
 # Run a numerical plot (Agg backend, saves PNG)
 python3 fig_4_2_min_dist_s2.py --n-max 5000
 
@@ -72,7 +72,7 @@ python3 fig_3_1_partition_s2_33.py
 
 > **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
 
-See [Thesis Example Reproductions](thesis-examples.md) for a full mapping of scripts to thesis figures.
+See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
 
 ## 4. Code Coverage
 
