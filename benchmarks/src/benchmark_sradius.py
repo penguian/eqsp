@@ -1,3 +1,5 @@
+"""Benchmark for sradius_of_cap (root finding bottleneck)."""
+
 import argparse
 import time
 

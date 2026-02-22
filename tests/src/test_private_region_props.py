@@ -5,7 +5,9 @@ Copyright Paul Leopardi 2026
 """
 
 import doctest
+
 from eqsp._private import _region_props
+
 
 def test_doctests():
     """Test function test_doctests."""

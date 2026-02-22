@@ -6,11 +6,11 @@ Copyright Paul Leopardi 2026
 
 # pylint: disable=import-outside-toplevel
 
+import doctest
 from math import pi
 
 import numpy as np
 
-import doctest
 import eqsp
 from eqsp._private import _histograms
 from eqsp._private._histograms import lookup_s2_region, lookup_table

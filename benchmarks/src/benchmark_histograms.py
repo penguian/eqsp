@@ -1,3 +1,5 @@
+"""Benchmark for vectorized histogram lookups."""
+
 import argparse
 import time
 

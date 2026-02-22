@@ -19,7 +19,9 @@ def main():
         type=int,
         help="General n_max to override defaults for all benchmarks.",
     )
-    parser.add_argument("--dim", type=int, default=2, help="Sphere dimension (default: 2).")
+    parser.add_argument(
+        "--dim", type=int, default=2, help="Sphere dimension (default: 2)."
+    )
     parser.add_argument(
         "--s", type=float, help="Exponent for energy distance benchmark."
     )
@@ -27,7 +29,7 @@ def main():
         "--regions",
         type=int,
         default=1000,
-        help="Partition size for histogram benchmark (default: 1000).",
+        help="Number of regions for histogram benchmark (default: 1000).",
     )
 
     args = parser.parse_args()
@@ -57,7 +59,8 @@ def main():
         (
             "sradius_of_cap (Root finding loop bottleneck)",
             benchmark_sradius.run,
-            {"n_max": args.n_max or 40000000, "dim": args.dim + 1},  # Usually dim+1 in usage
+            # Usually dim+1 in usage
+            {"n_max": args.n_max or 40000000, "dim": args.dim + 1},
         ),
     ]
 

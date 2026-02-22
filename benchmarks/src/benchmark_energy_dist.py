@@ -1,3 +1,5 @@
+"""Benchmark for point_set_energy_dist (O(N^2) memory & broadcasting)."""
+
 import argparse
 import time
 

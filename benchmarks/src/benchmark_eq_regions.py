@@ -1,3 +1,5 @@
+"""Benchmark for eq_regions (Python loop overhead)."""
+
 import argparse
 import time
 

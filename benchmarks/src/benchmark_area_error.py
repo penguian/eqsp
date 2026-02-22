@@ -1,3 +1,5 @@
+"""Benchmark for eq_area_error (Redundant area calculation)."""
+
 import argparse
 import time
 
