@@ -1,0 +1,52 @@
+=======================================
+      EQSP Performance Benchmarks      
+=======================================
+
+Running benchmark: eq_area_error (Redundant area calculation)
+N range         |   Time (s)
+----------------------------
+1-3000          |     3.0377
+3001-6000       |     5.5313
+6001-9000       |     7.4923
+9001-12000      |     9.0614
+12001-15000     |    10.4978
+
+Running benchmark: point_set_energy_dist (O(N^2) memory & broadcasting)
+N range         |   Time (s)
+----------------------------
+1-480           |     0.8409
+481-960         |     4.2699
+961-1440        |     8.1591
+1441-1920       |    14.3994
+1921-2400       |    22.3394
+
+Running benchmark: eq_regions (Python loop overhead)
+N range         |   Time (s)
+----------------------------
+1-3200          |     2.9631
+3201-6400       |     5.5645
+6401-9600       |     7.4705
+9601-12800      |     9.0383
+12801-16000     |    10.4055
+
+Running benchmark: eq_find_s2_region (Vectorized histogram lookup)
+Points     |   Time (s)
+-----------------------
+16000000   |     3.0571
+32000000   |     6.0671
+48000000   |     9.2091
+64000000   |    12.3870
+80000000   |    16.1402
+
+Running benchmark: sradius_of_cap (Root finding loop bottleneck)
+Size       |   Time (s)
+-----------------------
+8000000    |     2.7668
+16000000   |     5.3630
+24000000   |     7.9527
+32000000   |    10.6197
+40000000   |    13.3926
+
+=======================================
+Total benchmark time: 211.55 seconds
+=======================================
