@@ -16,13 +16,19 @@ import numpy as np
 
 def test_doctests():
     """Test function test_doctests."""
-    from eqsp import visualizations
+    with patch.dict(
+        sys.modules,
+        {"mayavi": MagicMock(), "mayavi.mlab": MagicMock()},
+    ):
+        sys.modules.pop("eqsp.visualizations", None)
+        try:
+            from eqsp import visualizations
 
-    # visualizations patches mlab internally on import if missing,
-    # but here we ensure it's mocked.
-    with patch("eqsp.visualizations.mlab"):
-        results = doctest.testmod(visualizations)
-        assert results.failed == 0
+            with patch("eqsp.visualizations.mlab"):
+                results = doctest.testmod(visualizations)
+                assert results.failed == 0
+        finally:
+            sys.modules.pop("eqsp.visualizations", None)
 
 
 def _make_mock_mlab():
