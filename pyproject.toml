@@ -49,8 +49,6 @@ filterwarnings = [
     "ignore:.*__array_wrap__ must accept context.*:DeprecationWarning",
 ]
 addopts = "--ignore=eqsp/_private"
-[tool.black]
-line-length = 88
 
 [tool.pylint.format]
 max-line-length = 88
