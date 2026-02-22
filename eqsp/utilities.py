@@ -8,6 +8,7 @@ from math import pi
 
 import numpy as np
 from scipy.optimize import newton
+# pylint: disable=no-name-in-module
 from scipy.special import betainc, gamma
 
 # Tolerance for comparisons close to zero.

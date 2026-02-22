@@ -25,4 +25,4 @@ jobs:
     - name: Run Pylint
       run: |
         export PYTHONPATH=$PYTHONPATH:.:benchmarks/src
-        pylint benchmarks/src eqsp tests/src examples/phd-thesis/src
+        python -m pylint benchmarks/src eqsp tests/src examples/phd-thesis/src

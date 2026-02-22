@@ -69,6 +69,7 @@ def show_s2_region(region, N, fidelity=32):
     """
     Illustrate a region of S^2.
     """
+    # pylint: disable=no-member
     tol = np.finfo(float).eps * 32
     dim = region.shape[0]
     t = region[:, 0]

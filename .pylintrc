@@ -2,8 +2,9 @@
 # Ignore optional dependencies not present in CI environment
 ignored-modules=mayavi,mayavi.mlab,PyQt5
 
-# Allow Pylint to see members of C-extension modules
-extension-pkg-allow-list=numpy,scipy
+[TYPECHECK]
+# Allow Pylint to see members of C-extension modules without crashing astroid
+generated-members=numpy.*,scipy.*
 
 # Allow N, X, Y, Z, M as valid variable names (math notation)
 good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R
