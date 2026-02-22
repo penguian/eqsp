@@ -40,18 +40,19 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     Examples
     --------
     >>> import numpy as np
-    >>> from eq_histogram.private import lookup_s2_region
-    >>> points_s = eq_point_set_polar(2, 8)
+    >>> from eqsp._private._histograms import lookup_s2_region
+    >>> import eqsp
+    >>> points_s = eqsp.eq_point_set_polar(2, 8)
     >>> N = 8
-    >>> s_regions = eq_regions(2, N)
-    >>> s_cap, n_regions = eq_caps(2, N)
+    >>> s_regions = eqsp.eq_regions(2, N)
+    >>> s_cap, n_regions = eqsp.eq_caps(2, N)
     >>> c_regions = np.cumsum(n_regions)
     >>> r_idx = lookup_s2_region(points_s, s_regions, s_cap, c_regions)
     >>> print(r_idx)
     [1 2 3 4 5 6 7 8]
     >>> N = 5
-    >>> s_regions = eq_regions(2, N)
-    >>> s_cap, n_regions = eq_caps(2, N)
+    >>> s_regions = eqsp.eq_regions(2, N)
+    >>> s_cap, n_regions = eqsp.eq_caps(2, N)
     >>> c_regions = np.cumsum(n_regions)
     >>> r_idx = lookup_s2_region(points_s, s_regions, s_cap, c_regions)
     >>> print(r_idx)
@@ -66,27 +67,40 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     assert c_regions[n_caps - 1] == n_regions, "LOOKUP_S2_REGION: Mismatch between c_regions[-1] and length of s_regions"
     n_points = s_point.shape[1]
     r_idx = np.zeros(n_points, dtype=int)
-    for p_idx in range(n_points):
-        # Lookup by colatitude.
-        c_idx = lookup_table(s_cap, s_point[1, p_idx])
-        if c_idx > 0 and c_idx < n_caps - 1:
+    if n_points == 0:
+        return r_idx
+
+    c_idx_all = np.atleast_1d(lookup_table(s_cap, s_point[1, :]))
+
+    r_idx[c_idx_all == 0] = 1
+    r_idx[c_idx_all >= n_caps - 1] = n_regions
+
+    active_mask = (c_idx_all > 0) & (c_idx_all < n_caps - 1)
+    if np.any(active_mask):
+        active_c_idxs = c_idx_all[active_mask]
+        active_longs = s_point[0, active_mask]
+        orig_indices = np.where(active_mask)[0]
+
+        for c_idx in np.unique(active_c_idxs):
+            collar_mask = (active_c_idxs == c_idx)
+            pts_long = active_longs[collar_mask]
+            pts_idx = orig_indices[collar_mask]
+
             min_r_idx = int(c_regions[c_idx - 1]) + 1
             max_r_idx = int(c_regions[c_idx])
+
             s_longs = s_regions[0, :, min_r_idx - 1 : max_r_idx].copy()
             if s_longs[0, 0] >= 2 * np.pi:
                 s_longs[:, 0] -= 2 * np.pi
             n_longs = s_longs.shape[1]
-            # Lookup by longitude.
-            l_idx = lookup_table(s_longs[1, :], s_point[0, p_idx]) % n_longs
-            if s_point[0, p_idx] < s_longs[0, 0]:
-                l_idx = n_longs - 1
-            r_idx[p_idx] = min_r_idx + l_idx
-        elif c_idx == 0:
-            r_idx[p_idx] = 1
-        elif c_idx >= n_caps - 1:
-            r_idx[p_idx] = n_regions
-        else:
-            r_idx[p_idx] = 0
+
+            l_idx = np.atleast_1d(lookup_table(s_longs[1, :], pts_long)) % n_longs
+            
+            wrap_mask = pts_long < s_longs[0, 0]
+            l_idx[wrap_mask] = n_longs - 1
+
+            r_idx[pts_idx] = min_r_idx + l_idx
+
     return r_idx
 
 
@@ -143,9 +157,7 @@ def lookup_table(table, y):
     # Nondecreasing table.
     maximum = np.max(np.concatenate([table, y])) + 1
     extended_table = np.append(table, maximum)
-    idx = np.array(
-        [np.searchsorted(extended_table, val, side="right") for val in y]
-    )
+    idx = np.searchsorted(extended_table, y, side="right")
     idx[idx < 0] = 0
     
     if idx.size == 1:
