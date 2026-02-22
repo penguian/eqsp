@@ -21,6 +21,6 @@ jobs:
         pip install ruff pylint
         pip install -e .
     - name: Run Ruff
-      run: ruff check benchmarks eqsp tests thesis-examples
+      run: ruff check benchmarks eqsp tests examples/phd-thesis/src
     - name: Run Pylint
-      run: pylint benchmarks eqsp tests thesis-examples
+      run: pylint benchmarks eqsp tests examples/phd-thesis/src
