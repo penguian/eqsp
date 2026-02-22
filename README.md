@@ -151,6 +151,16 @@ Each script reproduces a specific figure from the thesis:
 
 For more details, see the [Thesis Example Reproductions](doc/phd-thesis-examples.md).
 
+## Performance & Benchmarking
+
+The package includes a collection of benchmarks to measure the efficiency of core partitioning and math logic. To run the full suite:
+
+```bash
+python3 benchmarks/src/run_benchmarks.py
+```
+
+For detailed instructions on configurable benchmarks and performance analysis, see the [Performance Benchmarks Guide](doc/benchmarks.md).
+
 ## Frequently Asked Questions
 
 ### Is the toolbox for use with $S^2$ and $S^3$ only? What is the maximum dimension?
