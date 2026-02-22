@@ -10,14 +10,21 @@ Command-line arguments:
         Maximum number of regions N to compute (default: 100000).
 """
 
-import numpy as np
-import matplotlib
+from pathlib import Path
+import argparse
+import sys
 
+import matplotlib
+import numpy as np
+
+# pylint: disable=wrong-import-position,ungrouped-imports,import-error
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from eqsp.region_props import eq_diam_bound, eq_vertex_diam
-import argparse
 
+# Add project root to sys.path so we can import eqsp
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from eqsp.region_props import eq_diam_bound, eq_vertex_diam
 
 def main():
     """Generate and save the figure."""
@@ -29,16 +36,12 @@ def main():
         help="Maximum number of regions N (default: %(default)s)",
     )
     args = parser.parse_args()
-
     dim = 2
     N_values = np.arange(1, args.n_max + 1)
-
     diam_bound = eq_diam_bound(dim, N_values)
     coeff_bound = diam_bound * np.power(N_values, 1.0 / dim)
-
     vertex_diam = eq_vertex_diam(dim, N_values)
     coeff_vertex = vertex_diam * np.power(N_values, 1.0 / dim)
-
     _, ax = plt.subplots(figsize=(10, 6))
     ax.loglog(
         N_values, coeff_bound, "r.", markersize=1, label="Diameter bound coefficient"
@@ -53,7 +56,5 @@ def main():
     plt.tight_layout()
     plt.savefig("fig_3_4_max_diam_s2.png", dpi=150)
     print("Saved fig_3_4_max_diam_s2.png")
-
-
 if __name__ == "__main__":
     main()

@@ -9,14 +9,21 @@ Command-line arguments:
         Maximum number of regions N to compute (default: 20000).
 """
 
-import numpy as np
-import matplotlib
+from pathlib import Path
+import argparse
+import sys
 
+import matplotlib
+import numpy as np
+
+# pylint: disable=wrong-import-position,ungrouped-imports,import-error
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from eqsp.point_set_props import eq_energy_coeff
-import argparse
 
+# Add project root to sys.path so we can import eqsp
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from eqsp.point_set_props import eq_energy_coeff
 
 def main():
     """Generate and save the figure."""
@@ -28,11 +35,9 @@ def main():
         help="Maximum number of regions N (default: %(default)s)",
     )
     args = parser.parse_args()
-
     dim = 3
     N_values = np.arange(2, args.n_max + 1)
     coeff = eq_energy_coeff(dim, N_values)
-
     _, ax = plt.subplots(figsize=(10, 6))
     ax.semilogy(N_values, np.abs(coeff), "b.", markersize=1)
     ax.set_xlabel("N")
@@ -41,7 +46,5 @@ def main():
     plt.tight_layout()
     plt.savefig("fig_5_4_energy_coeff_s3.png", dpi=150)
     print("Saved fig_5_4_energy_coeff_s3.png")
-
-
 if __name__ == "__main__":
     main()

@@ -6,35 +6,24 @@ Copyright 2025 Paul Leopardi.
 For licensing, see COPYING.
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
+from .partitions import eq_point_set, eq_regions
+from .utilities import (
+    polar2cart,
+    x2eqarea,
+    x2stereo,
+)
 
 try:
     from mayavi import mlab
-except ImportError:
+except ImportError as exc:
     raise ImportError(
-        "Mayavi is not installed. " "Please install it with: pip install 'eqsp[mayavi]'"
-    )
+        "Mayavi is not installed. Please install it with: pip install 'eqsp[mayavi]'"
+    ) from exc
 
 PROJ_NAME = {"eqarea": "equal area", "stereo": "stereographic"}
-
-from .utilities import (
-    polar2cart,
-    area_of_cap,
-    volume_of_ball,
-    x2stereo,
-    x2eqarea,
-)
-from .partitions import eq_point_set, eq_regions
-
-
-
-
-
-
-
-
-
 
 
 def show_s2_sphere(opacity=0.95, color=(0, 1, 0)):
@@ -49,7 +38,13 @@ def show_s2_sphere(opacity=0.95, color=(0, 1, 0)):
     mlab.mesh(x, y, z, color=color, opacity=opacity)
 
 
-def show_r3_point_set(points, show_sphere=False, scale_factor=0.1, save_file=None, **kwargs):
+def show_r3_point_set(
+    points,
+    show_sphere=False,
+    scale_factor=0.1,
+    save_file=None,
+    **kwargs,
+):
     """
     3D illustration of a point set.
     """
@@ -65,7 +60,7 @@ def show_r3_point_set(points, show_sphere=False, scale_factor=0.1, save_file=Non
         color=(1, 0, 0),
         **kwargs,
     )
-    
+
     if save_file:
         mlab.savefig(save_file)
 
@@ -107,7 +102,15 @@ def show_s2_region(region, N, fidelity=32):
 
 
 def show_s2_partition(
-    N, *, extra_offset=False, show_points=True, show_sphere=True, title="long", show=True, save_file=None, **kwargs
+    N,
+    *,
+    extra_offset=False,
+    show_points=True,
+    show_sphere=True,
+    title="long",
+    show=True,
+    save_file=None,
+    **_kwargs,
 ):
     """
     3D illustration of an EQ partition of S^2 into N regions.
@@ -169,7 +172,13 @@ def show_s2_partition(
 
 
 def project_point_set(
-    points, proj="stereo", scale_factor=0.1, color=(1, 0, 0), show=True, save_file=None, **kwargs
+    points,
+    proj="stereo",
+    scale_factor=0.1,
+    color=(1, 0, 0),
+    show=True,
+    save_file=None,
+    **kwargs,
 ):
     """
     Use projection to illustrate a point set of S^2 or S^3.
@@ -216,7 +225,8 @@ def project_point_set(
 
     # Mayavi points3d
     # scale_factor and color are explicit arguments now, but kwargs can override?
-    # Actually explicit args take precedence in this implementation, assume user passes them.
+    # Actually explicit args take precedence in this implementation, assume user passes
+    # them.
 
     if dim == 2:
         # Project to z=0 for S^2 -> R^2
@@ -233,7 +243,7 @@ def project_point_set(
         mlab.points3d(
             t[0, :], t[1, :], t[2, :], scale_factor=scale_factor, color=color, **kwargs
         )
-    
+
     if save_file:
         mlab.savefig(save_file)
 
@@ -274,7 +284,9 @@ def project_s3_partition(
     >>> from mayavi import mlab
     >>> mlab.options.offscreen = True
     >>> try:
-    ...     project_s3_partition(4, proj='stereo', show_points=True, show_surfaces=False)
+    ...     project_s3_partition(
+    ...         4, proj='stereo', show_points=True, show_surfaces=False
+    ...     )
     ...     print("Success")
     ... except ImportError:
     ...     print("Mayavi not installed")
@@ -296,7 +308,8 @@ def project_s3_partition(
     dim = 3
 
     if show_surfaces:
-        # Note: Extra offsets for Dim 3 not fully ported (needs rotation matrices return from eq_regions)
+        # Note: Extra offsets for Dim 3 not fully ported
+        # (needs rotation matrices return from eq_regions)
         R = eq_regions(dim, N, extra_offset)
 
         for i in range(1, N):

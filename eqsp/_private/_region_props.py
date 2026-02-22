@@ -1,6 +1,5 @@
 import numpy as np
 
-from ..partitions import eq_regions
 from ..utilities import (
     euclidean_dist,
     polar2cart,

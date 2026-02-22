@@ -8,6 +8,14 @@ max-line-length=88
 [MESSAGES CONTROL]
 # Disable specific warnings
 disable=
-    C0103, # invalid-name (handled by good-names, but often too noisy for math code)
-    R0913, # too-many-arguments (often necessary for complex math functions)
-    R0914, # too-many-locals (often necessary for complex math logic)
+    R0801, # duplicate-code (common in presentation/example scripts)
+    C0103, # invalid-name
+    R0913, # too-many-arguments
+    R0914, # too-many-locals
+    C0303, # trailing-whitespace (handled by ruff)
+
+[DESIGN]
+# Relax complexity limits for mathematically dense algorithms
+max-branches=35
+max-statements=90
+max-positional-arguments=6

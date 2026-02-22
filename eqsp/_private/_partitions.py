@@ -1,5 +1,6 @@
-import numpy as np
 from math import cos, gcd, pi, sin
+
+import numpy as np
 
 from ..utilities import (
     area_of_collar,

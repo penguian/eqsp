@@ -1,11 +1,13 @@
 """
-EQSP Histograms module.
+Recursive Zonal Equal Area Sphere Partitioning
+
+Copyright 2026 Paul Leopardi
 """
 
 import numpy as np
 
 from ._private._histograms import lookup_s2_region
-from .partitions import eq_regions, eq_caps
+from .partitions import eq_caps, eq_regions
 
 
 def eq_count_points_by_s2_region(s_point, N):

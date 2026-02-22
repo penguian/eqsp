@@ -5,13 +5,20 @@ Reproduce the illustration of the EQ partition algorithm steps
 for EQ(3, 99), as shown in Figure 3.3 of the PhD thesis.
 """
 
+from pathlib import Path
+import argparse
+import sys
+
 import matplotlib
 
+# pylint: disable=wrong-import-position,ungrouped-imports,import-error
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from eqsp.illustrations import illustrate_eq_algorithm
-import argparse
 
+# Add project root to sys.path so we can import eqsp
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from eqsp.illustrations import illustrate_eq_algorithm
 
 def main():
     """Generate and save the figure."""
@@ -23,7 +30,5 @@ def main():
     plt.tight_layout()
     plt.savefig("fig_3_3_algorithm_s3_99.png", dpi=150)
     print("Saved fig_3_3_algorithm_s3_99.png")
-
-
 if __name__ == "__main__":
     main()

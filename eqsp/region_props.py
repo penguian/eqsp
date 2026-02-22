@@ -1,17 +1,20 @@
 """
-EQSP Region Properties module.
+Recursive Zonal Equal Area Sphere Partitioning
+
+Copyright 2026 Paul Leopardi
 """
 
 import numpy as np
-from .partitions import eq_regions
-from .utilities import (
-    area_of_sphere,
-    area_of_ideal_region,
-    area_of_collar,
-)
+
 from ._private._region_props import (
     max_diam_bound_of_regions,
     max_vertex_diam_of_regions,
+)
+from .partitions import eq_regions
+from .utilities import (
+    area_of_collar,
+    area_of_ideal_region,
+    area_of_sphere,
 )
 
 
@@ -52,10 +55,10 @@ def eq_area_error(dim, N):
 
     Implementation
     --------------
-    To accurately measure the accumulated rounding error of the partitioning 
-    algorithm itself, this function computes the area for every single region 
-    independently based on the exact geometric boundaries (`s_top` and `s_bot`) 
-    produced by the algorithm. It does not assume regions within a given collar 
+    To accurately measure the accumulated rounding error of the partitioning
+    algorithm itself, this function computes the area for every single region
+    independently based on the exact geometric boundaries (`s_top` and `s_bot`)
+    produced by the algorithm. It does not assume regions within a given collar
     are strictly identical, nor does it substitute theoretical ideal areas.
     The calculations are vectorized using NumPy arrays for performance while
     maintaining strict geometric fidelity to the algorithm's actual output.

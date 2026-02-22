@@ -1,18 +1,25 @@
-import numpy as np
-import pytest
+"""
+EQSP Tests: Point Set Props features
+
+Copyright Paul Leopardi 2026
+"""
+
 import doctest
+
+import numpy as np
 from numpy.testing import assert_allclose
+
 from eqsp import point_set_props
 
 
 def test_doctests():
-    """Run doctests for point_set_props."""
-    import doctest
+    """Test function test_doctests."""
     results = doctest.testmod(point_set_props)
     assert results.failed == 0
 
 
 def test_eq_min_dist():
+    """Test function test_eq_min_dist."""
     # Test based on doctest
     dist = point_set_props.eq_min_dist(2, 10)
     assert_allclose(dist, 1.0515, atol=1e-4)
@@ -24,6 +31,7 @@ def test_eq_min_dist():
 
 
 def test_calc_dist_coeff():
+    """Test function test_calc_dist_coeff."""
     # Example from doctest
     N = np.arange(2, 7)
     # Reconstruct dist manually or assume eq_min_dist works
@@ -36,6 +44,7 @@ def test_calc_dist_coeff():
 
 
 def test_eq_energy_coeff():
+    """Test function test_eq_energy_coeff."""
     # Example from doctest
     coeff = point_set_props.eq_energy_coeff(2, 10)
     assert_allclose(coeff, -0.5460877923347524, atol=1e-5)
@@ -52,6 +61,7 @@ def test_eq_energy_coeff():
 
 
 def test_eq_energy_dist():
+    """Test function test_eq_energy_dist."""
     # Example from doctest
     energy = point_set_props.eq_energy_dist(2, 10)
     assert_allclose(energy, 32.7312, atol=1e-4)
@@ -67,6 +77,7 @@ def test_eq_energy_dist():
 
 
 def test_eq_packing_density():
+    """Test function test_eq_packing_density."""
     # Example from doctest
     density = point_set_props.eq_packing_density(2, 10)
     assert_allclose(density, 0.7467459582397998, atol=1e-6)
@@ -78,12 +89,14 @@ def test_eq_packing_density():
 
 
 def test_sphere_int_energy():
+    """Test function test_sphere_int_energy."""
     # Example from doctest
     energy = point_set_props.sphere_int_energy(2, 0)
     assert_allclose(energy, -0.1931471805599453, atol=1e-6)
 
 
 def test_point_set_dist_and_energy():
+    """Test function test_point_set_dist_and_energy."""
     # Example from doctest
     x = np.array([[0, 0, 0, 0], [0, 1, -1, 0], [1, 0, 0, -1]])
 
@@ -102,6 +115,7 @@ def test_point_set_dist_and_energy():
 
 
 def test_eq_dist_coeff():
+    """Test function test_eq_dist_coeff."""
     N = np.arange(2, 7)
     coeff = point_set_props.eq_dist_coeff(2, N)
     expected_coeff = np.array([2.8284, 2.4495, 2.8284, 3.1623, 3.4641])
@@ -109,6 +123,7 @@ def test_eq_dist_coeff():
 
 
 def test_eq_point_set_property():
+    """Test function test_eq_point_set_property."""
     res = point_set_props.eq_point_set_property(
         point_set_props.point_set_min_dist, 2, 10
     )

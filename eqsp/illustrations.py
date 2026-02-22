@@ -1,26 +1,12 @@
 """
-EQSP Illustrations module.
-Ported from eq_sphere_partitions/eq_illustrations.
+Recursive Zonal Equal Area Sphere Partitioning
 
-Copyright 2025 Paul Leopardi.
-For licensing, see COPYING.
+Copyright 2026 Paul Leopardi
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-
-
-from .utilities import (
-    polar2cart,
-    area_of_cap,
-    volume_of_ball,
-    area_of_sphere,
-    ideal_collar_angle,
-    x2stereo,
-    x2eqarea,
-)
-from .partitions import eq_point_set, eq_regions, eq_caps
 from ._private._partitions import (
     cap_colats,
     ideal_region_list,
@@ -28,15 +14,13 @@ from ._private._partitions import (
     polar_colat,
     round_to_naturals,
 )
-
-
-
-
-
-
-
-
-
+from .partitions import eq_caps, eq_point_set, eq_regions
+from .utilities import (
+    ideal_collar_angle,
+    polar2cart,
+    x2eqarea,
+    x2stereo,
+)
 
 
 def show_s2_sphere(*args, **kwargs):
@@ -44,8 +28,9 @@ def show_s2_sphere(*args, **kwargs):
     Illustrate the unit sphere S^2 (Moved to eqsp.visualizations).
     """
     raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. "
-        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+        "3D plotting has been moved to eqsp.visualizations. Use "
+        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
+        "for 3D plots."
     )
 
 
@@ -54,8 +39,9 @@ def show_r3_point_set(*args, **kwargs):
     3D illustration of a point set (Moved to eqsp.visualizations).
     """
     raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. "
-        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+        "3D plotting has been moved to eqsp.visualizations. Use "
+        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
+        "for 3D plots."
     )
 
 
@@ -64,8 +50,9 @@ def show_s2_region(*args, **kwargs):
     Illustrate a region of S^2 (Moved to eqsp.visualizations).
     """
     raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. "
-        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+        "3D plotting has been moved to eqsp.visualizations. Use "
+        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
+        "for 3D plots."
     )
 
 
@@ -77,11 +64,11 @@ def show_s2_partition(
     title="long",
     show_points=True,
     show_sphere=True,
-    **kwargs,
+    **_kwargs,
 ):
     """
     3D illustration of an EQ partition of S^2 into N regions.
-    
+
     This function is a legacy Matplotlib-based implementation. It is considered
     deprecated for 3D use and currently raises NotImplementedError.
     Use `eqsp.visualizations.show_s2_partition` for high-quality 3D rendering.
@@ -100,7 +87,7 @@ def show_s2_partition(
         If True (default), show the center points of regions.
     show_sphere : bool, optional
         If True (default), show the unit sphere surface.
-    **kwargs
+    **_kwargs
         Additional arguments passed to underlying plotting functions.
 
     Returns
@@ -116,13 +103,14 @@ def show_s2_partition(
     ...     show_s2_partition(4)
     """
     raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. "
-        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+        "3D plotting has been moved to eqsp.visualizations. Use "
+        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
+        "for 3D plots."
     )
 
 
 def project_point_set(
-    points, ax=None, proj="stereo", scale_factor=0.05, color=None, show=None, **kwargs
+    points, ax=None, proj="stereo", _scale_factor=0.05, color=None, show=None, **_kwargs
 ):
     """
     Use projection to illustrate a point set of S^2 or S^3.
@@ -135,14 +123,14 @@ def project_point_set(
         Matplotlib axes (2D or 3D). If None, a new figure is created.
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default is 'stereo'.
-    scale_factor : float, optional
+    _scale_factor : float, optional
         Scale factor for points (unused in matplotlib implementation, kept for
         compatibility/kwargs).
     color : color spec, optional
         Color of points. Default is 'k' for 2D, 'r' for 3D.
     show : bool or None, optional
         If True, call `plt.show()`. If None, call `plt.show()` only if `ax` was None.
-    **kwargs
+    **_kwargs
         Passed to `ax.scatter`.
 
     Returns
@@ -189,11 +177,12 @@ def project_point_set(
             c = cmap(r / np.pi)
         else:
             c = color
-        ax.scatter(t[0, :], t[1, :], s=20, c=c, **kwargs)
-
+        ax.scatter(t[0, :], t[1, :], s=20, c=c, **_kwargs)
 
     elif dim == 3:
-        raise NotImplementedError("3D plotting for S^3 has been moved to eqsp.visualizations.")
+        raise NotImplementedError(
+            "3D plotting for S^3 has been moved to eqsp.visualizations."
+        )
 
     if show is True or (show is None and ax is None):
         if plt.get_backend() != "Agg":
@@ -211,7 +200,7 @@ def project_s2_partition(
     show_points=False,
     ax=None,
     show=None,
-    **kwargs,
+    **_kwargs,
 ):
     """
     Use projection to illustrate an EQ partition of S^2.
@@ -234,7 +223,7 @@ def project_s2_partition(
         Matplotlib axes to plot on. If None, a new figure is created.
     show : bool or None, optional
         If True, call `plt.show()`. If None, call `plt.show()` only if `ax` was None.
-    **kwargs
+    **_kwargs
         Passed to underlying plot functions.
 
     Returns
@@ -315,7 +304,7 @@ def project_s2_partition(
 
     if show_points:
         points = eq_point_set(dim, N, extra_offset)
-        project_point_set(points, ax=ax, proj=proj, color=None, **kwargs)
+        project_point_set(points, ax=ax, proj=proj, color=None, **_kwargs)
 
     if show_title:
         title_text = f"EQ(2,{N}) {proj} projection"
@@ -333,8 +322,9 @@ def project_s3_partition(*args, **kwargs):
     Use projection to illustrate an EQ partition of S^3 (Moved to eqsp.visualizations).
     """
     raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. "
-        "Use visualizations.show_s2_partition(N) or project_s3_partition(N) for 3D plots."
+        "3D plotting has been moved to eqsp.visualizations. Use "
+        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
+        "for 3D plots."
     )
 
 
@@ -345,11 +335,11 @@ def illustrate_eq_algorithm(
     extra_offset=False,
     fontsize=8,
     show_title=True,
-    long_title=False,
+    _long_title=False,
     show_points=True,
     proj="eqarea",
     show=True,
-    **kwargs,
+    **_kwargs,
 ):
     """
     Illustrate the EQ partition algorithm.
@@ -366,13 +356,13 @@ def illustrate_eq_algorithm(
         Font size. Default 16.
     show_title : bool, optional
         Show title. Default True.
-    long_title : bool, optional
+    _long_title : bool, optional
         Use long title variant. Default False.
     proj : str, optional
         Projection type ('stereo' or 'eqarea'). Default 'eqarea'.
     show : bool, optional
         If True (default), call `plt.show()`.
-    **kwargs
+    **_kwargs
         Passed to underlying plot functions.
 
     Returns
@@ -384,7 +374,7 @@ def illustrate_eq_algorithm(
         "extra_offset": extra_offset,
         "fontsize": fontsize,
         "show_title": show_title,
-        "long_title": long_title,
+        "long_title": _long_title, # Pass the original value, not the prefixed name
     }
 
     plt.subplot(2, 2, 1)
@@ -413,13 +403,13 @@ def illustrate_eq_algorithm(
 
     # Map title mode
     if show_title:
-        proj_opts["title"] = "long" if long_title else "short"
+        proj_opts["title"] = "long" if _long_title else "short"
     else:
         proj_opts["title"] = "none"
 
     # Remove options not accepted by project_s2_partition/ax.scatter
     proj_opts.pop("show_title", None)
-    proj_opts.pop("long_title", None)
+    proj_opts.pop("long_title", None) # Remove the original name
 
     if dim == 2:
         ax = plt.subplot(2, 2, 4)
@@ -444,7 +434,7 @@ def illustrate_eq_algorithm(
 
 
 def illustrate_steps_1_2(
-    dim, N, *, fontsize=8, show_title=True, long_title=False, **kwargs
+    dim, N, *, fontsize=8, show_title=True, _long_title=False, **_kwargs
 ):
     """
     Illustrate steps 1 and 2 of the EQ partition.
@@ -509,7 +499,7 @@ def illustrate_steps_1_2(
 
 
 def illustrate_steps_3_5(
-    dim, N, *, fontsize=8, show_title=True, long_title=False, **kwargs
+    dim, N, *, fontsize=8, show_title=True, _long_title=False, **_kwargs
 ):
     """
     Illustrate steps 3 to 5 of the EQ partition.
@@ -528,7 +518,12 @@ def illustrate_steps_3_5(
     k = np.linspace(-1.0, 1.0, 41)
     j = np.ones_like(k)
     plt.plot(np.sin(c_polar) * k, np.cos(c_polar) * j, "r", linewidth=2)
-    plt.text(np.sin(c_polar) * 1.1, np.cos(c_polar) * 1.1, r"$\theta_{F,1}$", fontsize=fontsize)
+    plt.text(
+        np.sin(c_polar) * 1.1,
+        np.cos(c_polar) * 1.1,
+        r"$\theta_{F,1}$",
+        fontsize=fontsize,
+    )
     plt.plot(np.sin(c_polar) * h, np.cos(c_polar) * h, "b", linewidth=2)
     plt.plot(np.sin(c_polar) * k, -np.cos(c_polar) * j, "r", linewidth=2)
 
@@ -540,18 +535,16 @@ def illustrate_steps_3_5(
         plt.plot(np.sin(theta) * h, np.cos(theta) * h, "b", linewidth=2)
         theta_str = r"$\theta_{F,%d}$" % (collar_n + 1)
         plt.text(np.sin(theta) * 1.1, np.cos(theta) * 1.1, theta_str, fontsize=fontsize)
-        
+
         theta_p = s_cap[collar_n - 1]
-        
+
         if collar_n > 1:
-             plt.plot(np.sin(theta_p) * k, np.cos(theta_p) * j, "r", linewidth=2)
+            plt.plot(np.sin(theta_p) * k, np.cos(theta_p) * j, "r", linewidth=2)
 
         arc = theta_p + (theta - theta_p) * h
         plt.plot(np.sin(arc) / 5.0, np.cos(arc) / 5.0, "b", linewidth=1)
         mid = (theta_p + theta) / 2.0
-        plt.text(
-            np.sin(mid) / 2.0, np.cos(mid) / 2.0, r"$\Delta_F$", fontsize=fontsize
-        )
+        plt.text(np.sin(mid) / 2.0, np.cos(mid) / 2.0, r"$\Delta_F$", fontsize=fontsize)
         y_str = r"$y_{%d} = %3.1f...$" % (collar_n, r_regions[zone_n])
         plt.text(
             -np.sin(mid) + 1.0 / 20.0,
@@ -565,7 +558,7 @@ def illustrate_steps_3_5(
 
 
 def illustrate_steps_6_7(
-    dim, N, *, fontsize=8, show_title=True, long_title=False, **kwargs
+    dim, N, *, fontsize=8, show_title=True, _long_title=False, **_kwargs
 ):
     """
     Illustrate steps 6 and 7 of the EQ partition.
@@ -585,7 +578,9 @@ def illustrate_steps_6_7(
     k = np.linspace(-1.0, 1.0, 41)
     j = np.ones_like(k)
     plt.plot(np.sin(c_polar) * k, np.cos(c_polar) * j, "r", linewidth=2)
-    plt.text(np.sin(c_polar) * 1.1, np.cos(c_polar) * 1.1, r"$\theta_1$", fontsize=fontsize)
+    plt.text(
+        np.sin(c_polar) * 1.1, np.cos(c_polar) * 1.1, r"$\theta_1$", fontsize=fontsize
+    )
     plt.plot(np.sin(c_polar) * h, np.cos(c_polar) * h, "b", linewidth=2)
     plt.plot(np.sin(c_polar) * k, -np.cos(c_polar) * j, "r", linewidth=2)
 
@@ -597,9 +592,9 @@ def illustrate_steps_6_7(
         plt.plot(np.sin(theta) * h, np.cos(theta) * h, "b", linewidth=2)
         theta_str = r"$\theta_{%d}$" % (collar_n + 1)
         plt.text(np.sin(theta) * 1.1, np.cos(theta) * 1.1, theta_str, fontsize=fontsize)
-        
+
         theta_p = s_cap[collar_n - 1]
-        
+
         if collar_n > 1:
             plt.plot(np.sin(theta_p) * k, np.cos(theta_p) * j, "r", linewidth=2)
 

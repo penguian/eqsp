@@ -15,15 +15,22 @@ Command-line arguments:
         Maximum number of regions N to compute (default: 20000).
 """
 
+from pathlib import Path
+import argparse
 import math
-import numpy as np
-import matplotlib
+import sys
 
+import matplotlib
+import numpy as np
+
+# pylint: disable=wrong-import-position,ungrouped-imports,import-error
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from eqsp.point_set_props import eq_packing_density
-import argparse
 
+# Add project root to sys.path so we can import eqsp
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from eqsp.point_set_props import eq_packing_density
 
 def main():
     """Generate and save the figure."""
@@ -35,16 +42,12 @@ def main():
         help="Maximum number of regions N (default: %(default)s)",
     )
     args = parser.parse_args()
-
     N_values = np.arange(2, args.n_max + 1)
-
     # Simple cubic lattice reference densities for dim=2,3,4
     def simple_cubic_density(dim):
         return math.pi ** (dim / 2) / (2**dim * math.gamma(dim / 2 + 1))
-
     dims = [2, 3, 4]
     colors = ["b", "r", "g"]
-
     _, ax = plt.subplots(figsize=(10, 6))
     for dim, color in zip(dims, colors):
         density = eq_packing_density(dim, N_values)
@@ -52,7 +55,6 @@ def main():
         ax.semilogy(
             N_values, wyner_ratio, color=color, linewidth=0.5, label=rf"$d={dim}$"
         )
-
     ax.axhline(y=1.0, color="k", linestyle="--", linewidth=0.8)
     ax.set_xlabel("N")
     ax.set_ylabel("Wyner ratio")
@@ -64,7 +66,5 @@ def main():
     plt.tight_layout()
     plt.savefig("fig_4_8_wyner_s2_s3_s4.png", dpi=150)
     print("Saved fig_4_8_wyner_s2_s3_s4.png")
-
-
 if __name__ == "__main__":
     main()

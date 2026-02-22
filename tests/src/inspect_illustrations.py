@@ -1,17 +1,14 @@
 """
-Visual inspection script for eqsp.illustrations (Matplotlib-based 2D plots).
+EQSP Tests: Inspect Illustrations features
 
-Usage:
-    python tests/inspect_illustrations.py [--save]
-
-Arguments:
-    --save    Save each figure to a PNG file in the current directory
-              instead of displaying it interactively.
+Copyright Paul Leopardi 2026
 """
 
 import argparse
 import os
+
 import matplotlib.pyplot as plt
+
 from eqsp import illustrations
 from eqsp.partitions import eq_point_set
 
@@ -47,7 +44,9 @@ def run(save=False):
     # --- project_s2_partition ---
     print("Testing project_s2_partition(20, proj='eqarea', show_points=True)...")
     fig, ax = plt.subplots()
-    illustrations.project_s2_partition(20, proj="eqarea", show_points=True, ax=ax, show=False)
+    illustrations.project_s2_partition(
+        20, proj="eqarea", show_points=True, ax=ax, show=False
+    )
     if save:
         path = "inspect_project_s2_partition_20_eqarea.png"
         fig.savefig(path, bbox_inches="tight")

@@ -9,10 +9,17 @@ Requires Mayavi. Run with venv_sys:
     ../venv_sys/bin/python fig_4_1_eqp_s2_33.py
 """
 
-from mayavi import mlab
-from eqsp.visualizations import show_s2_partition
+from pathlib import Path
 import argparse
+import sys
 
+from mayavi import mlab
+
+# pylint: disable=wrong-import-position,import-error
+# Add project root to sys.path so we can import eqsp
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from eqsp.visualizations import show_s2_partition
 
 def main():
     """Generate and save the figure."""
@@ -27,7 +34,5 @@ def main():
         show=True,
         save_file="fig_4_1_eqp_s2_33.png",
     )
-
-
 if __name__ == "__main__":
     main()

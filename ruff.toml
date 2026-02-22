@@ -1,1 +1,12 @@
 line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+]
+
+[per-file-ignores]
+# thesis-examples require strictly ordered initialization of matplotlib.use("Agg")
+# and sys.path manipulation, which triggers I001 and E402.
+"examples/phd-thesis/*.py" = ["I001", "E402"]

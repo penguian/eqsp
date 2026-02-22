@@ -61,10 +61,14 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     import numpy as np
 
     n_caps = len(s_cap)
-    assert n_caps == len(c_regions), "LOOKUP_S2_REGION: Mismatch between length of s_cap and c_regions"
-    
+    assert n_caps == len(c_regions), (
+        "LOOKUP_S2_REGION: Mismatch between length of s_cap and c_regions"
+    )
+    # The last element of c_regions should be the total number of regions (N)
     n_regions = s_regions.shape[2]
-    assert c_regions[n_caps - 1] == n_regions, "LOOKUP_S2_REGION: Mismatch between c_regions[-1] and length of s_regions"
+    assert c_regions[n_caps - 1] == n_regions, (
+        "LOOKUP_S2_REGION: Mismatch between c_regions[-1] and length of s_regions"
+    )
     n_points = s_point.shape[1]
     r_idx = np.zeros(n_points, dtype=int)
     if n_points == 0:
@@ -82,7 +86,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
         orig_indices = np.where(active_mask)[0]
 
         for c_idx in np.unique(active_c_idxs):
-            collar_mask = (active_c_idxs == c_idx)
+            collar_mask = active_c_idxs == c_idx
             pts_long = active_longs[collar_mask]
             pts_idx = orig_indices[collar_mask]
 
@@ -95,7 +99,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
             n_longs = s_longs.shape[1]
 
             l_idx = np.atleast_1d(lookup_table(s_longs[1, :], pts_long)) % n_longs
-            
+
             wrap_mask = pts_long < s_longs[0, 0]
             l_idx[wrap_mask] = n_longs - 1
 
@@ -159,10 +163,7 @@ def lookup_table(table, y):
     extended_table = np.append(table, maximum)
     idx = np.searchsorted(extended_table, y, side="right")
     idx[idx < 0] = 0
-    
+
     if idx.size == 1:
         return int(idx[0])
     return idx
-
-
-

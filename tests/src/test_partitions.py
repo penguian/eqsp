@@ -1,19 +1,28 @@
-import numpy as np
-import pytest
+"""
+EQSP Tests: Partitions features
+
+Copyright Paul Leopardi 2026
+"""
+
+# pylint: disable=import-outside-toplevel
+
 import doctest
-from numpy.testing import assert_allclose
-from eqsp import partitions
 from math import pi
+
+import numpy as np
+from numpy.testing import assert_allclose
+
+from eqsp import partitions
 
 
 def test_doctests():
-    """Load doctests from partitions into this test file's suite."""
-    import doctest
+    """Test function test_doctests."""
     results = doctest.testmod(partitions)
     assert results.failed == 0
 
 
 def test_eq_caps():
+    """Test function test_eq_caps."""
     # Test dim=2, N=10 (from docstring/Matlab)
     s_cap, n_regions = partitions.eq_caps(2, 10)
     expected_s_cap = np.array([0.6435, 1.5708, 2.4981, 3.1416])
@@ -49,6 +58,7 @@ def test_eq_caps():
 
 
 def test_eq_point_set_polar():
+    """Test function test_eq_point_set_polar."""
     # Test dim=2, N=4
     # Expected shape (2, 4)
     dim = 2
@@ -69,6 +79,7 @@ def test_eq_point_set_polar():
 
 
 def test_eq_point_set():
+    """Test function test_eq_point_set."""
     # Test dim=2, N=4
     dim = 2
     N = 4
@@ -81,6 +92,7 @@ def test_eq_point_set():
 
 
 def test_eq_regions():
+    """Test function test_eq_regions."""
     # Test dim=2, N=4
     dim = 2
     N = 4
@@ -98,6 +110,7 @@ def test_eq_regions():
 
 
 def test_extra_offsets():
+    """Test function test_extra_offsets."""
     # Test dim=2, N=10 with extra_offset
     points_s = partitions.eq_point_set_polar(2, 10, extra_offset=True)
     assert points_s.shape == (2, 10)
@@ -105,12 +118,12 @@ def test_extra_offsets():
     # Test dim=3, N=10 with extra_offset (exercises s2_offset, rot3)
     points_s = partitions.eq_point_set_polar(3, 10, extra_offset=True)
     assert points_s.shape == (3, 10)
-    
+
     # eq_regions with extra_offset
     regs, rots = partitions.eq_regions(2, 4, extra_offset=True)
     assert regs.shape == (2, 2, 4)
     assert len(rots) == 4
-    
+
     # dim=3 regions with rotations
     regs, rots = partitions.eq_regions(3, 4, extra_offset=True)
     assert regs.shape == (3, 2, 4)
@@ -118,7 +131,8 @@ def test_extra_offsets():
 
 
 def test_vectorized_helpers():
-    from eqsp._private._partitions import polar_colat, num_collars
+    """Test function test_vectorized_helpers."""
+    from eqsp._private._partitions import num_collars, polar_colat
 
     # Vectorized polar_colat
     Ns = np.array([1, 2, 4, 10])
@@ -135,12 +149,13 @@ def test_vectorized_helpers():
 
 
 def test_private_helpers():
+    """Test function test_private_helpers."""
     from eqsp._private._partitions import (
-        top_cap_region,
         bot_cap_region,
-        sphere_region,
         centres_of_regions,
         circle_offset,
+        sphere_region,
+        top_cap_region,
     )
 
     # dim=1 cases

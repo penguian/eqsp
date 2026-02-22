@@ -1,16 +1,14 @@
 """
-Visual inspection script for eqsp.visualizations (Mayavi-based 3D plots).
+EQSP Tests: Inspect Visualizations features
 
-Usage:
-    python tests/inspect_visualizations.py [--save]
-
-Arguments:
-    --save    Save each figure to a PNG file in the current directory
-              via mlab.savefig (passed as save_file= to each function).
+Copyright Paul Leopardi 2026
 """
+
+# pylint: disable=import-outside-toplevel
 
 import argparse
 import os
+
 from eqsp.partitions import eq_point_set
 
 
@@ -27,6 +25,7 @@ def run(save=False):
     """
     try:
         from mayavi import mlab
+
         from eqsp import visualizations
     except ImportError:
         print("Mayavi not installed; skipping 3D visualizations.")
@@ -51,8 +50,12 @@ def run(save=False):
     print("Testing project_s3_partition(120, proj='stereo')...")
     save_file = "inspect_project_s3_partition_120.png" if save else None
     visualizations.project_s3_partition(
-        120, proj="stereo", show_points=True, show_surfaces=True,
-        show=not save, save_file=save_file,
+        120,
+        proj="stereo",
+        show_points=True,
+        show_surfaces=True,
+        show=not save,
+        save_file=save_file,
     )
     if save:
         print(f"  Saved to {save_file}")

@@ -1,7 +1,13 @@
-import math
-import numpy as np
+"""
+Recursive Zonal Equal Area Sphere Partitioning
 
+Copyright 2026 Paul Leopardi
+"""
+
+import math
 from math import pi
+
+import numpy as np
 
 from ._private._partitions import (
     bot_cap_region,
@@ -22,7 +28,6 @@ from .utilities import (
     ideal_collar_angle,
     polar2cart,
 )
-
 
 TAU = 2.0 * pi
 
@@ -386,8 +391,7 @@ def eq_regions(dim, N, extra_offset=False):
     regions[:, :, 0] = top_cap_region(dim, s_cap[0])
     region_n = 0
 
-    if (True) or (extra_offset and dim == 3):
-        R = np.eye(dim)
+    R = np.eye(dim)
     dim_1_rot[0] = R
 
     if dim == 2:
@@ -431,10 +435,10 @@ def eq_regions(dim, N, extra_offset=False):
         if dim == 2:
             r_top_0 = np.mod(regions_1[0, 0, :] + TAU * offset, TAU)
             r_bot_0 = np.mod(regions_1[0, 1, :] + TAU * offset, TAU)
-            
+
             mask = r_bot_0 < r_top_0
             r_bot_0[mask] += TAU
-            
+
             regions[0, 0, idx_start:idx_end] = r_top_0
             regions[0, 1, idx_start:idx_end] = r_bot_0
             regions[1, 0, idx_start:idx_end] = c_top
@@ -460,9 +464,8 @@ def eq_regions(dim, N, extra_offset=False):
     regions[:, :, N - 1] = bot_cap_region(dim, s_cap[0])
     if extra_offset:
         if (dim == 3) or (dim < 3):
-             # Ensure last one is set if not already
-             if dim_1_rot[N-1] is None:
-                 dim_1_rot[N-1] = np.eye(dim)
+            # Ensure last one is set if not already
+            if dim_1_rot[N - 1] is None:
+                dim_1_rot[N - 1] = np.eye(dim)
         return regions, dim_1_rot
-    else:
-        return regions
+    return regions

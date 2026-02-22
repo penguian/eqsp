@@ -1,10 +1,15 @@
 """
-EQSP Point Set Properties module.
+Recursive Zonal Equal Area Sphere Partitioning
+
+Copyright 2026 Paul Leopardi
 """
 
 import math
+
 import numpy as np
 from scipy.spatial.distance import cdist
+from scipy.special import psi
+
 from .partitions import eq_point_set
 from .utilities import (
     area_of_cap,
@@ -103,8 +108,6 @@ def calc_energy_coeff(dim, N, s, energy):
                 / (math.gamma((dim - s_val + 1) / 2) * math.gamma(dim - s_val / 2))
             )
         if dim != 1:
-            from scipy.special import psi
-
             return (psi(dim) - psi(dim / 2) - math.log(4)) / 2
         return 0
 
@@ -165,8 +168,6 @@ def sphere_int_energy(dim, s):
             / (math.gamma((dim - s + 1) / 2) * math.gamma(dim - s / 2))
         )
     if dim != 1:
-        from scipy.special import psi
-
         return (psi(dim) - psi(dim / 2) - math.log(4)) / 2
     return 0
 

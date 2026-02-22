@@ -1,16 +1,14 @@
 """
-EQSP: Recursive Zonal Equal Area Sphere Partitioning.
-Copyright 2025 Paul Leopardi.
-For licensing, see COPYING.
-For references, see AUTHORS.
-For revision history, see CHANGELOG.
+Recursive Zonal Equal Area Sphere Partitioning
+
+Copyright 2026 Paul Leopardi
 """
 
-import numpy as np
 from math import pi
-from scipy.optimize import root_scalar, newton
-from scipy.special import betainc, gamma
 
+import numpy as np
+from scipy.optimize import newton
+from scipy.special import betainc, gamma
 
 # Tolerance for comparisons close to zero.
 tolerance = float(np.finfo(np.float32).eps)
@@ -643,20 +641,20 @@ def sradius_of_cap(dim, area):
         flat_area = np.ravel(area)
         s_cap = np.zeros_like(flat_area, dtype=float)
         sphere_area = area_of_sphere(dim)
-        
+
         # Handle cases matching or exceeding full sphere area
         full_idx = flat_area >= sphere_area
         s_cap[full_idx] = pi
-        
+
         # Process remaining cases
         calc_idx = ~full_idx
         if np.any(calc_idx):
             ak_calc = flat_area[calc_idx]
-            
+
             # Mirror areas greater than half the sphere for better convergence
             flipped = 2 * ak_calc > sphere_area
             ak_target = np.where(flipped, sphere_area - ak_calc, ak_calc)
-            
+
             # Pre-allocate inputs for vectorized optimization
             # Start with a good initial guess (e.g. midpoint of remaining space)
             x0 = np.full_like(ak_target, pi / 2)
@@ -668,19 +666,20 @@ def sradius_of_cap(dim, area):
             def area_diff_prime(s):
                 # Derivative of area of cap with respect to s:
                 # d/ds Area(dim, s) = Area(dim-1, s)
-                # However, a simpler approximation can be the surface area of the boundary:
+                # However, a simpler approximation can be the surface area of
+                # the boundary:
                 # For cap radius s, boundary is an S^{dim-1} of radius sin(s)
                 return area_of_sphere(dim - 1) * (np.sin(s) ** (dim - 1))
 
             # Find roots using vectorized newton
             sk = newton(area_diff, x0, fprime=area_diff_prime)
-            
+
             # Ensure roots are clamped within [0, pi]
             sk = np.clip(sk, 0.0, pi)
-            
+
             # Map back flipped variants
             s_cap[calc_idx] = np.where(flipped, pi - sk, sk)
-            
+
         s_cap = s_cap.reshape(orig_shape)
     return asfloat(s_cap)
 
@@ -797,4 +796,5 @@ def x2eqarea(x):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

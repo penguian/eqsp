@@ -13,14 +13,21 @@ Command-line arguments:
         Maximum number of regions N to compute (default: 20000).
 """
 
-import numpy as np
-import matplotlib
+from pathlib import Path
+import argparse
+import sys
 
+import matplotlib
+import numpy as np
+
+# pylint: disable=wrong-import-position,ungrouped-imports,import-error
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from eqsp.point_set_props import eq_energy_dist, sphere_int_energy
-import argparse
 
+# Add project root to sys.path so we can import eqsp
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from eqsp.point_set_props import eq_energy_dist, sphere_int_energy
 
 def main():
     """Generate and save the figure."""
@@ -32,13 +39,10 @@ def main():
         help="Maximum number of regions N (default: %(default)s)",
     )
     args = parser.parse_args()
-
     dims = [2, 3, 4]
     colors = ["b", "r", "g"]
     N_values = np.arange(2, args.n_max + 1)
-
     _, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-
     for dim, color in zip(dims, colors):
         s = dim - 1  # Standard Riesz energy parameter
         energy, _ = eq_energy_dist(dim, N_values, s=s)
@@ -51,21 +55,16 @@ def main():
         ax2.loglog(
             N_values, 1 - norm_energy, color=color, linewidth=0.5, label=rf"$d={dim}$"
         )
-
     ax1.set_xlabel("N")
     ax1.set_ylabel("Normalized energy")
     ax1.set_title(r"Normalized energy of $\mathrm{EQP}(d, N)$ (log-log scale)")
     ax1.legend()
-
     ax2.set_xlabel("N")
     ax2.set_ylabel("1 - Normalized energy")
     ax2.set_title(r"$1 -$ Normalized energy of $\mathrm{EQP}(d, N)$ (log-log scale)")
     ax2.legend()
-
     plt.tight_layout()
     plt.savefig("fig_5_1_5_2_normalized_energy.png", dpi=150)
     print("Saved fig_5_1_5_2_normalized_energy.png")
-
-
 if __name__ == "__main__":
     main()

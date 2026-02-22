@@ -1,16 +1,25 @@
-import numpy as np
-import pytest
+"""
+EQSP Tests: Utilities features
+
+Copyright Paul Leopardi 2026
+"""
+
 import doctest
+
+import numpy as np
 from numpy.testing import assert_allclose
+
 from eqsp import utilities
 
+
 def test_doctests():
-    """Load doctests from utilities into this test file's suite."""
-    import doctest
+    """Test function test_doctests."""
     results = doctest.testmod(utilities)
     assert results.failed == 0
 
+
 def test_polar2cart_cart2polar_inversion():
+    """Test function test_polar2cart_cart2polar_inversion."""
     # cart2polar2 is only for S^2 (3D Cartesian coordinates)
 
     # Test S^2 round trip
@@ -38,7 +47,9 @@ def test_polar2cart_cart2polar_inversion():
 
 
 def test_polar2cart_general():
-    # For generic dimensions, we only test that polar2cart produces points on sphere (norm=1)
+    """Test function test_polar2cart_general."""
+    # For generic dimensions, we only test that polar2cart produces points
+    # on sphere (norm=1)
     for dim in range(1, 5):
         rng = np.random.default_rng(42)
         n_points = 10

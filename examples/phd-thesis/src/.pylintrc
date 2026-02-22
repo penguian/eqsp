@@ -1,17 +1,1 @@
-[MAIN]
-# Allow short math variable names and common single-letter names
-good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R,t,s
-
-[FORMAT]
-max-line-length=88
-
-[MESSAGES CONTROL]
-disable=
-    C0103,   # invalid-name (covered by good-names)
-    C0413,   # wrong-import-position: matplotlib.use('Agg') must precede pyplot import
-    C0411,   # wrong-import-order: mayavi/eqsp ordering is intentional
-    C0412,   # ungrouped-imports: matplotlib import split by matplotlib.use() call
-    E0401,   # import-error: eqsp found at runtime via editable install, not pylint analysis
-    R0801,   # duplicate-code: expected across similar single-figure scripts
-    R0913,   # too-many-arguments
-    R0914,   # too-many-locals
+disable=duplicate-code

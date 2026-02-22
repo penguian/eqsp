@@ -1,4 +1,3 @@
-
 """
 Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox.
 
@@ -8,22 +7,41 @@ This module provides functions for equal area sphere partitioning, including:
 - Utilities (`utilities`)
 - Illustrations (`illustrations`)
 """
-from eqsp.partitions import eq_regions, eq_point_set, eq_point_set_polar, eq_caps
-from eqsp.utilities import (
-    volume_of_ball,
-    area_of_sphere,
-    area_of_cap,
-    area_of_collar,
-    polar2cart,
-    cart2polar2,
-)
+
+from eqsp.partitions import eq_caps, eq_point_set, eq_point_set_polar, eq_regions
 from eqsp.point_set_props import (
-    eq_min_dist,
     eq_dist_coeff,
-    eq_energy_dist,
     eq_energy_coeff,
+    eq_energy_dist,
+    eq_min_dist,
 )
 from eqsp.region_props import eq_diam_bound
+from eqsp.utilities import (
+    area_of_cap,
+    area_of_collar,
+    area_of_sphere,
+    cart2polar2,
+    polar2cart,
+    volume_of_ball,
+)
+
+__all__ = [
+    "eq_regions",
+    "eq_point_set",
+    "eq_point_set_polar",
+    "eq_caps",
+    "volume_of_ball",
+    "area_of_sphere",
+    "area_of_cap",
+    "area_of_collar",
+    "polar2cart",
+    "cart2polar2",
+    "eq_min_dist",
+    "eq_dist_coeff",
+    "eq_energy_dist",
+    "eq_energy_coeff",
+    "eq_diam_bound",
+]
 
 # Define version
 __version__ = "0.98.0"
