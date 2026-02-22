@@ -1,4 +1,5 @@
 import numpy as np
+from ..partitions import eq_regions
 
 from ..utilities import (
     euclidean_dist,
@@ -32,7 +33,7 @@ def expand_region_for_diam(region):
     Examples
     --------
     >>> regions = eq_regions(2, 10)
-    >>> region = regions[:, :, 2]
+    >>> region = regions[:, :, 1]
     >>> expanded_region = expand_region_for_diam(region)
     >>> np.round(expanded_region, 4)
     array([[0.    , 1.5708, 0.    , 1.5708],
@@ -105,7 +106,7 @@ def max_diam_bound_of_regions(regions):
     Examples
     --------
     >>> regions = eq_regions(2, 10)
-    >>> round(max_diam_bound_of_regions(regions), 4)
+    >>> float(np.round(max_diam_bound_of_regions(regions), 4))
     1.6733
     """
     dim = regions.shape[0]
@@ -144,7 +145,7 @@ def diam_bound_region(region):
     Examples
     --------
     >>> regions = eq_regions(2, 10)
-    >>> round(diam_bound_region(regions[:, :, 0]), 4)
+    >>> float(np.round(diam_bound_region(regions[:, :, 1]), 4))
     1.6733
     """
     tol = np.finfo(float).eps * 2**5
@@ -190,7 +191,7 @@ def max_vertex_diam_of_regions(regions):
     Examples
     --------
     >>> regions = eq_regions(2, 10)
-    >>> round(max_vertex_diam_of_regions(regions), 4)
+    >>> float(np.round(max_vertex_diam_of_regions(regions), 4))
     1.4142
     """
     dim = regions.shape[0]
@@ -232,7 +233,7 @@ def vertex_diam_region(region):
     Examples
     --------
     >>> regions = eq_regions(2, 10)
-    >>> round(vertex_diam_region(regions[:, :, 0]), 4)
+    >>> float(np.round(vertex_diam_region(regions[:, :, 1]), 4))
     1.4142
     """
     expanded_region = expand_region_for_diam(region)
@@ -278,7 +279,7 @@ def pseudo_region_for_diam(region):
     Examples
     --------
     >>> regions = eq_regions(2, 10)
-    >>> region = regions[:, :, 2]
+    >>> region = regions[:, :, 1]
     >>> pseudo_region = pseudo_region_for_diam(region)
     >>> np.round(pseudo_region, 4)
     array([[0.    , 1.5708],

@@ -79,7 +79,24 @@ See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mappin
 To generate a full coverage report, use the provided helper script:
 
 ```bash
-./run_coverage.sh
+./tests/run_coverage.sh
 ```
 
 This will run all tests (including doctests) and produce a summary in the terminal. The project maintains a benchmark of **94% coverage**.
+
+### 4.1 Private Implementation Tests
+
+By default, the coverage script strictly excludes **private implementation tests** and **internal doctests** into to maintain a clear boundary between the Public API and internal performance optimizations.
+
+To include these high-fidelity tests in the coverage report, use the `--include-private` flag:
+
+```bash
+./tests/run_coverage.sh --include-private
+```
+
+The private testing suite includes:
+- **`tests/src/test_private_histograms.py`**: Verifies vectorized region lookup logic on S².
+- **`tests/src/test_private_partitions.py`**: Bridge test for `eqsp._private._partitions` doctests.
+- **`tests/src/test_private_region_props.py`**: Bridge test for `eqsp._private._region_props` doctests.
+
+These tests ensure that internal math optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
