@@ -18,11 +18,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install ruff pylint
+        pip install ruff pylint pytest
         pip install -e .
     - name: Run Ruff
-      run: ruff check benchmarks eqsp tests/src examples/phd-thesis
+      run: ruff check benchmarks eqsp tests/src examples/phd-thesis/src
     - name: Run Pylint
       run: |
         export PYTHONPATH=$PYTHONPATH:.:benchmarks/src
-        pylint benchmarks/src eqsp tests/src examples/phd-thesis
+        pylint benchmarks/src eqsp tests/src examples/phd-thesis/src
