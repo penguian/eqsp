@@ -8,6 +8,7 @@ import benchmark_area_error
 import benchmark_energy_dist
 import benchmark_eq_regions
 import benchmark_histograms
+import benchmark_mindist
 import benchmark_sradius
 
 
@@ -52,15 +53,20 @@ def main():
             {"n_max": args.n_max or 16000, "dim": args.dim},
         ),
         (
+            "eq_min_dist (Efficient distance calculation)",
+            benchmark_mindist.run,
+            {"n_max": args.n_max or 6400, "dim": args.dim},
+        ),
+        (
             "eq_find_s2_region (Vectorized histogram lookup)",
             benchmark_histograms.run,
-            {"n_max": args.n_max or 80000000, "N": args.regions},
+            {"n_max": args.n_max or 200000000, "N": args.regions},
         ),
         (
             "sradius_of_cap (Root finding loop bottleneck)",
             benchmark_sradius.run,
             # Usually dim+1 in usage
-            {"n_max": args.n_max or 40000000, "dim": args.dim + 1},
+            {"n_max": args.n_max or 100000000, "dim": args.dim + 1},
         ),
     ]
 
