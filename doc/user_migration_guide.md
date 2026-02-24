@@ -11,7 +11,7 @@ Most core functions retain their names. The main differences are in coordinate c
 | **Partitions** | | |
 | `eq_point_set` | `eq_point_set` | Identical usage. |
 | `eq_regions` | `eq_regions` | Identical usage. |
-| `eq_min_dist` | `eq_min_dist` | Identical usage. |
+| `eq_min_dist` | `eq_min_dist` | Identical usage; optimized ($O(N \log N)$) in Python. |
 | **Utilities** | | |
 | `pol2cart` | `utilities.polar2cart` | Renamed for clarity. |
 | `cart2pol` | `utilities.cart2polar2` | Renamed. Handles arrays. |

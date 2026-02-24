@@ -67,7 +67,8 @@ export QT_QPA_PLATFORM="xcb"
 python fig_3_4_max_diam_s2.py --help
 
 # Run with custom parameters
-python fig_3_4_max_diam_s2.py --n-max 1000
+python fig_3_4_max_diam_s2.py --upper-bound 1000
+python fig_3_4_max_diam_s2.py --max-points 500
 python fig_3_1_partition_s2_33.py
 ```
 
@@ -97,8 +98,9 @@ For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.m
   (Spherical Linear Interpolation). This ensures geometric accuracy that
   matches the blue region boundaries. A 2D stereographic projection
   fallback (`fig_4_10_eqp_voronoi_s2_33.py`) is also provided.
-- **Figs 5.1–5.5 (Energy)**: Runtime for N=20,000 may be several minutes due
-  to pairwise distance calculations.
+- **Figs 5.1–5.5 (Energy/Distance)**: 
+  - Minimum distance calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
+  - Exact Riesz energy calculations ($s > 0$) still require pairwise summation ($O(N^2)$) and may take 15–30 minutes for $N=20,000$.
 
 ## Not Reproduced
 
