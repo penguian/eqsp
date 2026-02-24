@@ -6,8 +6,10 @@ N^(1/dim) * min_dist as a function of N on a semi-log scale,
 as in Figure 4.2 of the thesis.
 
 Command-line arguments:
-    --n-max N
+    --upper-bound N
         Maximum number of regions N to compute (default: 20000).
+    --max-points M
+        Maximum number of points to plot (default: 1000).
 """
 
 from pathlib import Path
@@ -26,28 +28,53 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.point_set_props import eq_dist_coeff
 
+
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--n-max",
+        "--upper-bound",
         type=int,
         default=20000,
         help="Maximum number of regions N (default: %(default)s)",
     )
+    parser.add_argument(
+        "--max-points",
+        type=int,
+        default=1000,
+        help="Maximum number of points to plot (default: %(default)s)",
+    )
     args = parser.parse_args()
     dim = 2
-    N_values = np.arange(1, args.n_max + 1)
-    coeff = eq_dist_coeff(dim, N_values)
-    _, ax = plt.subplots(figsize=(10, 6))
-    ax.semilogy(N_values, coeff, "b.", markersize=1)
-    ax.set_xlabel("N")
-    ax.set_ylabel(r"$N^{1/2} \cdot \mathrm{min\_dist}$")
-    ax.set_title(
-        r"Minimum distance coefficient of $\mathrm{EQP}(2, N)$ (semi-log scale)"
+    if args.upper_bound > args.max_points:
+        N_values = np.unique(
+            np.linspace(1, args.upper_bound, args.max_points).round().astype(int)
+        )
+    else:
+        N_values = np.arange(1, args.upper_bound + 1)
+    coeff_dist = eq_dist_coeff(dim, N_values)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.semilogx(N_values, coeff_dist, "r.", markersize=1)
+    ax.set_xlabel(r"$\mathcal{N} = \text{number of points}$")
+    ax.set_ylabel(
+        r"$\operatorname{mindist}(\mathrm{EQP}(2,\mathcal{N})) \times "
+        r"\mathcal{N}^{1/2}$"
     )
-    plt.tight_layout()
+    ax.set_xlim(1, 20000)
+    ax.set_ylim(0.6, 1.1)
+    ax.grid(True, which="both", ls="-", alpha=0.5)
+    fig.text(
+        0.5,
+        0.02,
+        r"Figure 4.2: Minimum distance coefficient of "
+        r"$\mathrm{EQP}(2,\mathcal{N})$ (semi-log scale)",
+        ha="center",
+        fontsize=10,
+    )
+    plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_4_2_min_dist_s2.png", dpi=150)
     print("Saved fig_4_2_min_dist_s2.png")
+
+
 if __name__ == "__main__":
     main()

@@ -25,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from eqsp.visualizations import show_s2_partition, show_r3_point_set
 import eqsp
 
+
 def main():
     """Generate and save the figure."""
     argparse.ArgumentParser(description=__doc__).parse_args()
@@ -53,6 +54,7 @@ def main():
             a = region[i]
             b = region[(i + 1) % n]
             edges.add((min(a, b), max(a, b)))
+
     # ---------------------------------------------------------------
     # Step 4: SLERP helper — great circle arc from point a to point b.
     # ---------------------------------------------------------------
@@ -66,6 +68,7 @@ def main():
             np.outer(np.sin((1 - t) * omega), pa) + np.outer(np.sin(t * omega), pb)
         ) / np.sin(omega)
         return arc
+
     # ---------------------------------------------------------------
     # Step 5: Set up Mayavi scene with EQ partition regions (blue) and sphere.
     # ---------------------------------------------------------------
@@ -99,11 +102,13 @@ def main():
     # ---------------------------------------------------------------
     show_r3_point_set(points_3d, show_sphere=False, scale_factor=0.06)
     title = (
-        f"EQP(2,{N}): Voronoi cells (orange, great circle arcs)"
-        f" and EQ(2,{N}) partition (blue)"
+        r"Figure 4.10: EQ code $\mathrm{EQP}(2,33)$, Voronoi cells, "
+        r"and $\mathrm{EQ}(2,33)$"
     )
-    mlab.text(0.05, 0.9, title, width=0.9, color=(0, 0, 0))
+    mlab.text(0.1, 0.05, title, width=0.8, color=(0, 0, 0))
     mlab.savefig("fig_4_10_eqp_voronoi_s2_33_3d.png")
     mlab.show()
+
+
 if __name__ == "__main__":
     main()

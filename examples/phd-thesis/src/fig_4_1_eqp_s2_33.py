@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.visualizations import show_s2_partition
 
+
 def main():
     """Generate and save the figure."""
     argparse.ArgumentParser(description=__doc__).parse_args()
@@ -30,9 +31,15 @@ def main():
     show_s2_partition(
         N,
         show_points=True,
-        title="short",
+        title=(
+            r"Figure 4.1: EQ code $\mathrm{EQP}(2,33)$, showing the "
+            r"partition $\mathrm{EQ}(2,33)$"
+        ),
+        title_pos=(0.1, 0.05),
         show=True,
         save_file="fig_4_1_eqp_s2_33.png",
     )
+
+
 if __name__ == "__main__":
     main()

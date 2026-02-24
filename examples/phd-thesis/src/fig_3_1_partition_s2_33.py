@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.visualizations import show_s2_partition
 
+
 def main():
     """Display and save the 3D figure."""
     argparse.ArgumentParser(description=__doc__).parse_args()
@@ -27,9 +28,12 @@ def main():
     mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
     show_s2_partition(
         N,
-        title="short",
+        title=r"Figure 3.1: Partition $\mathrm{EQ}(2,33)$",
+        title_pos=(0.3, 0.05),
         show=True,
         save_file="fig_3_1_partition_s2_33.png",
     )
+
+
 if __name__ == "__main__":
     main()

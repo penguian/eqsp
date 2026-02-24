@@ -30,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from eqsp.illustrations import project_s2_partition
 import eqsp
 
+
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -46,7 +47,7 @@ def main():
     px = finite_pts[0] / (1 - finite_pts[2])
     py = finite_pts[1] / (1 - finite_pts[2])
     proj_2d = np.column_stack([px, py])
-    _, ax = plt.subplots(figsize=(10, 10))
+    fig, ax = plt.subplots(figsize=(10, 10))
     # Voronoi cells from projected code points
     mirror = proj_2d * -10
     all_pts = np.vstack([proj_2d, mirror])
@@ -65,9 +66,19 @@ def main():
     ax.plot(px, py, "r.", markersize=5, zorder=5)
     ax.set_xlim(-6, 6)
     ax.set_ylim(-6, 6)
-    ax.set_title(f"EQ code EQP(2, {N}), Voronoi cells, and EQ(2, {N})")
-    plt.tight_layout()
+    ax.axis("off")
+    fig.text(
+        0.5,
+        0.02,
+        r"Figure 4.10: EQ code $\mathrm{EQP}(2,33)$, Voronoi cells, "
+        r"and $\mathrm{EQ}(2,33)$",
+        ha="center",
+        fontsize=10,
+    )
+    plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_4_10_eqp_voronoi_s2_33.png", dpi=150)
     print("Saved fig_4_10_eqp_voronoi_s2_33.png")
+
+
 if __name__ == "__main__":
     main()

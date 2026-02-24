@@ -11,8 +11,10 @@ For a simpler approximation we use the simple cubic lattice density
 as a reference, as described in Section 4.3 of the thesis.
 
 Command-line arguments:
-    --n-max N
+    --upper-bound N
         Maximum number of regions N to compute (default: 20000).
+    --max-points M
+        Maximum number of points to plot (default: 1000).
 """
 
 from pathlib import Path
@@ -32,39 +34,63 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.point_set_props import eq_packing_density
 
+
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--n-max",
+        "--upper-bound",
         type=int,
         default=20000,
         help="Maximum number of regions N (default: %(default)s)",
     )
+    parser.add_argument(
+        "--max-points",
+        type=int,
+        default=1000,
+        help="Maximum number of points to plot (default: %(default)s)",
+    )
     args = parser.parse_args()
-    N_values = np.arange(2, args.n_max + 1)
+    if args.upper_bound > args.max_points:
+        N_values = np.unique(
+            np.linspace(2, args.upper_bound, args.max_points).round().astype(int)
+        )
+    else:
+        N_values = np.arange(2, args.upper_bound + 1)
+
     # Simple cubic lattice reference densities for dim=2,3,4
     def simple_cubic_density(dim):
         return math.pi ** (dim / 2) / (2**dim * math.gamma(dim / 2 + 1))
+
     dims = [2, 3, 4]
-    colors = ["b", "r", "g"]
-    _, ax = plt.subplots(figsize=(10, 6))
-    for dim, color in zip(dims, colors):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ratios = {}
+    for dim in dims:
         density = eq_packing_density(dim, N_values)
-        wyner_ratio = density / simple_cubic_density(dim)
-        ax.semilogy(
-            N_values, wyner_ratio, color=color, linewidth=0.5, label=rf"$d={dim}$"
-        )
+        ratios[dim] = density / simple_cubic_density(dim)
+
+    ax.semilogx(N_values, ratios[2], "b-", linewidth=1, label=r"$\mathrm{EQP}(2)$")
+    ax.semilogx(N_values, ratios[3], "r-", linewidth=1, label=r"$\mathrm{EQP}(3)$")
+    ax.semilogx(N_values, ratios[4], "g-", linewidth=1, label=r"$\mathrm{EQP}(4)$")
     ax.axhline(y=1.0, color="k", linestyle="--", linewidth=0.8)
-    ax.set_xlabel("N")
+    ax.set_xlabel(r"$\mathcal{N} = \text{number of points}$")
     ax.set_ylabel("Wyner ratio")
-    ax.set_title(
-        r"Wyner ratios for $\mathrm{EQP}(2)$, $\mathrm{EQP}(3)$,"
-        r" $\mathrm{EQP}(4)$ (semi-log scale)"
-    )
+    ax.set_xlim(1, 20000)
+    ax.set_ylim(0.6, 1.05)
+    ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
-    plt.tight_layout()
+    fig.text(
+        0.5,
+        0.02,
+        r"Figure 4.8: Wyner ratios for $\mathrm{EQP}(2)$, $\mathrm{EQP}(3)$, "
+        r"$\mathrm{EQP}(4)$ (semi-log scale)",
+        ha="center",
+        fontsize=10,
+    )
+    plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_4_8_wyner_s2_s3_s4.png", dpi=150)
     print("Saved fig_4_8_wyner_s2_s3_s4.png")
+
+
 if __name__ == "__main__":
     main()
