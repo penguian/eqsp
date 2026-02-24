@@ -374,7 +374,7 @@ def illustrate_eq_algorithm(
         "extra_offset": extra_offset,
         "fontsize": fontsize,
         "show_title": show_title,
-        "long_title": _long_title, # Pass the original value, not the prefixed name
+        "long_title": _long_title,  # Pass the original value, not the prefixed name
     }
 
     plt.subplot(2, 2, 1)
@@ -409,7 +409,7 @@ def illustrate_eq_algorithm(
 
     # Remove options not accepted by project_s2_partition/ax.scatter
     proj_opts.pop("show_title", None)
-    proj_opts.pop("long_title", None) # Remove the original name
+    proj_opts.pop("long_title", None)  # Remove the original name
 
     if dim == 2:
         ax = plt.subplot(2, 2, 4)
