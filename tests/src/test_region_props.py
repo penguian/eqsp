@@ -83,6 +83,7 @@ def test_eq_vertex_diam_coeff():
 
 def test_eq_regions_property():
     """Test function test_eq_regions_property."""
+
     # Example from doctest
     def dummy_property(regions):
         return regions.shape[2]

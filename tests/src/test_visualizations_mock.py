@@ -76,6 +76,7 @@ class TestVisualizationsSetup(unittest.TestCase):
 
 class TestShowS2Sphere(TestVisualizationsSetup):
     """Test function TestShowS2Sphere."""
+
     def test_calls_mlab_mesh(self):
         """Test function test_calls_mlab_mesh."""
         vis = self._import_vis()
@@ -98,6 +99,7 @@ class TestShowS2Sphere(TestVisualizationsSetup):
 
 class TestShowR3PointSet(TestVisualizationsSetup):
     """Test function TestShowR3PointSet."""
+
     def _points(self):
         return np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]], dtype=float).T  # (3,3)
 
@@ -139,6 +141,7 @@ class TestShowR3PointSet(TestVisualizationsSetup):
 
 class TestShowS2Region(TestVisualizationsSetup):
     """Test function TestShowS2Region."""
+
     def _region(self):
         # A simple non-polar region: theta in [0.2, 0.8], phi in [0.0, 1.0]
         return np.array([[0.2, 0.8], [0.0, 1.0]])
@@ -157,6 +160,7 @@ class TestShowS2Region(TestVisualizationsSetup):
 
 class TestShowS2Partition(TestVisualizationsSetup):
     """Test function TestShowS2Partition."""
+
     def test_calls_figure_mesh_show(self):
         """Test function test_calls_figure_mesh_show."""
         vis = self._import_vis()
@@ -224,6 +228,7 @@ class TestShowS2Partition(TestVisualizationsSetup):
 
 class TestProjectPointSet(TestVisualizationsSetup):
     """Test function TestProjectPointSet."""
+
     def test_s2_points_stereo_calls_points3d(self):
         """Test function test_s2_points_stereo_calls_points3d."""
         vis = self._import_vis()
@@ -285,6 +290,7 @@ class TestProjectPointSet(TestVisualizationsSetup):
 
 class TestProjectS3Partition(TestVisualizationsSetup):
     """Test function TestProjectS3Partition."""
+
     def test_default_calls_figure_mesh_points3d_show(self):
         """Test function test_default_calls_figure_mesh_points3d_show."""
         vis = self._import_vis()
