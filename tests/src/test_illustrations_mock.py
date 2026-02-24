@@ -27,6 +27,7 @@ def test_doctests():
 
 class TestIllustrations(unittest.TestCase):
     """Test suite for the illustrations module using mocks for matplotlib."""
+
     def setUp(self):
         # Patch matplotlib.pyplot in eqsp.illustrations
         self.plt_patcher = patch("eqsp.illustrations.plt")
