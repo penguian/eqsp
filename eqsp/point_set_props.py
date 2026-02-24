@@ -7,10 +7,11 @@ Copyright 2026 Paul Leopardi
 import math
 
 import numpy as np
+from scipy.spatial import KDTree
 from scipy.spatial.distance import cdist
 from scipy.special import psi
 
-from .partitions import eq_point_set
+from .partitions import eq_caps, eq_point_set
 from .utilities import (
     area_of_cap,
     area_of_sphere,
@@ -341,8 +342,61 @@ def eq_min_dist(dim, N, extra_offset=False):
     -------
     dist : array-like
         Minimum Euclidean distance(s), same shape as N.
+
+    Notes
+    -----
+    Exploits the collar structure for efficient calculation.
     """
-    return eq_point_set_property(point_set_min_dist, dim, N, extra_offset=extra_offset)
+    shape = np.shape(N)
+    N_flat = np.reshape(N, (1, int(np.prod(shape))))
+    dist = np.zeros_like(N_flat, dtype=float)
+    for i, n_val in enumerate(N_flat[0]):
+        dist[0, i] = _eq_min_dist_scalar(dim, int(n_val), extra_offset)
+    return dist.reshape(shape)
+
+
+def _eq_min_dist_scalar(dim, N, extra_offset=False):
+    """
+    Scalar version of eq_min_dist.
+    """
+    if N <= 1:
+        return 2.0
+    if dim == 1:
+        # Distance on a circle with N points: 2 * sin(pi/N)
+        return 2 * np.sin(np.pi / N)
+
+    _, n_regions = eq_caps(dim, N)
+
+    # Exploiting the collar structure:
+    # 1. Intra-collar distances
+    # 2. Inter-collar distances (adjacent only)
+    #
+    # We localized the KDTree search to adjacent collars to achieve
+    # near-linear scaling and low memory usage.
+
+    point_sets = []
+    points = eq_point_set(dim, N, extra_offset)
+    idx = 0
+    for n_k in n_regions:
+        nk = int(n_k)
+        point_sets.append(points[:, idx : idx + nk])
+        idx += nk
+
+    d_min = 2.0
+    for k, n_k in enumerate(n_regions):
+        # Intra-collar
+        if n_k > 1:
+            d_intra = point_set_min_dist(point_sets[k])
+            d_min = min(d_min, d_intra)
+        # Inter-collar with NEXT
+        if k < len(n_regions) - 1:
+            # Query the KDTree of collar k with the points of collar k+1
+            tree = KDTree(point_sets[k].T)
+            dists, _ = tree.query(point_sets[k + 1].T, k=1)
+            d_inter = np.min(dists)
+            d_min = min(d_min, d_inter)
+
+    return d_min
 
 
 def eq_packing_density(dim, N, extra_offset=False):
@@ -559,8 +613,18 @@ def point_set_min_dist(points):
     -------
     min_dist : float
         Minimum Euclidean distance.
+
+    Notes
+    -----
+    Uses scipy.spatial.KDTree for efficient O(N log N) calculation.
     """
-    _, min_dist = point_set_energy_dist(points, s=0)  # s doesn't matter for min_dist
+    _, N = points.shape
+    if N <= 1:
+        return 2.0
+    tree = KDTree(points.T)
+    # query(k=2) returns the distance to itself (0) and the nearest neighbor
+    dists, _ = tree.query(points.T, k=2)
+    min_dist = np.min(dists[:, 1])
     return min_dist
 
 
