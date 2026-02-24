@@ -109,6 +109,7 @@ def show_s2_partition(
     show_points=True,
     show_sphere=True,
     title="long",
+    title_pos=(0.2, 0.85),
     show=True,
     save_file=None,
     **_kwargs,
@@ -126,7 +127,15 @@ def show_s2_partition(
         Show center points. Default True.
     show_sphere : bool, optional
         Show unit sphere. Default True.
-    title : {'long', 'short', 'none'}, optional
+    title : str, optional
+        Title text. Special values: 'long', 'short', 'none'.
+        'long' uses a default multi-line description.
+        'short' uses 'EQ(2, N)'.
+        'none' shows no title.
+        Any other string is used as the title text.
+    title_pos : tuple, optional
+        (x, y) position of the title in figure coordinates (0 to 1).
+        Default is (0.2, 0.85).
     **kwargs
         Passed to Mayavi functions.
 
@@ -142,7 +151,19 @@ def show_s2_partition(
     ...     print("Mayavi not installed")
     Success
     """
-    show_title = title != "none"
+    title_text = None
+    if title == "none":
+        show_title = False
+    else:
+        show_title = True
+        if title == "long":
+            title_text = (
+                f"Recursive zonal equal area partition of S^2\ninto {N} regions."
+            )
+        elif title == "short":
+            title_text = f"EQ(2, {N})"
+        else:
+            title_text = title
 
     # Set default figure size if none exists
     if mlab.get_engine().current_scene is None:
@@ -160,10 +181,8 @@ def show_s2_partition(
         show_r3_point_set(points, show_sphere=False)
 
     if show_title:
-        title_text = f"Recursive zonal equal area partition of S^2\ninto {N} regions."
-        # Use mlab.text for precise control over size and position (top center)
-        # x = 0.5 - width/2, y = 0.85 (lower due to 2 lines)
-        mlab.text(0.2, 0.85, title_text, width=0.6, color=(0, 0, 0))
+        # Use mlab.text for precise control over size and position
+        mlab.text(title_pos[0], title_pos[1], title_text, width=0.6, color=(0, 0, 0))
 
     if save_file:
         mlab.savefig(save_file)
