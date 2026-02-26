@@ -18,7 +18,7 @@ from .utilities import (
 )
 
 
-def eq_area_error(dim, N):
+def eq_area_error(dim, N, show_progress=False):
     """
     Total area error and max area error per region of an EQ partition.
 
@@ -28,6 +28,8 @@ def eq_area_error(dim, N):
         Dimension of the sphere.
     N : int or array-like of int
         Number of regions to partition.
+    show_progress : bool, optional
+        Show progress messages. Default False.
 
     Returns
     -------
@@ -44,7 +46,7 @@ def eq_area_error(dim, N):
         If arguments are not provided.
 
     See Also
-    --------
+    -------
     eq_regions, area_of_sphere, area_of_ideal_region
 
     Notes
@@ -82,14 +84,16 @@ def eq_area_error(dim, N):
 
     shape = np.shape(N)
     n_partitions = int(np.prod(shape))
-    N = np.reshape(N, (1, n_partitions))
+    N_flat = np.reshape(N, (1, n_partitions))
 
-    total_error = np.zeros_like(N, dtype=float)
-    max_error = np.zeros_like(N, dtype=float)
+    total_error = np.zeros_like(N_flat, dtype=float)
+    max_error = np.zeros_like(N_flat, dtype=float)
     sphere_area = area_of_sphere(dim)
 
-    for partition_n in range(n_partitions):
-        n = int(N[0, partition_n])
+    for i in range(n_partitions):
+        n = int(N_flat[0, i])
+        if show_progress and n_partitions > 1:
+            print(f"    N={n:6} ({i+1}/{n_partitions})", end="\r", flush=True)
         regions = eq_regions(dim, n)
         ideal_area = area_of_ideal_region(dim, n)
 
@@ -99,10 +103,12 @@ def eq_area_error(dim, N):
         # max_error logic
         region_errors = np.abs(areas - ideal_area)
         if np.size(region_errors) > 0:
-            max_error[0, partition_n] = np.max(region_errors)
+            max_error[0, i] = np.max(region_errors)
 
-        total_error[0, partition_n] = abs(sphere_area - total_area)
+        total_error[0, i] = abs(sphere_area - total_area)
 
+    if show_progress and n_partitions > 1:
+        print()  # Clear the line
     total_error = np.reshape(total_error, shape)
     max_error = np.reshape(max_error, shape)
     return total_error, max_error
@@ -158,7 +164,7 @@ def area_of_region(region):
     return area
 
 
-def eq_diam_bound(dim, N):
+def eq_diam_bound(dim, N, show_progress=False):
     """
     Maximum per-region diameter bound of EQ partition.
 
@@ -168,6 +174,8 @@ def eq_diam_bound(dim, N):
         Dimension of sphere.
     N : int or array-like of int
         Number of partitions.
+    show_progress : bool, optional
+        Show progress messages. Default False.
 
     Returns
     -------
@@ -186,10 +194,12 @@ def eq_diam_bound(dim, N):
     >>> eq_diam_bound(3, np.arange(1, 7))
     array([2., 2., 2., 2., 2., 2.])
     """
-    return eq_regions_property(max_diam_bound_of_regions, dim, N)
+    return eq_regions_property(
+        max_diam_bound_of_regions, dim, N, show_progress=show_progress
+    )
 
 
-def eq_diam_coeff(dim, N):
+def eq_diam_coeff(dim, N, show_progress=False):
     """
     Coefficients of diameter bound and vertex diameter of EQ partition.
 
@@ -199,6 +209,8 @@ def eq_diam_coeff(dim, N):
         Dimension of sphere.
     N : int or array-like of int
         Number of regions.
+    show_progress : bool, optional
+        Show progress messages. Default False.
 
     Returns
     -------
@@ -232,21 +244,25 @@ def eq_diam_coeff(dim, N):
 
     shape = np.shape(N)
     n_partitions = int(np.prod(shape))
-    N = np.reshape(N, (1, n_partitions))
-    bound_coeff = np.zeros_like(N, dtype=float)
-    vertex_coeff = np.zeros_like(N, dtype=float)
-    for partition_n in range(n_partitions):
-        n = int(N[0, partition_n])
+    N_flat = np.reshape(N, (1, n_partitions))
+    bound_coeff = np.zeros_like(N_flat, dtype=float)
+    vertex_coeff = np.zeros_like(N_flat, dtype=float)
+    for i in range(n_partitions):
+        n = int(N_flat[0, i])
+        if show_progress and n_partitions > 1:
+            print(f"    N={n:6} ({i+1}/{n_partitions})", end="\r", flush=True)
         regions = eq_regions(dim, n)
         scale = np.power(n, 1 / dim)
-        bound_coeff[0, partition_n] = max_diam_bound_of_regions(regions) * scale
-        vertex_coeff[0, partition_n] = max_vertex_diam_of_regions(regions) * scale
+        bound_coeff[0, i] = max_diam_bound_of_regions(regions) * scale
+        vertex_coeff[0, i] = max_vertex_diam_of_regions(regions) * scale
+    if show_progress and n_partitions > 1:
+        print()  # Clear the line
     bound_coeff = np.reshape(bound_coeff, shape)
     vertex_coeff = np.reshape(vertex_coeff, shape)
     return bound_coeff, vertex_coeff
 
 
-def eq_regions_property(fhandle, dim, N):
+def eq_regions_property(fhandle, dim, N, show_progress=False):
     """
     Property of regions of an EQ partition.
 
@@ -258,6 +274,8 @@ def eq_regions_property(fhandle, dim, N):
         Dimension of sphere.
     N : int or array-like of int
         Number of regions.
+    show_progress : bool, optional
+        Show progress messages. Default False.
 
     Returns
     -------
@@ -281,16 +299,21 @@ def eq_regions_property(fhandle, dim, N):
     """
     shape = np.shape(N)
     n_partitions = int(np.prod(shape))
-    N = np.reshape(N, (1, n_partitions))
-    property_ = np.zeros_like(N, dtype=float)
-    for partition_n in range(n_partitions):
-        regions = eq_regions(dim, int(N[0, partition_n]))
-        property_[0, partition_n] = fhandle(regions)
+    N_flat = np.reshape(N, (1, n_partitions))
+    property_ = np.zeros_like(N_flat, dtype=float)
+    for i in range(n_partitions):
+        n = int(N_flat[0, i])
+        if show_progress and n_partitions > 1:
+            print(f"    N={n:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+        regions = eq_regions(dim, n)
+        property_[0, i] = fhandle(regions)
+    if show_progress and n_partitions > 1:
+        print()  # Clear the line
     property_ = np.reshape(property_, shape)
     return property_
 
 
-def eq_vertex_diam_coeff(dim, N):
+def eq_vertex_diam_coeff(dim, N, show_progress=False):
     """
     Coefficient of maximum vertex diameter of EQ partition.
 
@@ -300,6 +323,8 @@ def eq_vertex_diam_coeff(dim, N):
         Dimension of sphere.
     N : int or array-like of int
         Number of partitions.
+    show_progress : bool, optional
+        Show progress messages. Default False.
 
     Returns
     -------
@@ -318,10 +343,10 @@ def eq_vertex_diam_coeff(dim, N):
     >>> eq_vertex_diam_coeff(3, np.arange(1, 7))
     array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342])
     """
-    return eq_vertex_diam(dim, N) * np.power(N, 1 / dim)
+    return eq_vertex_diam(dim, N, show_progress=show_progress) * np.power(N, 1 / dim)
 
 
-def eq_vertex_diam(dim, N):
+def eq_vertex_diam(dim, N, show_progress=False):
     """
     Maximum vertex diameter of EQ partition.
 
@@ -331,6 +356,8 @@ def eq_vertex_diam(dim, N):
         Dimension of sphere.
     N : int or array-like of int
         Number of regions.
+    show_progress : bool, optional
+        Show progress messages. Default False.
 
     Returns
     -------
@@ -349,7 +376,9 @@ def eq_vertex_diam(dim, N):
     >>> eq_vertex_diam(3, np.arange(1, 7))
     array([2., 2., 2., 2., 2., 2.])
     """
-    return eq_regions_property(max_vertex_diam_of_regions, dim, N)
+    return eq_regions_property(
+        max_vertex_diam_of_regions, dim, N, show_progress=show_progress
+    )
 
 
 if __name__ == "__main__":
