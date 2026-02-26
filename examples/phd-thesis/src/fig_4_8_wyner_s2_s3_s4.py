@@ -17,10 +17,7 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import math
-import sys
 
 import matplotlib
 import numpy as np
@@ -29,8 +26,10 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from eqsp.point_set_props import eq_min_dist
+from eqsp.utilities import area_of_cap, area_of_sphere, euc2sph_dist
 
-from eqsp.point_set_props import eq_packing_density
+
 
 
 def main():
@@ -59,16 +58,31 @@ def main():
     else:
         N_values = np.arange(2, args.upper_bound + 1)
 
-    # Simple cubic lattice reference densities for dim=2,3,4
-    def simple_cubic_density(dim):
-        return math.pi ** (dim / 2) / (2**dim * math.gamma(dim / 2 + 1))
+
 
     dims = [2, 3, 4]
     fig, ax = plt.subplots(figsize=(10, 6))
     ratios = {}
+    sphere_areas = {d: area_of_sphere(d) for d in dims}
+
     for dim in dims:
-        density = eq_packing_density(dim, N_values)
-        ratios[dim] = density / simple_cubic_density(dim)
+        if args.show_progress:
+            print(f"Calculating Wyner ratio for dim={dim}...")
+
+        # 1. Calculate packing density: N * area_of_cap(dim, rho) / area_of_sphere(dim)
+        # where rho = spherical_min_dist / 2
+        min_dist_euc = eq_min_dist(dim, N_values, show_progress=args.show_progress)
+        rho = euc2sph_dist(min_dist_euc) / 2.0
+        pdens = N_values * area_of_cap(dim, rho) / sphere_areas[dim]
+
+        # 2. Calculate CSW lower bound: area_of_cap(dim, rho) / area_of_cap(dim, 2*rho)
+        # Handle the case where 2*rho > pi by clipping
+        rho2 = np.clip(2.0 * rho, 0, np.pi)
+        csw_bound = area_of_cap(dim, rho) / area_of_cap(dim, rho2)
+
+        # 3. Wyner ratio = pdens / csw_bound
+        # This simplifies to N * area_of_cap(dim, 2*rho) / area_of_sphere(dim)
+        ratios[dim] = pdens / csw_bound
 
     ax.semilogx(N_values, ratios[2], "b+", markersize=2, label=r"$\mathrm{EQP}(2)$")
     ax.semilogx(N_values, ratios[3], "r+", markersize=2, label=r"$\mathrm{EQP}(3)$")
@@ -77,7 +91,7 @@ def main():
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Wyner ratio")
     ax.set_xlim(1, 20000)
-    ax.set_ylim(1, 5)
+    ax.set_ylim(0, 2)
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(

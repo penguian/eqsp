@@ -12,9 +12,7 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import sys
 
 import matplotlib
 import numpy as np
@@ -54,9 +52,9 @@ def main():
         )
     else:
         N_values = np.arange(1, args.upper_bound + 1)
-    diam_bound = eq_diam_bound(dim, N_values)
+    diam_bound = eq_diam_bound(dim, N_values, show_progress=args.show_progress)
     coeff_bound = diam_bound * np.power(N_values, 1.0 / dim)
-    vertex_diam = eq_vertex_diam(dim, N_values)
+    vertex_diam = eq_vertex_diam(dim, N_values, show_progress=args.show_progress)
     coeff_vertex = vertex_diam * np.power(N_values, 1.0 / dim)
 
     # Feige-Schechtman bound: 2 * sin(min(pi, 8*theta_c) / 2)

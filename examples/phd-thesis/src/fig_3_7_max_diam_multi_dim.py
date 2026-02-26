@@ -12,9 +12,8 @@ Command-line arguments:
         Number of points to plot (default: 20). These will be powers of 2.
 """
 
-from pathlib import Path
 import argparse
-import sys
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import matplotlib
 import numpy as np
@@ -23,10 +22,6 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-
-from concurrent.futures import ProcessPoolExecutor, as_completed
-
-
 from eqsp.region_props import eq_diam_bound, eq_vertex_diam
 
 
@@ -34,8 +29,14 @@ def compute_dim_data(dim, N_values, show_progress=False):
     """Worker function to calculate diameter data for a single dimension."""
     if show_progress:
         print(f"  Dimension {dim}: calculating {len(N_values)} points...", flush=True)
-    coeff_bound = eq_diam_bound(dim, N_values) * np.power(N_values, 1.0 / dim)
-    coeff_vertex = eq_vertex_diam(dim, N_values) * np.power(N_values, 1.0 / dim)
+    coeff_bound = (
+        eq_diam_bound(dim, N_values, show_progress=show_progress)
+        * np.power(N_values, 1.0 / dim)
+    )
+    coeff_vertex = (
+        eq_vertex_diam(dim, N_values, show_progress=show_progress)
+        * np.power(N_values, 1.0 / dim)
+    )
     return dim, coeff_bound, coeff_vertex
 
 
@@ -68,7 +69,8 @@ def main():
     results = {}
 
     if args.show_progress:
-        print(f"Parallelizing calculations for dimensions {list(dims)} using 2 workers...")
+        msg = f"Parallelizing calculations for {list(dims)} using 2 workers..."
+        print(msg)
 
     with ProcessPoolExecutor(max_workers=2) as executor:
         futures = {
@@ -84,11 +86,16 @@ def main():
     # Plot in increasing dimension order for consistency
     for dim in sorted(results.keys()):
         coeff_bound, coeff_vertex = results[dim]
-        ax.loglog(N_values, coeff_bound, "b+", markersize=4)
-        ax.loglog(N_values, coeff_vertex, "b+", markersize=4)
-
+        ax.loglog(N_values, coeff_bound, "ro", markersize=4)
+        ax.loglog(
+            N_values,
+            coeff_vertex,
+            "b+",
+            markersize=2,
+            label="Maximum vertex diameter",
+        )
     # Legend proxies
-    ax.loglog([], [], "b+", markersize=4, label="Diameter bound coefficient")
+    ax.loglog([], [], "ro", markersize=4, label="Diameter bound coefficient")
     ax.loglog([], [], "b+", markersize=4, label="Vertex diameter coefficient")
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel(r"Maximum diameter multiplied by $\mathcal{N}^{1/2}$")

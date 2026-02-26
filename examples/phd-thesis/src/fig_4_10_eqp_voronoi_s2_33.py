@@ -13,7 +13,6 @@ Requires Mayavi. Run with venv_sys:
 from pathlib import Path
 import os
 import argparse
-import sys
 
 import matplotlib.pyplot as plt
 from mayavi import mlab
@@ -29,7 +28,9 @@ import eqsp
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
+    )
     args = parser.parse_args()
     N = 33
     dim = 2
@@ -103,24 +104,27 @@ def main():
     # Step 7: Draw the EQ code points (red spheres).
     # ---------------------------------------------------------------
     show_r3_point_set(points_3d, show_sphere=False, scale_factor=0.06)
-    
+
     results_dir = Path(__file__).resolve().parent.parent / "results"
     raw_file = results_dir / "fig_4_10_eqp_voronoi_s2_33_raw.png"
     mlab.savefig(str(raw_file))
-    
+
     # Use Matplotlib to add the LaTeX title
     img = plt.imread(str(raw_file))
     fig_overlay, ax = plt.subplots(figsize=(9, 9), dpi=100)
     ax.imshow(img)
     ax.axis("off")
     title_text = (
-        r"Figure 4.10: EQ code $\mathrm{EQP}(2,33)$, Voronoi cells, "
-        r"and $\mathrm{EQ}(2,33)$"
+        r"Figure 4.10: EQ points and Voronoi cells on $S^2$ for $\mathrm{EQP}(2,33)$"
     )
     fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
-    plt.savefig(str(results_dir / "fig_4_10_eqp_voronoi_s2_33.png"), bbox_inches='tight', pad_inches=0)
+    plt.savefig(
+        str(results_dir / "fig_4_10_eqp_voronoi_s2_33.png"),
+        bbox_inches="tight",
+        pad_inches=0,
+    )
     plt.close(fig_overlay)
-    if raw_file.exists():
+    if os.path.exists(raw_file):
         os.remove(raw_file)
     if args.show_progress:
         print("Saved fig_4_10_eqp_voronoi_s2_33.png")

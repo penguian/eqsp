@@ -11,9 +11,7 @@ Command-line arguments:
         Maximum number of points to plot (default: 250).
 """
 
-from pathlib import Path
 import argparse
-import sys
 
 import matplotlib
 import numpy as np
@@ -38,7 +36,7 @@ def main():
     parser.add_argument(
         "--max-points",
         type=int,
-        default=250,
+        default=1000,
         help="Maximum number of points to plot (default: %(default)s)",
     )
     parser.add_argument(
@@ -52,11 +50,11 @@ def main():
         )
     else:
         N_values = np.arange(2, args.upper_bound + 1)
-    coeff = eq_energy_coeff(dim, N_values)
+    coeff = eq_energy_coeff(dim, N_values, show_progress=args.show_progress)
     # Calculate the new quantity to plot based on the ylabel
     coeff_energy = (1 - coeff) * N_values ** (1 / 3)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.semilogx(N_values, coeff_energy, "b+", markersize=2)
+    ax.semilogx(N_values, coeff_energy, "b+", markersize=2.5)
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel(r"$ec_3(\mathcal{N}) = (1 - E) \mathcal{N}^{1/3}$")
     ax.set_xlim(1, 20000)

@@ -11,9 +11,8 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import sys
+import os
 
 import matplotlib
 import numpy as np
@@ -53,14 +52,20 @@ def main():
         )
     else:
         N_values = np.arange(1, args.upper_bound + 1)
-    density = eq_packing_density(dim, N_values)
-    
+    density = eq_packing_density(dim, N_values, show_progress=args.show_progress)
+
     # Simple cubic lattice density: (pi^(d/2)) / (2^d * Gamma(d/2 + 1))
     sc_density = (np.pi**(dim/2)) / (2**dim * gamma(dim/2 + 1))
 
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.semilogx(N_values, density, "b+", markersize=2)
-    ax.axhline(y=sc_density, color='r', linestyle='--', linewidth=0.5, label="Simple cubic lattice density")
+    ax.axhline(
+        y=sc_density,
+        color="r",
+        linestyle="--",
+        linewidth=0.5,
+        label="Simple cubic lattice density",
+    )
     ax.plot(1, sc_density, 'ro', markersize=4)
 
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
@@ -79,7 +84,7 @@ def main():
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_4_7_packing_s4.png", dpi=150)
     if args.show_progress:
-        print("Saved fig_4_7_packing_s4.png")
+        print(f"Saved {os.path.basename(__file__).replace('.py', '.png')}")
 
 
 if __name__ == "__main__":

@@ -5,9 +5,7 @@ Reproduce the illustration of the EQ partition algorithm steps
 for EQ(3, 99), as shown in Figure 3.3 of the PhD thesis.
 """
 
-from pathlib import Path
 import argparse
-import sys
 
 import matplotlib
 
@@ -22,7 +20,9 @@ from eqsp.illustrations import illustrate_eq_algorithm
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
+    )
     args = parser.parse_args()
     dim = 3
     N = 99

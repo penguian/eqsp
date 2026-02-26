@@ -12,9 +12,7 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import sys
 
 import matplotlib
 import numpy as np
@@ -53,13 +51,24 @@ def main():
         )
     else:
         N_values = np.arange(1, args.upper_bound + 1)
-    coeff_dist = eq_dist_coeff(dim, N_values)
+    coeff_dist = eq_dist_coeff(dim, N_values, show_progress=args.show_progress)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.loglog(N_values, coeff_dist, "b+", markersize=2, label=r"$\mathrm{min dist} \ \mathrm{EQP}(2, \mathcal{N})$")
+    ax.loglog(
+        N_values,
+        coeff_dist,
+        "b+",
+        markersize=2,
+        label=r"$\mathrm{min dist} \ \mathrm{EQP}(2, \mathcal{N})$",
+    )
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel(r"Minimum distance multiplied by $\mathcal{N}^{1/2}$")
     ax.set_xlim(1, 2**14)
     ax.set_ylim(2.4, 3.6)
+
+    # Format y-axis to one decimal place
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter('%.1f'))
+    ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter('%.1f'))
+
     ax.grid(True, which="both", ls="-", alpha=0.5)
     fig.text(
         0.5,

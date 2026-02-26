@@ -12,9 +12,8 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import sys
+import os
 
 import matplotlib
 import numpy as np
@@ -54,9 +53,9 @@ def main():
         )
     else:
         N_values = np.arange(1, args.upper_bound + 1)
-    diam_bound = eq_diam_bound(dim, N_values)
+    diam_bound = eq_diam_bound(dim, N_values, show_progress=args.show_progress)
     coeff_bound = diam_bound * np.power(N_values, 1.0 / dim)
-    vertex_diam = eq_vertex_diam(dim, N_values)
+    vertex_diam = eq_vertex_diam(dim, N_values, show_progress=args.show_progress)
     coeff_vertex = vertex_diam * np.power(N_values, 1.0 / dim)
 
     # Feige-Schechtman bound: 2 * sin(min(pi, 8*theta_c) / 2)
@@ -71,7 +70,13 @@ def main():
     ax.loglog(
         N_values, coeff_bound, "r.", markersize=1, label="Diameter bound coefficient"
     )
-    ax.loglog(N_values, coeff_vertex, "b+", markersize=2, label="Maximum vertex diameter")
+    ax.loglog(
+        N_values,
+        coeff_vertex,
+        "b+",
+        markersize=2,
+        label="Maximum vertex diameter",
+    )
     ax.set_xlabel(r"$\mathcal{N}$: number of regions")
     ax.set_ylabel(
         r"$(\mathrm{maxdiam} \ \mathrm{EQ}(4,\mathcal{N})) \times \mathcal{N}^{1/4}$"
@@ -93,7 +98,7 @@ def main():
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_3_6_max_diam_s4.png", dpi=150)
     if args.show_progress:
-        print("Saved fig_3_6_max_diam_s4.png")
+        print(f"Saved {os.path.basename(__file__).replace('.py', '.png')}")
 
 
 if __name__ == "__main__":

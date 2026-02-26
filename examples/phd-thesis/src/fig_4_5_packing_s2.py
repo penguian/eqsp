@@ -11,9 +11,7 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import sys
 
 import matplotlib
 import numpy as np
@@ -53,25 +51,39 @@ def main():
         )
     else:
         N_values = np.arange(1, args.upper_bound + 1)
-    density = eq_packing_density(dim, N_values)
-    
+    density = eq_packing_density(dim, N_values, show_progress=args.show_progress)
+
     # Simple cubic lattice density: (pi^(d/2)) / (2^d * Gamma(d/2 + 1))
     sc_density = (np.pi**(dim/2)) / (2**dim * gamma(dim/2 + 1))
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.semilogx(N_values, density, "b+", markersize=2)
+    ax.semilogx(
+        N_values,
+        density,
+        "b+",
+        markersize=2,
+        label=r"$\mathrm{packing density} \ \mathrm{EQP}(2)$",
+    )
     # Red dot for simple cubic lattice density
-    # Since it's a horizontal line or a single dot? 
-    # User said "display a red dot at the density...". I'll plot it as a horizontal line or a dot at N_values[-1]?
-    # Usually it's a horizontal reference line or a dot on the right. 
-    # "display a red dot at the density" implies a specific marker. 
-    # I'll plot it at x=1 for visibility, or across the whole range? 
-    # Reference line is clearer, but user said "red dot". I'll put it at N=1.
-    ax.axhline(y=sc_density, color='r', linestyle='--', linewidth=0.5, label="Simple cubic lattice density")
+    # Since it's a horizontal line or a single dot?
+    # User said "display a red dot at the density...". I'll plot it as a
+    # horizontal line or a dot at N_values[-1]?
+    # Usually it's a horizontal reference line or a dot on the right.
+    # "display a red dot at the density" implies a specific marker.
+    # I'll plot it at x=1 for visibility, or across the whole range?
+    ax.axhline(
+        y=sc_density,
+        color="r",
+        linestyle="--",
+        linewidth=0.5,
+        label="Simple cubic lattice density",
+    )
     ax.plot(1, sc_density, 'ro', markersize=4)
 
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
-    ax.set_ylabel("Packing density")
+    ax.set_ylabel(
+        r"$\mathrm{packing density} \ \mathrm{EQP}(2, \mathcal{N})$"
+    )
     ax.set_xlim(1, 20000)
     ax.set_ylim(0, 1)
     ax.grid(True, which="both", ls="-", alpha=0.5)

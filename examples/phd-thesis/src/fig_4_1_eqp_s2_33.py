@@ -9,10 +9,8 @@ Requires Mayavi. Run with venv_sys:
     ../venv_sys/bin/python fig_4_1_eqp_s2_33.py
 """
 
-from pathlib import Path
 import os
 import argparse
-import sys
 
 import matplotlib.pyplot as plt
 from mayavi import mlab
@@ -25,7 +23,9 @@ from eqsp.visualizations import show_s2_partition
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
+    )
     args = parser.parse_args()
     N = 33
     mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
@@ -39,7 +39,7 @@ def main():
     # Save the raw 3D scene
     raw_file = "fig_4_1_eqp_s2_33_raw.png"
     mlab.savefig(raw_file)
-    
+
     # Use Matplotlib to add the LaTeX title
     img = plt.imread(raw_file)
     fig_overlay, ax = plt.subplots(figsize=(8, 8), dpi=100)

@@ -14,10 +14,7 @@ Command-line arguments:
         Maximum number of points to plot (default: 1000).
 """
 
-from pathlib import Path
 import argparse
-import math
-import sys
 
 import matplotlib
 import numpy as np
@@ -26,8 +23,10 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from eqsp.point_set_props import eq_min_dist
+from eqsp.utilities import area_of_cap, area_of_sphere, euc2sph_dist
 
-from eqsp.point_set_props import eq_packing_density
+
 
 
 def main():
@@ -56,27 +55,56 @@ def main():
     else:
         N_values = np.arange(2, args.upper_bound + 1)
 
-    def simple_cubic_density(dim):
-        return math.pi ** (dim / 2) / (2**dim * math.gamma(dim / 2 + 1))
+
 
     dims = [5, 6, 7]
-
-    # Pre-calculate Wyner ratios for each dimension
     wyner_ratios_by_dim = {}
+    sphere_areas = {d: area_of_sphere(d) for d in dims}
+
     for dim in dims:
-        density = eq_packing_density(dim, N_values)
-        wyner_ratios_by_dim[dim] = density / simple_cubic_density(dim)
+        if args.show_progress:
+            print(f"Calculating Wyner ratio for dim={dim}...")
+
+        # 1. Calculate packing density: N * area_of_cap(dim, rho) / area_of_sphere(dim)
+        min_dist_euc = eq_min_dist(dim, N_values, show_progress=args.show_progress)
+        rho = euc2sph_dist(min_dist_euc) / 2.0
+        pdens = N_values * area_of_cap(dim, rho) / sphere_areas[dim]
+
+        # 2. Calculate CSW lower bound: area_of_cap(dim, rho) / area_of_cap(dim, 2*rho)
+        rho2 = np.clip(2.0 * rho, 0, np.pi)
+        csw_bound = area_of_cap(dim, rho) / area_of_cap(dim, rho2)
+
+        # 3. Wyner ratio = pdens / csw_bound
+        wyner_ratios_by_dim[dim] = pdens / csw_bound
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.loglog(N_values, wyner_ratios_by_dim[5], "b+", markersize=2, label=r"$\mathrm{EQP}(5)$")
-    ax.loglog(N_values, wyner_ratios_by_dim[6], "r+", markersize=2, label=r"$\mathrm{EQP}(6)$")
-    ax.loglog(N_values, wyner_ratios_by_dim[7], "g+", markersize=2, label=r"$\mathrm{EQP}(7)$")
+    ax.loglog(
+        N_values,
+        wyner_ratios_by_dim[5],
+        "b+",
+        markersize=2,
+        label=r"$\mathrm{EQP}(5)$",
+    )
+    ax.loglog(
+        N_values,
+        wyner_ratios_by_dim[6],
+        "r+",
+        markersize=2,
+        label=r"$\mathrm{EQP}(6)$",
+    )
+    ax.loglog(
+        N_values,
+        wyner_ratios_by_dim[7],
+        "g+",
+        markersize=2,
+        label=r"$\mathrm{EQP}(7)$",
+    )
     ax.axhline(y=1.0, color="k", linestyle="--", linewidth=0.8)
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Wyner ratio")
-    ax.set_ylim(0.25, 8)
+    ax.set_ylim(0.25, 2)
     ax.yaxis.set_major_formatter(plt.ScalarFormatter())
-    ax.set_yticks([0.25, 0.5, 1, 2, 4, 8])
+    ax.set_yticks([0.25, 0.5, 1, 1.5, 2])
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(
