@@ -43,7 +43,7 @@ python3 benchmarks/src/run_benchmarks.py --regions 100000
 ## 2. Benchmark Categories
 
 1.  **`eq_area_error`**: Measures the time to calculate area errors for a range of partition sizes. This captures $O(N)$ recurrence overhead.
-2.  **`point_set_energy_dist`**: Measures energy and distance calculations. This captures the $O(N^2)$ memory and distance matrix bottleneck.
+2.  **`point_set_energy_dist`**: Measures energy and distance calculations. This captures the optimized block-based summation performance.
 3.  **`sradius_of_cap`**: Benchmarks the root-finding logic used for spherical cap calculations.
 4.  **`eq_regions`**: Measures the overhead of the Python loop used in recursive partitioning.
 5.  **`eq_min_dist`**: Measures the performance of the structure-aware minimum distance calculation.
@@ -66,9 +66,9 @@ The current implementation of `eq_regions` use a **local, ephemeral cache** to e
 An opportunity exists to implement a **persistent caching layer** (e.g., using `functools.lru_cache` or a disk-backed cache) for common partition sizes ($N$). This would provide significant speedups for analyses that repeatedly iterate through ranges of $N$, common in property convergence studies.
 
 ### 4.2 Energy Calculation Optimization
-The $O(N^2)$ energy calculations in `point_set_energy_dist` currently use SciPy's `cdist`. While minimum distance calculations have been optimized using KDTrees and structure-aware localized searches, the full Riesz energy sum still requires visiting all pairs.
+The calculation of the full Riesz energy sum ($s \neq 0$) is inherently $O(N^2)$, as it requires visiting every pair of points.
 
-For points on a unit sphere, the squared Euclidean distance can be calculated more efficiently using matrix multiplication ($||x-y||^2 = 2 - 2x \cdot y$), which would reduce both compute time and peak memory usage for large $N$.
+To address the $O(N^2)$ memory bottleneck, `eqsp` uses a **block-based processing (tiling) approach** that limits peak memory usage to $O(N \times \text{block\_size})$. Additionally, the implementation **exploits symmetry** ($d_{ij} = d_{ji}$) to reduce the computational work by half.
 
 ### 4.3 Accelerated Loops
 The recursive structure of the partitioning algorithm and the coordinate search logic are prime candidates for acceleration using **Numba** or **Cython** to eliminate Python interpreter overhead in hot loops.

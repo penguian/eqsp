@@ -11,3 +11,4 @@ eqsp documentation
    Performance Benchmarks <benchmarks.md>
    Python Environments <python_environments.md>
    Thesis Examples <phd-thesis-examples.md>
+   Algorithmic Optimizations <performance.md>

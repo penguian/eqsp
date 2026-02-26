@@ -159,7 +159,10 @@ The package includes a collection of benchmarks to measure the efficiency of cor
 python3 benchmarks/src/run_benchmarks.py
 ```
 
-For detailed instructions on configurable benchmarks and performance analysis, see the [Performance Benchmarks Guide](doc/benchmarks.md).
+For detailed instructions on configurable benchmarks and performance analysis, see the [Performance Benchmarks Guide](doc/benchmarks.md). 
+
+> [!NOTE]
+> Core mathematical operations, including minimum distance ($O(N \log N)$) and Riesz energy (symmetry-optimized block summation), have been significantly optimized for performance and memory efficiency.
 
 ## Frequently Asked Questions
 

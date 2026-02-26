@@ -12,6 +12,7 @@ Most core functions retain their names. The main differences are in coordinate c
 | `eq_point_set` | `eq_point_set` | Identical usage. |
 | `eq_regions` | `eq_regions` | Identical usage. |
 | `eq_min_dist` | `eq_min_dist` | Identical usage; optimized ($O(N \log N)$) in Python. |
+| `eq_energy_dist` | `point_set_props.eq_energy_dist` | Optimized for $O(N)$ memory and symmetry. |
 | **Utilities** | | |
 | `pol2cart` | `utilities.polar2cart` | Renamed for clarity. |
 | `cart2pol` | `utilities.cart2polar2` | Renamed. Handles arrays. |
@@ -58,7 +59,26 @@ Some functions have been refactored to return consistent types, avoiding fragile
 *   Input arrays are generally handled as Numpy arrays.
 *   Functions are vectorized where appropriate, similar to Matlab.
 
-### 2.5 3D Plotting: `illustrations` vs. `visualizations`
+### 2.5 Indexing: 0-based vs 1-based
+Perhaps the most significant difference for Matlab users is that **Python uses 0-based indexing**.
+- **Matlab**: `A(1)` is the first element.
+- **Python**: `A[0]` is the first element.
+
+This impacts loops and range-based operations:
+- `for i in range(N):` iterates from `0` to `N-1`.
+- `A[0:k]` selects elements from index `0` up to (but not including) index `k`.
+
+### 2.6 Array Orientation and Shape
+Matlab and NumPy differ in their default memory layout (Column-major vs Row-major).
+- **Default Shape**: Most `eqsp` coordinate functions return arrays of shape `(d+1, N)`. This matches the original Matlab convention.
+- **Interoperability**: Many other Python libraries (like `scikit-learn` or `pandas`) expect data in "long" format: `(N, features)`.
+- **The Solution**: Use the transpose operator `.T` to swap axes efficiently:
+  ```python
+  points = eqsp.eq_point_set(2, 10)  # Shape: (3, 10)
+  points_T = points.T                # Shape: (10, 3)
+  ```
+
+### 2.7 3D Plotting: `illustrations` vs. `visualizations`
 The Python port uses two separate modules for plotting, unlike the single Matlab illustration module:
 
 *   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`). Functions that require 3D rendering raise `NotImplementedError` and direct you to `eqsp.visualizations`.
@@ -103,7 +123,26 @@ If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/pyt
 
 > **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
 
-## 5. Learning from Examples
+## 5. Performance "Killer Features"
+
+The Python port includes several algorithmic optimizations that significantly outperform the original Matlab toolbox:
+
+- **Minimum Distance**: Optimized to $O(N \log N)$ using KDTrees. Calculating $d_{\min}$ for $N=100,000$ points is now nearly instantaneous.
+- **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains $O(N)$ and total work is halved compared to naive $O(N^2)$ implementations.
+- **Histogram Lookups**: Fully vectorized point-in-region assignment on $S^2$ for bulk processing of billions of points.
+
+## 6. Common Matlab-to-Python "Gotchas"
+
+| Feature | Matlab | Python / `eqsp` |
+| :--- | :--- | :--- |
+| **Indexing** | 1, 2, 3... | 0, 1, 2... |
+| **Loops** | `for i=1:N` (inclusive) | `for i in range(N)` (exclusive of N) |
+| **Functions** | No `import` needed | `import eqsp` |
+| **Logic** | `&&`, `||`, `~` | `and`, `or`, `not` |
+| **Equality** | `==` | `==` (for values), `is` (for identity) |
+| **Slicing** | `A(start:end)` | `A[start:end]` (exclusive of end) |
+
+## 7. Learning from Examples
 
 For a deep dive into how the Python API corresponds to the original Matlab implementation, see the [PhD Thesis Example Reproductions](phd-thesis-examples.md)
  document.

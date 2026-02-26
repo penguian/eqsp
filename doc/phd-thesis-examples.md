@@ -18,7 +18,7 @@ results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 | `fig_3_4_max_diam_s2.py` | Fig 3.4 | Matplotlib (Agg) | Max diameter coefficients of EQ(2, N), N=1..100,000 |
 | `fig_3_5_max_diam_s3.py` | Fig 3.5 | Matplotlib (Agg) | Max diameter coefficients of EQ(3, N), N=1..100,000 |
 | `fig_3_6_max_diam_s4.py` | Fig 3.6 | Matplotlib (Agg) | Max diameter coefficients of EQ(4, N), N=1..100,000 |
-| `fig_3_7_max_diam_multi_dim.py` | Fig 3.7 | Matplotlib (Agg) | Max diameters of EQ(d, 2^k), d=2..8, k=1..20 |
+| `fig_3_7_max_diam_multi_dim.py` | Fig 3.7 | Matplotlib (Agg) | Max diameters of EQ(d, 2^k), d=2..8, k=1..20 (parallelized) |
 | `fig_4_1_eqp_s2_33.py` | Fig 4.1 | **Mayavi** | 3D EQ code EQP(2, 33) with partition EQ(2, 33) |
 | `fig_4_2_min_dist_s2.py` | Fig 4.2 | Matplotlib (Agg) | Min distance coefficient of EQP(2, N), N=1..20,000 |
 | `fig_4_3_min_dist_s3.py` | Fig 4.3 | Matplotlib (Agg) | Min distance coefficient of EQP(3, N), N=1..20,000 |
@@ -100,7 +100,7 @@ For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.m
   fallback (`fig_4_10_eqp_voronoi_s2_33.py`) is also provided.
 - **Figs 5.1–5.5 (Energy/Distance)**: 
   - Minimum distance calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
-  - Exact Riesz energy calculations ($s > 0$) still require pairwise summation ($O(N^2)$) and may take 15–30 minutes for $N=20,000$.
+  - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory) and exploit symmetry to halve the computational work. For $N=20,000$, these typically complete in 5–10 minutes.
 
 ## Not Reproduced
 
