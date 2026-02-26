@@ -72,11 +72,17 @@ def eq_area_error(dim, N, show_progress=False):
     >>> total_error, max_error = eq_area_error(2, 10)
     >>> np.allclose(total_error, 0)
     True
-    >>> np.allclose(max_error, 0)
+    >>> total_error, max_error = eq_area_error(2, 6, show_progress=True)
+    >>> float(total_error)
+    0.0
+    >>> np.allclose(max_error, 0, atol=1e-12)
     True
     >>> np.allclose(total_error * 1e12, [0, 0, 0, 0, 0, 0], atol=1)
     True
     >>> np.allclose(max_error * 1e12, [0, 0, 0, 0, 0, 0], atol=1)
+    True
+    >>> total_error, max_error = eq_area_error(2, 6, show_progress=True)
+    >>> np.allclose(total_error, 0)
     True
     """
     if dim is None or N is None:
@@ -193,6 +199,8 @@ def eq_diam_bound(dim, N, show_progress=False):
     1.6733
     >>> eq_diam_bound(3, np.arange(1, 7))
     array([2., 2., 2., 2., 2., 2.])
+    >>> print(f"{float(eq_diam_bound(2, 6, show_progress=True)):.4f}")
+    1.9437
     """
     return eq_regions_property(
         max_diam_bound_of_regions, dim, N, show_progress=show_progress
@@ -238,6 +246,9 @@ def eq_diam_coeff(dim, N, show_progress=False):
     >>> bound_coeff, vertex_coeff = eq_diam_coeff(2, 10)
     >>> print(f"{float(bound_coeff):.4f}, {float(vertex_coeff):.4f}")
     5.2915, 4.4721
+    >>> b, v = eq_diam_coeff(2, 6, show_progress=True)
+    >>> print(f"{float(b):.4f}")
+    4.7610
     """
     if dim is None or N is None:
         raise ValueError("Both dim and N must be provided.")
@@ -296,6 +307,8 @@ def eq_regions_property(fhandle, dim, N, show_progress=False):
     >>> def dummy_property(regions): return regions.shape[2]
     >>> eq_regions_property(dummy_property, 2, [3, 4]).astype(int)
     array([3, 4])
+    >>> float(eq_regions_property(dummy_property, 2, 6, show_progress=True))
+    6.0
     """
     shape = np.shape(N)
     n_partitions = int(np.prod(shape))
@@ -342,6 +355,8 @@ def eq_vertex_diam_coeff(dim, N, show_progress=False):
     4.4721
     >>> eq_vertex_diam_coeff(3, np.arange(1, 7))
     array([2.    , 2.5198, 2.8845, 3.1748, 3.42  , 3.6342])
+    >>> print(f"{float(eq_vertex_diam_coeff(2, 6, show_progress=True)):.4f}")
+    4.1633
     """
     return eq_vertex_diam(dim, N, show_progress=show_progress) * np.power(N, 1 / dim)
 
@@ -375,6 +390,8 @@ def eq_vertex_diam(dim, N, show_progress=False):
     1.4142
     >>> eq_vertex_diam(3, np.arange(1, 7))
     array([2., 2., 2., 2., 2., 2.])
+    >>> print(f"{float(eq_vertex_diam(2, 6, show_progress=True)):.4f}")
+    1.6997
     """
     return eq_regions_property(
         max_vertex_diam_of_regions, dim, N, show_progress=show_progress

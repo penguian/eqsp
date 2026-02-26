@@ -243,6 +243,8 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False):
     --------
     >>> np.round(eq_dist_coeff(2, np.arange(2, 5)), 4)
     array([2.8284, 2.4495, 2.8284])
+    >>> float(np.round(eq_dist_coeff(2, 6, show_progress=True), 4))
+    3.4641
     """
     dist = eq_min_dist(dim, N, extra_offset=extra_offset, show_progress=show_progress)
     coeff = dist * np.power(N, 1 / dim)
@@ -275,6 +277,8 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
     --------
     >>> float(np.round(eq_energy_coeff(2, 4), 4))
     -0.5214
+    >>> float(np.round(eq_energy_coeff(2, 6, show_progress=True), 4))
+    -0.5453
     """
     if s is None:
         s = dim - 1
@@ -312,6 +316,12 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
         Energy values, same shape as N.
     dist : array-like, optional
         Minimum Euclidean distance(s), same shape as N.
+
+    Examples
+    --------
+    >>> energy = eq_energy_dist(2, 6, show_progress=True)
+    >>> float(np.round(energy, 4))
+    9.9853
     """
     if s is None:
         s = dim - 1
@@ -361,6 +371,11 @@ def eq_min_dist(dim, N, extra_offset=False, show_progress=False):
     Notes
     -----
     Exploits the collar structure for efficient calculation.
+
+    Examples
+    --------
+    >>> float(np.round(eq_min_dist(2, 6, show_progress=True), 4))
+    1.4142
     """
     shape = np.shape(N)
     n_partitions = int(np.prod(shape))
@@ -443,6 +458,8 @@ def eq_packing_density(dim, N, extra_offset=False, show_progress=False):
     --------
     >>> float(np.round(eq_packing_density(2, 4), 4))
     0.5858
+    >>> float(np.round(eq_packing_density(2, 6, show_progress=True), 4))
+    0.8787
     """
     min_euclidean_dist = eq_min_dist(
         dim, N, extra_offset=extra_offset, show_progress=show_progress
@@ -472,6 +489,13 @@ def eq_point_set_property(fhandle, dim, N, extra_offset=False, show_progress=Fal
     -------
     property : array-like
         Property value(s), same shape as N.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> f = lambda x: np.mean(x)
+    >>> float(np.round(eq_point_set_property(f, 2, 6, show_progress=True), 10))
+    0.0
     """
     shape = np.shape(N)
     n_partitions = int(np.prod(shape))
