@@ -29,8 +29,6 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.point_set_props import eq_packing_density
 
@@ -49,6 +47,9 @@ def main():
         type=int,
         default=1000,
         help="Maximum number of points to plot (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
     )
     args = parser.parse_args()
     if args.upper_bound > args.max_points:
@@ -69,14 +70,14 @@ def main():
         density = eq_packing_density(dim, N_values)
         ratios[dim] = density / simple_cubic_density(dim)
 
-    ax.semilogx(N_values, ratios[2], "b-", linewidth=1, label=r"$\mathrm{EQP}(2)$")
-    ax.semilogx(N_values, ratios[3], "r-", linewidth=1, label=r"$\mathrm{EQP}(3)$")
-    ax.semilogx(N_values, ratios[4], "g-", linewidth=1, label=r"$\mathrm{EQP}(4)$")
+    ax.semilogx(N_values, ratios[2], "b+", markersize=2, label=r"$\mathrm{EQP}(2)$")
+    ax.semilogx(N_values, ratios[3], "r+", markersize=2, label=r"$\mathrm{EQP}(3)$")
+    ax.semilogx(N_values, ratios[4], "g+", markersize=2, label=r"$\mathrm{EQP}(4)$")
     ax.axhline(y=1.0, color="k", linestyle="--", linewidth=0.8)
-    ax.set_xlabel(r"$\mathcal{N} = \text{number of points}$")
+    ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Wyner ratio")
     ax.set_xlim(1, 20000)
-    ax.set_ylim(0.6, 1.05)
+    ax.set_ylim(1, 5)
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(
@@ -89,7 +90,8 @@ def main():
     )
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_4_8_wyner_s2_s3_s4.png", dpi=150)
-    print("Saved fig_4_8_wyner_s2_s3_s4.png")
+    if args.show_progress:
+        print("Saved fig_4_8_wyner_s2_s3_s4.png")
 
 
 if __name__ == "__main__":

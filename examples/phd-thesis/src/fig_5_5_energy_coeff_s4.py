@@ -8,7 +8,7 @@ Command-line arguments:
     --upper-bound N
         Maximum number of regions N to compute (default: 20000).
     --max-points M
-        Maximum number of points to plot (default: 1000).
+        Maximum number of points to plot (default: 250).
 """
 
 from pathlib import Path
@@ -22,8 +22,6 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.point_set_props import eq_energy_coeff
 
@@ -40,8 +38,11 @@ def main():
     parser.add_argument(
         "--max-points",
         type=int,
-        default=1000,
+        default=250,
         help="Maximum number of points to plot (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
     )
     args = parser.parse_args()
     dim = 4
@@ -54,7 +55,7 @@ def main():
     coeff = eq_energy_coeff(dim, N_values)
     coeff_energy = coeff * (N_values ** (1 / dim))
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.semilogx(N_values, coeff_energy, "r.", markersize=1)
+    ax.semilogx(N_values, coeff_energy, "b+", markersize=2)
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel(r"$ec_4(\mathcal{N}) = (1 - E) \mathcal{N}^{1/4}$")
     ax.set_xlim(1, 20000)
@@ -70,7 +71,8 @@ def main():
     )
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_5_5_energy_coeff_s4.png", dpi=150)
-    print("Saved fig_5_5_energy_coeff_s4.png")
+    if args.show_progress:
+        print("Saved fig_5_5_energy_coeff_s4.png")
 
 
 if __name__ == "__main__":

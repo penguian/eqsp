@@ -23,8 +23,6 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.point_set_props import eq_dist_coeff
 
@@ -44,6 +42,9 @@ def main():
         default=1000,
         help="Maximum number of points to plot (default: %(default)s)",
     )
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
+    )
     args = parser.parse_args()
     dim = 2
     if args.upper_bound > args.max_points:
@@ -54,14 +55,11 @@ def main():
         N_values = np.arange(1, args.upper_bound + 1)
     coeff_dist = eq_dist_coeff(dim, N_values)
     fig, ax = plt.subplots(figsize=(10, 6))
-    ax.semilogx(N_values, coeff_dist, "r.", markersize=1)
-    ax.set_xlabel(r"$\mathcal{N} = \text{number of points}$")
-    ax.set_ylabel(
-        r"$\operatorname{mindist}(\mathrm{EQP}(2,\mathcal{N})) \times "
-        r"\mathcal{N}^{1/2}$"
-    )
-    ax.set_xlim(1, 20000)
-    ax.set_ylim(0.6, 1.1)
+    ax.loglog(N_values, coeff_dist, "b+", markersize=2, label=r"$\mathrm{min dist} \ \mathrm{EQP}(2, \mathcal{N})$")
+    ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
+    ax.set_ylabel(r"Minimum distance multiplied by $\mathcal{N}^{1/2}$")
+    ax.set_xlim(1, 2**14)
+    ax.set_ylim(2.4, 3.6)
     ax.grid(True, which="both", ls="-", alpha=0.5)
     fig.text(
         0.5,
@@ -73,7 +71,8 @@ def main():
     )
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_4_2_min_dist_s2.png", dpi=150)
-    print("Saved fig_4_2_min_dist_s2.png")
+    if args.show_progress:
+        print("Saved fig_4_2_min_dist_s2.png")
 
 
 if __name__ == "__main__":

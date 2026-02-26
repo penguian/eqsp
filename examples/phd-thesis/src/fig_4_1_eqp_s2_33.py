@@ -10,35 +10,53 @@ Requires Mayavi. Run with venv_sys:
 """
 
 from pathlib import Path
+import os
 import argparse
 import sys
 
+import matplotlib.pyplot as plt
 from mayavi import mlab
 
 # pylint: disable=wrong-import-position,import-error
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.visualizations import show_s2_partition
 
 
 def main():
     """Generate and save the figure."""
-    argparse.ArgumentParser(description=__doc__).parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    args = parser.parse_args()
     N = 33
     mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
     # show_points=True (default) shows the EQ code points in red
     show_s2_partition(
         N,
         show_points=True,
-        title=(
-            r"Figure 4.1: EQ code $\mathrm{EQP}(2,33)$, showing the "
-            r"partition $\mathrm{EQ}(2,33)$"
-        ),
-        title_pos=(0.1, 0.05),
-        show=True,
-        save_file="fig_4_1_eqp_s2_33.png",
+        title="none",
+        show=False,
     )
+    # Save the raw 3D scene
+    raw_file = "fig_4_1_eqp_s2_33_raw.png"
+    mlab.savefig(raw_file)
+    
+    # Use Matplotlib to add the LaTeX title
+    img = plt.imread(raw_file)
+    fig_overlay, ax = plt.subplots(figsize=(8, 8), dpi=100)
+    ax.imshow(img)
+    ax.axis("off")
+    title_text = (
+        r"Figure 4.1: EQ code $\mathrm{EQP}(2,33)$, showing the "
+        r"partition $\mathrm{EQ}(2,33)$"
+    )
+    # Add title at bottom center
+    fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
+    plt.savefig("fig_4_1_eqp_s2_33.png", bbox_inches='tight', pad_inches=0)
+    plt.close(fig_overlay)
+    if os.path.exists(raw_file):
+        os.remove(raw_file)
+    if args.show_progress:
+        print("Saved fig_4_1_eqp_s2_33.png")
 
 
 if __name__ == "__main__":

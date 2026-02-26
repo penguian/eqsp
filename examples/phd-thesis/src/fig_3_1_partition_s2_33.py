@@ -15,15 +15,15 @@ import sys
 from mayavi import mlab
 
 # pylint: disable=wrong-import-position,import-error
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.visualizations import show_s2_partition
 
 
 def main():
     """Display and save the 3D figure."""
-    argparse.ArgumentParser(description=__doc__).parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    args = parser.parse_args()
     N = 33
     mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
     show_s2_partition(
@@ -33,6 +33,8 @@ def main():
         show=True,
         save_file="fig_3_1_partition_s2_33.png",
     )
+    if args.show_progress:
+        print("Saved fig_3_1_partition_s2_33.png")
 
 
 if __name__ == "__main__":

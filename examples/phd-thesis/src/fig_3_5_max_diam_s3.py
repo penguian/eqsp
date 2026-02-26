@@ -23,8 +23,6 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.region_props import eq_diam_bound, eq_vertex_diam
 from eqsp.utilities import area_of_ideal_region, sradius_of_cap
@@ -44,6 +42,9 @@ def main():
         type=int,
         default=1000,
         help="Maximum number of points to plot (default: %(default)s)",
+    )
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
     )
     args = parser.parse_args()
     dim = 3
@@ -71,14 +72,14 @@ def main():
         N_values, coeff_bound, "r.", markersize=1, label="Diameter bound coefficient"
     )
     ax.loglog(
-        N_values, coeff_vertex, "b+", markersize=1, label="Maximum vertex diameter"
+        N_values, coeff_vertex, "b+", markersize=2, label="Maximum vertex diameter"
     )
     ax.set_xlabel(r"$\mathcal{N}$: number of regions")
     ax.set_ylabel(
         r"$(\mathrm{maxdiam} \ \mathrm{EQ}(3,\mathcal{N})) \times \mathcal{N}^{1/3}$"
     )
     ax.set_xlim(1, 1e5)
-    ax.set_ylim(3, 8.5)
+    ax.set_ylim(2, 12)
     ax.yaxis.set_major_formatter(plt.ScalarFormatter())
     ax.set_yticks([3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8])
     ax.grid(True, which="both", ls="-", alpha=0.5)
@@ -93,7 +94,8 @@ def main():
     )
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_3_5_max_diam_s3.png", dpi=150)
-    print("Saved fig_3_5_max_diam_s3.png")
+    if args.show_progress:
+        print("Saved fig_3_5_max_diam_s3.png")
 
 
 if __name__ == "__main__":

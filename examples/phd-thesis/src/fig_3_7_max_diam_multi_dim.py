@@ -23,10 +23,20 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
+
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
 
 from eqsp.region_props import eq_diam_bound, eq_vertex_diam
+
+
+def compute_dim_data(dim, N_values, show_progress=False):
+    """Worker function to calculate diameter data for a single dimension."""
+    if show_progress:
+        print(f"  Dimension {dim}: calculating {len(N_values)} points...", flush=True)
+    coeff_bound = eq_diam_bound(dim, N_values) * np.power(N_values, 1.0 / dim)
+    coeff_vertex = eq_vertex_diam(dim, N_values) * np.power(N_values, 1.0 / dim)
+    return dim, coeff_bound, coeff_vertex
 
 
 def main():
@@ -35,7 +45,7 @@ def main():
     parser.add_argument(
         "--upper-bound",
         type=int,
-        default=2**20,
+        default=2**14,
         help="Maximum number of regions N (default: %(default)s)",
     )
     parser.add_argument(
@@ -44,29 +54,48 @@ def main():
         default=20,
         help="Number of points to plot (default: %(default)s)",
     )
+    parser.add_argument(
+        "--show-progress", action="store_true", help="Show progress messages"
+    )
     args = parser.parse_args()
-    dims = range(2, 9)
+
     # Generate N values as powers of 2
     k_max = int(np.floor(np.log2(args.upper_bound)))
     k_values = np.linspace(1, k_max, args.max_points).round().astype(int)
     N_values = 2**k_values
+
+    dims = sorted(range(2, 9), reverse=True)
+    results = {}
+
+    if args.show_progress:
+        print(f"Parallelizing calculations for dimensions {list(dims)} using 2 workers...")
+
+    with ProcessPoolExecutor(max_workers=2) as executor:
+        futures = {
+            executor.submit(compute_dim_data, dim, N_values, args.show_progress): dim
+            for dim in dims
+        }
+        for future in as_completed(futures):
+            dim, coeff_bound, coeff_vertex = future.result()
+            results[dim] = (coeff_bound, coeff_vertex)
+
     fig, ax = plt.subplots(figsize=(10, 6))
-    for dim in dims:
-        coeff_bound = eq_diam_bound(dim, N_values) * np.power(N_values, 1.0 / dim)
-        coeff_vertex = eq_vertex_diam(dim, N_values) * np.power(N_values, 1.0 / dim)
-        ax.loglog(N_values, coeff_bound, "r.", markersize=4)
+
+    # Plot in increasing dimension order for consistency
+    for dim in sorted(results.keys()):
+        coeff_bound, coeff_vertex = results[dim]
+        ax.loglog(N_values, coeff_bound, "b+", markersize=4)
         ax.loglog(N_values, coeff_vertex, "b+", markersize=4)
+
     # Legend proxies
-    ax.loglog([], [], "r.", markersize=4, label="Diameter bound coefficient")
+    ax.loglog([], [], "b+", markersize=4, label="Diameter bound coefficient")
     ax.loglog([], [], "b+", markersize=4, label="Vertex diameter coefficient")
-    ax.set_xlabel(r"$\mathcal{N}$: number of regions")
-    ax.set_ylabel(
-        r"$(\mathrm{maxdiam} \ \mathrm{EQ}(d,\mathcal{N})) \times \mathcal{N}^{1/d}$"
-    )
-    ax.set_xlim(1, 1e5)
-    ax.set_ylim(2, 12)
+    ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
+    ax.set_ylabel(r"Maximum diameter multiplied by $\mathcal{N}^{1/2}$")
+    ax.set_xlim(1, 2**14)
+    ax.set_ylim(2, 8)
     ax.yaxis.set_major_formatter(plt.ScalarFormatter())
-    ax.set_yticks([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    ax.set_yticks([2, 3, 4, 5, 6, 7, 8])
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(
@@ -79,7 +108,8 @@ def main():
     )
     plt.subplots_adjust(bottom=0.15)
     plt.savefig("fig_3_7_max_diam_multi_dim.png", dpi=150)
-    print("Saved fig_3_7_max_diam_multi_dim.png")
+    if args.show_progress:
+        print("Saved fig_3_7_max_diam_multi_dim.png")
 
 
 if __name__ == "__main__":

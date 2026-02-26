@@ -1,83 +1,130 @@
 """
-Figure 4.10 (2D): EQ code EQP(2, 33), Voronoi cells, and EQ(2, 33).
+Figure 4.10 (3D): EQ code EQP(2, 33), Voronoi cells on the sphere, and EQ(2, 33).
 
-2D stereographic projection showing Voronoi cells of EQP(2, 33) and the
-boundaries of partition EQ(2, 33).
+Computes the spherical Voronoi diagram of EQP(2, 33) directly on S^2 using
+scipy.spatial.SphericalVoronoi, then draws each Voronoi edge as a great circle
+arc via spherical linear interpolation (SLERP). This correctly represents Voronoi
+cell edges, which are great circle arcs, not straight lines.
 
-The Voronoi cells are computed via scipy.spatial.Voronoi on the
-stereographic projection coordinates. The north polar cap centre (z=1)
-is excluded from the projection (it maps to infinity) and rendered
-separately.
-
-This script saves a PNG file and does not require a display.
+Requires Mayavi. Run with venv_sys:
+    ../venv_sys/bin/python fig_4_10_eqp_voronoi_s2_33_3d.py
 """
 
 from pathlib import Path
+import os
 import argparse
 import sys
 
-from scipy.spatial import Voronoi, voronoi_plot_2d  # pylint: disable=no-name-in-module
-import matplotlib
+import matplotlib.pyplot as plt
+from mayavi import mlab
+from scipy.spatial import SphericalVoronoi
 import numpy as np
 
-# pylint: disable=wrong-import-position,ungrouped-imports,import-error
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+# pylint: disable=wrong-import-position,import-error
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from eqsp.illustrations import project_s2_partition
+from eqsp.visualizations import show_s2_partition, show_r3_point_set
 import eqsp
 
 
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args()
+    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    args = parser.parse_args()
     N = 33
     dim = 2
-    # Get EQ code points
-    points_x = eqsp.eq_point_set(dim, N)
-    # Stereographic projection from north pole: (x,y,z) -> (x/(1-z), y/(1-z))
-    # Exclude the north pole (z=1) which maps to infinity.
-    tol = 1e-10
-    north_pole_mask = np.abs(points_x[2] - 1) < tol
-    finite_pts = points_x[:, ~north_pole_mask]
-    px = finite_pts[0] / (1 - finite_pts[2])
-    py = finite_pts[1] / (1 - finite_pts[2])
-    proj_2d = np.column_stack([px, py])
-    fig, ax = plt.subplots(figsize=(10, 10))
-    # Voronoi cells from projected code points
-    mirror = proj_2d * -10
-    all_pts = np.vstack([proj_2d, mirror])
-    vor = Voronoi(all_pts)
-    voronoi_plot_2d(
-        vor,
-        ax=ax,
-        show_vertices=False,
-        line_colors="orange",
-        line_width=1.2,
-        line_alpha=0.7,
-        point_size=0,
+    SAMPLES = 80  # points per great circle arc
+    TUBE_R = np.sqrt(1.0 / N) / 12.0  # matches tube radius used by show_s2_region
+    # ---------------------------------------------------------------
+    # Step 1: Get EQP(2, 33) code points on the unit sphere.
+    # ---------------------------------------------------------------
+    points_3d = eqsp.eq_point_set(dim, N)  # shape (3, N)
+    points_for_svd = points_3d.T  # SphericalVoronoi wants (N, 3)
+    # ---------------------------------------------------------------
+    # Step 2: Compute the spherical Voronoi diagram directly on S^2.
+    # ---------------------------------------------------------------
+    svd = SphericalVoronoi(points_for_svd, radius=1.0, center=np.zeros(3))
+    svd.sort_vertices_of_regions()
+    # ---------------------------------------------------------------
+    # Step 3: Collect unique Voronoi edges (pairs of vertex indices).
+    # Each consecutive pair of vertices in a region shares an edge.
+    # ---------------------------------------------------------------
+    edges = set()
+    for region in svd.regions:
+        n = len(region)
+        for i in range(n):
+            a = region[i]
+            b = region[(i + 1) % n]
+            edges.add((min(a, b), max(a, b)))
+
+    # ---------------------------------------------------------------
+    # Step 4: SLERP helper — great circle arc from point a to point b.
+    # ---------------------------------------------------------------
+    def great_circle_arc(pa, pb, n=SAMPLES):
+        """Spherical linear interpolation from pa to pb on the unit sphere."""
+        omega = np.arccos(np.clip(np.dot(pa, pb), -1.0, 1.0))
+        if omega < 1e-10:
+            return None
+        t = np.linspace(0, 1, n)
+        arc = (
+            np.outer(np.sin((1 - t) * omega), pa) + np.outer(np.sin(t * omega), pb)
+        ) / np.sin(omega)
+        return arc
+
+    # ---------------------------------------------------------------
+    # Step 5: Set up Mayavi scene with EQ partition regions (blue) and sphere.
+    # ---------------------------------------------------------------
+    mlab.figure(bgcolor=(1, 1, 1), size=(900, 900))
+    show_s2_partition(
+        N,
+        show_sphere=True,
+        show_points=False,
+        title="none",
+        show=False,
     )
-    # Partition boundaries
-    project_s2_partition(N, proj="stereo", ax=ax)
-    ax.plot(px, py, "r.", markersize=5, zorder=5)
-    ax.set_xlim(-6, 6)
-    ax.set_ylim(-6, 6)
+    # ---------------------------------------------------------------
+    # Step 6: Draw each Voronoi edge as a great circle arc (orange tubes).
+    # ---------------------------------------------------------------
+    for a_idx, b_idx in edges:
+        pa = svd.vertices[a_idx]
+        pb = svd.vertices[b_idx]
+        arc = great_circle_arc(pa, pb)
+        if arc is None:
+            continue
+        mlab.plot3d(
+            arc[:, 0],
+            arc[:, 1],
+            arc[:, 2],
+            color=(1.0, 0.6, 0.0),
+            tube_radius=TUBE_R,
+            opacity=1.0,
+        )
+    # ---------------------------------------------------------------
+    # Step 7: Draw the EQ code points (red spheres).
+    # ---------------------------------------------------------------
+    show_r3_point_set(points_3d, show_sphere=False, scale_factor=0.06)
+    
+    results_dir = Path(__file__).resolve().parent.parent / "results"
+    raw_file = results_dir / "fig_4_10_eqp_voronoi_s2_33_raw.png"
+    mlab.savefig(str(raw_file))
+    
+    # Use Matplotlib to add the LaTeX title
+    img = plt.imread(str(raw_file))
+    fig_overlay, ax = plt.subplots(figsize=(9, 9), dpi=100)
+    ax.imshow(img)
     ax.axis("off")
-    fig.text(
-        0.5,
-        0.02,
+    title_text = (
         r"Figure 4.10: EQ code $\mathrm{EQP}(2,33)$, Voronoi cells, "
-        r"and $\mathrm{EQ}(2,33)$",
-        ha="center",
-        fontsize=10,
+        r"and $\mathrm{EQ}(2,33)$"
     )
-    plt.subplots_adjust(bottom=0.15)
-    plt.savefig("fig_4_10_eqp_voronoi_s2_33.png", dpi=150)
-    print("Saved fig_4_10_eqp_voronoi_s2_33.png")
+    fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
+    plt.savefig(str(results_dir / "fig_4_10_eqp_voronoi_s2_33.png"), bbox_inches='tight', pad_inches=0)
+    plt.close(fig_overlay)
+    if raw_file.exists():
+        os.remove(raw_file)
+    if args.show_progress:
+        print("Saved fig_4_10_eqp_voronoi_s2_33.png")
+    mlab.show()
 
 
 if __name__ == "__main__":

@@ -15,15 +15,15 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Add project root to sys.path so we can import eqsp
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from eqsp.illustrations import illustrate_eq_algorithm
 
 
 def main():
     """Generate and save the figure."""
-    argparse.ArgumentParser(description=__doc__).parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--show-progress", action="store_true", help="Show progress messages")
+    args = parser.parse_args()
     dim = 3
     N = 99
     illustrate_eq_algorithm(dim, N)
@@ -37,7 +37,8 @@ def main():
     )
     plt.subplots_adjust(bottom=0.1, top=0.95)
     plt.savefig("fig_3_3_algorithm_s3_99.png", dpi=150)
-    print("Saved fig_3_3_algorithm_s3_99.png")
+    if args.show_progress:
+        print("Saved fig_3_3_algorithm_s3_99.png")
 
 
 if __name__ == "__main__":
