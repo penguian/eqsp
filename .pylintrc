@@ -7,7 +7,7 @@ ignored-modules=mayavi,mayavi.mlab,PyQt5
 generated-members=numpy.*,scipy.*
 
 # Allow N, X, Y, Z, M as valid variable names (math notation)
-good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R
+good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R,N_values,n_linear,n_log,coeff_energy,N_values_log
 
 [FORMAT]
 max-line-length=88
@@ -15,8 +15,6 @@ max-line-length=88
 [MESSAGES CONTROL]
 # Disable specific warnings
 disable=
-    R0801, # duplicate-code (common in presentation/example scripts)
-    C0103, # invalid-name
     R0913, # too-many-arguments
     R0914, # too-many-locals
     C0303, # trailing-whitespace (handled by ruff)
@@ -26,3 +24,10 @@ disable=
 max-branches=35
 max-statements=90
 max-positional-arguments=6
+
+[SIMILARITIES]
+# Allow boilerplate in examples but catch large blocks
+min-similarity-lines=100
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
