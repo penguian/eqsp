@@ -82,17 +82,21 @@ To generate a full coverage report, use the provided helper script:
 python3 tests/run_coverage.py
 ```
 
-This will run all tests (including doctests) and produce a summary in the terminal. The project maintains a benchmark of **94% coverage**.
+This will run all tests (including doctests) and produce a summary in the terminal. The project maintains a standard benchmark of **93% coverage**.
+
+Detailed results are saved in `tests/results/run_coverage.log`.
 
 ### 4.1 Private Implementation Tests
 
 By default, the coverage script strictly excludes **private implementation tests** and **internal doctests** into to maintain a clear boundary between the Public API and internal performance optimizations.
 
-To include these high-fidelity tests in the coverage report, use the `--include-private` flag:
+To include these high-fidelity tests in the coverage report, use the `--include-private` flag (benchmark: **94% coverage**):
 
 ```bash
 python3 tests/run_coverage.py --include-private
 ```
+
+Detailed results are saved in `tests/results/run_coverage_include_private.log`.
 
 The private testing suite includes:
 - **`tests/src/test_private_histograms.py`**: Verifies vectorized region lookup logic on S².
