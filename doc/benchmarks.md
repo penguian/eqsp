@@ -8,7 +8,7 @@ The `eqsp` package includes a suite of performance benchmarks to measure the eff
 To run the entire benchmark suite with default settings:
 
 ```bash
-python3 benchmarks/src/run_benchmarks.py
+python3 benchmarks/run_benchmarks.py
 ```
 
 ### 1.2 Configurable Runs
@@ -16,17 +16,18 @@ The runner supports several flags to control the problem size and duration:
 
 ```bash
 # Quick sanity check with small problem size
-python3 benchmarks/src/run_benchmarks.py --n-max 500
+python3 benchmarks/run_benchmarks.py --n-max 500
 
 # High-dimensional benchmark
-python3 benchmarks/src/run_benchmarks.py --dim 4
+python3 benchmarks/run_benchmarks.py --dim 4
 
 # Specific partition size for histogram lookups
-python3 benchmarks/src/run_benchmarks.py --regions 100000
+python3 benchmarks/run_benchmarks.py --regions 100000
 ```
 
 | Flag | Description | Default |
 | :--- | :--- | :--- |
+| `--results-dir` | Directory to save log files. | `benchmarks/results` |
 | `--n-max` | Scales the problem size for all benchmarks. | Varied (see below) |
 | `--dim` | Sphere dimension for partitioning and math. | 2 |
 | `--regions` | Number of regions in the partition for histogram lookups. | 1000 |
@@ -49,14 +50,25 @@ python3 benchmarks/src/run_benchmarks.py --regions 100000
 5.  **`eq_min_dist`**: Measures the performance of the structure-aware minimum distance calculation.
 6.  **`eq_find_s2_region`**: Measures the performance of the vectorized histogram-based region lookup on $S^2$.
 
-## 3. Interpreting Results
+## 3. Thesis Scaling Benchmark (Section 3.10.2)
 
-Benchmarks are printed as a table of ranges vs. execution time. Significant jumps in time per range may indicate:
+For formal verification of the partitioning algorithm's scaling, use the dedicated thesis benchmark:
+
+```bash
+# Run the formal d=[1..8], N=2^k sweep
+python3 benchmarks/src/benchmark_eq_regions.py --show-progress
+```
+
+This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.6})$ scaling theory described in Chapter 3 of the thesis.
+
+## 4. Interpreting Results
+
+Benchmarks are printed to the console and also saved as individual log files in `benchmarks/results/`.
 - **$O(N^2)$ scaling**: Common in distance matrix calculations.
 - **Python Loop Overhead**: Evident in the recursive partitioning logic.
 - **Cache Misses**: May occur when $N$ exceeds specific size thresholds.
 
-For a detailed analysis of known bottlenecks and optimization opportunities, see the `efficiency_report.md` in the `workspace-artifacts` directory.
+For a detailed analysis of known bottlenecks and optimization opportunities, see the performance highlights in [performance.md](performance.md).
 
 ## 4. Future Optimization Opportunities
 
