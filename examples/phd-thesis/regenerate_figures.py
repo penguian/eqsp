@@ -7,13 +7,14 @@ to produce PNG files in the 'results' directory. It automatically handles
 the environment requirements for 3D Mayavi plots.
 
 Usage:
-    python3 regenerate_figures.py [--two-d-only] [--force] [--figure FIG_NAME] [--show-progress]
+    python3 regenerate_figures.py [--two-d-only] [--force]
+                                [--figure FIG_NAME] [--show-progress]
 """
 
-import os
-import sys
-import subprocess
 import argparse
+import os
+import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -43,13 +44,34 @@ def is_3d_script(script_path):
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--two-d-only", action="store_true", help="Skip 3D Mayavi plots")
-    parser.add_argument("--force", action="store_true", help="Overwrite existing PNG files")
-    parser.add_argument("--dry-run", action="store_true", help="Print actions without executing")
-    parser.add_argument("--figure", type=str, help="Regenerate a specific figure (e.g., fig_3_1_partition_s2_33.py or 3_1)")
-    parser.add_argument("--show-progress", action="store_true", default=True, help="Show progress from figure scripts (default: %(default)s)")
-    parser.add_argument("--no-progress", action="store_false", dest="show_progress", help="Hide progress from figure scripts")
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--two-d-only", action="store_true",
+        help="Skip 3D Mayavi plots"
+    )
+    parser.add_argument(
+        "--force", action="store_true",
+        help="Overwrite existing PNG files"
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="Print actions without executing"
+    )
+    parser.add_argument(
+        "--figure", type=str,
+        help="Regenerate a specific figure (e.g., fig_3_1_partition_s2_33.py or 3_1)"
+    )
+    parser.add_argument(
+        "--show-progress", action="store_true", default=True,
+        help="Show progress from figure scripts (default: %(default)s)"
+    )
+    parser.add_argument(
+        "--no-progress", action="store_false", dest="show_progress",
+        help="Hide progress from figure scripts"
+    )
     args = parser.parse_args()
 
     # Directory setup
@@ -57,13 +79,13 @@ def main():
     src_dir = base_dir / "src"
     results_dir = base_dir / "results"
     results_dir.mkdir(parents=True, exist_ok=True)
-    
+
     project_root = base_dir.parent.parent
     venv_python = project_root / "venv_sys" / "bin" / "python3"
     run_patched = src_dir / "run_patched.py"
 
     scripts = sorted(src_dir.glob("fig_*.py"))
-    
+
     if args.figure:
         target = args.figure
         if not target.endswith(".py"):
@@ -79,8 +101,8 @@ def main():
                 print(f"Error: Script {target} not found in {src_dir}")
                 sys.exit(1)
             scripts = [script_path]
-    
-    print(f"--- EQSP Figure Regeneration ---")
+
+    print("--- EQSP Figure Regeneration ---")
     print(f"Source: {src_dir}")
     print(f"Target: {results_dir}")
     if args.two_d_only:
@@ -97,15 +119,15 @@ def main():
     for script in scripts:
         png_name = script.with_suffix(".png").name
         target_png = results_dir / png_name
-        
+
         needs_3d = is_3d_script(script)
-        
+
         # Skip logic
         if needs_3d and args.two_d_only:
             print(f"{script.name:40s} : SKIPPED (3D)")
             skip_count += 1
             continue
-            
+
         if target_png.exists() and not args.force:
             print(f"{script.name:40s} : SKIPPED (exists)")
             skip_count += 1
@@ -114,11 +136,14 @@ def main():
         # Environment Selection
         run_env = os.environ.copy()
         run_env["PYTHONPATH"] = str(project_root)
-        
+
         python_exe = sys.executable
         if needs_3d:
             if not venv_python.exists():
-                print(f"{script.name:40s} : FAILED (venv_sys not found at {venv_python})")
+                print(
+                    f"{script.name:40s} : FAILED "
+                    f"(venv_sys not found at {venv_python})"
+                )
                 fail_count += 1
                 continue
             python_exe = str(venv_python)
@@ -168,7 +193,7 @@ def main():
             rc = process.poll()
             duration = time.time() - script_start
             duration_str = format_duration(duration)
-            
+
             if rc == 0:
                 print(f" DONE ({duration_str})")
                 success_count += 1
@@ -184,7 +209,10 @@ def main():
 
     total_duration = time.time() - total_start
     print("-" * 32)
-    print(f"Summary: {success_count} succeeded, {fail_count} failed, {skip_count} skipped.")
+    print(
+        f"Summary: {success_count} succeeded, "
+        f"{fail_count} failed, {skip_count} skipped."
+    )
     print(f"Total time taken: {format_duration(total_duration)}")
 
 if __name__ == "__main__":

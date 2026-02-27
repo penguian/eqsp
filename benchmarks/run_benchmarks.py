@@ -12,31 +12,31 @@ def run_benchmark(name, script_name, extra_args, env, results_dir, base_dir):
     """Run a single benchmark script via subprocess and log its output."""
     script_path = os.path.join(base_dir, "src", script_name)
     log_file = os.path.join(results_dir, script_name.replace(".py", ".log"))
-    
+
     print(f"Running benchmark: {name}")
-    
+
     cmd = [sys.executable, script_path] + extra_args
-    
+
     try:
         t0 = time.perf_counter()
         # Capture output for both logging and displaying
         process = subprocess.run(
-            cmd, 
-            env=env, 
-            capture_output=True, 
-            text=True, 
+            cmd,
+            env=env,
+            capture_output=True,
+            text=True,
             check=True
         )
         t_elapsed = time.perf_counter() - t0
-        
+
         # Write to individual log file
-        with open(log_file, "w") as f:
+        with open(log_file, "w", encoding="utf-8") as f:
             f.write(process.stdout)
-            
-        # Also print to main stdout (which will be captured if the whole thing is redirected)
+
+        # Also print to stdout (captured if the whole thing is redirected)
         print(process.stdout)
         return t_elapsed
-        
+
     except subprocess.CalledProcessError as e:
         print(f"Error: Benchmark {name} failed with exit code {e.returncode}")
         print(e.stderr)
@@ -76,9 +76,9 @@ def main():
     results_dir = args.results_dir
     if not results_dir:
         results_dir = os.path.join(base_dir, "results")
-    
+
     results_dir = os.path.abspath(results_dir)
-    
+
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
 
@@ -103,12 +103,17 @@ def main():
         (
             "point_set_energy_dist (O(N^2) memory & broadcasting)",
             "benchmark_energy_dist.py",
-            ["--n-max", str(args.n_max or 2400), "--dim", str(args.dim)] + (["--s", str(args.s)] if args.s else []),
+            ["--n-max", str(args.n_max or 2400), "--dim", str(args.dim)]
+            + (["--s", str(args.s)] if args.s else []),
         ),
         (
             "eq_regions (Python loop overhead)",
             "benchmark_eq_regions.py",
-            ["--max-k", str(int(os.getenv("MAX_K", "22"))), "--max-d", str(args.dim), "--iterations", "1"],
+            [
+                "--max-k", str(int(os.getenv("MAX_K", "22"))),
+                "--max-d", str(args.dim),
+                "--iterations", "1"
+            ],
         ),
         (
             "eq_min_dist (Efficient distance calculation)",
