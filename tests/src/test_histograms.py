@@ -7,8 +7,8 @@ Copyright Paul Leopardi 2026
 import doctest
 from math import pi
 
-import pytest
 import numpy as np
+import pytest
 from numpy.testing import assert_array_equal
 
 from eqsp import histograms, partitions
