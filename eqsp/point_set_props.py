@@ -59,7 +59,7 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
 
 
 def calc_energy_coeff(dim, N, s, energy):
-    """
+    r"""
     Coefficient of second term in expansion of energy.
 
     Parameters
@@ -80,6 +80,13 @@ def calc_energy_coeff(dim, N, s, energy):
 
     Notes
     -----
+    The returned coefficient `coeff` (denoted $C$) corresponds to the second term
+    in the energy expansion. In the PhD thesis [Leo07], the "energy coefficient"
+    $ec_d(\mathcal{N})$ is defined as:
+    $ec_d(\mathcal{N}) := (1 - E/I(d,s)) \mathcal{N}^{s/d}$.
+    For $s = dim-1$ (where $I(d,s)=1$ on $S^2$ and higher), this relates to $C$ as:
+    $ec_d(\mathcal{N}) = -2 \times C$.
+
     The energy expansion is not valid for N == 1,
     and in particular, eq_energy_coeff(dim, N, 0, energy) := 0.
 
@@ -252,7 +259,7 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False):
 
 
 def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
-    """
+    r"""
     Coefficient in expansion of energy of an EQ point set.
 
     Parameters
@@ -272,6 +279,12 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
     -------
     coeff : array-like
         Coefficient(s), same shape as N.
+
+    Notes
+    -----
+    The returned `coeff` ($C$) relates to the thesis metric $ec_d(\mathcal{N})$ as:
+    $ec_d(\mathcal{N}) = -2 \times C$ (for $s=dim-1$).
+    See Remark on page 198 of [Leo07].
 
     Examples
     --------
