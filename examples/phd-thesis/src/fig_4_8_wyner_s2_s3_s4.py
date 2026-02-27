@@ -95,7 +95,7 @@ def main():
     ax.set_ylabel("Wyner ratio")
     ax.set_xlim(1, 20000)
     ax.set_ylim(1, 5)
-    ax.set_yticks([1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5])
+    ax.set_yticks([1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0])
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(

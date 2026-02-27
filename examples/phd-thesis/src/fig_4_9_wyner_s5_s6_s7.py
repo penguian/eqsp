@@ -111,7 +111,7 @@ def main():
     ax.set_yscale("log")
     ax.xaxis.set_major_formatter(plt.ScalarFormatter())
     ax.yaxis.set_major_formatter(plt.ScalarFormatter())
-    ax.set_yticks([0.5, 1, 2, 4])
+    ax.set_yticks([0.25, 0.5, 1, 2, 4, 8])
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(
