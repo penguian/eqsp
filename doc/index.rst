@@ -6,9 +6,11 @@ eqsp documentation
    :caption: Contents:
 
    api/modules
+   Release Roadmap <release_roadmap.md>
    User Migration Guide <user_migration_guide.md>
+   Python Environments <python_environments.md>
    Testing Guide <testing_guide.md>
    Performance Benchmarks <benchmarks.md>
-   Python Environments <python_environments.md>
    Thesis Examples <phd-thesis-examples.md>
    Algorithmic Optimizations <performance.md>
+   Book Series Outline <book_series_outline.md>
