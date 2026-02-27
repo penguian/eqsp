@@ -25,12 +25,12 @@ An **EQ point set** is the set of center points of the regions of an EQ partitio
 
 ## Installation
 
-Requires Python 3.8+ and the following dependencies:
+Requires **Python 3.11+** and the following core dependencies:
 - `numpy`
 - `scipy`
 - `matplotlib`
-- `mayavi`
-- `PyQt5`
+
+> **Note:** `mayavi` and `PyQt5` are **optional** dependencies for 3D visualization.
 
 To install in editable mode (recommended for development):
 ```bash
@@ -98,13 +98,13 @@ energy, min_dist = eq_energy_dist(dim, N, s)
 
 Visualizing partitions requires `matplotlib`.
 
-Use a 3D plot to illustrate the EQ partition of $S^2$ into $N$ regions:
+Use a high-quality 3D visualization (requires `mayavi`):
 ```python
-from eqsp.illustrations import show_s2_partition
+from eqsp import visualizations
 import matplotlib.pyplot as plt
 
-show_s2_partition(10)
-plt.show()
+visualizations.show_s2_partition(10)
+# This opens a native Mayavi GUI window.
 ```
 
 Use projection to illustrate the EQ partition of $S^2$ into $N$ regions:
@@ -114,11 +114,10 @@ project_s2_partition(10, proj='stereo')
 plt.show()
 ```
 
-Use projection to illustrate the EQ partition of $S^3$ into $N$ regions:
+Use 3D projection to illustrate the EQ partition of $S^3$ into $N$ regions:
 ```python
-from eqsp.illustrations import project_s3_partition
+from eqsp.visualizations import project_s3_partition
 project_s3_partition(10, proj='stereo')
-plt.show()
 ```
 
 Illustrate the EQ algorithm steps for the partition of $S^d$ into $N$ regions:
@@ -176,12 +175,12 @@ In principle, any function which takes `N` as an argument will work with any pos
 
 ### What are the options for visualizing points or equal area regions?
 
-- `show_s2_partition(N)`: 3D plot of $S^2$ partition.
-- `project_s2_partition(N, proj='stereo'|'eqarea')`: 2D projection of $S^2$ partition.
-- `project_s3_partition(N, proj='stereo'|'eqarea')`: 3D projection of $S^3$ partition.
-- `illustrate_eq_algorithm(dim, N)`: Step-by-step visualization.
+- `visualizations.show_s2_partition(N)`: 3D plot of $S^2$ partition (Mayavi).
+- `illustrations.project_s2_partition(N, proj='stereo'|'eqarea')`: 2D projection of $S^2$ partition (Matplotlib).
+- `visualizations.project_s3_partition(N, proj='stereo'|'eqarea')`: 3D projection of $S^3$ partition (Mayavi).
+- `illustrations.illustrate_eq_algorithm(dim, N)`: Step-by-step visualization.
 
-See the docstrings for these functions for more details (e.g. `help(eqsp.illustrations.show_s2_partition)`).
+See the docstrings for these functions for more details (e.g. `help(eqsp.visualizations.show_s2_partition)`).
 
 ## Package Structure
 

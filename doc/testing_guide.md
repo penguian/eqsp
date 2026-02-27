@@ -64,7 +64,7 @@ The `examples/phd-thesis/` directory contains high-fidelity scripts that reprodu
 ```bash
 cd examples/phd-thesis
 # Run a numerical plot (Agg backend, saves PNG)
-python3 fig_4_2_min_dist_s2.py --n-max 5000
+python3 fig_4_2_min_dist_s2.py --upper-bound 5000
 
 # Run a 3D visualization (Mayavi, requires venv_sys)
 python3 fig_3_1_partition_s2_33.py

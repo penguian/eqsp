@@ -34,15 +34,15 @@ def test_lookup_table_boundaries():
     y_exact = [-100.0, -70.0, 2.5, 75.0, 125.7]
     # np.searchsorted(side='right') means exactly hits go into the next bin index
     # So if value is exactly table[0] (-100.0), searchsorted returns 1
-    expected_exact = [1, 2, 3, 4, 5]
+    # If exactly table[4] (125.7), searchsorted returns 5, now capped at 4.
+    expected_exact = [1, 2, 3, 4, 4]
 
     # Out of bounds points
     y_out = [-200.0, 200.0]
     # Below minimum gets capped to 0.
-    # The docstring claims above maximum gets capped to len(table)-1,
-    # but the implementation actually returns len(table) (which is 5).
-    # lookup_s2_region relies on this behavior.
-    expected_out = [0, 5]
+    # Above maximum gets capped to len(table) - 1 (4).
+    # lookup_s2_region relies on this behavior to map points near pi to the last cap.
+    expected_out = [0, 4]
 
     y_all = y_normal + y_exact + y_out
     expected_all = expected_normal + expected_exact + expected_out

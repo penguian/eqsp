@@ -4,7 +4,7 @@ This guide covers the installation of the Recursive Zonal Equal Area (EQ) Sphere
 
 ## Prerequisites
 
--   Python 3.8 or later
+-   Python 3.11 or later
 -   `pip` (Python package installer)
 
 The package depends on:

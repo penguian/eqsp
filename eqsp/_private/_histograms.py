@@ -61,14 +61,17 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     import numpy as np
 
     n_caps = len(s_cap)
-    assert n_caps == len(c_regions), (
-        "LOOKUP_S2_REGION: Mismatch between length of s_cap and c_regions"
-    )
+    if n_caps != len(c_regions):
+        raise ValueError(
+            "LOOKUP_S2_REGION: Mismatch between length of s_cap and c_regions"
+        )
     # The last element of c_regions should be the total number of regions (N)
     n_regions = s_regions.shape[2]
-    assert c_regions[n_caps - 1] == n_regions, (
-        "LOOKUP_S2_REGION: Mismatch between c_regions[-1] and length of s_regions"
-    )
+    if c_regions[n_caps - 1] != n_regions:
+        raise ValueError(
+            "LOOKUP_S2_REGION: Mismatch between "
+            "c_regions[-1] and length of s_regions"
+        )
     n_points = s_point.shape[1]
     r_idx = np.zeros(n_points, dtype=int)
     if n_points == 0:
@@ -151,7 +154,7 @@ def lookup_table(table, y):
     >>> table = [-100.0, -70, 2.5, 75, 125.7]
     >>> y = [-1, 3, 1000, -197]
     >>> lookup_table(table, y)
-    array([2, 3, 5, 0])
+    array([2, 3, 4, 0])
     """
     import numpy as np
 
@@ -163,6 +166,10 @@ def lookup_table(table, y):
     extended_table = np.append(table, maximum)
     idx = np.searchsorted(extended_table, y, side="right")
     idx[idx < 0] = 0
+
+    # Cap at len(table) - 1 per docstring and typical interpolation use cases
+    n_table = len(table)
+    idx[idx >= n_table] = n_table - 1
 
     if idx.size == 1:
         return int(idx[0])
