@@ -112,3 +112,17 @@ computational outputs:
 - **Fig 3.2**: Pseudocode description of the partition algorithm (text figure).
 - **Tables 3.1–3.3**: Constants from theorem proofs (analytically derived).
 - **Table 4.1**: Hamkins-Zeger vs EQP comparison (partially tabulated data).
+
+## Running Time Benchmark (Section 3.10.2)
+
+In addition to the figure reproduction scripts, the project includes a formal replication of the performance benchmark described in **Section 3.10.2: Running time**.
+
+- **Purpose**: Verifies that the recursive zonal partitioning algorithm scales as $O(N^{0.6})$.
+- **Script**: `benchmarks/src/benchmark_eq_regions.py`
+- **Verification**: The Python implementation achieves empirical scaling coefficients identifying with the original thesis baseline (~0.60) across dimensions $d=1 \dots 11$ and partitions up to $N=2^{22}$ (4.2 million regions).
+
+To execute this benchmark:
+```bash
+python3 benchmarks/src/benchmark_eq_regions.py --max-d 11 --max-k 22
+```
+Detailed results are saved in `benchmarks/results/benchmark_eq_regions.log`.

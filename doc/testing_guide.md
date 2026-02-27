@@ -100,3 +100,43 @@ The private testing suite includes:
 - **`tests/src/test_private_region_props.py`**: Bridge test for `eqsp._private._region_props` doctests.
 
 These tests ensure that internal math optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
+
+## 5. Performance Benchmarking
+
+The `benchmarks/` directory contains scripts to verify the algorithmic complexity and execution speed of core functions.
+
+### 5.1 Running the Suite
+To run all system benchmarks and generate a summary report:
+```bash
+python3 benchmarks/run_benchmarks.py
+```
+
+### 5.2 Results and Logging
+The runner saves individual results for each benchmark in a standardized format:
+- **Main Summary**: `benchmarks/results/run_benchmarks.log`
+- **Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
+
+### 5.3 Thesis Benchmark (Section 3.10.2)
+The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behavior.
+
+To run it independently with progress tracking:
+```bash
+python3 benchmarks/src/benchmark_eq_regions.py --show-progress
+```
+
+## 6. Code Quality
+
+The project uses `ruff` and `pylint` to maintain high code quality standards.
+
+### 6.1 Ruff (Style and Formatting)
+Ruff handles fast linting and automatic formatting:
+```bash
+ruff check .
+ruff format .
+```
+
+### 6.2 Pylint (Deep Static Analysis)
+Pylint is used for deeper semantic checks. The configuration is refined to allow standard mathematical notation (e.g., `N_values`) while enforcing strict code quality globally:
+```bash
+pylint eqsp examples/phd-thesis/src
+```
