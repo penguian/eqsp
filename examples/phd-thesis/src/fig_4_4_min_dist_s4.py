@@ -45,12 +45,12 @@ def main():
     )
     args = parser.parse_args()
     dim = 4
-    if args.upper_bound > args.max_points:
-        N_values = np.unique(
-            np.linspace(2, args.upper_bound, args.max_points).round().astype(int)
-        )
-    else:
+    if args.upper_bound <= 100:
         N_values = np.arange(2, args.upper_bound + 1)
+    else:
+        N_small = np.arange(2, 101)
+        N_large = np.geomspace(100, args.upper_bound, 900)
+        N_values = np.unique(np.concatenate([N_small, N_large]).round().astype(int))
     coeff_dist = eq_dist_coeff(dim, N_values, show_progress=args.show_progress)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.loglog(
@@ -63,7 +63,8 @@ def main():
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel(r"Minimum distance multiplied by $\mathcal{N}^{1/4}$")
     ax.set_xlim(1, 2**14)
-    ax.set_ylim(1.8, 3.0)
+    ax.set_ylim(1.6, 2.6)
+    ax.set_yticks([1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5])
 
     # Format y-axis to one decimal place
     ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter('%.1f'))

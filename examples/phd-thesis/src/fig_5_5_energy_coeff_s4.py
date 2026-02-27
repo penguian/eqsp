@@ -2,13 +2,15 @@
 Figure 5.5: Energy coefficient of EQP(4, N) (semi-log scale).
 
 For N from 2 to 20,000, plot the energy coefficient of EQP(4, N),
-as in Figure 5.4 of the thesis. Uses s = dim - 1 = 3 (Riesz energy).
+as in Figure 5.5 of the thesis. Uses s = dim - 1 = 3 (Riesz energy).
+Plots ec_4(N) = -2 * eq_energy_coeff(4, N) as per Remark, page 198.
 
 Command-line arguments:
     --upper-bound N
         Maximum number of regions N to compute (default: 20000).
     --max-points M
-        Maximum number of points to plot (default: 250).
+        Maximum number of points to plot (default: 1000). Uses hybrid sampling:
+        N=2..100 linear, then log-spaced points up to the upper bound.
 """
 
 import argparse
@@ -44,14 +46,16 @@ def main():
     )
     args = parser.parse_args()
     dim = 4
-    if args.upper_bound > args.max_points:
-        N_values = np.unique(
-            np.linspace(2, args.upper_bound, args.max_points).round().astype(int)
-        )
+    if args.upper_bound > 100:
+        # Hybrid sampling: linear (1-100) and logarithmic (100-upper_bound)
+        n_linear = np.arange(1, 101)
+        n_log = np.geomspace(100, args.upper_bound, max(2, args.max_points - 100))
+        N_values = np.unique(np.concatenate([n_linear, n_log.round().astype(int)]))
     else:
-        N_values = np.arange(2, args.upper_bound + 1)
+        N_values = np.arange(1, args.upper_bound + 1)
     coeff = eq_energy_coeff(dim, N_values, show_progress=args.show_progress)
-    coeff_energy = coeff * (N_values ** (1 / dim))
+    # ec_d(N) = -2 * eq_energy_coeff(dim, N)
+    coeff_energy = -2 * coeff
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.semilogx(N_values, coeff_energy, "b+", markersize=2.5)
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")

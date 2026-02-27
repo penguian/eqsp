@@ -3,15 +3,17 @@ Figure 4.9: Wyner ratios for EQP(5), EQP(6), EQP(7) (log-log scale).
 
 For N from 2 to 1,000, plot the Wyner ratio of EQP(dim, N) for
 dim = 5 (blue), 6 (red), 7 (green), as in Figure 4.9 of the thesis.
+Uses a log-log scale to match thesis aesthetic.
 
 The denominator is the simple cubic lattice density for R^dim,
 as described in Section 4.3 of the thesis.
 
 Command-line arguments:
     --upper-bound N
-        Maximum number of regions N to compute (default: 1000).
+        Maximum number of regions N to compute (default: 20000).
     --max-points M
-        Maximum number of points to plot (default: 1000).
+        Maximum number of points to plot (default: 1000). Uses hybrid sampling:
+        N=1..100 linear, then log-spaced points up to the upper bound.
 """
 
 import argparse
@@ -35,7 +37,7 @@ def main():
     parser.add_argument(
         "--upper-bound",
         type=int,
-        default=1000,
+        default=20000,
         help="Maximum number of regions N (default: %(default)s)",
     )
     parser.add_argument(
@@ -48,12 +50,13 @@ def main():
         "--show-progress", action="store_true", help="Show progress messages"
     )
     args = parser.parse_args()
-    if args.upper_bound > args.max_points:
-        N_values = np.unique(
-            np.geomspace(2, args.upper_bound, args.max_points).round().astype(int)
-        )
+    if args.upper_bound > 100:
+        # Hybrid sampling: linear (1-100) and logarithmic (100-upper_bound)
+        n_linear = np.arange(1, 101)
+        n_log = np.geomspace(100, args.upper_bound, max(2, args.max_points - 100))
+        N_values = np.unique(np.concatenate([n_linear, n_log.round().astype(int)]))
     else:
-        N_values = np.arange(2, args.upper_bound + 1)
+        N_values = np.arange(1, args.upper_bound + 1)
 
 
 
@@ -102,9 +105,13 @@ def main():
     ax.axhline(y=1.0, color="k", linestyle="--", linewidth=0.8)
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Wyner ratio")
-    ax.set_ylim(0.25, 2)
+    ax.set_xlim(1, 20000)
+    ax.set_ylim(0.25, 8)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.xaxis.set_major_formatter(plt.ScalarFormatter())
     ax.yaxis.set_major_formatter(plt.ScalarFormatter())
-    ax.set_yticks([0.25, 0.5, 1, 1.5, 2])
+    ax.set_yticks([0.5, 1, 2, 4])
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(

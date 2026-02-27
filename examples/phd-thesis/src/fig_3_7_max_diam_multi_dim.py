@@ -86,17 +86,16 @@ def main():
     # Plot in increasing dimension order for consistency
     for dim in sorted(results.keys()):
         coeff_bound, coeff_vertex = results[dim]
-        ax.loglog(N_values, coeff_bound, "ro", markersize=4)
+        ax.loglog(N_values, coeff_bound, "ro", markersize=2)
         ax.loglog(
             N_values,
             coeff_vertex,
             "b+",
-            markersize=2,
-            label="Maximum vertex diameter",
+            markersize=5,
         )
     # Legend proxies
-    ax.loglog([], [], "ro", markersize=4, label="Diameter bound coefficient")
-    ax.loglog([], [], "b+", markersize=4, label="Vertex diameter coefficient")
+    ax.loglog([], [], "ro", markersize=2, label="Diameter bound coefficient")
+    ax.loglog([], [], "b+", markersize=5, label="Vertex diameter coefficient")
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel(r"Maximum diameter multiplied by $\mathcal{N}^{1/2}$")
     ax.set_xlim(1, 2**14)

@@ -45,12 +45,12 @@ def main():
     )
     args = parser.parse_args()
     dim = 2
-    if args.upper_bound > args.max_points:
-        N_values = np.unique(
-            np.linspace(1, args.upper_bound, args.max_points).round().astype(int)
-        )
-    else:
+    if args.upper_bound <= 100:
         N_values = np.arange(1, args.upper_bound + 1)
+    else:
+        N_small = np.arange(1, 101)
+        N_large = np.geomspace(100, args.upper_bound, 900)
+        N_values = np.unique(np.concatenate([N_small, N_large]).round().astype(int))
     coeff_dist = eq_dist_coeff(dim, N_values, show_progress=args.show_progress)
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.loglog(

@@ -8,7 +8,8 @@ Command-line arguments:
     --upper-bound N
         Maximum number of regions N to compute (default: 20000).
     --max-points M
-        Maximum number of points to plot (default: 1000).
+        Maximum number of points to plot (default: 1000). Uses hybrid sampling:
+        N=1..100 linear, then log-spaced points up to the upper bound.
 """
 
 import argparse
@@ -45,10 +46,11 @@ def main():
     )
     args = parser.parse_args()
     dim = 2
-    if args.upper_bound > args.max_points:
-        N_values = np.unique(
-            np.linspace(1, args.upper_bound, args.max_points).round().astype(int)
-        )
+    if args.upper_bound > 100:
+        # Hybrid sampling: linear (1-100) and logarithmic (100-upper_bound)
+        n_linear = np.arange(1, 101)
+        n_log = np.geomspace(100, args.upper_bound, max(2, args.max_points - 100))
+        N_values = np.unique(np.concatenate([n_linear, n_log.round().astype(int)]))
     else:
         N_values = np.arange(1, args.upper_bound + 1)
     density = eq_packing_density(dim, N_values, show_progress=args.show_progress)

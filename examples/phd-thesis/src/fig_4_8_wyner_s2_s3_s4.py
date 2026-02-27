@@ -8,13 +8,15 @@ The Wyner ratio is the packing density of the code divided by the
 density of the optimal packing in R^dim (based on Wyner's bound).
 For dim = 2, the Wyner bound uses the packing density of the hexagonal lattice.
 For a simpler approximation we use the simple cubic lattice density
-as a reference, as described in Section 4.3 of the thesis.
+as a reference. More accurately, we now use the Chabauty-Shannon-Wyner (CSW)
+lower bound for the packing density as a reference.
 
 Command-line arguments:
     --upper-bound N
         Maximum number of regions N to compute (default: 20000).
     --max-points M
-        Maximum number of points to plot (default: 1000).
+        Maximum number of points to plot (default: 1000). Uses hybrid sampling:
+        N=1..100 linear, then log-spaced points up to the upper bound.
 """
 
 import argparse
@@ -51,12 +53,13 @@ def main():
         "--show-progress", action="store_true", help="Show progress messages"
     )
     args = parser.parse_args()
-    if args.upper_bound > args.max_points:
-        N_values = np.unique(
-            np.linspace(2, args.upper_bound, args.max_points).round().astype(int)
-        )
+    if args.upper_bound > 100:
+        # Hybrid sampling: linear (1-100) and logarithmic (100-upper_bound)
+        n_linear = np.arange(1, 101)
+        n_log = np.geomspace(100, args.upper_bound, max(2, args.max_points - 100))
+        N_values = np.unique(np.concatenate([n_linear, n_log.round().astype(int)]))
     else:
-        N_values = np.arange(2, args.upper_bound + 1)
+        N_values = np.arange(1, args.upper_bound + 1)
 
 
 
@@ -91,7 +94,8 @@ def main():
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Wyner ratio")
     ax.set_xlim(1, 20000)
-    ax.set_ylim(0, 2)
+    ax.set_ylim(1, 5)
+    ax.set_yticks([1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5])
     ax.grid(True, which="both", ls="-", alpha=0.5)
     ax.legend()
     fig.text(
