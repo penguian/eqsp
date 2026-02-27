@@ -88,7 +88,7 @@ Detailed results are saved in `tests/results/run_coverage.log`.
 
 ### 4.1 Private Implementation Tests
 
-By default, the coverage script strictly excludes **private implementation tests** and **internal doctests** into to maintain a clear boundary between the Public API and internal performance optimizations.
+By default, the coverage script strictly excludes **private implementation tests** and **internal doctests** to maintain a clear boundary between the Public API and internal performance optimizations.
 
 To include these high-fidelity tests in the coverage report, use the `--include-private` flag (benchmark: **94% coverage**):
 

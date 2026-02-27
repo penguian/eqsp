@@ -30,7 +30,8 @@ results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 | `fig_4_9_wyner_s5_s6_s7.py` | Fig 4.9 | Matplotlib (Agg) | Wyner ratios for EQP(5), EQP(6), EQP(7), N=2..20,000 |
 | `fig_4_10_eqp_voronoi_s2_33.py` | Fig 4.10 | Matplotlib (Agg) | EQP(2, 33) Voronoi cells in 2D stereographic projection (headless) |
 | `fig_4_10_eqp_voronoi_s2_33_3d.py` | Fig 4.10 | **Mayavi** | EQP(2, 33) Voronoi edges projected back to S² in 3D |
-| `fig_5_1_5_2_normalized_energy.py` | Figs 5.1, 5.2 | Matplotlib (Agg) | Normalized energy of EQP(d, N), d=2,3,4 |
+| `fig_5_1_normalized_energy.py` | Fig 5.1 | Matplotlib (Agg) | Normalized energy of EQP(d, N), d=2,3,4 |
+| `fig_5_2_diff_normalized_energy.py` | Fig 5.2 | Matplotlib (Agg) | Convergence of normalized energy |
 | `fig_5_3_energy_coeff_s2.py` | Fig 5.3 | Matplotlib (Agg) | Energy coefficient of EQP(2, N), N=2..20,000 |
 | `fig_5_4_energy_coeff_s3.py` | Fig 5.4 | Matplotlib (Agg) | Energy coefficient of EQP(3, N), N=2..20,000 |
 | `fig_5_5_energy_coeff_s4.py` | Fig 5.5 | Matplotlib (Agg) | Energy coefficient of EQP(4, N), N=2..20,000 |

@@ -7,6 +7,7 @@ Copyright Paul Leopardi 2026
 import doctest
 from math import pi
 
+import pytest
 import numpy as np
 from numpy.testing import assert_array_equal
 
@@ -98,7 +99,11 @@ def test_consistency_find_and_in_region():
 
         # Note: strictly speaking a point could be on boundary of two regions,
         # but with random float points it's unlikely.
-        # We'll skip strict 'False' check to avoid flake on boundaries,
+        other_region = regions[:, :, other_idx - 1]
+        assert not histograms.in_s2_region(points_s[:, i : i + 1], other_region)[0], (
+            f"Point {i} assigned to region {r_idx} but also claims "
+            f"to be in region {other_idx}"
+        )
 
 
 def test_boundary_conditions():
@@ -120,5 +125,12 @@ def test_boundary_conditions():
 
 def test_invalid_inputs():
     """Test function test_invalid_inputs."""
-    # This might require checking if functions raise specific errors
-    # Current implementation relies on underlying numpy behavior mostly.
+    points_s = np.array([[0.0], [0.0]])
+    # N must be positive
+    with pytest.raises(ValueError):
+        histograms.eq_find_s2_region(points_s, 0)
+
+    # Dimension mismatch (regions expects dim=2 for histograms)
+    bad_regions = np.zeros((3, 2, 8))  # Wrong dimension (3 instead of 2)
+    with pytest.raises(ValueError):
+        histograms.in_s2_region(points_s, bad_regions[:, :, 0])

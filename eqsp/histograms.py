@@ -126,6 +126,8 @@ def in_s2_region(s_point, region):
     >>> in_s2_region(points_s, region)
     array([False, False, False,  True,  True, False, False, False])
     """
+    if region.shape != (2, 2):
+        raise ValueError(f"Region must have shape (2, 2), got {region.shape}")
     n_points = s_point.shape[1]
     result = np.zeros(n_points, dtype=bool)
     for p_idx in range(n_points):
