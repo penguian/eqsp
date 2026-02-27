@@ -1,7 +1,8 @@
-N range         |   Time (s)
-----------------------------
-1-3200          |     3.1155
-3201-6400       |     5.8428
-6401-9600       |     7.7605
-9601-12800      |     9.4218
-12801-16000     |    10.8417
+Running Thesis Benchmark for eq_regions: d=[1..2], N=2^[1..22]
+Iterations per point: 1
+
+Scaling Analysis (t ~ N^x) for eq_regions:
+Dimension 1 : x = 0.6009 (Thesis baseline: ~0.60)
+Dimension 2 : x = 0.4890 (Thesis baseline: ~0.60)
+
+Total benchmark wall time: 0.60 seconds

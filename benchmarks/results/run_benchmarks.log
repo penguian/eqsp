@@ -5,57 +5,58 @@
 Running benchmark: eq_area_error (Redundant area calculation)
 N range         |   Time (s)
 ----------------------------
-1-3000          |     3.0419
-3001-6000       |     5.7562
-6001-9000       |     7.7832
-9001-12000      |     9.4218
-12001-15000     |    10.9932
+1-3000          |     3.0603
+3001-6000       |     5.4920
+6001-9000       |     7.3787
+9001-12000      |     8.9804
+12001-15000     |    10.4277
 
 Running benchmark: point_set_energy_dist (O(N^2) memory & broadcasting)
 N range         |   Time (s)
 ----------------------------
-1-480           |     0.8948
-481-960         |     4.3633
-961-1440        |     8.2263
-1441-1920       |    14.5405
-1921-2400       |    22.5417
+1-480           |     0.6280
+481-960         |     3.5865
+961-1440        |     7.1615
+1441-1920       |    12.3361
+1921-2400       |    20.3173
 
 Running benchmark: eq_regions (Python loop overhead)
-N range         |   Time (s)
-----------------------------
-1-3200          |     3.0846
-3201-6400       |     5.7332
-6401-9600       |     7.6819
-9601-12800      |     9.2459
-12801-16000     |    10.6675
+Running Thesis Benchmark for eq_regions: d=[1..2], N=2^[1..22]
+Iterations per point: 1
+
+Scaling Analysis (t ~ N^x) for eq_regions:
+Dimension 1 : x = 0.6009 (Thesis baseline: ~0.60)
+Dimension 2 : x = 0.4890 (Thesis baseline: ~0.60)
+
+Total benchmark wall time: 0.60 seconds
 
 Running benchmark: eq_min_dist (Efficient distance calculation)
 N range         |   Time (s)
 ----------------------------
-1-1280          |     3.2578
-1281-2560       |     6.7352
-2561-3840       |     9.6581
-3841-5120       |    12.0647
-5121-6400       |    14.4350
+1-1280          |     3.1277
+1281-2560       |     6.6244
+2561-3840       |     9.2840
+3841-5120       |    11.7531
+5121-6400       |    14.2252
 
 Running benchmark: eq_find_s2_region (Vectorized histogram lookup)
 Points     |   Time (s)
 -----------------------
-40000000   |     7.7776
-80000000   |    15.5993
-120000000  |    30.5963
-160000000  |    43.2843
-200000000  |    61.6663
+40000000   |     7.8634
+80000000   |    15.6120
+120000000  |    28.0763
+160000000  |    42.8917
+200000000  |    65.4548
 
 Running benchmark: sradius_of_cap (Root finding loop bottleneck)
 Size       |   Time (s)
 -----------------------
-20000000   |     6.9869
-40000000   |    13.5231
-60000000   |    20.0895
-80000000   |    39.0162
-100000000  |    49.2319
+20000000   |     7.1406
+40000000   |    13.5012
+60000000   |    23.4264
+80000000   |    48.5369
+100000000  |    62.4365
 
 =======================================
-Total benchmark time: 466.34 seconds
+Total benchmark time: 451.83 seconds
 =======================================
