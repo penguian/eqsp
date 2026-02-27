@@ -27,7 +27,7 @@ results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 | `fig_4_6_packing_s3.py` | Fig 4.6 | Matplotlib (Agg) | Packing density of EQP(3, N), N=1..20,000 |
 | `fig_4_7_packing_s4.py` | Fig 4.7 | Matplotlib (Agg) | Packing density of EQP(4, N), N=1..20,000 |
 | `fig_4_8_wyner_s2_s3_s4.py` | Fig 4.8 | Matplotlib (Agg) | Wyner ratios for EQP(2), EQP(3), EQP(4), N=2..20,000 |
-| `fig_4_9_wyner_s5_s6_s7.py` | Fig 4.9 | Matplotlib (Agg) | Wyner ratios for EQP(5), EQP(6), EQP(7), N=2..1,000 |
+| `fig_4_9_wyner_s5_s6_s7.py` | Fig 4.9 | Matplotlib (Agg) | Wyner ratios for EQP(5), EQP(6), EQP(7), N=2..20,000 |
 | `fig_4_10_eqp_voronoi_s2_33.py` | Fig 4.10 | Matplotlib (Agg) | EQP(2, 33) Voronoi cells in 2D stereographic projection (headless) |
 | `fig_4_10_eqp_voronoi_s2_33_3d.py` | Fig 4.10 | **Mayavi** | EQP(2, 33) Voronoi edges projected back to S² in 3D |
 | `fig_5_1_5_2_normalized_energy.py` | Figs 5.1, 5.2 | Matplotlib (Agg) | Normalized energy of EQP(d, N), d=2,3,4 |
@@ -100,7 +100,9 @@ For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.m
   fallback (`fig_4_10_eqp_voronoi_s2_33.py`) is also provided.
 - **Figs 5.1–5.5 (Energy/Distance)**: 
   - Minimum distance calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
-  - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory) and exploit symmetry to halve the computational work. For $N=20,000$, these typically complete in 5–10 minutes.
+  - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory). For $N=20,000$, these typically complete in 5–10 minutes.
+  - **Sampling Strategy**: Most Chapter 4 and 5 plots use a hybrid sampling strategy (N=1..100 linear, then 900 logarithmically spaced points up to 20,000) for high resolution across both small and large N.
+  - **Energy Coefficient mapping**: Figures 5.3–5.5 plot the specific "energy coefficient" $ec_d(\mathcal{N})$ defined in Section 5.7 of the thesis, which relates to the library output $C$ as $ec_d(\mathcal{N}) = -2 \times C$.
 
 ## Not Reproduced
 

@@ -79,7 +79,7 @@ See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mappin
 To generate a full coverage report, use the provided helper script:
 
 ```bash
-./tests/run_coverage.sh
+python3 tests/run_coverage.py
 ```
 
 This will run all tests (including doctests) and produce a summary in the terminal. The project maintains a benchmark of **94% coverage**.
@@ -91,7 +91,7 @@ By default, the coverage script strictly excludes **private implementation tests
 To include these high-fidelity tests in the coverage report, use the `--include-private` flag:
 
 ```bash
-./tests/run_coverage.sh --include-private
+python3 tests/run_coverage.py --include-private
 ```
 
 The private testing suite includes:
