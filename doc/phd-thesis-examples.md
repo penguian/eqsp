@@ -91,9 +91,11 @@ For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.m
 
 ## Notes on differences from the original figures
 
-- **Figs 3.1 and 4.1**: The originals were 3D Matlab plots. These scripts use
   `eqsp.visualizations.show_s2_partition` (Mayavi), which produces a
   comparable 3D rendering.
+  
+  > [!NOTE]
+  > 3D plots generated via Mayavi/VTK may not always be exactly bitwise reproducible. Minor variances (e.g., 1-byte file size differences or ~2 pixel Absolute Error) can occur due to non-deterministic GPU hardware rasterization and anti-aliasing, even when the underlying data is identical.
 - **Fig 4.10 (3D Voronoi)**: Computed using `scipy.spatial.SphericalVoronoi`.
   Edges are rendered as true great circle arcs on the sphere using SLERP
   (Spherical Linear Interpolation). This ensures geometric accuracy that
