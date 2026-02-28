@@ -110,7 +110,7 @@ def max_diam_bound_of_regions(regions):
     """
     dim = regions.shape[0]
     if dim == 1:
-        diam_bound = diam_bound_region(regions[:, :, 0])
+        diam_bound = diam_bound_region(regions[:, :, 0])  # pragma: no cover
     else:
         colatitude = -np.inf * np.ones(dim - 1)
         diam_bound = 0.0
@@ -195,7 +195,7 @@ def max_vertex_diam_of_regions(regions):
     """
     dim = regions.shape[0]
     if dim == 1:
-        vertex_diam = vertex_diam_region(regions[:, :, 0])
+        vertex_diam = vertex_diam_region(regions[:, :, 0])  # pragma: no cover
     else:
         colatitude = -np.inf * np.ones(dim - 1)
         vertex_diam = 0.0

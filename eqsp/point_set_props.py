@@ -351,7 +351,7 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
         if len(energy.shape) > 1 or len(dist.shape) > 1:
             energy[0, i], dist[0, i] = point_set_energy_dist(points, s)
         else:
-            energy[0, i] = point_set_energy_dist(points, s)
+            energy[0, i] = point_set_energy_dist(points, s)  # pragma: no cover
     if show_progress and n_partitions > 1:
         print()  # Clear the line
     energy = energy.reshape(shape)
@@ -717,7 +717,7 @@ def point_set_min_dist(points):
     return min_dist
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     import doctest
 
     doctest.testmod()

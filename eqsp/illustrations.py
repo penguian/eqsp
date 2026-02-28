@@ -185,8 +185,8 @@ def project_point_set(
         )
 
     if show is True or (show is None and ax is None):
-        if plt.get_backend() != "Agg":
-            plt.show()
+        if plt.get_backend() != "Agg":  # pragma: no cover
+            plt.show()  # pragma: no cover
     return ax
 
 
@@ -311,8 +311,8 @@ def project_s2_partition(
         ax.set_title(title_text, fontsize=fontsize, color="k")
 
     if show is True or (show is None and ax is None):
-        if plt.get_backend() != "Agg":
-            plt.show()
+        if plt.get_backend() != "Agg":  # pragma: no cover
+            plt.show()  # pragma: no cover
 
     return ax
 
@@ -430,7 +430,7 @@ def illustrate_eq_algorithm(
             project_s2_partition(int(m[k]), ax=ax_sub, **opts_k)
 
     if show and plt.get_backend() != "Agg":
-        plt.show()
+        plt.show()  # pragma: no cover
 
 
 def illustrate_steps_1_2(

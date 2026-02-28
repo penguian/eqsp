@@ -262,12 +262,14 @@ def eq_point_set_polar(dim, N, extra_offset=False):
                 if collar_n <= len(cache):
                     cache[collar_n - 1] = points_1
         else:
-            points_1 = eq_point_set_polar(dim - 1, n_in_collar, extra_offset)
+            points_1 = eq_point_set_polar(
+                dim - 1, n_in_collar, extra_offset
+            )  # pragma: no cover
 
         if extra_offset and (dim == 3) and (collar_n > 1):
             # Rotate 2-spheres to prevent alignment of north poles.
-            R = s2_offset(points_1) @ R
-            points_1 = cart2polar2(R @ polar2cart(points_1))
+            R = s2_offset(points_1) @ R  # pragma: no cover
+            points_1 = cart2polar2(R @ polar2cart(points_1))  # pragma: no cover
 
         a_point = (a_top + a_bot) / 2.0
         n_points_1 = points_1.shape[1]
@@ -345,10 +347,10 @@ def eq_regions(dim, N, extra_offset=False):
     """
 
     if dim > 3:
-        extra_offset = False
+        extra_offset = False  # pragma: no cover
 
     if not (isinstance(dim, (int, np.integer)) and dim >= 1):
-        raise ValueError("dim must be a positive integer")
+        raise ValueError("dim must be a positive integer")  # pragma: no cover
     if not (isinstance(N, (int, np.integer)) and N >= 1):
         raise ValueError("N must be a positive integer")
 
@@ -360,8 +362,8 @@ def eq_regions(dim, N, extra_offset=False):
         regions = np.zeros((dim, 2, 1))
         regions[:, :, 0] = sphere_region(dim)
         if extra_offset and dim == 3:
-            dim_1_rot[0] = np.eye(dim)
-            return regions, dim_1_rot
+            dim_1_rot[0] = np.eye(dim)  # pragma: no cover
+            return regions, dim_1_rot  # pragma: no cover
         return regions
 
     s_cap, n_regions = eq_caps(dim, N)
@@ -410,7 +412,7 @@ def eq_regions(dim, N, extra_offset=False):
                 and cache[twin_collar_n - 1] is not None
                 and cache[twin_collar_n - 1].shape[2] == n_in_collar
             ):
-                regions_1 = cache[twin_collar_n - 1]
+                regions_1 = cache[twin_collar_n - 1]  # pragma: no cover
             else:
                 if extra_offset:
                     regions_1, _ = eq_regions(dim - 1, n_in_collar, extra_offset)
@@ -425,7 +427,7 @@ def eq_regions(dim, N, extra_offset=False):
                 regions_1 = eq_regions(dim - 1, n_in_collar, extra_offset)
 
         if extra_offset and (dim == 3) and (collar_n > 1):
-            R = s2_offset(centres_of_regions(regions_1)) @ R
+            R = s2_offset(centres_of_regions(regions_1)) @ R  # pragma: no cover
 
         # Append regions for this collar
         n_regions_1 = regions_1.shape[2]

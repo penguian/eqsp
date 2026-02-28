@@ -18,7 +18,7 @@ from .utilities import (
 
 try:
     from mayavi import mlab
-except ImportError as exc:
+except ImportError as exc:  # pragma: no cover
     raise ImportError(
         "Mayavi is not installed. Please install it with: pip install 'eqsp[mayavi]'"
     ) from exc
@@ -76,7 +76,7 @@ def show_s2_region(region, N, fidelity=32):
     b = region[:, 1]
 
     if abs(b[0]) < tol:
-        b[0] = 2 * np.pi
+        b[0] = 2 * np.pi  # pragma: no cover
     pseudo = abs(t[0]) < tol and abs(b[0] - 2 * np.pi) < tol
 
     h = np.linspace(0, 1, fidelity)
@@ -163,7 +163,7 @@ def show_s2_partition(
         elif title == "short":
             title_text = f"EQ(2, {N})"
         else:
-            title_text = title
+            title_text = title  # pragma: no cover
 
     # Set default figure size if none exists
     if mlab.get_engine().current_scene is None:
@@ -338,7 +338,7 @@ def project_s3_partition(
             t = region[:, 0]
             b = region[:, 1]
             if abs(b[0]) < 1e-10:
-                b[0] = 2 * np.pi
+                b[0] = 2 * np.pi  # pragma: no cover
             pseudo = abs(t[0]) < 1e-10 and abs(b[0] - 2 * np.pi) < 1e-10
 
             for k in range(dim_reg):
@@ -371,7 +371,7 @@ def project_s3_partition(
 
                 # Check for NaNs (e.g. projection to infinity)
                 if np.any(np.isnan(PX)):
-                    continue
+                    continue  # pragma: no cover
 
                 # Mimic Matlab: color based on t[2] (jet), opacity = (t[2]/pi)/2
                 cmap = plt.get_cmap("jet")

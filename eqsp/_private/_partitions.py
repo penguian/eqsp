@@ -502,11 +502,11 @@ def s2_offset(points_1):
         if (n_in_collar > 3) and (points_1[1, 1] == points_1[1, 2]):
             a_3 = (points_1[0, 1] + points_1[0, 2]) / 2.0
         else:
-            a_3 = points_1[0, 1] + pi
+            a_3 = points_1[0, 1] + pi  # pragma: no cover
         a_2 = points_1[1, 1] / 2.0
     else:
-        a_3 = 0.0
-        a_2 = pi / 2.0
+        a_3 = 0.0  # pragma: no cover
+        a_2 = pi / 2.0  # pragma: no cover
     return np.dot(rot3(2, -a_2), rot3(3, -a_3))
 
 

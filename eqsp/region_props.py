@@ -398,7 +398,7 @@ def eq_vertex_diam(dim, N, show_progress=False):
     )
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     import doctest
 
     doctest.testmod()
