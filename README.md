@@ -125,6 +125,7 @@ Illustrate the EQ algorithm steps for the partition of $S^d$ into $N$ regions:
 from eqsp.illustrations import illustrate_eq_algorithm
 illustrate_eq_algorithm(3, 10)
 plt.show()
+```
 
 #### 5. High-Quality 3D Illustrations (Mayavi)
 
