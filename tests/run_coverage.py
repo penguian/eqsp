@@ -47,6 +47,14 @@ def main():
     # --ignore=eqsp/_private: ignore the private package itself by default
     pytest_opts = ["--doctest-modules", "--ignore=eqsp/_private"]
 
+    # If mayavi is not installed (e.g. in CI), skip visualizations.py
+    # to avoid ImportError during doctest collection.
+    import importlib.util  # pylint: disable=import-outside-toplevel
+
+    if importlib.util.find_spec("mayavi") is None:
+        print("Mayavi not found — skipping eqsp/visualizations.py doctests.")
+        pytest_opts.append("--ignore=eqsp/visualizations.py")
+
     if args.include_private:
         print("Running coverage including private tests...")
     else:

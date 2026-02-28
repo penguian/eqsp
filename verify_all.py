@@ -18,18 +18,20 @@ def run_step(command, name):
 
 def main():
     """Execute all verification steps."""
+    py = sys.executable
     steps = [
         (
-            "python3 -m ruff check eqsp tests examples/phd-thesis "
+            f"{py} -m ruff check eqsp tests examples/phd-thesis "
             "benchmarks verify_all.py",
             "Ruff Linter",
         ),
         (
-            "python3 -m pylint eqsp tests examples/phd-thesis "
+            f"{py} -m pylint eqsp tests examples/phd-thesis "
             "benchmarks verify_all.py",
             "Pylint",
         ),
-        ("python3 tests/run_coverage.py --include-private", "Test Suite & Coverage"),
+        (f"{py} tests/run_coverage.py --include-private",
+         "Test Suite & Coverage"),
     ]
 
     for cmd, name in steps:
