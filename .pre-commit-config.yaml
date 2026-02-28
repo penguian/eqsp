@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.4
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: bash -c 'export PYTHONPATH=$PYTHONPATH:.:benchmarks/src && pylint eqsp benchmarks tests/src examples/phd-thesis'
+        language: system
+        types: [python]
+        require_serial: true

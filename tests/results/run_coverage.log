@@ -1,0 +1,45 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.7, pytest-8.3.5, pluggy-1.5.0
+rootdir: /home/leopardi/sync/src/penguian/eqsp
+configfile: pyproject.toml
+plugins: typeguard-4.4.2
+collected 146 items
+
+eqsp/histograms.py ...                                                   [  2%]
+eqsp/illustrations.py ...                                                [  4%]
+eqsp/partitions.py ....                                                  [  6%]
+eqsp/point_set_props.py .............                                    [ 15%]
+eqsp/region_props.py .......                                             [ 20%]
+eqsp/utilities.py ..............                                         [ 30%]
+eqsp/visualizations.py ...                                               [ 32%]
+tests/src/test_coverage_edge_cases.py ..........                         [ 39%]
+tests/src/test_histograms.py .......                                     [ 43%]
+tests/src/test_illustrations_extra.py ........                           [ 49%]
+tests/src/test_illustrations_mock.py ..........                          [ 56%]
+tests/src/test_partitions.py ........                                    [ 61%]
+tests/src/test_point_set_props.py ..........                             [ 68%]
+tests/src/test_region_props.py ........                                  [ 73%]
+tests/src/test_utilities.py ...                                          [ 76%]
+tests/src/test_visualizations_mock.py .................................. [ 99%]
+.                                                                        [100%]
+
+============================= 146 passed in 4.75s ==============================
+Name                             Stmts   Miss  Cover
+----------------------------------------------------
+eqsp/__init__.py                     6      0   100%
+eqsp/_private/_histograms.py        56      0   100%
+eqsp/_private/_partitions.py       141     11    92%
+eqsp/_private/_region_props.py      87      0   100%
+eqsp/histograms.py                  34      0   100%
+eqsp/illustrations.py              235      0   100%
+eqsp/partitions.py                 166      0   100%
+eqsp/point_set_props.py            182      0   100%
+eqsp/region_props.py                90      0   100%
+eqsp/utilities.py                  159      0   100%
+eqsp/visualizations.py             141      0   100%
+----------------------------------------------------
+TOTAL                             1297     11    99%
+Running coverage excluding private tests...
+
+Coverage Report:
+

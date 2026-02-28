@@ -1,0 +1,22 @@
+[MAIN]
+ignored-modules=numpy,scipy,matplotlib,mayavi,mayavi.mlab,PyQt5
+
+[BASIC]
+good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R,N_values,n_linear,n_log,coeff_energy,N_values_log
+
+[MESSAGES CONTROL]
+disable=
+    wrong-import-position,
+    ungrouped-imports,
+    import-error
+
+[DESIGN]
+max-locals=25
+max-branches=40
+max-statements=100
+
+[SIMILARITIES]
+min-similarity-lines=100
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
