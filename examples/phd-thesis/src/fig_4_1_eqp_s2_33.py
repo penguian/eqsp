@@ -51,7 +51,7 @@ def main():
     )
     # Add title at bottom center
     fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
-    plt.savefig("fig_4_1_eqp_s2_33.png", bbox_inches='tight', pad_inches=0)
+    plt.savefig("fig_4_1_eqp_s2_33.png", bbox_inches="tight", pad_inches=0)
     plt.close(fig_overlay)
     if os.path.exists(raw_file):
         os.remove(raw_file)

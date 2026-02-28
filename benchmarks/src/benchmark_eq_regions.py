@@ -71,14 +71,30 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Replicate Thesis Benchmark for eq_regions."
     )
-    parser.add_argument("--max-d", type=int, default=4,
-                        help="Maximum dimension to test eq_regions (default: 4).")
-    parser.add_argument("--max-k", type=int, default=18,
-                        help="Maximum power of 2 for N in eq_regions (default: 18).")
-    parser.add_argument("--iterations", type=int, default=3,
-                        help="Number of iterations per point (default: 3).")
-    parser.add_argument("--show-progress", action="store_true", default=False,
-                        help="Show per-point benchmark results (default: False).")
+    parser.add_argument(
+        "--max-d",
+        type=int,
+        default=4,
+        help="Maximum dimension to test eq_regions (default: 4).",
+    )
+    parser.add_argument(
+        "--max-k",
+        type=int,
+        default=18,
+        help="Maximum power of 2 for N in eq_regions (default: 18).",
+    )
+    parser.add_argument(
+        "--iterations",
+        type=int,
+        default=3,
+        help="Number of iterations per point (default: 3).",
+    )
+    parser.add_argument(
+        "--show-progress",
+        action="store_true",
+        default=False,
+        help="Show per-point benchmark results (default: False).",
+    )
     args = parser.parse_args()
 
     start_total = time.perf_counter()
@@ -86,7 +102,7 @@ if __name__ == "__main__":
         max_d=args.max_d,
         max_k=args.max_k,
         iterations=args.iterations,
-        show_progress=args.show_progress
+        show_progress=args.show_progress,
     )
     end_total = time.perf_counter()
 

@@ -29,14 +29,12 @@ def compute_dim_data(dim, N_values, show_progress=False):
     """Worker function to calculate diameter data for a single dimension."""
     if show_progress:
         print(f"  Dimension {dim}: calculating {len(N_values)} points...", flush=True)
-    coeff_bound = (
-        eq_diam_bound(dim, N_values, show_progress=show_progress)
-        * np.power(N_values, 1.0 / dim)
+    coeff_bound = eq_diam_bound(dim, N_values, show_progress=show_progress) * np.power(
+        N_values, 1.0 / dim
     )
-    coeff_vertex = (
-        eq_vertex_diam(dim, N_values, show_progress=show_progress)
-        * np.power(N_values, 1.0 / dim)
-    )
+    coeff_vertex = eq_vertex_diam(
+        dim, N_values, show_progress=show_progress
+    ) * np.power(N_values, 1.0 / dim)
     return dim, coeff_bound, coeff_vertex
 
 

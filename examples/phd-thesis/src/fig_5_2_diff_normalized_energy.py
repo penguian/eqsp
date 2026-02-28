@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 
 from eqsp.point_set_props import eq_energy_dist, sphere_int_energy
 
+
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -85,6 +86,7 @@ def main():
     plt.savefig("fig_5_2_diff_normalized_energy.png", dpi=150)
     if args.show_progress:
         print("Saved fig_5_2_diff_normalized_energy.png")
+
 
 if __name__ == "__main__":
     main()

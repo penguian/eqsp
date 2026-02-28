@@ -142,5 +142,5 @@ ruff format .
 ### 6.2 Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
-./testify.sh pylint  # Project-wide scan (eqsp, benchmarks, examples, tests, roots)
+pylint eqsp benchmarks examples tests  # Project-wide scan
 ```

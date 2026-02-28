@@ -346,7 +346,7 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
     dist = np.zeros_like(N_flat, dtype=float)
     for i, n_val in enumerate(N_flat[0]):
         if show_progress and n_partitions > 1:
-            print(f"    N={n_val:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+            print(f"    N={n_val:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
         points = eq_point_set(dim, n_val, extra_offset)
         if len(energy.shape) > 1 or len(dist.shape) > 1:
             energy[0, i], dist[0, i] = point_set_energy_dist(points, s)
@@ -396,7 +396,7 @@ def eq_min_dist(dim, N, extra_offset=False, show_progress=False):
     dist = np.zeros_like(N_flat, dtype=float)
     for i, n_val in enumerate(N_flat[0]):
         if show_progress and n_partitions > 1:
-            print(f"    N={n_val:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+            print(f"    N={n_val:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
         dist[0, i] = _eq_min_dist_scalar(dim, int(n_val), extra_offset)
     if show_progress and n_partitions > 1:
         print()  # Clear the line
@@ -516,7 +516,7 @@ def eq_point_set_property(fhandle, dim, N, extra_offset=False, show_progress=Fal
     property_vals = np.zeros_like(N_flat, dtype=float)
     for i, n_val in enumerate(N_flat[0]):
         if show_progress and n_partitions > 1:
-            print(f"    N={n_val:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+            print(f"    N={n_val:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
         points = eq_point_set(dim, n_val, extra_offset)
         property_vals[0, i] = fhandle(points)
     if show_progress and n_partitions > 1:

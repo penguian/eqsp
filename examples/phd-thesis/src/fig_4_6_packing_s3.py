@@ -56,7 +56,7 @@ def main():
     density = eq_packing_density(dim, N_values, show_progress=args.show_progress)
 
     # Simple cubic lattice density: (pi^(d/2)) / (2^d * Gamma(d/2 + 1))
-    sc_density = (np.pi**(dim/2)) / (2**dim * gamma(dim/2 + 1))
+    sc_density = (np.pi ** (dim / 2)) / (2**dim * gamma(dim / 2 + 1))
 
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.semilogx(
@@ -73,7 +73,7 @@ def main():
         linewidth=0.5,
         label="Simple cubic lattice density",
     )
-    ax.plot(1, sc_density, 'ro', markersize=4)
+    ax.plot(1, sc_density, "ro", markersize=4)
 
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Packing density")

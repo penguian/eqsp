@@ -46,7 +46,7 @@ def main():
     title_text = r"Figure 3.1: Partition $\mathrm{EQ}(2,33)$"
     # Add title at bottom center
     fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
-    plt.savefig("fig_3_1_partition_s2_33.png", bbox_inches='tight', pad_inches=0)
+    plt.savefig("fig_3_1_partition_s2_33.png", bbox_inches="tight", pad_inches=0)
     plt.close(fig_overlay)
 
     if os.path.exists(raw_file):

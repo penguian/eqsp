@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt
 
 from eqsp.point_set_props import eq_energy_dist, sphere_int_energy
 
+
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -61,9 +62,7 @@ def main():
         I_s = sphere_int_energy(dim, s)
         norm_energy = energy / ((I_s / 2) * N_values**2)
 
-        ax.loglog(
-            N_values, norm_energy, color + "+", markersize=2, label=rf"$d={dim}$"
-        )
+        ax.loglog(N_values, norm_energy, color + "+", markersize=2, label=rf"$d={dim}$")
 
     ax.set_xlabel(r"$\mathcal{N}$: number of codepoints")
     ax.set_ylabel("Normalized energy")
@@ -85,6 +84,7 @@ def main():
     plt.savefig("fig_5_1_normalized_energy.png", dpi=150)
     if args.show_progress:
         print("Saved fig_5_1_normalized_energy.png")
+
 
 if __name__ == "__main__":
     main()

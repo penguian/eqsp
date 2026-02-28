@@ -66,8 +66,8 @@ def main():
     ax.set_ylim(2.4, 3.6)
 
     # Format y-axis to one decimal place
-    ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter('%.1f'))
-    ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter('%.1f'))
+    ax.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.1f"))
+    ax.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter("%.1f"))
 
     ax.grid(True, which="both", ls="-", alpha=0.5)
     fig.text(

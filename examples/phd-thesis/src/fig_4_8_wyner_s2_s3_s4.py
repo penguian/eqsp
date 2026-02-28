@@ -32,8 +32,6 @@ from eqsp.point_set_props import eq_min_dist
 from eqsp.utilities import area_of_cap, area_of_sphere, euc2sph_dist
 
 
-
-
 def main():
     """Generate and save the figure."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -60,8 +58,6 @@ def main():
         N_values = np.unique(np.concatenate([n_linear, n_log.round().astype(int)]))
     else:
         N_values = np.arange(1, args.upper_bound + 1)
-
-
 
     dims = [2, 3, 4]
     fig, ax = plt.subplots(figsize=(10, 6))

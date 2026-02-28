@@ -21,11 +21,7 @@ def run_benchmark(name, script_name, extra_args, env, results_dir, base_dir):
         t0 = time.perf_counter()
         # Capture output for both logging and displaying
         process = subprocess.run(
-            cmd,
-            env=env,
-            capture_output=True,
-            text=True,
-            check=True
+            cmd, env=env, capture_output=True, text=True, check=True
         )
         t_elapsed = time.perf_counter() - t0
 
@@ -110,9 +106,12 @@ def main():
             "eq_regions (Python loop overhead)",
             "benchmark_eq_regions.py",
             [
-                "--max-k", str(int(os.getenv("MAX_K", "22"))),
-                "--max-d", str(args.dim),
-                "--iterations", "1"
+                "--max-k",
+                str(int(os.getenv("MAX_K", "22"))),
+                "--max-d",
+                str(args.dim),
+                "--iterations",
+                "1",
             ],
         ),
         (

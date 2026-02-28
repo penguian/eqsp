@@ -664,11 +664,9 @@ def sradius_of_cap(dim, area):
                 return area_of_cap(dim, s) - ak_target
 
             def area_diff_prime(s):
-                # Derivative of area of cap with respect to s:
-                # d/ds Area(dim, s) = Area(dim-1, s)
-                # However, a simpler approximation can be the surface area of
-                # the boundary:
-                # For cap radius s, boundary is an S^{dim-1} of radius sin(s)
+                # Derivative of area of cap with respect to s.
+                # Strictly: d/ds Area(dim, s) = Area(dim-1, s) based on S^{dim-1}
+                # radius sin(s).
                 return area_of_sphere(dim - 1) * (np.sin(s) ** (dim - 1))
 
             # Find roots using vectorized newton

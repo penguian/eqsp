@@ -99,7 +99,7 @@ def eq_area_error(dim, N, show_progress=False):
     for i in range(n_partitions):
         n = int(N_flat[0, i])
         if show_progress and n_partitions > 1:
-            print(f"    N={n:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+            print(f"    N={n:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
         regions = eq_regions(dim, n)
         ideal_area = area_of_ideal_region(dim, n)
 
@@ -261,7 +261,7 @@ def eq_diam_coeff(dim, N, show_progress=False):
     for i in range(n_partitions):
         n = int(N_flat[0, i])
         if show_progress and n_partitions > 1:
-            print(f"    N={n:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+            print(f"    N={n:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
         regions = eq_regions(dim, n)
         scale = np.power(n, 1 / dim)
         bound_coeff[0, i] = max_diam_bound_of_regions(regions) * scale
@@ -317,7 +317,7 @@ def eq_regions_property(fhandle, dim, N, show_progress=False):
     for i in range(n_partitions):
         n = int(N_flat[0, i])
         if show_progress and n_partitions > 1:
-            print(f"    N={n:6} ({i+1}/{n_partitions})", end="\r", flush=True)
+            print(f"    N={n:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
         regions = eq_regions(dim, n)
         property_[0, i] = fhandle(regions)
     if show_progress and n_partitions > 1:

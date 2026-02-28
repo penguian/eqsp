@@ -52,11 +52,13 @@ def main():
     else:
         print("Running coverage excluding private tests...")
         # Ignore specific private test files in tests/src
-        pytest_opts.extend([
-            "--ignore=tests/src/test_private_histograms.py",
-            "--ignore=tests/src/test_private_partitions.py",
-            "--ignore=tests/src/test_private_region_props.py",
-        ])
+        pytest_opts.extend(
+            [
+                "--ignore=tests/src/test_private_histograms.py",
+                "--ignore=tests/src/test_private_partitions.py",
+                "--ignore=tests/src/test_private_region_props.py",
+            ]
+        )
 
     # Construct the coverage run command
     # -m coverage run --source=eqsp: measure coverage for the eqsp package

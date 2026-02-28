@@ -69,8 +69,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     n_regions = s_regions.shape[2]
     if c_regions[n_caps - 1] != n_regions:
         raise ValueError(
-            "LOOKUP_S2_REGION: Mismatch between "
-            "c_regions[-1] and length of s_regions"
+            "LOOKUP_S2_REGION: Mismatch between c_regions[-1] and length of s_regions"
         )
     n_points = s_point.shape[1]
     r_idx = np.zeros(n_points, dtype=int)
@@ -97,11 +96,27 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
             max_r_idx = int(c_regions[c_idx])
 
             s_longs = s_regions[0, :, min_r_idx - 1 : max_r_idx].copy()
-            if s_longs[0, 0] >= 2 * np.pi:
-                s_longs[:, 0] -= 2 * np.pi
-            n_longs = s_longs.shape[1]
+            # Normalize to [0, 2*pi]
+            s_longs %= 2 * np.pi
+            if s_longs[1, 0] < s_longs[0, 0]:
+                # This region wraps around 2*pi, e.g., [6.1, 0.2]
+                # In lookup_table context, we want to look at it as [6.1, 6.4]
+                # but following regions will be [0.2, 0.7] -> [6.4, 6.9]
+                pass  # This is complex, let's just ensure the ends are increasing
 
-            l_idx = np.atleast_1d(lookup_table(s_longs[1, :], pts_long)) % n_longs
+            n_longs = s_longs.shape[1]
+            if n_longs > 1:
+                # If plural, ensure ends are monotonically increasing by adding 2*pi
+                # wherever they jump down.
+                ends = s_longs[1, :].copy()
+                for i in range(1, n_longs):
+                    while ends[i] < ends[i - 1]:
+                        ends[i] += 2 * np.pi
+                table = ends
+            else:
+                table = s_longs[1, :]
+
+            l_idx = np.atleast_1d(lookup_table(table, pts_long)) % n_longs
 
             wrap_mask = pts_long < s_longs[0, 0]
             l_idx[wrap_mask] = n_longs - 1
@@ -160,6 +175,10 @@ def lookup_table(table, y):
 
     table = np.asarray(table)
     y = np.atleast_1d(y)
+
+    # Strictly decreasing table is NOT YET IMPLEMENTED.
+    if len(table) > 1 and table[0] > table[-1]:
+        raise NotImplementedError("lookup_table: Decreasing table NOT YET IMPLEMENTED")
 
     # Nondecreasing table.
     maximum = np.max(np.concatenate([table, y])) + 1
