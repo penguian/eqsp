@@ -47,9 +47,9 @@ If you would like to contribute code fixes or improvements, please follow the fo
    - **Docstrings**: Use the [NumPy docstring format](https://numpydoc.readthedocs.io/en/latest/format.html).
    - **Minimalism**: Keep changes focused and brief.
 
-6. **Run Tests**: Ensure that your changes do not break existing functionality.
+6. **Run Tests & Linters**: Ensure that your changes satisfy all quality checks and do not break existing functionality. We provide a single verification script that runs Ruff, Pylint, and Pytest with coverage:
    ```bash
-   pytest
+   python3 verify_all.py
    ```
    For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/testing_guide.md).
 
