@@ -191,6 +191,13 @@ See the docstrings for these functions for more details (e.g. `help(eqsp.visuali
 - `eqsp.illustrations`: Logic for 2D visualizations (Matplotlib).
 - `eqsp.visualizations`: Logic for 3D visualizations (Mayavi).
 
+## Reporting Bugs & Contributing
+
+This project is currently in **Alpha testing**. We welcome your feedback!
+
+- Found a bug? Please [open an issue](https://github.com/penguian/eqsp/issues/new/choose).
+- Want to contribute code? Please check out our [Contributing Guide](CONTRIBUTING.md) for details on our forking and PR workflow.
+
 ## Citation
 
 If you use this software in research, please cite the original work:
