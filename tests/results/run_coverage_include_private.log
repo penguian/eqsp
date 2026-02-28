@@ -3,44 +3,45 @@ platform linux -- Python 3.13.7, pytest-8.3.5, pluggy-1.5.0
 rootdir: /home/leopardi/sync/src/penguian/eqsp
 configfile: pyproject.toml
 plugins: typeguard-4.4.2
-collected 141 items
+collected 151 items
 
-eqsp/histograms.py ...                                                   [  2%]
-eqsp/illustrations.py ...                                                [  4%]
-eqsp/partitions.py ....                                                  [  7%]
-eqsp/point_set_props.py .............                                    [ 16%]
-eqsp/region_props.py .......                                             [ 21%]
-eqsp/utilities.py ..............                                         [ 31%]
-eqsp/visualizations.py ...                                               [ 33%]
-tests/src/test_histograms.py .......                                     [ 38%]
-tests/src/test_illustrations_extra.py ........                           [ 43%]
-tests/src/test_illustrations_mock.py ..........                          [ 51%]
-tests/src/test_partitions.py ........                                    [ 56%]
-tests/src/test_point_set_props.py ..........                             [ 63%]
-tests/src/test_private_histograms.py ...                                 [ 65%]
-tests/src/test_private_partitions.py .                                   [ 66%]
-tests/src/test_private_region_props.py .                                 [ 67%]
-tests/src/test_region_props.py ........                                  [ 73%]
-tests/src/test_utilities.py ...                                          [ 75%]
+eqsp/histograms.py ...                                                   [  1%]
+eqsp/illustrations.py ...                                                [  3%]
+eqsp/partitions.py ....                                                  [  6%]
+eqsp/point_set_props.py .............                                    [ 15%]
+eqsp/region_props.py .......                                             [ 19%]
+eqsp/utilities.py ..............                                         [ 29%]
+eqsp/visualizations.py ...                                               [ 31%]
+tests/src/test_coverage_edge_cases.py ..........                         [ 37%]
+tests/src/test_histograms.py .......                                     [ 42%]
+tests/src/test_illustrations_extra.py ........                           [ 47%]
+tests/src/test_illustrations_mock.py ..........                          [ 54%]
+tests/src/test_partitions.py ........                                    [ 59%]
+tests/src/test_point_set_props.py ..........                             [ 66%]
+tests/src/test_private_histograms.py ...                                 [ 68%]
+tests/src/test_private_partitions.py .                                   [ 68%]
+tests/src/test_private_region_props.py .                                 [ 69%]
+tests/src/test_region_props.py ........                                  [ 74%]
+tests/src/test_utilities.py ...                                          [ 76%]
 tests/src/test_visualizations_mock.py .................................. [ 99%]
 .                                                                        [100%]
 
-============================= 141 passed in 4.53s ==============================
+============================= 151 passed in 4.58s ==============================
 Name                             Stmts   Miss  Cover
 ----------------------------------------------------
 eqsp/__init__.py                     6      0   100%
-eqsp/_private/_histograms.py        44      2    95%
-eqsp/_private/_partitions.py       144      6    96%
-eqsp/_private/_region_props.py      89      2    98%
-eqsp/histograms.py                  32      0   100%
-eqsp/illustrations.py              240      5    98%
-eqsp/partitions.py                 175     15    91%
-eqsp/point_set_props.py            186     17    91%
-eqsp/region_props.py                93     12    87%
-eqsp/utilities.py                  161      8    95%
-eqsp/visualizations.py             147      6    96%
+eqsp/_private/_histograms.py        56      0   100%
+eqsp/_private/_partitions.py       141      0   100%
+eqsp/_private/_region_props.py      87      0   100%
+eqsp/histograms.py                  34      0   100%
+eqsp/illustrations.py              235      0   100%
+eqsp/partitions.py                 166      0   100%
+eqsp/point_set_props.py            182      0   100%
+eqsp/region_props.py                90      0   100%
+eqsp/utilities.py                  159      0   100%
+eqsp/visualizations.py             141      0   100%
 ----------------------------------------------------
-TOTAL                             1317     73    94%
+TOTAL                             1297      0   100%
 Running coverage including private tests...
 
 Coverage Report:
