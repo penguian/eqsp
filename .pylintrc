@@ -1,6 +1,7 @@
 [MAIN]
 # Ignore optional dependencies not present in CI environment
 ignored-modules=mayavi,mayavi.mlab,PyQt5
+# Note: examples/phd-thesis/src/.pylintrc provides additional overrides for thesis scripts.
 
 [TYPECHECK]
 # Allow Pylint to see members of C-extension modules without crashing astroid

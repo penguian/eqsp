@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.4
+    rev: v0.15.4
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: bash -c 'export PYTHONPATH=$PYTHONPATH:.:benchmarks/src && pylint eqsp benchmarks tests/src examples/phd-thesis reproduce_bug.py debug_regions.py'
+        entry: bash -c 'export PYTHONPATH=$PYTHONPATH:.:benchmarks/src && pylint eqsp benchmarks tests/src examples/phd-thesis'
         language: system
         types: [python]
         require_serial: true

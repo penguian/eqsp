@@ -24,6 +24,8 @@ If the package is available on PyPI or a package repository, you can install it 
 pip install eqsp
 ```
 
+> **Note:** The `eqsp` package is not yet published to PyPI. This command will work once a stable release is published. For now, install from source (see below).
+
 To upgrade an existing installation:
 
 ```bash

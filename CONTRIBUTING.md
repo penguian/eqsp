@@ -29,10 +29,10 @@ If you would like to contribute code fixes or improvements, please follow the fo
    git clone https://github.com/YOUR_USERNAME/eqsp.git
    cd eqsp
 
-   # Install in "editable" mode
-   pip install -e .
+   # Install in "editable" mode with development tools
+   pip install -e ".[dev]"
    ```
-   > **What is "editable" mode (`-e`)?** This creates a link between your local code and your Python environment. Any changes you make to the code in this folder will take effect immediately without needing to reinstall.
+   > **What is "editable" mode (`-e`)?** This creates a link between your local code and your Python environment. Any changes you make to the code in this folder will take effect immediately without needing to reinstall. The `[dev]` extra installs linting and testing tools (`ruff`, `pylint`, `pytest`, `coverage`).
 
 3. **Troubleshooting Installation**:
    If the `pip install` command fails, please:

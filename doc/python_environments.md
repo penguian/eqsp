@@ -44,9 +44,13 @@ Now, install `eqsp`. For developers, we recommend "editable" mode so changes to 
 # Ensure pip is up to date (optional but recommended)
 pip install --upgrade pip
 
-# Install eqsp in editable mode
-pip install -e .
+# Install eqsp in editable mode with development tools
+pip install -e ".[dev]"
 ```
+
+> **What does `".[dev]"` install?** In addition to `eqsp` itself, this installs the development tools defined in `pyproject.toml`: `ruff`, `pylint`, `pytest`, and `coverage`. These are the same tools used by CI and by `verify_all.py`.
+
+> **How does this interact with `venv_sys`?** When using a `--system-site-packages` virtual environment, pip installs the dev tools into the venv's local `site-packages` directory, which takes priority over any system-installed versions of the same packages. System packages like `numpy`, `scipy`, `matplotlib`, and `mayavi` remain visible through the `--system-site-packages` flag. In a standard `venv` (without `--system-site-packages`), all dependencies are installed fresh into the venv.
 
 ### 4. Verification
 Verify that you can import both the system package (Mayavi) and your local package (EqSP):

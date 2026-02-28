@@ -33,9 +33,17 @@ docs = [
     "sphinx_rtd_theme",
     "myst_parser",
 ]
+dev = [
+    "ruff",
+    "pylint",
+    "pytest",
+    "coverage",
+]
 
 [project.urls]
 "Homepage" = "http://eqsp.sourceforge.net"
+"Repository" = "https://github.com/penguian/eqsp"
+# NOTE: Update "Repository" if SourceForge becomes the primary repo.
 
 [tool.setuptools.packages.find]
 where = ["."]
