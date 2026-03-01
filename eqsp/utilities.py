@@ -1,5 +1,5 @@
 """
-Recursive Zonal Equal Area Sphere Partitioning
+EQSP utilities module.
 
 Copyright 2026 Paul Leopardi
 """

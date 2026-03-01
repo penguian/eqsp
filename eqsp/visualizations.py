@@ -1,6 +1,6 @@
 """
 EQSP Visualizations module.
-Mirror of eq_sphere_partitions/eq_illustrations but using Mayavi.
+3D visualizations using Mayavi.
 
 Copyright 2025 Paul Leopardi.
 For licensing, see COPYING.
