@@ -17,7 +17,7 @@ This document provides a structured outline for the planned two-volume documenta
 
 ### 2. The Applicability of EQSP: Use Cases
 *Based on: "The applicability of equal area partitions of the unit sphere", JAS 1(2), 2024.*
-- **History of the Toolbox**: Evolution from the 2005 Matlab release to the current Python port.
+- **History**: Evolution from the 2005 Matlab Toolbox to the EQSP Python library.
 - **Cross-Disciplinary Applications**:
   - **Climate & Weather**: Spatio-temporal reconstructions and load balancing for the ECMWF Integrated Forecasting System (IFS).
   - **Biology & Medicine**: RNA folding simulations ($S^3$), 3D MRI sampling trajectories, and brain connectivity parcellation.

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "eqsp"
 version = "0.98.0"
-description = "Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox"
+description = "Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
   { name = "Paul Leopardi", email = "paul.leopardi@gmail.com" },
