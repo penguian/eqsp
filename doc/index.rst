@@ -13,4 +13,5 @@ eqsp documentation
    Performance Benchmarks <benchmarks.md>
    Thesis Examples <phd-thesis-examples.md>
    Algorithmic Optimizations <performance.md>
+   Symmetric Partitions <symmetric_partitions.md>
    Book Series Outline <book_series_outline.md>
