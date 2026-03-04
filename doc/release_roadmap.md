@@ -2,7 +2,7 @@
 
 This document outlines the technical path from the current **0.98 alpha** state to a production **1.00** release on PyPI. It is intended for alpha testers and contributors to understand the remaining milestones and stability goals.
 
-## Current Status: 0.98 Alpha
+## Current Status: 0.98.x Alpha
 The codebase has been successfully migrated from Matlab to a vectorized Python implementation. Core features, high-fidelity thesis reproduction scripts, and $O(\mathcal{N}^{0.6})$ scaling have been verified.
 
 ---

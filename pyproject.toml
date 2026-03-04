@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eqsp"
-version = "0.98.0"
+version = "0.98.1"
 description = "Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
