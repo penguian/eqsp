@@ -10,28 +10,45 @@ def run_step(command, name):
     print("========================================")
     print(f"Running {name}...")
     print("========================================")
-    result = subprocess.run(command, shell=True, check=False)
+    result = subprocess.run(command, check=False)
     if result.returncode != 0:
         print(f"\n[FAILED] {name}\n")
         sys.exit(result.returncode)
     print(f"[PASSED] {name}\n")
+
 
 def main():
     """Execute all verification steps."""
     py = sys.executable
     steps = [
         (
-            f"{py} -m ruff check eqsp tests examples/phd-thesis "
-            "benchmarks verify_all.py",
+            [
+                py,
+                "-m",
+                "ruff",
+                "check",
+                "eqsp",
+                "tests",
+                "examples/phd-thesis",
+                "benchmarks",
+                "verify_all.py",
+            ],
             "Ruff Linter",
         ),
         (
-            f"{py} -m pylint eqsp tests examples/phd-thesis "
-            "benchmarks verify_all.py",
+            [
+                py,
+                "-m",
+                "pylint",
+                "eqsp",
+                "tests",
+                "examples/phd-thesis",
+                "benchmarks",
+                "verify_all.py",
+            ],
             "Pylint",
         ),
-        (f"{py} tests/run_coverage.py --include-private",
-         "Test Suite & Coverage"),
+        ([py, "tests/run_coverage.py", "--include-private"], "Test Suite & Coverage"),
     ]
 
     for cmd, name in steps:
