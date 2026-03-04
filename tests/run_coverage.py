@@ -13,12 +13,13 @@ import argparse
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 
-def run_command(cmd, env=None):
+def run_command(cmd, env=None, cwd=None):
     """Run a system command and exit if it fails."""
     try:
-        subprocess.run(cmd, check=True, env=env)
+        subprocess.run(cmd, check=True, env=env, cwd=cwd)
     except subprocess.CalledProcessError as e:
         print(f"Error: Command '{' '.join(cmd)}' failed with exit code {e.returncode}")
         sys.exit(e.returncode)
@@ -34,13 +35,14 @@ def main():
     )
     args = parser.parse_args()
 
-    # Set up environment: ensure current directory is in PYTHONPATH
+    # Set up environment: ensure repo root is in PYTHONPATH
+    repo_root = str(Path(__file__).resolve().parents[1])
     env = os.environ.copy()
     current_pythonpath = env.get("PYTHONPATH", "")
     if current_pythonpath:
-        env["PYTHONPATH"] = f"{os.getcwd()}:{current_pythonpath}"
+        env["PYTHONPATH"] = f"{repo_root}:{current_pythonpath}"
     else:
-        env["PYTHONPATH"] = os.getcwd()
+        env["PYTHONPATH"] = repo_root
 
     # Base pytest options
     # --doctest-modules: run doctests in modules
@@ -84,12 +86,12 @@ def main():
     ] + pytest_opts
 
     # Run the coverage measurement
-    run_command(coverage_run, env=env)
+    run_command(coverage_run, env=env, cwd=repo_root)
 
     # Run the coverage report
     print("\nCoverage Report:\n")
     coverage_report = [sys.executable, "-m", "coverage", "report"]
-    run_command(coverage_report, env=env)
+    run_command(coverage_report, env=env, cwd=repo_root)
 
 
 if __name__ == "__main__":
