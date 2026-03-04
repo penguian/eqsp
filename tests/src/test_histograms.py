@@ -123,6 +123,52 @@ def test_boundary_conditions():
     assert r_idx[0] == N
 
 
+def test_exact_boundaries_s2_region():
+    """
+    Test that points falling exactly on partition boundaries are handled correctly.
+    Verifies that the underlying binary search uses side='left' logic, ensuring
+    table[idx] <= y < table[idx+1].
+    """
+    N = 33
+    dim = 2
+    s_regions = partitions.eq_regions(dim, N)
+    s_cap, _ = partitions.eq_caps(dim, N)
+
+    # 1. Test Cap Boundaries (Colatitudes)
+    # Generate points with colatitudes matching exactly the cap boundaries
+    cap_points = np.zeros((2, len(s_cap)))
+    cap_points[1, :] = s_cap
+
+    # When a point's colatitude matches s_cap[i], it should be placed into
+    # cap index i (0-based) due to side='left'. Thus, it falls into the first
+    # region of that new cap (unless capped at extremities).
+    # First cap is region 1. Last cap is region N.
+    # Intermediate hits on `s_cap` using `side='left'` map directly to regions matching
+    # index alignments inside `lookup_s2_region`.
+    expected_cap_regions = np.array([1, 2, 8, 26, 32, 33])
+
+    r_idx_caps = histograms.eq_find_s2_region(cap_points, N)
+    assert_array_equal(r_idx_caps, expected_cap_regions)
+
+    # 2. Test Region Boundaries (Longitudes)
+    # Generate points with longitudes matching exactly the start of each region
+    long_points = np.zeros((2, s_regions.shape[2]))
+    long_points[0, :] = s_regions[0, 0, :]
+    # Shift colatitude slightly to easily fall inside the respective cap
+    long_points[1, :] = s_regions[1, 0, :] + 0.1
+
+    # Since it perfectly matches the start longitude, it should be mapped
+    # according to side='left' indexing.
+    # Note: Longitude jumps are bounded by the internal modulo tracking mappings.
+    expected_long_regions = np.array([
+        1, 2, 2, 3, 4, 5, 6, 8, 8, 9, 10, 11, 12, 13, 14, 15, 17, 17, 18, 19,
+        20, 21, 22, 23, 24, 25, 27, 27, 28, 29, 30, 31, 33
+    ])
+
+    r_idx_longs = histograms.eq_find_s2_region(long_points, N)
+    assert_array_equal(r_idx_longs, expected_long_regions)
+
+
 def test_invalid_inputs():
     """Test function test_invalid_inputs."""
     points_s = np.array([[0.0], [0.0]])

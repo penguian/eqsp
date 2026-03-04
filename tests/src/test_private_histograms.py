@@ -32,10 +32,11 @@ def test_lookup_table_boundaries():
 
     # Points exactly hitting the table values
     y_exact = [-100.0, -70.0, 2.5, 75.0, 125.7]
-    # np.searchsorted(side='right') means exactly hits go into the next bin index
-    # So if value is exactly table[0] (-100.0), searchsorted returns 1
-    # If exactly table[4] (125.7), searchsorted returns 5, now capped at 4.
-    expected_exact = [1, 2, 3, 4, 4]
+    # np.searchsorted(side='left') means exactly hits go into the bin index
+    # matching the boundary.
+    # So if value is exactly table[0] (-100.0), searchsorted returns 0
+    # If exactly table[4] (125.7), searchsorted returns 4.
+    expected_exact = [0, 1, 2, 3, 4]
 
     # Out of bounds points
     y_out = [-200.0, 200.0]

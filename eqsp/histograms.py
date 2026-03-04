@@ -85,6 +85,13 @@ def eq_find_s2_region(s_point, N):
     array([1, 2, 3, 4, 5, 6, 7, 8])
     >>> eq_find_s2_region(points_s, 5)
     array([1, 2, 2, 3, 3, 4, 4, 5])
+    >>> # Testing an exact colatitude boundary (side='left' logic)
+    >>> import numpy as np
+    >>> from eqsp.partitions import eq_caps
+    >>> cap_boundary = eq_caps(2, 5)[0][0]
+    >>> points_on_boundary = np.array([[0.0, np.pi], [cap_boundary, cap_boundary]])
+    >>> eq_find_s2_region(points_on_boundary, 5)
+    array([1, 1])
     """
     s_regions = eq_regions(2, N)
     s_cap, n_regions = eq_caps(2, N)

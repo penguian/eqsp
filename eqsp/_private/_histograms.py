@@ -184,7 +184,7 @@ def lookup_table(table, y):
     # Nondecreasing table.
     maximum = np.max(np.concatenate([table, y])) + 1
     extended_table = np.append(table, maximum)
-    idx = np.searchsorted(extended_table, y, side="right")
+    idx = np.searchsorted(extended_table, y, side="left")
     idx[idx < 0] = 0
 
     # Cap at len(table) - 1 per docstring and typical interpolation use cases
