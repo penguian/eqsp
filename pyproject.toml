@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eqsp"
+version = "0.98.1"
+description = "Equal Area Sphere Partitioning Library"
+readme = "README.md"
+authors = [
+  { name = "Paul Leopardi", email = "paul.leopardi@gmail.com" },
+]
+license = { file = "COPYING" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+]
+requires-python = ">=3.11"
+
+[project.optional-dependencies]
+mayavi = [
+    "mayavi",
+    "PyQt5",
+]
+docs = [
+    "sphinx>=5.0",
+    "sphinx_rtd_theme",
+    "myst_parser",
+]
+dev = [
+    "ruff",
+    "pylint",
+    "pytest",
+    "coverage",
+]
+
+[project.urls]
+"Homepage" = "http://eqsp.sourceforge.net"
+"Repository" = "https://github.com/penguian/eqsp"
+# NOTE: Update "Repository" if SourceForge becomes the primary repo.
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eqsp*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/src"]
+filterwarnings = [
+    "ignore:module 'sre_parse' is deprecated:DeprecationWarning",
+    "ignore:module 'sre_constants' is deprecated:DeprecationWarning",
+    "ignore:.*__array_wrap__ must accept context.*:DeprecationWarning",
+]
+addopts = "--doctest-modules"
+
+[tool.pylint.format]
+max-line-length = 88

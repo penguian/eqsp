@@ -1,17 +1,14 @@
 """
-    EQSP: Recursive Zonal Equal Area Sphere Partitioning.
-    Copyright 2025 Paul Leopardi.
-    For licensing, see COPYING.
-    For references, see AUTHORS.
-    For revision history, see CHANGELOG.
+EQSP utilities module.
+
+Copyright 2026 Paul Leopardi
 """
 
+from math import pi
 
 import numpy as np
-from math import pi
-from scipy.optimize import root_scalar
-from scipy.special import betainc, gamma
-
+from scipy.optimize import newton
+from scipy.special import betainc, gamma  # pylint: disable=no-name-in-module
 
 # Tolerance for comparisons close to zero.
 tolerance = float(np.finfo(np.float32).eps)
@@ -22,6 +19,12 @@ def asfloat(x):
     a = asfloat(x)
 
     Convert from a Numpy array to a float when this makes sense.
+
+    It checks if the input is a 0-dimensional array (scalar) or a 1-element array,
+    and if so, converts it to a standard Python `float`. Otherwise, it returns
+    the input as a NumPy array. This ensures that functions return native Python
+    scalars when appropriate (e.g., area of a single region) while still supporting
+    vectorized operations.
 
     Parameters
     ----------
@@ -60,7 +63,7 @@ def asfloat(x):
             return float(a)
         case (1,):
             return float(a[0])
-        case (1,1):
+        case (1, 1):
             return float(a[0, 0])
         case _:
             return a
@@ -176,6 +179,11 @@ def polar2cart(s):
      [ 1.  0.  0. -1.]]
     """
     s = np.asarray(s)
+    if s.ndim == 1:
+        s = s[:, np.newaxis]
+        was_1d = True
+    else:
+        was_1d = False
     dim, n = s.shape
     x = np.zeros((dim + 1, n))
     sinprod = np.ones(n)
@@ -184,6 +192,8 @@ def polar2cart(s):
         sinprod = sinprod * np.sin(s[k - 1, :])
     x[1, :] = sinprod * np.sin(s[0, :])
     x[0, :] = sinprod * np.cos(s[0, :])
+    if was_1d:
+        return x.flatten()
     return x
 
 
@@ -196,7 +206,7 @@ def euc2sph_dist(e):
     Parameters
     ----------
     e : float or array-like
-        A real number or array of real numbers, with |e| <= 2.
+        A real number or array of real numbers, with ``abs(e) <= 2``.
 
     Returns
     -------
@@ -396,7 +406,7 @@ def area_of_sphere(dim):
     """
     dim = np.asarray(dim)
     power = (dim + 1) / 2
-    area = np.asarray(2.0 * pi ** power / gamma(power))
+    area = np.asarray(2.0 * pi**power / gamma(power))
     return asfloat(area)
 
 
@@ -472,6 +482,41 @@ def area_of_ideal_region(dim, N):
     return asfloat(area)
 
 
+def ideal_collar_angle(dim, N):
+    """
+    The ideal angle for spherical collars of an EQ partition.
+
+    Parameters
+    ----------
+    dim : int
+        Dimension of sphere.
+    N : int or array-like
+        Number of regions.
+
+    Returns
+    -------
+    angle : float or np.ndarray
+        The ideal angle(s).
+
+    Notes
+    -----
+    The ideal collar angle is determined by the side of a dim-dimensional
+    hypercube of the same volume as the area of single region of S^dim.
+
+    See Also
+    --------
+    area_of_ideal_region
+
+    Examples
+    --------
+    >>> print(f"{ideal_collar_angle(2, 10):.4g}")
+    1.121
+    >>> np.round(ideal_collar_angle(3, np.arange(1,7)), 4)
+    array([2.7026, 2.145 , 1.8739, 1.7025, 1.5805, 1.4873])
+    """
+    return asfloat(area_of_ideal_region(dim, N) ** (1 / dim))
+
+
 def area_of_cap(dim, s_cap):
     """
     a = area_of_cap(dim, s_cap)
@@ -529,22 +574,19 @@ def area_of_cap(dim, s_cap):
             area = np.zeros_like(s_cap_flat, dtype=np.float64)
             MIN_TROPICAL = pi / 6
             MAX_TROPICAL = 5 * pi / 6
-            near_pole = (
-                (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL))
+            near_pole = (s_cap_flat < MIN_TROPICAL) | (s_cap_flat > MAX_TROPICAL)
             # Use incomplete beta function ratio near poles
             area[near_pole] = area_of_sphere(dim) * betainc(
-                dim/2,
-                dim/2,
-                np.sin(s_cap_flat[near_pole]/2)**2)
+                dim / 2, dim / 2, np.sin(s_cap_flat[near_pole] / 2) ** 2
+            )
             # Use closed form in the tropics
             s_cap_trop = s_cap_flat[~near_pole]
             area[~near_pole] = (2 * s_cap_trop - np.sin(2 * s_cap_trop)) * pi
             area = area.reshape(shape)
         case _:
             area = area_of_sphere(dim) * betainc(
-                dim/2,
-                dim/2,
-                np.sin(s_cap/2)**2)
+                dim / 2, dim / 2, np.sin(s_cap / 2) ** 2
+            )
     return asfloat(area)
 
 
@@ -593,31 +635,49 @@ def sradius_of_cap(dim, area):
     if dim == 1:
         s_cap = area / 2
     elif dim == 2:
-        s_cap = 2 * np.arcsin(np.sqrt(area / (4*pi)))
+        s_cap = 2 * np.arcsin(np.sqrt(area / (4 * pi)))
     else:
         orig_shape = area.shape
-        flat_area = area.flatten()
-        s_cap = np.zeros(flat_area.shape)
+        flat_area = np.ravel(area)
+        s_cap = np.zeros_like(flat_area, dtype=float)
         sphere_area = area_of_sphere(dim)
-        for k, ak in enumerate(flat_area):
-            if ak >= sphere_area:
-                s_cap[k] = pi
-            else:
-                flipped = False
-                if 2 * ak > sphere_area:
-                    ak = sphere_area - ak
-                    flipped = True
 
-                def area_diff(s):
-                    # Define the difference function for root finding.
-                    return area_of_cap(dim, s) - ak
-                # Find root in [0, pi]
-                result = root_scalar(
-                    area_diff,
-                    bracket=[0, pi],
-                    method='bisect')
-                sk = result.root
-                s_cap[k] = pi - sk if flipped else sk
+        # Handle cases matching or exceeding full sphere area
+        full_idx = flat_area >= sphere_area
+        s_cap[full_idx] = pi
+
+        # Process remaining cases
+        calc_idx = ~full_idx
+        if np.any(calc_idx):
+            ak_calc = flat_area[calc_idx]
+
+            # Mirror areas greater than half the sphere for better convergence
+            flipped = 2 * ak_calc > sphere_area
+            ak_target = np.where(flipped, sphere_area - ak_calc, ak_calc)
+
+            # Pre-allocate inputs for vectorized optimization
+            # Start with a good initial guess (e.g. midpoint of remaining space)
+            x0 = np.full_like(ak_target, pi / 2)
+
+            def area_diff(s):
+                # Vectorized difference function for Newton solver.
+                return area_of_cap(dim, s) - ak_target
+
+            def area_diff_prime(s):
+                # Derivative of area of cap with respect to s.
+                # Strictly: d/ds Area(dim, s) = Area(dim-1, s) based on S^{dim-1}
+                # radius sin(s).
+                return area_of_sphere(dim - 1) * (np.sin(s) ** (dim - 1))
+
+            # Find roots using vectorized newton
+            sk = newton(area_diff, x0, fprime=area_diff_prime)
+
+            # Ensure roots are clamped within [0, pi]
+            sk = np.clip(sk, 0.0, pi)
+
+            # Map back flipped variants
+            s_cap[calc_idx] = np.where(flipped, pi - sk, sk)
+
         s_cap = s_cap.reshape(orig_shape)
     return asfloat(s_cap)
 
@@ -666,3 +726,73 @@ def area_of_collar(dim, a_top, a_bot):
     a_top = np.asarray(a_top)
     a_bot = np.asarray(a_bot)
     return asfloat(area_of_cap(dim, a_bot) - area_of_cap(dim, a_top))
+
+
+def x2stereo(x):
+    """
+    Stereographic projection of Euclidean points.
+
+    Parameters
+    ----------
+    x : ndarray
+        Points in R^{dim+1}, shape (dim+1, N).
+
+    Returns
+    -------
+    result : ndarray
+        Projected points in R^dim, shape (dim, N).
+    """
+    x = np.asarray(x)
+    dim = x.shape[0] - 1
+
+    last = x[dim, :]
+    mask = np.isclose(last, 1.0)
+
+    scale = np.ones(x.shape[1])
+    scale[~mask] = 1.0 - last[~mask]
+
+    with np.errstate(divide="ignore"):
+        result = x[:dim, :] / scale
+
+    result[:, mask] = np.nan
+    return result
+
+
+def x2eqarea(x):
+    """
+    Equal area projection of Euclidean points.
+
+    Parameters
+    ----------
+    x : ndarray
+        Points in R^{dim+1}, shape (dim+1, N).
+
+    Returns
+    -------
+    result : ndarray
+        Projected points in R^dim, shape (dim, N).
+    """
+    x = np.asarray(x)
+    dim = x.shape[0] - 1
+    last = x[dim, :]
+
+    theta = np.arccos(np.clip(-last, -1.0, 1.0))
+    a_cap = area_of_cap(dim, theta)
+    v_ball = volume_of_ball(dim)
+    r = (a_cap / v_ball) ** (1.0 / dim)
+
+    sin_theta = np.sin(theta)
+    mask = np.isclose(sin_theta, 0.0)
+
+    scale = np.zeros_like(theta)
+    scale[~mask] = r[~mask] / sin_theta[~mask]
+
+    result = np.zeros((dim, x.shape[1]))
+    result[:, ~mask] = x[:dim, ~mask] * scale[~mask]
+    return result
+
+
+if __name__ == "__main__":
+    import doctest  # pragma: no cover
+  # pragma: no cover
+    doctest.testmod()  # pragma: no cover

@@ -1,0 +1,34 @@
+[MAIN]
+# Ignore optional dependencies not present in CI environment
+ignored-modules=mayavi,mayavi.mlab,PyQt5
+# Note: examples/phd-thesis/src/.pylintrc provides additional overrides for thesis scripts.
+
+[TYPECHECK]
+# Allow Pylint to see members of C-extension modules without crashing astroid
+generated-members=numpy.*,scipy.*
+
+# Allow N, X, Y, Z, M as valid variable names (math notation)
+good-names=i,j,k,ex,Run,_,N,X,Y,Z,M,x,y,z,n,m,dim,h,u,v,w,R,N_values,n_linear,n_log,coeff_energy,N_values_log,N_small,N_large,N_array,SAMPLES,TUBE_R,I_s,N_flat,Phi,Delta_I,Delta_str,MIN_TROPICAL,MAX_TROPICAL,H1,H2,PX,PY,PZ,Ns
+
+[FORMAT]
+max-line-length=88
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+disable=
+    R0913, # too-many-arguments
+    R0914, # too-many-locals
+    C0303, # trailing-whitespace (handled by ruff)
+
+[DESIGN]
+# Relax complexity limits for mathematically dense algorithms
+max-branches=35
+max-statements=90
+max-positional-arguments=6
+
+[SIMILARITIES]
+# Allow boilerplate in examples but catch large blocks
+min-similarity-lines=100
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
