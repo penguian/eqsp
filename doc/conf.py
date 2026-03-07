@@ -3,15 +3,20 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
+from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
 project = "eqsp"
 copyright = "2026, Paul Leopardi"
 author = "Paul Leopardi"
 
-release = _pkg_version("eqsp")
+try:
+    release = _pkg_version("eqsp")
+except PackageNotFoundError:
+    release = "unknown"
+
 # The short X.Y version.
-version = ".".join(release.split(".")[:2])
+version = ".".join(release.split(".")[:2]) if release != "unknown" else "unknown"
 
 extensions = [
     "sphinx.ext.autodoc",
