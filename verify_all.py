@@ -3,6 +3,9 @@ Unified verification script.
 """
 import subprocess
 import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent
 
 
 def run_step(command, name):
@@ -10,7 +13,7 @@ def run_step(command, name):
     print("========================================")
     print(f"Running {name}...")
     print("========================================")
-    result = subprocess.run(command, check=False)
+    result = subprocess.run(command, check=False, cwd=REPO_ROOT)
     if result.returncode != 0:
         print(f"\n[FAILED] {name}\n")
         sys.exit(result.returncode)

@@ -8,6 +8,7 @@ This module provides functions for equal area sphere partitioning, including:
 - Illustrations (`illustrations`)
 """
 
+from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
 from eqsp.partitions import eq_caps, eq_point_set, eq_point_set_polar, eq_regions
@@ -45,4 +46,7 @@ __all__ = [
     "eq_diam_bound",
 ]
 
-__version__ = _pkg_version("eqsp")
+try:
+    __version__ = _pkg_version("eqsp")
+except PackageNotFoundError:
+    __version__ = "unknown"

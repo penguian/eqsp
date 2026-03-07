@@ -3,11 +3,15 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
+from importlib.metadata import version as _pkg_version
+
 project = "eqsp"
 copyright = "2026, Paul Leopardi"
 author = "Paul Leopardi"
-version = "0.98.0"
-release = "0.98.0"
+
+release = _pkg_version("eqsp")
+# The short X.Y version.
+version = ".".join(release.split(".")[:2])
 
 extensions = [
     "sphinx.ext.autodoc",
