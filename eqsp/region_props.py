@@ -244,7 +244,7 @@ def eq_diam_coeff(dim, N, show_progress=False, even_collars=False):
     -------
     bound_coeff : ndarray
         Diameter bound coefficient.
-    vertex_coeff : ndarray, optional
+    vertex_coeff : ndarray
         Vertex diameter coefficient.
 
     Raises
@@ -263,7 +263,9 @@ def eq_diam_coeff(dim, N, show_progress=False, even_collars=False):
     :math:`C = \\text{diam} \\times N^{1/d}`
     where ``diam`` is the maximum diameter bound or vertex diameter.
 
-    If called with one output, returns only bound_coeff.
+    Unlike the Matlab implementation, this function always returns a 2-tuple.
+    If you only need one coefficient, you can ignore the other during unpacking
+    (e.g., ``b, _ = eq_diam_coeff(...)``).
 
     Examples
     --------

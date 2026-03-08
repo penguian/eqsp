@@ -664,7 +664,7 @@ def point_set_energy_dist(points, s=None, block_size=2000):
     -------
     energy : float
         Energy value.
-    min_dist : float, optional
+    min_dist : float
         Minimum Euclidean distance.
 
     Notes
