@@ -183,3 +183,37 @@ def test_private_helpers():
     reg_south = np.array([[0, 2 * pi], [pi - 0.5, pi]])[:, :, np.newaxis]
     center_south = centres_of_regions(reg_south)
     assert_allclose(center_south[1, 0], pi)
+
+def test_centres_of_regions_no_mutation():
+    """Verify centres_of_regions does not modify its input."""
+    from eqsp._private._partitions import centres_of_regions
+    reg = np.array([[0, 2 * pi], [0, 0.5]])[:, :, np.newaxis]
+    reg_copy = reg.copy()
+    centres_of_regions(reg)
+    assert_allclose(reg, reg_copy)
+
+def test_eq_caps_even_collars():
+    """Test even_collars=True forces even collar count."""
+    import pytest
+
+    from eqsp.partitions import eq_caps
+
+    # N=10 on S²: standard partition has 2 collars (even),
+    # so even_collars=True produces the same result.
+    s_cap_std, n_std = eq_caps(2, 10)
+    s_cap_even, n_even = eq_caps(2, 10, even_collars=True)
+    assert_allclose(s_cap_std, s_cap_even)
+    assert_allclose(n_std, n_even)
+
+    # N=18 on S²: standard partition has 3 collars.
+    _, n_std = eq_caps(2, 18)
+    assert len(n_std) == 5  # 3 collars + 2 poles
+
+    # Forced even_collars should result in 2 or 4 collars.
+    _, n_even = eq_caps(2, 18, even_collars=True)
+    assert len(n_even) % 2 == 0  # Total regions (collars+poles) is even
+    assert len(n_even) in [4, 6]      # 2 or 4 collars + 2 poles
+
+    # even_collars with odd N should raise ValueError
+    with pytest.raises(ValueError):
+        eq_caps(2, 9, even_collars=True)
