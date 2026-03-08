@@ -32,6 +32,12 @@ This document provides a technical summary of the key algorithmic optimizations 
 - **Approach:** Assigning points to regions on $S^2$ previously used a recursive Python loop. The new implementation uses **logarithmic searching** (`np.searchsorted`) across vectorized "collar" boundaries.
 - **Result:** Billions of sample points can be binned into partitions in a single vectorized pass.
 
+### 1.4 Symmetric Partition Performance (`even_collars`)
+**Status:** Vectorized support in all properties functions.
+
+- **Approach:** The symmetric partitioning logic (`even_collars=True`) ensures an even number of collars. All property calculation functions (`eq_area_error`, `eq_min_dist`, `eq_energy_dist`, `eq_diam_coeff`) are fully vectorized to support this parameter.
+- **Result:** Symmetry calculation adds negligible overhead compared to standard partitions. In some cases, the simplified collar recurrence in symmetric mode can lead to slight performance improvements for high $N$.
+
 ## 2. Optimized NumPy & SciPy Patterns
 
 During development, several "hot" paths were refactored to use more efficient library patterns:

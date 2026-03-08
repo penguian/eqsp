@@ -22,16 +22,18 @@ creating virtual environments. There are two main approaches:
     builds of heavy packages like Mayavi, VTK, or PyQt5, which
     can be difficult to compile from source.
 
-The names `venv` and `venv_sys` used throughout this document
-are conventional examples. You may use any names and locations
-you like; the virtual environment does not need to be in the
-project directory.
+The recommended convention is to store your environments in a hidden subdirectory within the project root:
+
+-   **`.venvs/.venv`**: For the standard developement environment.
+-   **`.venvs/.venv_sys`**: For the system-integrated environment (Mayavi).
+
+Using a hidden `.venvs/` directory keeps the project root clean while ensuring that automated scripts and IDEs can easily discover your environments.
 
 ### Creating a Self-Contained Environment
 
 ```bash
-python3 -m venv /path/to/your/venv
-source /path/to/your/venv/bin/activate
+python3 -m venv .venvs/.venv
+source .venvs/.venv/bin/activate
 pip install -e ".[dev]"
 ```
 
@@ -42,8 +44,8 @@ visible.
 ### Creating a System-Integrated Environment
 
 ```bash
-python3 -m venv --system-site-packages /path/to/your/venv_sys
-source /path/to/your/venv_sys/bin/activate
+python3 -m venv --system-site-packages .venvs/.venv_sys
+source .venvs/.venv_sys/bin/activate
 pip install -e ".[dev]"
 ```
 
@@ -83,7 +85,7 @@ to "see" and import packages installed in
 `/usr/lib/python3/dist-packages`.
 
 ```bash
-python3 -m venv --system-site-packages /path/to/your/venv_sys
+python3 -m venv --system-site-packages .venvs/.venv_sys
 ```
 
 ### 3. Activate and Configure
@@ -91,7 +93,7 @@ python3 -m venv --system-site-packages /path/to/your/venv_sys
 Activate the environment:
 
 ```bash
-source /path/to/your/venv_sys/bin/activate
+source .venvs/.venv_sys/bin/activate
 export QT_API="pyqt5"
 export QT_QPA_PLATFORM="xcb"
 ```
@@ -145,7 +147,7 @@ Ensure `ipykernel` is installed. It might be available from the
 system, but installing it in the venv ensures compatibility.
 
 ```bash
-source /path/to/your/venv_sys/bin/activate
+source .venvs/.venv_sys/bin/activate
 pip install ipykernel ipyevents
 ```
 

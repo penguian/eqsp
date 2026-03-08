@@ -159,7 +159,28 @@ in a high rate of cache misses. By forcing symmetric region distribution,
 southern hemisphere, substantially accelerating partition generation for large
 $N$ in $S^3$ (e.g., Chu et al.'s 8,000 quaternion points).
 
-## 8. References
+### 7.3. Performance Benchmarking
+
+To verify these performance gains, the project's benchmark suite includes specific support for symmetric partitions. You can run the comparative benchmarks using:
+
+```bash
+# Run all benchmarks in symmetric mode
+python3 benchmarks/run_benchmarks.py --even-collars
+```
+
+See [doc/benchmarks.md](benchmarks.md) for more details on running and interpreting these performance tests.
+
+## 8. The "Interface Symmetry" Rationale
+
+To maintain high code quality and follow Python best practices, the `eqsp` library utilizes **Interface Symmetry** for its public functions and property helpers. This refers to the practice of maintaining identical function signatures across all related operations, even when a specific parameter (like `even_collars`) has no mathematical effect on a specific function's result (like total area error).
+
+This design provides three key benefits:
+
+1.  **Polymorphic Compatibility**: The generic helper `eq_regions_property(fhandle, ...)` passes a standard set of parameters to `fhandle`. For property functions to be "pluggable," they must all accept the same arguments to prevent `TypeError` exceptions during execution.
+2.  **User API Consistency**: Consistency reduces cognitive load. Users can predictably use `func(dim, N, even_collars=True)` for any property function in the `region_props` or `point_set_props` modules without needing to remember which specific properties are invariant to the equatorial split.
+3.  **Call-Site Stability**: Maintaining a consistent signature ensures that the user's "contract" with the library remains stable. If the underlying logic or research requirements change in the future, the user's code will not require breaking changes.
+
+## 9. References
 
 1. Leopardi, P. (2006). A partition of the unit sphere into regions of
    equal area and small diameter. *ETNA*, 25, 309–327.

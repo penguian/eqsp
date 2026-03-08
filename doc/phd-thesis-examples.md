@@ -46,14 +46,14 @@ confirmation message on completion.
 These scripts run headlessly and require only the standard `venv`:
 ```bash
 cd examples/phd-thesis
-source ../../venv/bin/activate
+source ../../.venvs/.venv/bin/activate
 python fig_3_4_max_diam_s2.py
 ```
 
-### Mayavi scripts — require `venv_sys`
+### Mayavi scripts — require `.venvs/.venv_sys`
 
 Scripts labelled **Mayavi** use `eqsp.visualizations` and require
-system-installed Mayavi via `venv_sys`:
+system-installed Mayavi via `.venvs/.venv_sys`:
 
 ```bash
 cd examples/phd-thesis
@@ -75,7 +75,7 @@ python fig_3_1_partition_s2_33.py
 
 All 21 scripts follow the `if __name__ == "__main__":` pattern and can be imported as modules without side effects.
 
-For full setup instructions for `venv_sys`, see
+For full setup instructions for `.venvs/.venv_sys`, see
 [doc/python_environments.md](../doc/python_environments.md).
 
 ### Visual inspection of eqsp outputs

@@ -1,17 +1,18 @@
 # Release Roadmap: `eqsp`
 
-This document outlines the technical path from the current **0.98 alpha** state to a production **1.00** release on PyPI. It is intended for alpha testers and contributors to understand the remaining milestones and stability goals.
+This document outlines the technical path from the current **0.99 beta** state to a production **1.00** release on PyPI. It is intended for beta testers and contributors to understand the remaining milestones and stability goals.
 
-## Current Status: 0.98.x Alpha
+## Current Status: 0.99.x Beta
 The codebase has been successfully migrated from Matlab to a vectorized Python implementation. Core features, high-fidelity thesis reproduction scripts, and $O(\mathcal{N}^{0.6})$ scaling have been verified.
 
 ---
 
 ## Phase 1: 0.99 Beta (Functional & Quality Parity)
-**Goal**: Feature freeze, CI stabilization, and release candidate verification.
+**Goal**: Final feature inclusion (`even_collars` symmetry), resolution of phase-one code review defects, subsequent feature freeze, CI stabilization, and release candidate verification.
 
 ### 1. API Stabilization & Cleanup
-- **API Freeze**: Final audit of the Public API (`point_set_props.py`, `region_props.py`, `visualizations.py`) to ensure naming consistency and stability.
+- **Final Feature**: Implement the symmetric `even_collars` partition feature to support SO(3) sampling and 3rd-party use cases.
+- **API Freeze**: Execute a strict feature freeze. Perform a final audit of the Public API (`point_set_props.py`, `region_props.py`, `visualizations.py`) to ensure naming consistency and stability.
 - **Enhanced Documentation**: Ensure all internal math optimizations and complex logic are professionally documented in docstrings.
 
 ### 2. Automated Testing Infrastructure
