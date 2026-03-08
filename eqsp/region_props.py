@@ -355,7 +355,7 @@ def eq_regions_property(fhandle, dim, N, show_progress=False, even_collars=False
 
 def eq_vertex_diam_coeff(dim, N, show_progress=False, even_collars=False):
     """
-    Coefficient of maximum diameter of regions of an EQ partition.
+    Coefficient of maximum vertex diameter of regions of an EQ partition.
 
     Parameters
     ----------
@@ -393,7 +393,7 @@ def eq_vertex_diam_coeff(dim, N, show_progress=False, even_collars=False):
 
 def eq_vertex_diam(dim, N, show_progress=False, even_collars=False):
     """
-    Maximum diameter of regions of an EQ partition.
+    Maximum vertex diameter of regions of an EQ partition.
 
     Parameters
     ----------
