@@ -206,10 +206,16 @@ def project_point_set(
     Parameters
     ----------
     points : ndarray
+        Array of shape (dim+1, N) containing center points of each region in
+        Cartesian coordinates.
     proj : {'stereo', 'eqarea'}, optional
+        Projection type. Default 'stereo'.
     scale_factor : float, optional
+        Scale factor for points. Default 0.1.
     color : tuple, optional
+        Color of points in RGB format (0 to 1). Default (1, 0, 0).
     **kwargs
+        Passed to Mayavi plotting functions.
 
     Examples
     --------
@@ -289,14 +295,19 @@ def project_s3_partition(
     Parameters
     ----------
     N : int
+        Number of regions.
     extra_offset : bool, optional
+        Use extra offsets. Default False.
     title : {'long', 'short', 'none'}, optional
+        Title format. Default 'long'.
     proj : {'stereo', 'eqarea'}, optional
+        Projection type. Default 'stereo'.
     show_points : bool, optional
         Show center points. Default True.
     show_surfaces : bool, optional
         Show region surfaces. Default True.
     **kwargs
+        Passed to Mayavi plotting functions.
 
     Examples
     --------
