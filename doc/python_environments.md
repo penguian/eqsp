@@ -24,7 +24,7 @@ creating virtual environments. There are two main approaches:
 
 The recommended convention is to store your environments in a hidden subdirectory within the project root:
 
--   **`.venvs/.venv`**: For the standard developement environment.
+-   **`.venvs/.venv`**: For the standard development environment.
 -   **`.venvs/.venv_sys`**: For the system-integrated environment (Mayavi).
 
 Using a hidden `.venvs/` directory keeps the project root clean while ensuring that automated scripts and IDEs can easily discover your environments.

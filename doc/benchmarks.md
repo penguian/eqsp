@@ -66,7 +66,7 @@ python3 benchmarks/src/benchmark_eq_regions.py --show-progress
 python3 benchmarks/src/benchmark_eq_regions.py --show-progress --even-collars
 ```
 
-This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.6})$ scaling theory described in Chapter 3 of the thesis. The symmetric partition method (`even_collars=True`) generally follows the same scaling but may be slightly faster for certain $N devido$ to the forced even number of collars simplifying the recurrence.
+This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.6})$ scaling theory described in Chapter 3 of the thesis. The symmetric partition method (`even_collars=True`) generally follows the same scaling but may be slightly faster for certain $N$ due to the forced even number of collars simplifying the recurrence.
 
 ## 4. Interpreting Results
 
