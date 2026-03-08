@@ -1,3 +1,11 @@
+warning: The top-level linter settings are deprecated in favour of their counterparts in the `lint` section. Please update the following options in `ruff.toml`:
+  - 'select' -> 'lint.select'
+  - 'per-file-ignores' -> 'lint.per-file-ignores'
+All checks passed!
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
 ============================= test session starts ==============================
 platform linux -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0
 rootdir: /home/leopardi/sync/src/penguian/eqsp-alpha
@@ -25,7 +33,7 @@ tests/src/test_utilities.py ...                                          [ 78%]
 tests/src/test_visualizations_mock.py .................................. [ 98%]
 ..                                                                       [100%]
 
-============================= 165 passed in 1.85s ==============================
+============================= 165 passed in 1.88s ==============================
 Name                             Stmts   Miss  Cover
 ----------------------------------------------------
 eqsp/__init__.py                     9      0   100%
@@ -46,3 +54,19 @@ Running coverage including private tests...
 
 Coverage Report:
 
+========================================
+Running Ruff Linter...
+========================================
+[PASSED] Ruff Linter
+
+========================================
+Running Pylint...
+========================================
+[PASSED] Pylint
+
+========================================
+Running Test Suite & Coverage...
+========================================
+[PASSED] Test Suite & Coverage
+
+All verification steps passed successfully!

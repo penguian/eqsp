@@ -152,6 +152,7 @@ def centres_of_regions(regions):
     """
     tol = np.finfo(float).eps * 2**5
     regions = np.asarray(regions, dtype=float)
+    regions = regions.copy()
     if regions.ndim == 2:
         regions = regions[:, :, np.newaxis]
     dim = regions.shape[0]

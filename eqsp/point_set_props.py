@@ -18,6 +18,17 @@ from .utilities import (
     euc2sph_dist,
 )
 
+__all__ = [
+    "calc_dist_coeff",
+    "calc_energy_coeff",
+    "calc_packing_density",
+    "eq_dist_coeff",
+    "eq_energy_coeff",
+    "eq_energy_dist",
+    "eq_min_dist",
+    "sphere_int_energy",
+]
+
 
 def calc_dist_coeff(dim, N, min_euclidean_dist):
     """
@@ -226,7 +237,7 @@ def calc_packing_density(dim, N, min_euclidean_dist):
     return density
 
 
-def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False):
+def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False, even_collars=False):
     """
     Coefficient of minimum distance of an EQ point set.
 
@@ -237,9 +248,12 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False):
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets. Default False.
+        Use extra offsets (experimental legacy feature for dim 2-3).
+        Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -253,12 +267,17 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False):
     >>> float(np.round(eq_dist_coeff(2, 6, show_progress=True), 4))
     3.4641
     """
-    dist = eq_min_dist(dim, N, extra_offset=extra_offset, show_progress=show_progress)
+    dist = eq_min_dist(
+        dim, N, extra_offset=extra_offset, show_progress=show_progress,
+        even_collars=even_collars
+    )
     coeff = dist * np.power(N, 1 / dim)
     return coeff
 
 
-def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
+def eq_energy_coeff(
+    dim, N, s=None, extra_offset=False, show_progress=False, even_collars=False
+):
     r"""
     Coefficient in expansion of energy of an EQ point set.
 
@@ -271,9 +290,12 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
     s : float, optional
         Exponent parameter. Defaults to dim-1.
     extra_offset : bool, optional
-        Use extra offsets. Default False.
+        Use extra offsets (experimental legacy feature for dim 2-3).
+        Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -296,7 +318,12 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
     if s is None:
         s = dim - 1
     dist_result = eq_energy_dist(
-        dim, N, s=s, extra_offset=extra_offset, show_progress=show_progress
+        dim,
+        N,
+        s=s,
+        extra_offset=extra_offset,
+        show_progress=show_progress,
+        even_collars=even_collars,
     )
     if isinstance(dist_result, tuple):
         energy = dist_result[0]
@@ -306,7 +333,9 @@ def eq_energy_coeff(dim, N, s=None, extra_offset=False, show_progress=False):
     return coeff
 
 
-def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
+def eq_energy_dist(
+    dim, N, s=None, extra_offset=False, show_progress=False, even_collars=False
+):
     """
     Energy and minimum distance of an EQ point set.
 
@@ -319,9 +348,12 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
     s : float, optional
         Exponent parameter. Defaults to dim-1.
     extra_offset : bool, optional
-        Use extra offsets. Default False.
+        Use extra offsets (experimental legacy feature for dim 2-3).
+        Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -347,8 +379,8 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
     for i, n_val in enumerate(N_flat[0]):
         if show_progress and n_partitions > 1:
             print(f"    N={n_val:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
-        points = eq_point_set(dim, n_val, extra_offset)
-        if len(energy.shape) > 1 or len(dist.shape) > 1:
+        points = eq_point_set(dim, n_val, extra_offset, even_collars=even_collars)
+        if len(dist.shape) > 1:
             energy[0, i], dist[0, i] = point_set_energy_dist(points, s)
         else:
             energy[0, i] = point_set_energy_dist(points, s)  # pragma: no cover
@@ -361,7 +393,7 @@ def eq_energy_dist(dim, N, s=None, extra_offset=False, show_progress=False):
     return energy
 
 
-def eq_min_dist(dim, N, extra_offset=False, show_progress=False):
+def eq_min_dist(dim, N, extra_offset=False, show_progress=False, even_collars=False):
     """
     Minimum distance between center points of an EQ partition.
 
@@ -372,9 +404,12 @@ def eq_min_dist(dim, N, extra_offset=False, show_progress=False):
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets. Default False.
+        Use extra offsets (experimental legacy feature for dim 2-3).
+        Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -397,13 +432,15 @@ def eq_min_dist(dim, N, extra_offset=False, show_progress=False):
     for i, n_val in enumerate(N_flat[0]):
         if show_progress and n_partitions > 1:
             print(f"    N={n_val:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
-        dist[0, i] = _eq_min_dist_scalar(dim, int(n_val), extra_offset)
+        dist[0, i] = _eq_min_dist_scalar(
+            dim, int(n_val), extra_offset, even_collars=even_collars
+        )
     if show_progress and n_partitions > 1:
         print()  # Clear the line
     return dist.reshape(shape)
 
 
-def _eq_min_dist_scalar(dim, N, extra_offset=False):
+def _eq_min_dist_scalar(dim, N, extra_offset=False, even_collars=False):
     """
     Scalar version of eq_min_dist.
     """
@@ -413,7 +450,7 @@ def _eq_min_dist_scalar(dim, N, extra_offset=False):
         # Distance on a circle with N points: 2 * sin(pi/N)
         return 2 * np.sin(np.pi / N)
 
-    _, n_regions = eq_caps(dim, N)
+    _, n_regions = eq_caps(dim, N, even_collars=even_collars)
 
     # Exploiting the collar structure:
     # 1. Intra-collar distances
@@ -423,7 +460,7 @@ def _eq_min_dist_scalar(dim, N, extra_offset=False):
     # near-linear scaling and low memory usage.
 
     point_sets = []
-    points = eq_point_set(dim, N, extra_offset)
+    points = eq_point_set(dim, N, extra_offset, even_collars=even_collars)
     idx = 0
     for n_k in n_regions:
         nk = int(n_k)
@@ -447,7 +484,9 @@ def _eq_min_dist_scalar(dim, N, extra_offset=False):
     return d_min
 
 
-def eq_packing_density(dim, N, extra_offset=False, show_progress=False):
+def eq_packing_density(
+    dim, N, extra_offset=False, show_progress=False, even_collars=False
+):
     """
     Density of packing given by minimum distance of EQ point set.
 
@@ -458,9 +497,12 @@ def eq_packing_density(dim, N, extra_offset=False, show_progress=False):
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets. Default False.
+        Use extra offsets (experimental legacy feature for dim 2-3).
+        Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -475,7 +517,11 @@ def eq_packing_density(dim, N, extra_offset=False, show_progress=False):
     0.8787
     """
     min_euclidean_dist = eq_min_dist(
-        dim, N, extra_offset=extra_offset, show_progress=show_progress
+        dim,
+        N,
+        extra_offset=extra_offset,
+        show_progress=show_progress,
+        even_collars=even_collars,
     )
     density = calc_packing_density(dim, N, min_euclidean_dist)
     return density
@@ -494,7 +540,8 @@ def eq_point_set_property(fhandle, dim, N, extra_offset=False, show_progress=Fal
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets. Default False.
+        Use extra offsets (experimental legacy feature for dim 2-3).
+        Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
 
@@ -617,7 +664,7 @@ def point_set_energy_dist(points, s=None, block_size=2000):
     -------
     energy : float
         Energy value.
-    min_dist : float, optional
+    min_dist : float
         Minimum Euclidean distance.
 
     Notes

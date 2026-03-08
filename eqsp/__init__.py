@@ -48,5 +48,5 @@ __all__ = [
 
 try:
     __version__ = _pkg_version("eqsp")
-except PackageNotFoundError:
+except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"

@@ -9,7 +9,9 @@ import numpy as np
 from eqsp.partitions import eq_regions
 
 
-def run_benchmark(max_d=11, max_k=22, iterations=3, show_progress=False):
+def run_benchmark(
+    max_d=11, max_k=22, iterations=3, show_progress=False, even_collars=False
+):
     """Run the eq_regions benchmark matching thesis parameters."""
     print(f"Running Thesis Benchmark for eq_regions: d=[1..{max_d}], N=2^[1..{max_k}]")
     print(f"Iterations per point: {iterations}")
@@ -25,7 +27,7 @@ def run_benchmark(max_d=11, max_k=22, iterations=3, show_progress=False):
             times = []
             for _ in range(iterations):
                 t0 = time.perf_counter()
-                eq_regions(d, N)
+                eq_regions(d, N, even_collars=even_collars)
                 t1 = time.perf_counter()
                 times.append(t1 - t0)
 
@@ -37,13 +39,19 @@ def run_benchmark(max_d=11, max_k=22, iterations=3, show_progress=False):
     return results
 
 
-def run(n_max=16000, dim=2):
+def run(n_max=16000, dim=2, even_collars=False):
     """Bridge for run_benchmarks.py to benchmark eq_regions.
 
     Translates linear n_max to k powers of 2 for compatibility.
     """
     max_k = int(np.log2(n_max)) if n_max > 0 else 1
-    results = run_benchmark(max_d=dim, max_k=max_k, iterations=1, show_progress=False)
+    results = run_benchmark(
+        max_d=dim,
+        max_k=max_k,
+        iterations=1,
+        show_progress=False,
+        even_collars=even_collars,
+    )
     analyze_scaling(results)
 
 
@@ -95,6 +103,12 @@ if __name__ == "__main__":
         default=False,
         help="Show per-point benchmark results (default: False).",
     )
+    parser.add_argument(
+        "--even-collars",
+        action="store_true",
+        default=False,
+        help="Use even number of collars for symmetric partitions.",
+    )
     args = parser.parse_args()
 
     start_total = time.perf_counter()
@@ -103,6 +117,7 @@ if __name__ == "__main__":
         max_k=args.max_k,
         iterations=args.iterations,
         show_progress=args.show_progress,
+        even_collars=args.even_collars,
     )
     end_total = time.perf_counter()
 

@@ -182,6 +182,14 @@ class TestShowS2Partition(TestVisualizationsSetup):
         vis.show_s2_partition(4, title="long", show=False)
         vis.mlab.text.assert_called_once()
 
+    def test_custom_title_calls_mlab_text(self):
+        """Test function test_custom_title_calls_mlab_text."""
+        vis = self._import_vis()
+        vis.show_s2_partition(4, title="My Custom Title", show=False)
+        vis.mlab.text.assert_called_with(
+            0.2, 0.85, "My Custom Title", width=0.6, color=(0, 0, 0)
+        )
+
     def test_title_short_calls_mlab_text(self):
         """Test function test_title_short_calls_mlab_text."""
         vis = self._import_vis()

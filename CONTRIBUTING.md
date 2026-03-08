@@ -1,6 +1,6 @@
 # Contributing to EQSP
 
-Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (EQSP) library! This project is currently in Alpha testing, and your feedback is invaluable.
+Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (EQSP) library! This project is currently in Beta testing, and your feedback is invaluable.
 
 ## How to Provide Feedback
 
@@ -22,8 +22,8 @@ If you would like to contribute code fixes or improvements, please follow the fo
    We recommend using a **virtual environment** to avoid dependency conflicts:
    ```bash
    # Create and activate a virtual environment
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   python3 -m venv .venvs/.venv
+   source .venvs/.venv/bin/activate  # On Windows use `.venvs\.venv\Scripts\activate`
 
    # Clone your fork
    git clone https://github.com/YOUR_USERNAME/eqsp.git
@@ -45,6 +45,10 @@ If you would like to contribute code fixes or improvements, please follow the fo
    To maintain high code quality, we require:
    - **Linting**: Code must satisfy `ruff` and `pylint`.
    - **Docstrings**: Use the [NumPy docstring format](https://numpydoc.readthedocs.io/en/latest/format.html).
+   - **Code Coverage**: We maintain a strict **100% test coverage** policy.
+       - All new features must include comprehensive tests.
+       - `# pragma: no cover` should be used sparingly and only for truly unreachable code, platform-specific blocks, or debugging branches.
+       - Every pragma usage must be justified and reviewed.
    - **Minimalism**: Keep changes focused and brief.
 
 6. **Run Tests & Linters**: Ensure that your changes satisfy all quality checks and do not break existing functionality. We provide a single verification script that runs Ruff, Pylint, and Pytest with coverage:

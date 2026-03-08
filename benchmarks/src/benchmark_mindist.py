@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Benchmark for eq_min_dist (Efficient distance calculation)."""
 
 import argparse
@@ -6,7 +7,7 @@ import time
 from eqsp.point_set_props import eq_min_dist
 
 
-def run(n_max=16000, dim=2):
+def run(n_max=16000, dim=2, even_collars=False):
     """Run the benchmark.
 
     Args:
@@ -26,8 +27,13 @@ def run(n_max=16000, dim=2):
         if start > end:
             continue
         t0 = time.perf_counter()
-        for N in range(start, end + 1):
-            eq_min_dist(dim, N)
+        if even_collars:
+            even_start = start if start % 2 == 0 else start + 1
+            n_range = range(even_start, end + 1, 2)
+        else:
+            n_range = range(start, end + 1)
+        for N in n_range:
+            eq_min_dist(dim, N, even_collars=even_collars)
         t1 = time.perf_counter()
         print(f"{f'{start}-{end}':<15} | {t1 - t0:>10.4f}")
 
@@ -43,5 +49,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dim", type=int, default=2, help="Sphere dimension (default: 2)."
     )
+    parser.add_argument(
+        "--even-collars",
+        action="store_true",
+        default=False,
+        help="Use even number of collars for symmetric partitions.",
+    )
     args = parser.parse_args()
-    run(n_max=args.n_max, dim=args.dim)
+    run(n_max=args.n_max, dim=args.dim, even_collars=args.even_collars)

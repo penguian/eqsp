@@ -494,7 +494,7 @@ def illustrate_steps_1_2(
     )
 
     if show_title:
-        title_str = f"EQ({dim},{N}) Steps 1 to 2\n"
+        title_str = f"EQ({dim},{N}) Steps 1 to 2"
         plt.title(title_str, fontsize=fontsize, color="k")
 
 
@@ -553,7 +553,7 @@ def illustrate_steps_3_5(
             fontsize=fontsize,
         )
     if show_title:
-        title_str = f"EQ({dim},{N}) Steps 3 to 5\n"
+        title_str = f"EQ({dim},{N}) Steps 3 to 5"
         plt.title(title_str, fontsize=fontsize, color="k")
 
 
@@ -611,5 +611,5 @@ def illustrate_steps_6_7(
             fontsize=fontsize,
         )
     if show_title:
-        title_str = f"EQ({dim},{N}) Steps 6 to 7\n"
+        title_str = f"EQ({dim},{N}) Steps 6 to 7"
         plt.title(title_str, fontsize=fontsize, color="k")

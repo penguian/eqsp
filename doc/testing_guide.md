@@ -82,7 +82,7 @@ To generate a full coverage report, use the provided helper script:
 python3 tests/run_coverage.py
 ```
 
-This will run all tests (including doctests) and produce a summary in the terminal. The project maintains a strict benchmark of **100% coverage**.
+This will run all tests (including doctests) and produce a summary in the terminal. The project maintains a strict benchmark of **100% coverage**. A comprehensive pragma audit was conducted in 0.99 Beta to ensure that all testable code paths are exercised, and that existing pragmas are only applied to truly unreachable or environment-dependent code.
 
 Detailed results are saved in `tests/results/run_coverage.log`.
 
@@ -113,6 +113,9 @@ The `benchmarks/` directory contains scripts to verify the algorithmic complexit
 To run all system benchmarks and generate a summary report:
 ```bash
 python3 benchmarks/run_benchmarks.py
+
+# Benchmark symmetric partitions
+python3 benchmarks/run_benchmarks.py --even-collars
 ```
 
 ### 5.2 Results and Logging
@@ -121,7 +124,7 @@ The runner saves individual results for each benchmark in a standardized format:
 - **Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
 
 ### 5.3 Thesis Benchmark (Section 3.10.2)
-The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behavior.
+The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behaviour.
 
 To run it independently with progress tracking:
 ```bash

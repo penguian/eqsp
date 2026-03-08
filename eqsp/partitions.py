@@ -32,7 +32,7 @@ from .utilities import (
 TAU = 2.0 * pi
 
 
-def eq_caps(dim, N):
+def eq_caps(dim, N, even_collars=False):
     """
     Partition a sphere into two nested spherical caps.
 
@@ -42,6 +42,12 @@ def eq_caps(dim, N):
         The number of dimensions.
     N : int
         The number of regions.
+    even_collars : bool, optional
+        If True, force an even number of collars so the equatorial
+        hyperplane falls exactly on a cap boundary. This enables
+        clean hemisphere splitting for symmetric sampling methods.
+        Requires N to be an even number.
+        Default is False.
 
     Returns
     -------
@@ -55,7 +61,8 @@ def eq_caps(dim, N):
     Raises
     ------
     ValueError
-        If dim or N are not positive integers.
+        If dim or N are not positive integers, or if even_collars is True
+        but N is odd.
 
     See Also
     --------
@@ -84,6 +91,12 @@ def eq_caps(dim, N):
     array([0.9845, 2.1571, 3.1416])
     >>> n_regions
     array([1., 4., 1.])
+
+    >>> s_cap, n_regions = eq_caps(2, 10, even_collars=True)
+    >>> s_cap
+    array([0.6435, 1.5708, 2.4981, 3.1416])
+    >>> n_regions
+    array([1., 4., 4., 1.])
     """
     if not (isinstance(dim, (int, np.integer)) and dim >= 1):
         raise ValueError("dim must be a positive integer")
@@ -102,8 +115,20 @@ def eq_caps(dim, N):
     else:
         # Determine polar colatitude
         c_polar = polar_colat(dim, N)
-        # Determine number of collars
-        n_collars = num_collars(N, c_polar, ideal_collar_angle(dim, N))
+        a_ideal = ideal_collar_angle(dim, N)
+
+        if even_collars and N % 2 != 0:
+            raise ValueError("even_collars=True requires N to be an even number")
+
+        if even_collars and N > 2:
+            # Force even number of collars so equator falls on a cap boundary
+            ratio_half = 0.5 * (pi - 2.0 * c_polar) / a_ideal
+            n_half = max(1, round(ratio_half))
+            n_collars = 2 * n_half
+        else:
+            # Determine number of collars
+            n_collars = num_collars(N, c_polar, a_ideal)
+
         # Ideal real number of regions per collar
         r_regions = ideal_region_list(dim, N, c_polar, n_collars)
         # Round to natural numbers preserving sum N
@@ -114,7 +139,7 @@ def eq_caps(dim, N):
     return asfloat(s_cap), asfloat(n_regions)
 
 
-def eq_point_set(dim, N, extra_offset=False):
+def eq_point_set(dim, N, extra_offset=False, even_collars=False):
     """
     Center points of regions of EQ partition, in Cartesian coordinates.
 
@@ -124,8 +149,12 @@ def eq_point_set(dim, N, extra_offset=False):
         The number of dimensions.
     N : int
         The number of regions.
-    extra_offset : bool
-        If True, enables experimental extra offsets for dim 2 and 3.
+    extra_offset : bool, optional
+        If True, enables experimental extra offsets for dim 2 and 3. This is
+        a legacy feature from the MATLAB toolbox and is no longer planned
+        for expansion to dim > 3.
+    even_collars : bool, optional
+        If True, force an even number of collars. See `eq_caps` for details.
 
     Returns
     -------
@@ -153,13 +182,19 @@ def eq_point_set(dim, N, extra_offset=False):
     >>> points = eq_point_set(2, 4)  # doctest: +ELLIPSIS
     >>> points.shape
     (3, 4)
+
+    >>> points = eq_point_set(2, 4, even_collars=True)
+    >>> points.shape
+    (3, 4)
     """
-    points_polar = eq_point_set_polar(dim, N, extra_offset=extra_offset)
+    points_polar = eq_point_set_polar(
+        dim, N, extra_offset=extra_offset, even_collars=even_collars
+    )
     points_x = polar2cart(points_polar)
     return points_x
 
 
-def eq_point_set_polar(dim, N, extra_offset=False):
+def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
     """
     Center points of regions of an EQ partition in polar coordinates.
 
@@ -167,10 +202,12 @@ def eq_point_set_polar(dim, N, extra_offset=False):
     ----------
     dim : int
         The spatial dimension of the sphere (S^dim in R^{dim+1}).
-    N : int
-        The number of regions.
-    extra_offset : bool
-        If True, enables experimental extra offsets for dim 2 and 3.
+    extra_offset : bool, optional
+        If True, enables experimental extra offsets for dim 2 and 3. This is
+        a legacy feature from the MATLAB toolbox and is no longer planned
+        for expansion to dim > 3.
+    even_collars : bool, optional
+        If True, force an even number of collars. See `eq_caps` for details.
 
     Returns
     -------
@@ -199,6 +236,10 @@ def eq_point_set_polar(dim, N, extra_offset=False):
     >>> pts = eq_point_set_polar(2, 4)  # doctest: +ELLIPSIS
     >>> pts.shape
     (2, 4)
+
+    >>> pts = eq_point_set_polar(2, 4, even_collars=True)
+    >>> pts.shape
+    (2, 4)
     """
     # Extra offsets not used for dim > 3
     if dim > 3:
@@ -213,7 +254,7 @@ def eq_point_set_polar(dim, N, extra_offset=False):
         points_s = np.zeros((dim, 1))
         return points_s
 
-    a_cap, n_regions = eq_caps(dim, N)
+    a_cap, n_regions = eq_caps(dim, N, even_collars=even_collars)
     # a_cap is increasing list of angles of caps
 
     if dim == 1:
@@ -298,7 +339,7 @@ def eq_point_set_polar(dim, N, extra_offset=False):
     return points_s
 
 
-def eq_regions(dim, N, extra_offset=False):
+def eq_regions(dim, N, extra_offset=False, even_collars=False):
     """
     Recursive zonal equal area (EQ) partition of sphere.
 
@@ -306,10 +347,12 @@ def eq_regions(dim, N, extra_offset=False):
     ----------
     dim : int
         The spatial dimension of the sphere (S^dim).
-    N : int
-        The number of regions.
-    extra_offset : bool
-        If True, enables experimental extra offsets for dim 2 and 3.
+    extra_offset : bool, optional
+        If True, enables experimental extra offsets for dim 2 and 3. This is
+        a legacy feature from the MATLAB toolbox and is no longer planned
+        for expansion to dim > 3.
+    even_collars : bool, optional
+        If True, force an even number of collars. See `eq_caps` for details.
 
     Returns
     -------
@@ -344,13 +387,17 @@ def eq_regions(dim, N, extra_offset=False):
     >>> regs = eq_regions(2, 4)  # doctest: +ELLIPSIS
     >>> regs.shape
     (2, 2, 4)
+
+    >>> regs = eq_regions(2, 4, even_collars=True)
+    >>> regs.shape
+    (2, 2, 4)
     """
 
     if dim > 3:
-        extra_offset = False  # pragma: no cover
+        extra_offset = False
 
     if not (isinstance(dim, (int, np.integer)) and dim >= 1):
-        raise ValueError("dim must be a positive integer")  # pragma: no cover
+        raise ValueError("dim must be a positive integer")
     if not (isinstance(N, (int, np.integer)) and N >= 1):
         raise ValueError("N must be a positive integer")
 
@@ -362,11 +409,11 @@ def eq_regions(dim, N, extra_offset=False):
         regions = np.zeros((dim, 2, 1))
         regions[:, :, 0] = sphere_region(dim)
         if extra_offset and dim == 3:
-            dim_1_rot[0] = np.eye(dim)  # pragma: no cover
-            return regions, dim_1_rot  # pragma: no cover
+            dim_1_rot[0] = np.eye(dim)
+            return regions, dim_1_rot
         return regions
 
-    s_cap, n_regions = eq_caps(dim, N)
+    s_cap, n_regions = eq_caps(dim, N, even_collars=even_collars)
 
     if dim == 1:
         # Circle: return pairs of sector angles
@@ -412,7 +459,7 @@ def eq_regions(dim, N, extra_offset=False):
                 and cache[twin_collar_n - 1] is not None
                 and cache[twin_collar_n - 1].shape[2] == n_in_collar
             ):
-                regions_1 = cache[twin_collar_n - 1]  # pragma: no cover
+                regions_1 = cache[twin_collar_n - 1]
             else:
                 if extra_offset:
                     regions_1, _ = eq_regions(dim - 1, n_in_collar, extra_offset)
@@ -427,7 +474,7 @@ def eq_regions(dim, N, extra_offset=False):
                 regions_1 = eq_regions(dim - 1, n_in_collar, extra_offset)
 
         if extra_offset and (dim == 3) and (collar_n > 1):
-            R = s2_offset(centres_of_regions(regions_1)) @ R  # pragma: no cover
+            R = s2_offset(centres_of_regions(regions_1)) @ R
 
         # Append regions for this collar
         n_regions_1 = regions_1.shape[2]

@@ -8,7 +8,7 @@ This document provides a technical summary of the key algorithmic optimizations 
 **Status:** Improved from $O(N^2)$ to $O(N \log N)$.
 
 - **Previous Bottleneck:** Pairwise distance matrices created using `scipy.spatial.distance.pdist` or NumPy broadcasting consumed $O(N^2)$ memory and time.
-- **Approach:** We leverage **KDTrees** (`scipy.spatial.KDTree`) for $S^d$ ($d \le 4$) to perform localized neighbor searches. For higher dimensions or specific partition types, we use **structure-aware searches** that exploit the recursive nature of the EQ algorithm to bound the search space.
+- **Approach:** We leverage **KDTrees** (`scipy.spatial.KDTree`) for $S^d$ ($d \le 4$) to perform localized neighbour searches. For higher dimensions or specific partition types, we use **structure-aware searches** that exploit the recursive nature of the EQ algorithm to bound the search space.
 - **Result:** Calculating the minimum distance for $N=100,000$ points now takes seconds rather than minutes, and memory usage remains linear.
 
 ### 1.2 Recursive Partitioning Scaling
@@ -31,6 +31,12 @@ This document provides a technical summary of the key algorithmic optimizations 
 
 - **Approach:** Assigning points to regions on $S^2$ previously used a recursive Python loop. The new implementation uses **logarithmic searching** (`np.searchsorted`) across vectorized "collar" boundaries.
 - **Result:** Billions of sample points can be binned into partitions in a single vectorized pass.
+
+### 1.4 Symmetric Partition Performance (`even_collars`)
+**Status:** Vectorized support in all properties functions.
+
+- **Approach:** The symmetric partitioning logic (`even_collars=True`) ensures an even number of collars. All property calculation functions (`eq_area_error`, `eq_min_dist`, `eq_energy_dist`, `eq_diam_coeff`) are fully vectorized to support this parameter.
+- **Result:** Symmetry calculation adds negligible overhead compared to standard partitions. In some cases, the simplified collar recurrence in symmetric mode can lead to slight performance improvements for high $N$.
 
 ## 2. Optimized NumPy & SciPy Patterns
 

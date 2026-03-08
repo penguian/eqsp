@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Benchmark for vectorized histogram lookups."""
 
 import argparse

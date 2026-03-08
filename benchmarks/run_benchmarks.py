@@ -8,10 +8,41 @@ import sys
 import time
 
 
-def run_benchmark(name, script_name, extra_args, env, results_dir, base_dir):
+class Tee:
+    """Redirect stdout to both console and a file."""
+
+    def __init__(self, filename, mode="w"):
+        # pylint: disable=consider-using-with
+        self.file = open(filename, mode, encoding="utf-8")
+        self.stdout = sys.stdout
+
+    def __enter__(self):
+        sys.stdout = self
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout = self.stdout
+        self.file.close()
+
+    def write(self, data):
+        """Write data to both streams."""
+        self.stdout.write(data)
+        self.file.write(data)
+
+    def flush(self):
+        """Flush both streams."""
+        self.stdout.flush()
+        self.file.flush()
+
+
+def run_benchmark(
+    name, script_name, *, extra_args, env, results_dir, base_dir, log_suffix=""
+):
     """Run a single benchmark script via subprocess and log its output."""
     script_path = os.path.join(base_dir, "src", script_name)
-    log_file = os.path.join(results_dir, script_name.replace(".py", ".log"))
+    log_file = os.path.join(
+        results_dir, script_name.replace(".py", f"{log_suffix}.log")
+    )
 
     print(f"Running benchmark: {name}")
 
@@ -64,6 +95,12 @@ def main():
         type=str,
         help="Directory to save log files (default: benchmarks/results).",
     )
+    parser.add_argument(
+        "--even-collars",
+        action="store_true",
+        default=False,
+        help="Use even number of collars for symmetric partitions.",
+    )
 
     args = parser.parse_args()
 
@@ -88,19 +125,24 @@ def main():
     else:
         env["PYTHONPATH"] = root_dir
 
+    # Log suffix for even collars
+    suffix = "_even" if args.even_collars else ""
+    even_args = ["--even-collars"] if args.even_collars else []
+
     # Define benchmarks and their arguments
     # Note: we use script arguments now instead of function kwargs
     benchmarks = [
         (
             "eq_area_error (Redundant area calculation)",
             "benchmark_area_error.py",
-            ["--n-max", str(args.n_max or 15000), "--dim", str(args.dim)],
+            ["--n-max", str(args.n_max or 15000), "--dim", str(args.dim)] + even_args,
         ),
         (
             "point_set_energy_dist (O(N^2) memory & broadcasting)",
             "benchmark_energy_dist.py",
             ["--n-max", str(args.n_max or 2400), "--dim", str(args.dim)]
-            + (["--s", str(args.s)] if args.s else []),
+            + (["--s", str(args.s)] if args.s else [])
+            + even_args,
         ),
         (
             "eq_regions (Python loop overhead)",
@@ -112,12 +154,13 @@ def main():
                 str(args.dim),
                 "--iterations",
                 "1",
-            ],
+            ]
+            + even_args,
         ),
         (
             "eq_min_dist (Efficient distance calculation)",
             "benchmark_mindist.py",
-            ["--n-max", str(args.n_max or 6400), "--dim", str(args.dim)],
+            ["--n-max", str(args.n_max or 6400), "--dim", str(args.dim)] + even_args,
         ),
         (
             "eq_find_s2_region (Vectorized histogram lookup)",
@@ -131,19 +174,31 @@ def main():
         ),
     ]
 
-    print("=======================================")
-    print("      EQSP Performance Benchmarks      ")
-    print("=======================================\n")
+    # Main log file for the run
+    main_log_file = os.path.join(results_dir, f"run_benchmarks{suffix}.log")
 
-    t_start = time.perf_counter()
+    with Tee(main_log_file):
+        print("=======================================")
+        print("      EQSP Performance Benchmarks      ")
+        print("=======================================\n")
 
-    for name, script, extra_args in benchmarks:
-        run_benchmark(name, script, extra_args, env, results_dir, base_dir)
+        t_start = time.perf_counter()
 
-    t_end = time.perf_counter()
-    print("=======================================")
-    print(f"Total benchmark time: {t_end - t_start:.2f} seconds")
-    print("=======================================")
+        for name, script, extra_args in benchmarks:
+            run_benchmark(
+                name,
+                script,
+                extra_args=extra_args,
+                env=env,
+                results_dir=results_dir,
+                base_dir=base_dir,
+                log_suffix=suffix,
+            )
+
+        t_end = time.perf_counter()
+        print("=======================================")
+        print(f"Total benchmark time: {t_end - t_start:.2f} seconds")
+        print("=======================================")
 
 
 if __name__ == "__main__":

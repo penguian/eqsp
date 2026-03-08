@@ -214,7 +214,7 @@ See the docstrings for more details (e.g.
 
 ## Reporting Bugs & Contributing
 
-This project is currently in **Alpha testing**. We welcome
+This project is currently in **Beta testing**. We welcome
 your feedback!
 
 - Found a bug? Please

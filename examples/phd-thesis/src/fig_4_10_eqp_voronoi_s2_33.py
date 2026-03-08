@@ -114,6 +114,13 @@ def main():
     fig_overlay, ax = plt.subplots(figsize=(9, 9), dpi=100)
     ax.imshow(img)
     ax.axis("off")
+    # Increase the size of the 3D portion by 50% (1.5x zoom)
+    h, w = img.shape[:2]
+    zoom = 1.5
+    h_new, w_new = h / zoom, w / zoom
+    dy, dx = (h - h_new) / 2, (w - w_new) / 2
+    ax.set_ylim(h - dy, dy)
+    ax.set_xlim(dx, w - dx)
     title_text = (
         r"Figure 4.10: EQ points and Voronoi cells on $S^2$ for $\mathrm{EQP}(2,33)$"
     )
@@ -128,7 +135,6 @@ def main():
         os.remove(raw_file)
     if args.show_progress:
         print("Saved fig_4_10_eqp_voronoi_s2_33.png")
-    mlab.show()
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ from scipy.optimize import newton
 from scipy.special import betainc, gamma  # pylint: disable=no-name-in-module
 
 # Tolerance for comparisons close to zero.
-tolerance = float(np.finfo(np.float32).eps)
+_TOLERANCE = float(np.finfo(np.float32).eps)
 
 
 def asfloat(x):
@@ -131,7 +131,7 @@ def cart2polar2(x):
     # Project any x onto the unit sphere S^2 by normalizing (except for origin)
     norms = np.linalg.norm(x, axis=0)
     # If one or more points is the origin, raise ValueError
-    if np.min(norms) < tolerance:
+    if np.min(norms) < _TOLERANCE:
         raise ValueError("Input x must not contain the origin")
     x_proj = x / norms
 
@@ -631,23 +631,36 @@ def sradius_of_cap(dim, area):
     array([0.    , 1.1549, 1.5708, 1.9867, 3.1416])
     """
     area = np.asarray(area)
+    sphere_area = area_of_sphere(dim)
+
+    if np.any(area < 0):
+        raise ValueError("Area must be non-negative.")
+    if np.any(area > sphere_area * (1 + 1e-10)):
+        raise ValueError(
+            f"Area {np.max(area)} exceeds area of sphere {sphere_area}."
+        )
 
     if dim == 1:
-        s_cap = area / 2
+        s_cap = np.clip(area / 2, 0, pi)
     elif dim == 2:
-        s_cap = 2 * np.arcsin(np.sqrt(area / (4 * pi)))
+        # Avoid nan for area slightly > sphere_area by clipping to [0, 1]
+        arg = np.clip(area / sphere_area, 0.0, 1.0)
+        s_cap = 2 * np.arcsin(np.sqrt(arg))
     else:
         orig_shape = area.shape
         flat_area = np.ravel(area)
         s_cap = np.zeros_like(flat_area, dtype=float)
-        sphere_area = area_of_sphere(dim)
 
         # Handle cases matching or exceeding full sphere area
         full_idx = flat_area >= sphere_area
         s_cap[full_idx] = pi
 
+        # Handle zero or negative area (ValueError caught negative areas)
+        zero_idx = flat_area <= 0
+        s_cap[zero_idx] = 0.0
+
         # Process remaining cases
-        calc_idx = ~full_idx
+        calc_idx = ~(full_idx | zero_idx)
         if np.any(calc_idx):
             ak_calc = flat_area[calc_idx]
 

@@ -23,6 +23,9 @@ python3 benchmarks/run_benchmarks.py --dim 4
 
 # Specific partition size for histogram lookups
 python3 benchmarks/run_benchmarks.py --regions 100000
+
+# Benchmark symmetric partitions (forces even number of collars)
+python3 benchmarks/run_benchmarks.py --even-collars
 ```
 
 | Flag | Description | Default |
@@ -32,6 +35,7 @@ python3 benchmarks/run_benchmarks.py --regions 100000
 | `--dim` | Sphere dimension for partitioning and math. | 2 |
 | `--regions` | Number of regions in the partition for histogram lookups. | 1000 |
 | `--s` | Exponent for the Riesz energy calculation. | `dim - 1` |
+| `--even-collars` | Force an even number of collars (symmetric partitions). | `False` |
 
 ### Default Scales (`--n-max` overrides)
 - **`eq_area_error`**: `n-max=15000`
@@ -57,13 +61,22 @@ For formal verification of the partitioning algorithm's scaling, use the dedicat
 ```bash
 # Run the formal d=[1..8], N=2^k sweep
 python3 benchmarks/src/benchmark_eq_regions.py --show-progress
+
+# Compare with even collars
+python3 benchmarks/src/benchmark_eq_regions.py --show-progress --even-collars
 ```
 
-This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.6})$ scaling theory described in Chapter 3 of the thesis.
+This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.6})$ scaling theory described in Chapter 3 of the thesis. The symmetric partition method (`even_collars=True`) generally follows the same scaling but may be slightly faster for certain $N$ due to the forced even number of collars simplifying the recurrence.
 
 ## 4. Interpreting Results
 
 Benchmarks are printed to the console and also saved as individual log files in `benchmarks/results/`.
+
+### 4.1 Log Naming Convention
+- **Standard Runs**: Logs are saved as `benchmark_[name].log`.
+- **Symmetric Runs (`--even-collars`)**: Logs are saved with an `_even` suffix (e.g., `benchmark_eq_regions_even.log`).
+
+This allows for side-by-side performance comparison of the different partitioning strategies.
 - **$O(N^2)$ scaling**: Common in distance matrix calculations.
 - **Python Loop Overhead**: Evident in the recursive partitioning logic.
 - **Cache Misses**: May occur when $N$ exceeds specific size thresholds.
