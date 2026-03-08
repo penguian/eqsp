@@ -53,7 +53,7 @@ Furthermore, some Python parameters are entirely new to `eqsp` and did not exist
 Some functions have been refactored to return consistent types, avoiding fragile dependence on the number of output arguments (`nargout`).
 
 *   **`eqsp.region_props.eq_diam_coeff`**: Always returns a tuple `(bound_coeff, vertex_coeff)`.
-    *   *Matlab*: Behavior varied; often returned only one value if `nargout` was 1.
+    *   *Matlab*: Behaviour varied; often returned only one value if `nargout` was 1.
     *   *Python*: Unpack the result: `bound, vertex = eq_diam_coeff(...)`.
 
 ### 2.3 Coordinate Conventions

@@ -124,7 +124,7 @@ The runner saves individual results for each benchmark in a standardized format:
 - **Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
 
 ### 5.3 Thesis Benchmark (Section 3.10.2)
-The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behavior.
+The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behaviour.
 
 To run it independently with progress tracking:
 ```bash

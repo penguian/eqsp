@@ -8,7 +8,7 @@ This document provides a technical summary of the key algorithmic optimizations 
 **Status:** Improved from $O(N^2)$ to $O(N \log N)$.
 
 - **Previous Bottleneck:** Pairwise distance matrices created using `scipy.spatial.distance.pdist` or NumPy broadcasting consumed $O(N^2)$ memory and time.
-- **Approach:** We leverage **KDTrees** (`scipy.spatial.KDTree`) for $S^d$ ($d \le 4$) to perform localized neighbor searches. For higher dimensions or specific partition types, we use **structure-aware searches** that exploit the recursive nature of the EQ algorithm to bound the search space.
+- **Approach:** We leverage **KDTrees** (`scipy.spatial.KDTree`) for $S^d$ ($d \le 4$) to perform localized neighbour searches. For higher dimensions or specific partition types, we use **structure-aware searches** that exploit the recursive nature of the EQ algorithm to bound the search space.
 - **Result:** Calculating the minimum distance for $N=100,000$ points now takes seconds rather than minutes, and memory usage remains linear.
 
 ### 1.2 Recursive Partitioning Scaling
