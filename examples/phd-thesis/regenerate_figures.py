@@ -66,19 +66,30 @@ def run_one_script(script, config, args):
     python_exe = sys.executable
     mode_label = "[2D]"
     if needs_3d:
-        if not config["venv_python"].exists():
-            msg = (
-                f"{script.name:40s} : FAILED "
-                f"(venv_sys not found at {config['venv_python']})"
-            )
-            print(msg)
-            return "fail"
-        python_exe = str(config["venv_python"])
-        run_env.update(QT_ENV)
-        mode_label = "[3D]"
+        if config["venv_python"].exists():
+            python_exe = str(config["venv_python"])
+            run_env.update(QT_ENV)
+            mode_label = "[3D] (venv_sys)"
+        else:
+            # Fallback to current interpreter if it has mayavi
+            try:
+                subprocess.run(
+                    [sys.executable, "-c", "import mayavi"],
+                    capture_output=True,
+                    check=True,
+                )
+                mode_label = "[3D] (sys)"
+                run_env.update(QT_ENV)
+            except subprocess.CalledProcessError:
+                msg = (
+                    f"{script.name:40s} : FAILED "
+                    f"(venv_sys not found and mayavi unavailable in sys)"
+                )
+                print(msg)
+                return "fail"
 
     print(f"Running {mode_label} {script.name}...", end="", flush=True)
-    cmd = [python_exe, str(config["run_patched"]), str(script)]
+    cmd = [python_exe, str(script)]
     if args.show_progress:
         cmd.append("--show-progress")
 
@@ -172,8 +183,9 @@ def main():
     config = {
         "results_dir": base_dir / "results",
         "project_root": base_dir.parent.parent,
-        "venv_python": base_dir.parent.parent / "venv_sys" / "bin" / "python3",
-        "run_patched": base_dir / "src" / "run_patched.py",
+        "venv_python": (
+            base_dir.parent.parent / ".venvs" / ".venv_sys" / "bin" / "python3"
+        ),
     }
     config["results_dir"].mkdir(parents=True, exist_ok=True)
 

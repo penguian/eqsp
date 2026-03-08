@@ -35,7 +35,8 @@ def main():
         ha="center",
         fontsize=10,
     )
-    plt.subplots_adjust(bottom=0.1, top=0.95)
+    plt.tight_layout()
+    plt.subplots_adjust(bottom=0.15, top=0.90)
     plt.savefig("fig_3_3_algorithm_s3_99.png", dpi=150)
     if args.show_progress:
         print("Saved fig_3_3_algorithm_s3_99.png")

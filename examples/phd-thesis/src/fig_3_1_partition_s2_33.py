@@ -43,6 +43,13 @@ def main():
     fig_overlay, ax = plt.subplots(figsize=(8, 8), dpi=100)
     ax.imshow(img)
     ax.axis("off")
+    # Increase the size of the 3D portion by 50% (1.5x zoom)
+    h, w = img.shape[:2]
+    zoom = 1.5
+    h_new, w_new = h / zoom, w / zoom
+    dy, dx = (h - h_new) / 2, (w - w_new) / 2
+    ax.set_ylim(h - dy, dy)
+    ax.set_xlim(dx, w - dx)
     title_text = r"Figure 3.1: Partition $\mathrm{EQ}(2,33)$"
     # Add title at bottom center
     fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
