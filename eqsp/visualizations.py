@@ -163,7 +163,7 @@ def show_s2_partition(
         elif title == "short":
             title_text = f"EQ(2, {N})"
         else:
-            title_text = title  # pragma: no cover
+            title_text = title
 
     # Set default figure size if none exists
     if mlab.get_engine().current_scene is None:

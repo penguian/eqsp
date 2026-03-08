@@ -115,7 +115,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
                         ends[i] += 2 * np.pi
                 table = ends
             else:
-                table = s_longs[1, :]  # pragma: no cover
+                table = s_longs[1, :]
 
             l_idx = np.atleast_1d(lookup_table(table, pts_long)) % n_longs
 

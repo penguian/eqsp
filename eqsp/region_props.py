@@ -17,8 +17,18 @@ from .utilities import (
     area_of_sphere,
 )
 
+__all__ = [
+    "area_of_region",
+    "eq_area_error",
+    "eq_diam_bound",
+    "eq_diam_coeff",
+    "eq_regions_property",
+    "eq_vertex_diam",
+    "eq_vertex_diam_coeff",
+]
 
-def eq_area_error(dim, N, show_progress=False):
+
+def eq_area_error(dim, N, show_progress=False, even_collars=False):
     """
     Total area error and max area error per region of an EQ partition.
 
@@ -30,6 +40,8 @@ def eq_area_error(dim, N, show_progress=False):
         Number of regions to partition.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -100,7 +112,7 @@ def eq_area_error(dim, N, show_progress=False):
         n = int(N_flat[0, i])
         if show_progress and n_partitions > 1:
             print(f"    N={n:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
-        regions = eq_regions(dim, n)
+        regions = eq_regions(dim, n, even_collars=even_collars)
         ideal_area = area_of_ideal_region(dim, n)
 
         areas = area_of_region(regions)
@@ -170,18 +182,20 @@ def area_of_region(region):
     return area
 
 
-def eq_diam_bound(dim, N, show_progress=False):
+def eq_diam_bound(dim, N, show_progress=False, even_collars=False):
     """
-    Maximum per-region diameter bound of EQ partition.
+    Upper bound on diameter of regions of an EQ partition.
 
     Parameters
     ----------
     dim : int
-        Dimension of sphere.
-    N : int or array-like of int
-        Number of partitions.
+        Dimension of the sphere.
+    N : int or array-like
+        Number of regions.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -203,22 +217,28 @@ def eq_diam_bound(dim, N, show_progress=False):
     1.9437
     """
     return eq_regions_property(
-        max_diam_bound_of_regions, dim, N, show_progress=show_progress
+        max_diam_bound_of_regions,
+        dim,
+        N,
+        show_progress=show_progress,
+        even_collars=even_collars,
     )
 
 
-def eq_diam_coeff(dim, N, show_progress=False):
+def eq_diam_coeff(dim, N, show_progress=False, even_collars=False):
     """
-    Coefficients of diameter bound and vertex diameter of EQ partition.
+    Coefficient of diameter bound for EQ partitions.
 
     Parameters
     ----------
     dim : int
-        Dimension of sphere.
-    N : int or array-like of int
+        Dimension of the sphere.
+    N : int or array-like
         Number of regions.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -238,6 +258,11 @@ def eq_diam_coeff(dim, N, show_progress=False):
 
     Notes
     -----
+    The returned coefficients relate the maximum per-region diameter to the
+    number of regions. Specifically, the coefficients are calculated as:
+    :math:`C = \\text{diam} \\times N^{1/d}`
+    where ``diam`` is the maximum diameter bound or vertex diameter.
+
     If called with one output, returns only bound_coeff.
 
     Examples
@@ -262,7 +287,7 @@ def eq_diam_coeff(dim, N, show_progress=False):
         n = int(N_flat[0, i])
         if show_progress and n_partitions > 1:
             print(f"    N={n:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
-        regions = eq_regions(dim, n)
+        regions = eq_regions(dim, n, even_collars=even_collars)
         scale = np.power(n, 1 / dim)
         bound_coeff[0, i] = max_diam_bound_of_regions(regions) * scale
         vertex_coeff[0, i] = max_vertex_diam_of_regions(regions) * scale
@@ -273,7 +298,7 @@ def eq_diam_coeff(dim, N, show_progress=False):
     return bound_coeff, vertex_coeff
 
 
-def eq_regions_property(fhandle, dim, N, show_progress=False):
+def eq_regions_property(fhandle, dim, N, show_progress=False, even_collars=False):
     """
     Property of regions of an EQ partition.
 
@@ -287,6 +312,8 @@ def eq_regions_property(fhandle, dim, N, show_progress=False):
         Number of regions.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -318,7 +345,7 @@ def eq_regions_property(fhandle, dim, N, show_progress=False):
         n = int(N_flat[0, i])
         if show_progress and n_partitions > 1:
             print(f"    N={n:6} ({i + 1}/{n_partitions})", end="\r", flush=True)
-        regions = eq_regions(dim, n)
+        regions = eq_regions(dim, n, even_collars=even_collars)
         property_[0, i] = fhandle(regions)
     if show_progress and n_partitions > 1:
         print()  # Clear the line
@@ -326,18 +353,20 @@ def eq_regions_property(fhandle, dim, N, show_progress=False):
     return property_
 
 
-def eq_vertex_diam_coeff(dim, N, show_progress=False):
+def eq_vertex_diam_coeff(dim, N, show_progress=False, even_collars=False):
     """
-    Coefficient of maximum vertex diameter of EQ partition.
+    Coefficient of maximum diameter of regions of an EQ partition.
 
     Parameters
     ----------
     dim : int
-        Dimension of sphere.
-    N : int or array-like of int
-        Number of partitions.
+        Dimension of the sphere.
+    N : int or array-like
+        Number of regions.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -358,21 +387,24 @@ def eq_vertex_diam_coeff(dim, N, show_progress=False):
     >>> print(f"{float(eq_vertex_diam_coeff(2, 6, show_progress=True)):.4f}")
     4.1633
     """
-    return eq_vertex_diam(dim, N, show_progress=show_progress) * np.power(N, 1 / dim)
+    diam = eq_vertex_diam(dim, N, show_progress, even_collars=even_collars)
+    return diam * np.power(N, 1 / dim)
 
 
-def eq_vertex_diam(dim, N, show_progress=False):
+def eq_vertex_diam(dim, N, show_progress=False, even_collars=False):
     """
-    Maximum vertex diameter of EQ partition.
+    Maximum diameter of regions of an EQ partition.
 
     Parameters
     ----------
     dim : int
-        Dimension of sphere.
-    N : int or array-like of int
+        Dimension of the sphere.
+    N : int or array-like
         Number of regions.
     show_progress : bool, optional
         Show progress messages. Default False.
+    even_collars : bool, optional
+        Use even number of collars for symmetric partitions. Default False.
 
     Returns
     -------
@@ -394,7 +426,11 @@ def eq_vertex_diam(dim, N, show_progress=False):
     1.6997
     """
     return eq_regions_property(
-        max_vertex_diam_of_regions, dim, N, show_progress=show_progress
+        max_vertex_diam_of_regions,
+        dim,
+        N,
+        show_progress=show_progress,
+        even_collars=even_collars,
     )
 
 
