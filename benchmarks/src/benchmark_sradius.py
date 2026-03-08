@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Benchmark for sradius_of_cap (root finding bottleneck)."""
 
 import argparse

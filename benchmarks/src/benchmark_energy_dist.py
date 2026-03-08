@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Benchmark for point_set_energy_dist (O(N^2) memory & broadcasting)."""
 
 import argparse
@@ -8,7 +9,7 @@ import numpy as np
 from eqsp.point_set_props import eq_energy_dist
 
 
-def run(n_max=3000, dim=2, s=None):
+def run(n_max=3000, dim=2, s=None, even_collars=False):
     """Run the benchmark.
 
     Args:
@@ -28,9 +29,16 @@ def run(n_max=3000, dim=2, s=None):
     for start, end in ranges:
         if start > end:
             continue
-        N_array = np.arange(start, end + 1)
+        if even_collars:
+            # Only use even N
+            even_start = start if start % 2 == 0 else start + 1
+            N_array = np.arange(even_start, end + 1, 2)
+        else:
+            N_array = np.arange(start, end + 1)
+        if len(N_array) == 0:
+            continue
         t0 = time.perf_counter()
-        eq_energy_dist(dim, N_array, s=s)
+        eq_energy_dist(dim, N_array, s=s, even_collars=even_collars)
         t1 = time.perf_counter()
         print(f"{f'{start}-{end}':<15} | {t1 - t0:>10.4f}")
 
@@ -49,5 +57,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--s", type=float, default=None, help="Exponent parameter (default: dim-1)."
     )
+    parser.add_argument(
+        "--even-collars",
+        action="store_true",
+        default=False,
+        help="Use even number of collars for symmetric partitions.",
+    )
     args = parser.parse_args()
-    run(n_max=args.n_max, dim=args.dim, s=args.s)
+    run(n_max=args.n_max, dim=args.dim, s=args.s, even_collars=args.even_collars)
