@@ -4,6 +4,7 @@ eqsp documentation
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :numbered:
 
    api/modules
    Release Roadmap <internal/release_roadmap.md>

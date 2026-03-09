@@ -2,11 +2,11 @@
 
 This guide outlines the testing strategy, dependencies, and instructions for verifying the `eqsp` package.
 
-## 1. Testing Strategy
+## Testing Strategy
 
 The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard unit tests with `doctest` examples to ensure documentation and code remain in sync.
 
-### 1.1 Test Categories
+### Test Categories
 
 1.  **Unit Tests (`tests/src/test_*.py`)**:
     *   Verify core mathematical logic using static assertions.
@@ -21,7 +21,7 @@ The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard u
     *   Live-tested examples inside module docstrings.
     *   Ensures that every `>>>` example in the documentation is verified during test runs.
 
-## 2. Dependencies
+## Dependencies
 
 Install development dependencies via pip:
 
@@ -29,15 +29,15 @@ Install development dependencies via pip:
 pip install pytest coverage
 ```
 
-## 3. Running Tests
+## Running Tests
 
-### 3.1 Project-Wide Run
+### Project-Wide Run
 To run the entire suite (recommended):
 ```bash
 pytest
 ```
 
-### 3.2 Granular Control
+### Granular Control
 You can run tests at three levels of granularity:
 
 1.  **By Module (Bridge)**:
@@ -57,7 +57,7 @@ You can run tests at three levels of granularity:
     python3 tests/src/inspect_visualizations.py
     ```
 
-### 3.3 Visual Verification (Thesis Examples)
+### Visual Verification (Thesis Examples)
 
 The `examples/phd-thesis/` directory contains high-fidelity scripts that reproduce figures from the canonical PhD thesis. Use these to verify that the library's results match the originally published data:
 
@@ -74,7 +74,7 @@ python3 fig_3_1_partition_s2_33.py
 
 See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
 
-## 4. Code Coverage
+## Code Coverage
 
 To generate a full coverage report, use the provided helper script:
 
@@ -86,7 +86,7 @@ This will run all tests (including doctests) and produce a summary in the termin
 
 Detailed results are saved in `tests/results/run_coverage.log`.
 
-### 4.1 Private Implementation Tests
+### Private Implementation Tests
 
 By default, the coverage script strictly excludes **private implementation tests** and **internal doctests** to maintain a clear boundary between the Public API and internal performance optimizations.
 
@@ -105,11 +105,11 @@ The private testing suite includes:
 
 These tests ensure that internal math optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
 
-## 5. Performance Benchmarking
+## Performance Benchmarking
 
 The `benchmarks/` directory contains scripts to verify the algorithmic complexity and execution speed of core functions.
 
-### 5.1 Running the Suite
+### Running the Suite
 To run all system benchmarks and generate a summary report:
 ```bash
 python3 benchmarks/run_benchmarks.py
@@ -118,12 +118,12 @@ python3 benchmarks/run_benchmarks.py
 python3 benchmarks/run_benchmarks.py --even-collars
 ```
 
-### 5.2 Results and Logging
+### Results and Logging
 The runner saves individual results for each benchmark in a standardized format:
 - **Main Summary**: `benchmarks/results/run_benchmarks.log`
 - **Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
 
-### 5.3 Thesis Benchmark (Section 3.10.2)
+### Thesis Benchmark (Section 3.10.2)
 The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behaviour.
 
 To run it independently with progress tracking:
@@ -131,18 +131,18 @@ To run it independently with progress tracking:
 python3 benchmarks/src/benchmark_eq_regions.py --show-progress
 ```
 
-## 6. Code Quality
+## Code Quality
 
 The project uses `ruff` and `pylint` to maintain high code quality standards.
 
-### 6.1 Ruff (Style and Formatting)
+### Ruff (Style and Formatting)
 Ruff handles fast linting and automatic formatting:
 ```bash
 ruff check .
 ruff format .
 ```
 
-### 6.2 Pylint (Deep Static Analysis)
+### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
 pylint eqsp benchmarks examples tests  # Project-wide scan

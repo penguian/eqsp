@@ -27,6 +27,8 @@ extensions = [
     "sphinx_rtd_theme",
 ]
 
+myst_enable_extensions = ["dollarmath", "amsmath"]
+
 autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]
 
 templates_path = ["_templates"]
@@ -34,6 +36,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+html_css_files = ["custom.css"]
 
 source_suffix = {
     ".rst": "restructuredtext",

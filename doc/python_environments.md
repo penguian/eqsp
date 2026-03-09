@@ -67,7 +67,7 @@ within the environment take priority over system versions.
     packages effectively isolated from the system Python, and
     to install `eqsp` in editable mode.
 
-### 1. Prerequisites
+### Prerequisites
 
 Ensure you have the necessary system packages installed. On
 Ubuntu/Debian:
@@ -77,7 +77,7 @@ sudo apt update
 sudo apt install python3-venv python3-mayavi python3-numpy python3-scipy python3-matplotlib
 ```
 
-### 2. Create the Environment
+### Create the Environment
 
 Create a virtual environment with the `--system-site-packages`
 flag. This flag is the key: it allows the virtual environment
@@ -88,7 +88,7 @@ to "see" and import packages installed in
 python3 -m venv --system-site-packages .venvs/.venv_sys
 ```
 
-### 3. Activate and Configure
+### Activate and Configure
 
 Activate the environment:
 
@@ -126,7 +126,7 @@ pip install -e ".[dev]"
 > `matplotlib`, and `mayavi` remain visible through the
 > `--system-site-packages` flag.
 
-### 4. Verification
+### Verification
 
 Verify that you can import both the system package (Mayavi) and
 your local package (EqSP):
@@ -141,7 +141,7 @@ python3 -c "import eqsp; print('EqSP OK')"
 To use a virtual environment within Jupyter Notebook or
 JupyterLab, you need to register it as a kernel.
 
-### 1. Install ipykernel
+### Install ipykernel
 
 Ensure `ipykernel` is installed. It might be available from the
 system, but installing it in the venv ensures compatibility.
@@ -154,7 +154,7 @@ pip install ipykernel ipyevents
 > **Note:** `ipyevents` is required for Mayavi's interactive
 > features in Jupyter notebooks.
 
-### 2. Register the Kernel
+### Register the Kernel
 
 Run the following command to make this environment available in
 Jupyter:
@@ -167,7 +167,7 @@ python3 -m ipykernel install --user --name=venv_sys --display-name "Python (venv
 -   `--display-name "Python (venv_sys)"`: The name you will see
     in the Jupyter menu.
 
-### 3. Select the Kernel
+### Select the Kernel
 
 Open Jupyter Notebook or Lab:
 
