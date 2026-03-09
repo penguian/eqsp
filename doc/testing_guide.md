@@ -2,7 +2,7 @@
 
 This guide outlines the testing strategy, dependencies, and instructions for verifying the `eqsp` package.
 
-## 1. Testing Strategy
+## Testing Strategy
 
 The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard unit tests with `doctest` examples to ensure documentation and code remain in sync.
 
@@ -21,7 +21,7 @@ The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard u
     *   Live-tested examples inside module docstrings.
     *   Ensures that every `>>>` example in the documentation is verified during test runs.
 
-## 2. Dependencies
+## Dependencies
 
 Install development dependencies via pip:
 
@@ -29,7 +29,7 @@ Install development dependencies via pip:
 pip install pytest coverage
 ```
 
-## 3. Running Tests
+## Running Tests
 
 ### 3.1 Project-Wide Run
 To run the entire suite (recommended):
@@ -74,7 +74,7 @@ python3 fig_3_1_partition_s2_33.py
 
 See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
 
-## 4. Code Coverage
+## Code Coverage
 
 To generate a full coverage report, use the provided helper script:
 
@@ -105,7 +105,7 @@ The private testing suite includes:
 
 These tests ensure that internal math optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
 
-## 5. Performance Benchmarking
+## Performance Benchmarking
 
 The `benchmarks/` directory contains scripts to verify the algorithmic complexity and execution speed of core functions.
 
@@ -131,7 +131,7 @@ To run it independently with progress tracking:
 python3 benchmarks/src/benchmark_eq_regions.py --show-progress
 ```
 
-## 6. Code Quality
+## Code Quality
 
 The project uses `ruff` and `pylint` to maintain high code quality standards.
 

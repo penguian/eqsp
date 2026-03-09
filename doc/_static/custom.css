@@ -1,0 +1,4 @@
+/* Remove bullets from the table of contents to standardize on numbers */
+div.toctree-wrapper ul {
+    list-style-type: none;
+}

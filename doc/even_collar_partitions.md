@@ -3,7 +3,7 @@
 This document describes the `even_collars` parameter of `eq_caps` and
 justifies the approach taken.
 
-## 1. Motivation
+## Motivation
 
 Some applications require an EQ partition that is symmetric about the
 equatorial hyperplane of $S^d$.  For example, a hyperhemispherical grid
