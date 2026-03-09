@@ -27,7 +27,7 @@ Most core functions retain their names. The main differences are in coordinate c
 | `plot_s2_partition` | `visualizations.show_s2_partition` | Mayavi (optional). |
 | `project_s3_partition` | `visualizations.project_s3_partition` | Mayavi (optional). |
 
-## 2. API & Usage Differences
+## API & Usage Differences
 
 ### Keyword Arguments
 Matlab functions often used "Name, Value" pairs for options. Python uses standard keyword arguments.
@@ -91,7 +91,7 @@ The Python port uses two separate modules for plotting, unlike the single Matlab
 *   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`). Functions that require 3D rendering raise `NotImplementedError` and direct you to `eqsp.visualizations`.
 *   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi; see §4.1 for installation notes.
 
-## 3. Module Structure
+## Module Structure
 The package is organized into logical modules:
 
 *   `eqsp.partitions`: Core partition algorithms (`eq_regions`, `eq_point_set`).
@@ -102,7 +102,7 @@ The package is organized into logical modules:
 *   `eqsp.illustrations`: 2D Matplotlib plotting and algorithm diagrams.
 *   `eqsp.visualizations`: 3D Mayavi visualizations (optional dependency).
 
-## 4. Installation & Getting Started
+## Installation & Getting Started
 Install via:
 ```bash
 pip install eqsp
@@ -125,12 +125,12 @@ from eqsp import visualizations as vis
 vis.show_s2_partition(10)
 ```
 
-### 4.1 System Packages (Advanced)
+### System Packages (Advanced)
 If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/python_environments.md](python_environments.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
 
 > **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
 
-## 5. Performance "Killer Features"
+## Performance "Killer Features"
 
 The Python port includes several algorithmic optimizations that significantly outperform the original Matlab toolbox:
 
@@ -138,7 +138,7 @@ The Python port includes several algorithmic optimizations that significantly ou
 - **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains $O(N)$ and total work is halved compared to naive $O(N^2)$ implementations.
 - **Histogram Lookups**: Fully vectorized point-in-region assignment on $S^2$ for bulk processing of billions of points.
 
-## 6. Common Matlab-to-Python "Gotchas"
+## Common Matlab-to-Python "Gotchas"
 
 | Feature | Matlab | Python / `eqsp` |
 | :--- | :--- | :--- |
@@ -149,7 +149,7 @@ The Python port includes several algorithmic optimizations that significantly ou
 | **Equality** | `==` | `==` (for values), `is` (for identity) |
 | **Slicing** | `A(start:end)` | `A[start:end]` (exclusive of end) |
 
-## 7. Learning from Examples
+## Learning from Examples
 
 For a deep dive into how the Python API corresponds to the original Matlab implementation, see the [PhD Thesis Example Reproductions](phd-thesis-examples.md)
  document.
