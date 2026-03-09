@@ -89,7 +89,7 @@ Matlab and NumPy differ in their default memory layout (Column-major vs Row-majo
 The Python port uses two separate modules for plotting, unlike the single Matlab illustration module:
 
 *   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`). Functions that require 3D rendering raise `NotImplementedError` and direct you to `eqsp.visualizations`.
-*   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi; see §4.1 for installation notes.
+*   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi; see [System Packages (Advanced)](#system-packages-advanced) for installation notes.
 
 ## Module Structure
 The package is organized into logical modules:
