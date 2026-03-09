@@ -5,13 +5,13 @@ Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioni
 ## How to Provide Feedback
 
 ### Reporting Bugs
-If you find a bug, please [open a new issue](https://github.com/penguian/eqsp/issues/new/choose) using the **Bug Report** template. Please include:
+If you find a bug, please [open a new issue](https://github.com/penguian/pyeqsp/issues/new/choose) using the **Bug Report** template. Please include:
 - Steps to reproduce the issue.
 - Your environment details (OS, Python version, etc.).
 - Any relevant plots or screenshots.
 
 ### Suggesting Enhancements
-We welcome ideas for new features or improvements to the partitioning algorithms or visualizations. Please use the **Feature Request** template when [opening an issue](https://github.com/penguian/eqsp/issues/new/choose).
+We welcome ideas for new features or improvements to the partitioning algorithms or visualizations. Please use the **Feature Request** template when [opening an issue](https://github.com/penguian/pyeqsp/issues/new/choose).
 
 ## Technical Contributions
 
@@ -38,7 +38,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
    If the `pip install` command fails, please:
    - Ensure your `pip` is up to date (`pip install --upgrade pip`).
    - Check the detailed environment setup guide in [INSTALL.md](INSTALL.md).
-   - If you are still stuck, [open an issue](https://github.com/penguian/eqsp/issues/new) and we will help you!
+   - If you are still stuck, [open an issue](https://github.com/penguian/pyeqsp/issues/new) and we will help you!
 
 4. **Draft your Changes**: We recommend creating a new branch for your fix or feature.
 5. **Coding Standards**:

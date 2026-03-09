@@ -4,6 +4,14 @@ EQSP is a Python library that implements the **Recursive Zonal
 Equal Area (EQ) Sphere Partitioning** algorithm, originally
 developed as a Matlab toolbox by Paul Leopardi.
 
+An EQ partition is a partition of $S^d$ (the unit sphere in
+the $(d+1)$-dimensional Euclidean space $\mathbb{R}^{d+1}$) into
+a finite number of regions of equal area. The area of each region
+is defined using the Lebesgue measure inherited from
+$\mathbb{R}^{d+1}$.
+
+> **Note on Naming**: While the GitHub repository is named **pyeqsp**, the Python package is imported as **eqsp**. This follows common Python community practices for package naming.
+
 ## What is an EQ partition?
 
 An **EQ partition** is a partition of $S^d$ (the unit sphere in
@@ -218,7 +226,7 @@ This project is currently in **Beta testing**. We welcome
 your feedback!
 
 - Found a bug? Please
-  [open an issue](https://github.com/penguian/eqsp/issues/new/choose).
+  [open an issue](https://github.com/penguian/pyeqsp/issues/new/choose).
 - Want to contribute? See
   [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 

@@ -54,10 +54,11 @@ code, install from the source repository.
 ### Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/penguian/eqsp.git
-cd eqsp
+git clone https://github.com/penguian/pyeqsp.git
+cd pyeqsp
 ```
-*(Replace the URL with the actual repository URL if different.)*
+
+> **Note on Naming**: While the GitHub repository is named **pyeqsp**, the Python package is imported as **eqsp**.
 
 ### Step 2: Install the package
 
