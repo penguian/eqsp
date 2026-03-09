@@ -27,6 +27,8 @@ extensions = [
     "sphinx_rtd_theme",
 ]
 
+myst_enable_extensions = ["dollarmath", "amsmath"]
+
 autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]
 
 templates_path = ["_templates"]
