@@ -1,6 +1,6 @@
 # Performance Highlights & Algorithmic Optimizations
 
-This document provides a technical summary of the key algorithmic optimizations implemented in the `eqsp` Python package to ensure scalability and efficiency for large-scale sphere partitioning analysis.
+This document provides a technical summary of the key algorithmic optimizations implemented in the **PyEQSP** Python package to ensure scalability and efficiency for large-scale sphere partitioning analysis.
 
 ## Algorithmic Improvements
 

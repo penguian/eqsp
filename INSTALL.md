@@ -1,6 +1,6 @@
 # Installation
 
-This guide covers the installation of the EQSP (Equal Area
+This guide covers the installation of the **PyEQSP** (Equal Area
 Sphere Partitioning) library for Python.
 
 ## Prerequisites
@@ -20,7 +20,7 @@ via `pip`.
 
 ### Python Virtual Environments
 
-It is recommended that you install and use `eqsp` within a Python
+It is recommended that you install and use **PyEQSP** within a Python
 virtual environment. A virtual environment isolates project
 dependencies from your system Python, preventing version conflicts
 between projects. It can be located anywhere accessible in the
@@ -58,7 +58,8 @@ git clone https://github.com/penguian/pyeqsp.git
 cd pyeqsp
 ```
 
-> **Note on Naming**: While the GitHub repository is named **pyeqsp**, the Python package is imported as **eqsp**.
+> [!IMPORTANT]
+> **Naming Distinction**: The project is named **PyEQSP** and is installed via `pip install pyeqsp`, but the Python package is imported as **eqsp**.
 
 ### Step 2: Install the package
 
@@ -98,7 +99,7 @@ If the package is available on PyPI or a package repository, you
 can install it directly:
 
 ```bash
-pip install eqsp
+pip install pyeqsp
 ```
 
 > **Note:** The `eqsp` package is currently in Beta and primarily distributed 
@@ -108,7 +109,7 @@ pip install eqsp
 To upgrade an existing installation:
 
 ```bash
-pip install --upgrade eqsp
+pip install --upgrade pyeqsp
 ```
 
 ## Verification
@@ -147,5 +148,5 @@ The rendered documentation will be available in
 To remove the package:
 
 ```bash
-pip uninstall eqsp
+pip uninstall pyeqsp
 ```

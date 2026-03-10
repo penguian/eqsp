@@ -6,12 +6,16 @@ sys.path.insert(0, os.path.abspath(".."))
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
-project = "eqsp"
+# The project name used for branding and titles.
+project = "PyEQSP"
+
+# The package name used for version lookup.
+distribution_name = "pyeqsp"
 copyright = "2026, Paul Leopardi"
 author = "Paul Leopardi"
 
 try:
-    release = _pkg_version("eqsp")
+    release = _pkg_version(distribution_name)
 except PackageNotFoundError:
     release = "unknown"
 
@@ -28,6 +32,7 @@ extensions = [
 ]
 
 myst_enable_extensions = ["dollarmath", "amsmath"]
+myst_heading_anchors = 3
 
 autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]
 

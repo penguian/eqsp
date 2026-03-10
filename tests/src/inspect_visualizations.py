@@ -1,5 +1,5 @@
 """
-EQSP Tests: Inspect Visualizations features
+PyEQSP Tests: Inspect Visualizations features
 
 Copyright Paul Leopardi 2026
 """

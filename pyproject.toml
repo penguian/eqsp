@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "eqsp"
-version = "0.99.1"
+name = "pyeqsp"
+version = "0.99.2"
 description = "Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [

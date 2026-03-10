@@ -1,6 +1,6 @@
-# User Migration Guide: Matlab Toolbox to EQSP
+# User Migration Guide: Matlab Toolbox to PyEQSP
 
-This guide helps users of the original Matlab `eq_sphere_partitions` toolbox transition to the Python `eqsp` package. While most core functionality remains identical, there are some differences in naming conventions, API structure, and usage patterns.
+This guide helps users of the original Matlab `eq_sphere_partitions` toolbox transition to the Python **PyEQSP** project (`eqsp` package). While most core functionality remains identical, there are some differences in naming conventions, API structure, and usage patterns.
 
 ## Quick Reference: Function Name Mapping
 
@@ -103,10 +103,21 @@ The package is organized into logical modules:
 *   `eqsp.visualizations`: 3D Mayavi visualizations (optional dependency).
 
 ## Installation & Getting Started
-Install via:
+Install the package from PyPI via:
 ```bash
-pip install eqsp
+pip install pyeqsp
 ```
+
+### Naming Distinction
+
+Note that while the project is branded **PyEQSP** and the installation name is **`pyeqsp`**, the Python package name remains **`eqsp`** to preserve compatibility and standard naming conventions:
+
+| Context | Name |
+| :--- | :--- |
+| **Official Branding** | PyEQSP |
+| **PyPI / Install Name** | `pyeqsp` |
+| **Python Import Name** | `eqsp` |
+| **Repository Name** | `pyeqsp` |
 
 Basic usage:
 ```python

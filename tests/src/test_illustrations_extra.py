@@ -1,5 +1,5 @@
 """
-EQSP Tests: Illustrations Extra features
+PyEQSP Tests: Illustrations Extra features
 
 Copyright Paul Leopardi 2026
 """

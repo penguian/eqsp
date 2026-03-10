@@ -1,4 +1,4 @@
-# EQSP: Equal Area Sphere Partitioning Library
+# PyEQSP: Equal Area Sphere Partitioning Library
 
 EQSP is a Python library that implements the **Recursive Zonal
 Equal Area (EQ) Sphere Partitioning** algorithm, originally
@@ -10,7 +10,12 @@ a finite number of regions of equal area. The area of each region
 is defined using the Lebesgue measure inherited from
 $\mathbb{R}^{d+1}$.
 
-> **Note on Naming**: While the GitHub repository is named **pyeqsp**, the Python package is imported as **eqsp**. This follows common Python community practices for package naming.
+> [!IMPORTANT]
+> **Naming Distinction**: The project and GitHub repository are named **PyEQSP** (or **pyeqsp** on PyPI), but the Python package is imported as **eqsp**.
+>
+> | **Repository / PyPI** | **Package Import** |
+> | :--- | :--- |
+> | `pyeqsp` | `import eqsp` |
 
 ## What is an EQ partition?
 
@@ -51,7 +56,7 @@ including:
 ## Installation
 
 Requires **Python 3.11+**. It is recommended that you install
-`eqsp` within a Python virtual environment. See
+**PyEQSP** within a Python virtual environment. See
 [INSTALL.md](INSTALL.md) for full instructions, including
 environment setup and optional dependencies.
 
@@ -111,7 +116,7 @@ energy, min_dist = eq_energy_dist(dim, N, s)
 
 ### 4. Produce illustrations
 
-The `eqsp` package provides two kinds of plot:
+The **PyEQSP** package provides two kinds of plot:
 
 - **2D illustrations** (`eqsp.illustrations`): projections
   rendered with Matplotlib. No extra dependencies required.

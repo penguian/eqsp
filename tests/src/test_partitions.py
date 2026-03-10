@@ -1,5 +1,5 @@
 """
-EQSP Tests: Partitions features
+PyEQSP Tests: Partitions features
 
 Copyright Paul Leopardi 2026
 """

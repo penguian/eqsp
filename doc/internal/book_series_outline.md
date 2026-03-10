@@ -5,7 +5,7 @@ This document provides a structured outline for the planned two-volume documenta
 ---
 
 ## Volume 1: The User Guide
-**Purpose**: An accessible entry point for researchers and scientists using the `eqsp` toolkit.
+**Purpose**: An accessible entry point for researchers and scientists using the **PyEQSP** library.
 
 ### Introduction & Setup
 - **Background**: Overview of Equal Area Sphere Partitioning (EQ) and its applications.
@@ -15,9 +15,9 @@ This document provides a structured outline for the planned two-volume documenta
   - Handling system-integrated dependencies (Mayavi, VTK, PyQt5).
 - **Quick Start**: Generating your first point set in 60 seconds.
 
-### The Applicability of EQSP: Use Cases
+### The Applicability of PyEQSP: Use Cases
 *Based on: "The applicability of equal area partitions of the unit sphere", JAS 1(2), 2024.*
-- **History**: Evolution from the 2005 Matlab Toolbox to the EQSP Python library.
+- **History**: Evolution from the 2005 Matlab Toolbox to the PyEQSP Python library.
 - **Cross-Disciplinary Applications**:
   - **Climate & Weather**: Spatio-temporal reconstructions and load balancing for the ECMWF Integrated Forecasting System (IFS).
   - **Biology & Medicine**: RNA folding simulations ($S^3$), 3D MRI sampling trajectories, and brain connectivity parcellation.
@@ -27,7 +27,7 @@ This document provides a structured outline for the planned two-volume documenta
 - **Evaluating Performance**: Lessons from comparisons with $k$-means clustering, spiral points, and icosahedral partitions.
 
 ### Core Concepts & Geometries
-- **Coordinate Systems**: Spherical vs Euclidean conventions in `eqsp`.
+- **Coordinate Systems**: Spherical vs Euclidean conventions in **PyEQSP**.
 - **The EQ Algorithm**: Intuition behind recursive zonal partitioning.
 - **Supported Manifolds**: Operations on $S^2$, $S^3$, and higher-dimensional spheres $S^d$.
 

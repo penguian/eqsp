@@ -1,5 +1,5 @@
 """
-EQSP Tests: Utilities features
+PyEQSP Tests: Utilities features
 
 Copyright Paul Leopardi 2026
 """

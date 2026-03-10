@@ -1,5 +1,5 @@
 """
-EQSP Visualizations module.
+PyEQSP Visualizations module.
 3D visualizations using Mayavi.
 
 Copyright 2025 Paul Leopardi.

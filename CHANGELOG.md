@@ -1,9 +1,15 @@
-# Changelog - EQSP
+# Changelog - PyEQSP
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.99.2] - 2026-03-10
+
+### Changed
+- **Branding**: Rebranded the project as **PyEQSP** in documentation and narrative contexts to clarify the distinction between the project name and the `eqsp` package name.
+- **Metadata**: Updated the distribution name to `pyeqsp` in `pyproject.toml` to align with the repository name.
 
 ## [0.99.1] - 2026-03-09
 

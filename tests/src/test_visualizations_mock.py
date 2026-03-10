@@ -1,5 +1,5 @@
 """
-EQSP Tests: Visualizations Mock features
+PyEQSP Tests: Visualizations (Mock features)
 
 Copyright Paul Leopardi 2026
 """

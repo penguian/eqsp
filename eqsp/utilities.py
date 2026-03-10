@@ -1,5 +1,5 @@
 """
-EQSP utilities module.
+PyEQSP utilities module.
 
 Copyright 2026 Paul Leopardi
 """

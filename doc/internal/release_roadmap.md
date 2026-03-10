@@ -1,4 +1,4 @@
-# Release Roadmap: `eqsp`
+# Release Roadmap: PyEQSP
 
 This document outlines the technical path from the current **0.99 beta** state to a production **1.00** release on PyPI. It is intended for beta testers and contributors to understand the remaining milestones and stability goals.
 
@@ -26,7 +26,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 ---
 
 ## Phase 2: 1.00 Release (PyPI & Public Handover)
-**Goal**: Production deployment and public availability of the complete toolkit.
+**Goal**: Production deployment and public availability of the complete project.
 
 ### Integration of Planned Documentation Guides
 The following guides are planned for finalization and integration as official documentation books:
@@ -36,7 +36,7 @@ The following guides are planned for finalization and integration as official do
 ### Production Deployment
 - **Official Release**: Bump version to `1.0.0` in `pyproject.toml`.
 - **Git Milestone**: Create a signed Git tag `v1.0.0`.
-- **PyPI Upload**: Final production upload for public availability (`pip install eqsp`).
+- **PyPI Upload**: Final production upload for public availability (`pip install pyeqsp`).
 
 ### Final Verification
 - **Clean-room Validation**: Comprehensive final verification of the library installed directly from PyPI against the thesis baseline.

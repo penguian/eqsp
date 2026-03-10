@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Regenerate all PhD thesis figures for the eqsp package.
+Regenerate all PhD thesis figures for the PyEQSP package.
 
 This script scans the 'src' directory for fig_*.py scripts and executes them
 to produce PNG files in the 'results' directory. It automatically handles
@@ -193,7 +193,7 @@ def main():
     if args.figure:
         scripts = filter_scripts(scripts, src_dir, args.figure)
 
-    print("--- EQSP Figure Regeneration ---")
+    print("--- PyEQSP Figure Regeneration ---")
     print(f"Source: {src_dir}")
     print(f"Target: {config['results_dir']}")
     print(f"Mode: {'2D-only' if args.two_d_only else 'Full'}")
