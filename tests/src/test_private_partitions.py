@@ -1,5 +1,5 @@
 """
-EQSP Tests: Private Partitions doctests bridge
+PyEQSP Tests: Private Partitions doctests bridge
 
 Copyright Paul Leopardi 2026
 """

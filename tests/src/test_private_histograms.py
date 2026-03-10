@@ -1,5 +1,5 @@
 """
-EQSP Tests: Private Histograms features
+PyEQSP Tests: Private Histograms
 
 Copyright Paul Leopardi 2026
 """

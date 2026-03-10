@@ -72,7 +72,7 @@ def run_benchmark(
 
 def main():
     """Main execution logic for benchmarks."""
-    parser = argparse.ArgumentParser(description="EQSP Performance Benchmarks.")
+    parser = argparse.ArgumentParser(description="PyEQSP Performance Benchmarks.")
     parser.add_argument(
         "--n-max",
         type=int,
@@ -179,7 +179,7 @@ def main():
 
     with Tee(main_log_file):
         print("=======================================")
-        print("      EQSP Performance Benchmarks      ")
+        print("     PyEQSP Performance Benchmarks     ")
         print("=======================================\n")
 
         t_start = time.perf_counter()

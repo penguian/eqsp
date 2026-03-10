@@ -1,5 +1,5 @@
 """
-EQSP histograms module.
+PyEQSP histograms module.
 
 Copyright 2026 Paul Leopardi
 """

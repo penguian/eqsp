@@ -1,5 +1,5 @@
 """
-EQSP Tests: Point Set Props features
+PyEQSP Tests: Point set properties
 
 Copyright Paul Leopardi 2026
 """

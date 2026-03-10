@@ -1,5 +1,5 @@
 """
-EQSP partitions module.
+PyEQSP partitions module.
 
 Copyright 2026 Paul Leopardi
 """

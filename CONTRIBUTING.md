@@ -1,6 +1,6 @@
-# Contributing to EQSP
+# Contributing to PyEQSP
 
-Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (EQSP) library! This project is currently in Beta testing, and your feedback is invaluable.
+Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (**PyEQSP**) library! This project is currently in Beta testing, and your feedback is invaluable.
 
 ## How to Provide Feedback
 
@@ -17,7 +17,7 @@ We welcome ideas for new features or improvements to the partitioning algorithms
 
 If you would like to contribute code fixes or improvements, please follow the forking workflow:
 
-1. **Fork the Repository**: Create your own copy of the `penguian/eqsp` repository on GitHub.
+1. **Fork the Repository**: Create your own copy of the `penguian/pyeqsp` repository on GitHub.
 2. **Clone and Setup**:
    We recommend using a **virtual environment** to avoid dependency conflicts:
    ```bash
@@ -26,8 +26,8 @@ If you would like to contribute code fixes or improvements, please follow the fo
    source .venvs/.venv/bin/activate  # On Windows use `.venvs\.venv\Scripts\activate`
 
    # Clone your fork
-   git clone https://github.com/YOUR_USERNAME/eqsp.git
-   cd eqsp
+   git clone https://github.com/YOUR_USERNAME/pyeqsp.git
+   cd pyeqsp
 
    # Install in "editable" mode with development tools
    pip install -e ".[dev]"

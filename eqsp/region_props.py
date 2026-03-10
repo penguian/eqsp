@@ -1,5 +1,5 @@
 """
-EQSP region properties module.
+PyEQSP region properties module.
 
 Copyright 2026 Paul Leopardi
 """

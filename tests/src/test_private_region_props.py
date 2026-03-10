@@ -1,5 +1,5 @@
 """
-EQSP Tests: Private Region Props doctests bridge
+PyEQSP Tests: Private Region Props doctests bridge
 
 Copyright Paul Leopardi 2026
 """

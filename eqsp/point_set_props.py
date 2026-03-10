@@ -1,5 +1,5 @@
 """
-EQSP point set properties module.
+PyEQSP point set properties module.
 
 Copyright 2026 Paul Leopardi
 """

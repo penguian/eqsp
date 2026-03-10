@@ -1,5 +1,5 @@
 """
-EQSP illustrations module.
+PyEQSP illustrations module.
 
 Copyright 2026 Paul Leopardi
 """

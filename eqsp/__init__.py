@@ -1,5 +1,5 @@
 """
-EQSP: Equal Area Sphere Partitioning Library.
+PyEQSP: Equal Area Sphere Partitioning Library.
 
 This module provides functions for equal area sphere partitioning, including:
 - Creating partitions (`eq_regions`, `eq_point_set`, `eq_caps`)
@@ -47,6 +47,6 @@ __all__ = [
 ]
 
 try:
-    __version__ = _pkg_version("eqsp")
+    __version__ = _pkg_version("pyeqsp")
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"

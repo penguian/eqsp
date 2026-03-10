@@ -1,6 +1,6 @@
-# Testing Guide: EQSP
+# Testing Guide: PyEQSP
 
-This guide outlines the testing strategy, dependencies, and instructions for verifying the `eqsp` package.
+This guide outlines the testing strategy, dependencies, and instructions for verifying the **PyEQSP** project and the `eqsp` package.
 
 ## Testing Strategy
 
