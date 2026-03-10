@@ -20,7 +20,7 @@ via `pip`.
 
 ### Python Virtual Environments
 
-It is recommended that you install and use `eqsp` within a Python
+It is recommended that you install and use **PyEQSP** within a Python
 virtual environment. A virtual environment isolates project
 dependencies from your system Python, preventing version conflicts
 between projects. It can be located anywhere accessible in the
@@ -99,7 +99,7 @@ If the package is available on PyPI or a package repository, you
 can install it directly:
 
 ```bash
-pip install eqsp
+pip install pyeqsp
 ```
 
 > **Note:** The `eqsp` package is currently in Beta and primarily distributed 
@@ -109,7 +109,7 @@ pip install eqsp
 To upgrade an existing installation:
 
 ```bash
-pip install --upgrade eqsp
+pip install --upgrade pyeqsp
 ```
 
 ## Verification
@@ -148,5 +148,5 @@ The rendered documentation will be available in
 To remove the package:
 
 ```bash
-pip uninstall eqsp
+pip uninstall pyeqsp
 ```

@@ -56,7 +56,7 @@ including:
 ## Installation
 
 Requires **Python 3.11+**. It is recommended that you install
-`eqsp` within a Python virtual environment. See
+**PyEQSP** within a Python virtual environment. See
 [INSTALL.md](INSTALL.md) for full instructions, including
 environment setup and optional dependencies.
 
@@ -116,7 +116,7 @@ energy, min_dist = eq_energy_dist(dim, N, s)
 
 ### 4. Produce illustrations
 
-The `eqsp` package provides two kinds of plot:
+The **PyEQSP** package provides two kinds of plot:
 
 - **2D illustrations** (`eqsp.illustrations`): projections
   rendered with Matplotlib. No extra dependencies required.

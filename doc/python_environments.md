@@ -1,7 +1,7 @@
 # Python Environments and Setup Guide
 
 This document provides detailed instructions on creating and
-managing Python virtual environments for `eqsp`.
+managing Python virtual environments for **PyEQSP**.
 
 ## Overview
 
@@ -37,7 +37,7 @@ source .venvs/.venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-This installs `eqsp` and all its dependencies entirely within
+This installs **PyEQSP** and all its dependencies entirely within
 the environment. System-installed Python packages are not
 visible.
 
@@ -65,7 +65,7 @@ within the environment take priority over system versions.
     instead of duplicating them.
 -   **Isolation**: Still allows you to install other Python
     packages effectively isolated from the system Python, and
-    to install `eqsp` in editable mode.
+    to install **PyEQSP** in editable mode.
 
 ### Prerequisites
 
@@ -105,7 +105,7 @@ export QT_QPA_PLATFORM="xcb"
 > environments may require different values or additional
 > variables altogether.
 
-Now, install `eqsp`. For developers, we recommend "editable"
+Now, install **PyEQSP**. For developers, we recommend "editable"
 mode so changes to source code are reflected immediately:
 
 ```bash
@@ -113,7 +113,7 @@ pip install --upgrade pip
 pip install -e ".[dev]"
 ```
 
-> **What does `".[dev]"` install?** In addition to `eqsp`
+> **What does `".[dev]"` install?** In addition to **PyEQSP**
 > itself, this installs the development tools defined in
 > `pyproject.toml`: `ruff`, `pylint`, `pytest`, and `coverage`.
 > These are the same tools used by CI and by `verify_all.py`.

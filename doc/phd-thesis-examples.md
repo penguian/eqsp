@@ -6,7 +6,7 @@ generated figures from the PhD thesis:
 > Paul Leopardi, *"Distributing points on the sphere: Partitions, separation,
 > quadrature and energy"*, UNSW, 2007.
 
-Each script uses the `eqsp` Python library (this repository) to reproduce
+Each script uses the **PyEQSP** Python library (this repository) to reproduce
 results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 
 ## Scripts

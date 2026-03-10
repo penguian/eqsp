@@ -5,7 +5,7 @@ This document provides a structured outline for the planned two-volume documenta
 ---
 
 ## Volume 1: The User Guide
-**Purpose**: An accessible entry point for researchers and scientists using the `eqsp` toolkit.
+**Purpose**: An accessible entry point for researchers and scientists using the **PyEQSP** library.
 
 ### Introduction & Setup
 - **Background**: Overview of Equal Area Sphere Partitioning (EQ) and its applications.
@@ -27,7 +27,7 @@ This document provides a structured outline for the planned two-volume documenta
 - **Evaluating Performance**: Lessons from comparisons with $k$-means clustering, spiral points, and icosahedral partitions.
 
 ### Core Concepts & Geometries
-- **Coordinate Systems**: Spherical vs Euclidean conventions in `eqsp`.
+- **Coordinate Systems**: Spherical vs Euclidean conventions in **PyEQSP**.
 - **The EQ Algorithm**: Intuition behind recursive zonal partitioning.
 - **Supported Manifolds**: Operations on $S^2$, $S^3$, and higher-dimensional spheres $S^d$.
 

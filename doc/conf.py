@@ -10,12 +10,12 @@ from importlib.metadata import version as _pkg_version
 project = "PyEQSP"
 
 # The package name used for version lookup.
-package_name = "eqsp"
+distribution_name = "pyeqsp"
 copyright = "2026, Paul Leopardi"
 author = "Paul Leopardi"
 
 try:
-    release = _pkg_version("pyeqsp")
+    release = _pkg_version(distribution_name)
 except PackageNotFoundError:
     release = "unknown"
 

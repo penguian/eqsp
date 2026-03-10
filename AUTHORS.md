@@ -38,12 +38,12 @@ Maple and Matlab code is based on work by:
 
 ## Research Context
 
-The `eqsp` repository is the software implementation of research into Recursive Zonal Equal Area (EQ) sphere partitioning. The mathematical foundation and original context for this software are provided by the following works:
+The **PyEQSP** repository is the software implementation of research into Recursive Zonal Equal Area (EQ) sphere partitioning. The mathematical foundation and original context for this software are provided by the following works:
 
 - **PhD Thesis (2007)**: *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*. This thesis describes the partition of the unit sphere into regions of equal area and bounded diameter, establishing the theoretical bounds that justify the partitioning algorithm.
 - **Publications**: The core algorithms and diameter bounds are described and proven in **Leopardi (2006)** and **Leopardi (2009)**. A more recent case study, **Leopardi (2024)**, examines the applicability and impact of these constructions.
 
-The `eqsp` library is the modern Python-native incarnation of the research presented in these documents, evolving from the original Matlab implementation to provide an open-source tool for the scientific community.
+The **PyEQSP** library is the modern Python-native incarnation of the research presented in these documents, evolving from the original Matlab implementation to provide an open-source tool for the scientific community.
 
 ## Installation and Utilities (Matlab Original)
 
