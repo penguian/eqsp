@@ -38,6 +38,8 @@ dev = [
     "pylint",
     "pytest",
     "coverage",
+    "build",
+    "twine",
 ]
 
 [project.urls]
