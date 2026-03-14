@@ -23,92 +23,6 @@ from .utilities import (
 )
 
 
-def show_s2_sphere(*args, **kwargs):
-    """
-    Illustrate the unit sphere S^2 (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
-def show_r3_point_set(*args, **kwargs):
-    """
-    3D illustration of a point set (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
-def show_s2_region(*args, **kwargs):
-    """
-    Illustrate a region of S^2 (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
-def show_s2_partition(
-    N,
-    *,
-    extra_offset=False,
-    fontsize=16,
-    title="long",
-    show_points=True,
-    show_sphere=True,
-    **_kwargs,
-):
-    """
-    3D illustration of an EQ partition of S^2 into N regions.
-
-    This function is a legacy Matplotlib-based implementation. It is considered
-    deprecated for 3D use and currently raises NotImplementedError.
-    Use `eqsp.visualizations.show_s2_partition` for high-quality 3D rendering.
-
-    Parameters
-    ----------
-    N : int
-        Number of regions.
-    extra_offset : bool, optional
-        If True, use extra rotation offsets for regions. Default is False.
-    fontsize : int, optional
-        Font size for the title. Default is 16.
-    title : {'long', 'short', 'none'}, optional
-        Type of title to display. 'long' (default), 'short', or 'none'.
-    show_points : bool, optional
-        If True (default), show the center points of regions.
-    show_sphere : bool, optional
-        If True (default), show the unit sphere surface.
-    **_kwargs
-        Additional arguments passed to underlying plotting functions.
-
-    Returns
-    -------
-    ax : Axes3D
-        The matplotlib 3D axes object (deprecated/removed).
-
-    Examples
-    --------
-    >>> from eqsp.illustrations import show_s2_partition
-    >>> import pytest
-    >>> with pytest.raises(NotImplementedError):
-    ...     show_s2_partition(4)
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
 def project_point_set(
     points, ax=None, proj="stereo", _scale_factor=0.05, color=None, show=None, **_kwargs
 ):
@@ -316,16 +230,6 @@ def project_s2_partition(
 
     return ax
 
-
-def project_s3_partition(*args, **kwargs):
-    """
-    Use projection to illustrate an EQ partition of S^3 (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
 
 
 def illustrate_eq_algorithm(

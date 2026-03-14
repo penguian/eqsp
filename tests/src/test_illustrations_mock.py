@@ -44,41 +44,6 @@ class TestIllustrations(unittest.TestCase):
     def tearDown(self):
         self.plt_patcher.stop()
 
-    def test_show_s2_partition_not_implemented(self):
-        """Verify NotImplementedError for 3D partition visualization."""
-        from eqsp import illustrations
-
-        with self.assertRaises(NotImplementedError):
-            illustrations.show_s2_partition(4)
-
-    def test_project_s3_partition_not_implemented(self):
-        """Verify NotImplementedError for S3 partition projection."""
-        from eqsp import illustrations
-
-        with self.assertRaises(NotImplementedError):
-            illustrations.project_s3_partition(4)
-
-    def test_show_s2_sphere_not_implemented(self):
-        """Verify NotImplementedError for showing the sphere."""
-        from eqsp import illustrations
-
-        with self.assertRaises(NotImplementedError):
-            illustrations.show_s2_sphere()
-
-    def test_show_r3_point_set_not_implemented(self):
-        """Verify NotImplementedError for R3 point set visualization."""
-        from eqsp import illustrations
-
-        with self.assertRaises(NotImplementedError):
-            illustrations.show_r3_point_set(None)
-
-    def test_show_s2_region_not_implemented(self):
-        """Verify NotImplementedError for S2 region visualization."""
-        from eqsp import illustrations
-
-        with self.assertRaises(NotImplementedError):
-            illustrations.show_s2_region(None)
-
     def test_project_point_set_invalid_dim(self):
         """Verify ValueError for invalid point set dimensions."""
         from eqsp import illustrations
