@@ -44,7 +44,7 @@ eq_point_set(2, 10, extra_offset=True)
 
 > **Python Exclusive:** The Python port introduces an `even_collars=True` boolean parameter to `eq_caps` (and downstream functions like `eq_regions` and `eq_point_set`). This forces the partition to have an even number of collars, ensuring the equatorial hyperplane cleanly splits the partition into two equal hemispheres. This parameter does not exist in the Matlab toolbox.
 
-Furthermore, some Python parameters are entirely new to `eqsp` and did not exist in the Matlab toolbox:
+Furthermore, some Python parameters are entirely new to **PyEQSP** and did not exist in the Matlab toolbox:
 
 *   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise S² hemisphere splitting and $S^3 \rightarrow SO(3)$ quaternion sampling (for more details see [doc/even_collar_partitions.md](even_collar_partitions.md)).
 *   **Vectorized Properties**: All property evaluation functions (like `eq_min_dist`, `eq_energy_dist`, `eq_area_error`, and `eq_diam_coeff`) also accept the `even_collars` parameter to evaluate symmetric partitions.
@@ -151,7 +151,7 @@ The Python port includes several algorithmic optimizations that significantly ou
 
 ## Common Matlab-to-Python "Gotchas"
 
-| Feature | Matlab | Python / `eqsp` |
+| Feature | Matlab | Python / **eqsp** (Package) |
 | :--- | :--- | :--- |
 | **Indexing** | 1, 2, 3... | 0, 1, 2... |
 | **Loops** | `for i=1:N` (inclusive) | `for i in range(N)` (exclusive of N) |
