@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.3] - 2026-03-14
+
+### Fixed
+- **PyPI Rendering**: Switched project description (`README.md`) to use Unicode symbols for inline mathematical notation and double-dollar delimiters for block equations. This ensures proper rendering on PyPI and TestPyPI, where MathJax script execution is not supported.
+- **Branding Sweep**: Standardized the use of **PyEQSP** for the Python project and removed the term "legacy" in favor of "original" or "feature from the original MATLAB toolbox" across documentation, docstrings, and metadata. Standardized simple math notation to Unicode (S³, Sᵈ, O(N)) in top-level Markdown files.
+
 ## [0.99.2] - 2026-03-10
 
 ### Changed
@@ -25,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Beta Release**: Initial beta release for public testing.
-- **Symmetric Partitions**: Added the `even_collars` parameter to `eq_caps`, `eq_regions`, and `eq_point_set`. This ensures the equatorial hyperplane aligns with a cap boundary, enabling precise S² hemisphere splitting and $S^3 \rightarrow SO(3)$ quaternion sampling.
+- **Symmetric Partitions**: Added the `even_collars` parameter to `eq_caps`, `eq_regions`, and `eq_point_set`. This ensures the equatorial hyperplane aligns with a cap boundary, enabling precise S² hemisphere splitting and S³ → SO(3) quaternion sampling.
 - **Improved Docstrings**: Completed a comprehensive audit and standardization of NumPy-format docstrings across the entire public API.
 - **CI Robustness**: Enhanced GitHub Actions and verification scripts (`verify_all.py`) to be more resilient across different Python environments.
 
@@ -38,9 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.98.0] - 2026-03-01
 
 ### Added
-- **Alpha Release**: First functional alpha release of the EQSP Python port.
-- **Core Algorithms**: Implementation of `eq_regions`, `eq_point_set`, and `eq_caps` for $S^d$ ($d \ge 1$).
-- **Performance Optimizations**: Implemented $O(N \log N)$ minimum distance calculations and $O(N)$ memory Riesz energy summation.
+- **Alpha Release**: First functional alpha release of the PyEQSP Python port.
+- **Core Algorithms**: Implementation of `eq_regions`, `eq_point_set`, and `eq_caps` for Sᵈ (d ≥ 1).
+- **Performance Optimizations**: Implemented O(N log N) minimum distance calculations and O(N) memory Riesz energy summation.
 - **Thesis Reproductions**: Included scripts and results to reproduce figures and benchmarks from the original PhD thesis [Leo07].
 - **Optional Visualizations**: Logic for 2D Matplotlib projections and 3D Mayavi/PyQt interactive renderings.
 - **Documentation**: Initialized Sphinx documentation with Markdown support, including guides for installation and testing.

@@ -31,7 +31,7 @@ Maple and Matlab code is based on work by:
 - **[SafK97]** E. B. Saff, A. B. J. Kuijlaars, *"Distributing many points on a sphere"*, Mathematical Intelligencer, v19 no1 (1997), pp. 5--11.
 - **[SafSP]** E. B. Saff, *"Sphere Points"*, http://www.math.vanderbilt.edu/~esaff/sphere_points.html
 - **[Saf03]** Ed Saff, *"Equal-area partitions of sphere"*, Presentation at UNSW, 2003-07-28.
-- **[Slo03]** Ian Sloan, *"Equal area partition of S^3"*, Notes, 2003-07-29.
+- **[Slo03]** Ian Sloan, *"Equal area partition of S³"*, Notes, 2003-07-29.
 - **[WeiMW]** E. W. Weisstein, *"Hypersphere"*, From MathWorld--A Wolfram Web Resource. http://mathworld.wolfram.com/Hypersphere.html
 - **[Zho95]** Y. M. Zhou, *"Arrangement of points on the sphere"*, PhD thesis, University of South Florida, 1995.
 - **[Zho98]** Y. M. Zhou, *"Equidistribution and extremal energy of N points on the sphere"*, Modelling and computation for applications in mathematics, science, and engineering (Evanston, IL, 1996), pp. 39--57, Numer. Math. Sci. Comput., Oxford Univ. Press, New York, 1998.
