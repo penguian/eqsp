@@ -248,7 +248,8 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False, even_collars=
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets (experimental legacy feature for dim 2-3).
+        Use extra offsets (experimental feature from the original MATLAB
+        toolbox for dim 2-3).
         Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
@@ -290,7 +291,8 @@ def eq_energy_coeff(
     s : float, optional
         Exponent parameter. Defaults to dim-1.
     extra_offset : bool, optional
-        Use extra offsets (experimental legacy feature for dim 2-3).
+        Use extra offsets (experimental feature from the original MATLAB
+        toolbox for dim 2-3).
         Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
@@ -348,7 +350,8 @@ def eq_energy_dist(
     s : float, optional
         Exponent parameter. Defaults to dim-1.
     extra_offset : bool, optional
-        Use extra offsets (experimental legacy feature for dim 2-3).
+        Use extra offsets (experimental feature from the original MATLAB
+        toolbox for dim 2-3).
         Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
@@ -404,7 +407,8 @@ def eq_min_dist(dim, N, extra_offset=False, show_progress=False, even_collars=Fa
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets (experimental legacy feature for dim 2-3).
+        Use extra offsets (experimental feature from the original MATLAB
+        toolbox for dim 2-3).
         Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
@@ -497,7 +501,8 @@ def eq_packing_density(
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets (experimental legacy feature for dim 2-3).
+        Use extra offsets (experimental feature from the original MATLAB
+        toolbox for dim 2-3).
         Default False.
     show_progress : bool, optional
         Show progress messages. Default False.
@@ -540,7 +545,8 @@ def eq_point_set_property(fhandle, dim, N, extra_offset=False, show_progress=Fal
     N : int or array-like
         Number of regions.
     extra_offset : bool, optional
-        Use extra offsets (experimental legacy feature for dim 2-3).
+        Use extra offsets (experimental feature from the original MATLAB
+        toolbox for dim 2-3).
         Default False.
     show_progress : bool, optional
         Show progress messages. Default False.

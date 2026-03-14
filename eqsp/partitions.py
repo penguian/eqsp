@@ -151,7 +151,7 @@ def eq_point_set(dim, N, extra_offset=False, even_collars=False):
         The number of regions.
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
-        a legacy feature from the MATLAB toolbox and is no longer planned
+        a feature from the original MATLAB toolbox and is no longer planned
         for expansion to dim > 3.
     even_collars : bool, optional
         If True, force an even number of collars. See `eq_caps` for details.
@@ -204,7 +204,7 @@ def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
         The spatial dimension of the sphere (S^dim in R^{dim+1}).
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
-        a legacy feature from the MATLAB toolbox and is no longer planned
+        a feature from the original MATLAB toolbox and is no longer planned
         for expansion to dim > 3.
     even_collars : bool, optional
         If True, force an even number of collars. See `eq_caps` for details.
@@ -349,7 +349,7 @@ def eq_regions(dim, N, extra_offset=False, even_collars=False):
         The spatial dimension of the sphere (S^dim).
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
-        a legacy feature from the MATLAB toolbox and is no longer planned
+        a feature from the original MATLAB toolbox and is no longer planned
         for expansion to dim > 3.
     even_collars : bool, optional
         If True, force an even number of collars. See `eq_caps` for details.
