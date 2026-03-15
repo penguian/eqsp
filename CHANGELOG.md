@@ -5,6 +5,49 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.4] - 2026-03-16
+
+### Added
+- **Volume 1: User Guide**: Established `doc/user_guide.md` as the central entry point for end-user documentation.
+- **Volume 2: Maintenance Guide**: Created `doc/maintenance_guide.md` as a technical hub for maintainers and developers.
+- **Interactive Citations**: Implemented consolidated bibliographies (`references_vol1.md`, `references_vol2.md`) and clickable links across all guides and docstrings.
+- **Troubleshooting**: Added guidance for release issues like TestPyPI version mismatches and pip caching.
+- **Architectural Diagrams**: Added Mermaid diagrams to the Design & Architecture guide.
+- **User Guide Examples**: Promoted core documentation snippets to standalone scripts in `examples/user-guide/src/`. These are named using the `example_*.py` convention and fully integrated into the test suite via doctests.
+- **Example Results**: Established `examples/user-guide/results/` for reference artifacts, using the `run_example_*.log` and `fig_example_*.png` naming convention to match the main test suite.
+- **Scientific Localisation**: Localised the entire project (documentation, README, and docstrings) to Australian English, standardising on "mathematics", "centre", "colour", and the "-ize" suffix convention.
+- **API Enhancement**: Formally exported point-set property functions (`point_set_min_dist`, `point_set_energy_dist`, etc.) at the `eqsp` package level.
+
+### Changed
+- **Directory Structure**: Restructured the examples directory into `src/` (execution) and `results/` (artifacts) hubs.
+- **Documentation Structure**: Reorganized `doc/index.rst` into Volume 1 (User) and Volume 2 (Maintenance) book series.
+- **Audience Assessment**: Conducted a "What vs. How" audit to ensure content is correctly targeted at researchers (User Guide) and developers (Maintenance Guide).
+- **Release Roadmap**: Consolidated future growth and optimization suggestions from legacy outlines into a central roadmap.
+- **Illustration Stubs**: Removed legacy redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`.
+- **Linter Configuration**: "Flattened" `ruff.toml` to a compatibility format that works with both legacy (0.0.x) and modern (0.15.x) environments.
+- **Test Baseline**: Achieved 100% project-wide coverage by integrating newly restructured examples with doctests and targeted coverage pragmas.
+
+### Fixed
+- **PR #17 Related**: Corrected API usage examples (positional `N`), fixed array shape descriptions ((3, N) vs. (N, 3)), and added `sphinxcontrib-mermaid` to documentation dependencies.
+- **Ghost Functions**: Replaced references to non-existent functions (`plot_regions_2d`) with verified ones (`project_s2_partition`).
+- **Documentation Build**: Updated `doc/Makefile` to use `python3` for Sphinx builds, improving compatibility on Linux systems.
+- **Docstring Cleanliness**: Fixed line-length lints in `point_set_props.py` triggered by citation links.
+- **Cross-References**: Resolved all MyST "target not found" warnings using global labels and added explicit links between documentation and examples.
+
+## [0.99.3] - 2026-03-14
+
+### Added
+- **Internal Maintenance**: Started tracking internal documentation for release procedures (`upload_guide.md`) and version stability.
+
+### Changed
+- **Linter Configuration**: Updated `ruff.toml` to the modern `[lint]` section format to resolve deprecation warnings.
+- **Verification**: Updated test baseline results to align with the removal of illustration stubs.
+
+### Fixed
+- **PyPI Rendering**: Switched `README.md` to use Unicode symbols for inline mathematical notation to ensure proper rendering on PyPI/TestPyPI.
+- **Branding Standardized**: Replaced instances of "EQSP" with **PyEQSP** and standardized terminology to "original Matlab toolbox" across docstrings and documentation.
+- **Mathematics Notation**: Converted inline LaTeX to Unicode (e.g., S², S³, O(N)) in all top-level Markdown files.
+
 ## [0.99.2] - 2026-03-10
 
 ### Changed
@@ -25,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Beta Release**: Initial beta release for public testing.
-- **Symmetric Partitions**: Added the `even_collars` parameter to `eq_caps`, `eq_regions`, and `eq_point_set`. This ensures the equatorial hyperplane aligns with a cap boundary, enabling precise S² hemisphere splitting and $S^3 \rightarrow SO(3)$ quaternion sampling.
+- **Symmetric Partitions**: Added the `even_collars` parameter to `eq_caps`, `eq_regions`, and `eq_point_set`. This ensures the equatorial hyperplane aligns with a cap boundary, enabling precise S² hemisphere splitting and S³ → SO(3) quaternion sampling.
 - **Improved Docstrings**: Completed a comprehensive audit and standardization of NumPy-format docstrings across the entire public API.
 - **CI Robustness**: Enhanced GitHub Actions and verification scripts (`verify_all.py`) to be more resilient across different Python environments.
 
@@ -38,9 +81,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.98.0] - 2026-03-01
 
 ### Added
-- **Alpha Release**: First functional alpha release of the EQSP Python port.
-- **Core Algorithms**: Implementation of `eq_regions`, `eq_point_set`, and `eq_caps` for $S^d$ ($d \ge 1$).
-- **Performance Optimizations**: Implemented $O(N \log N)$ minimum distance calculations and $O(N)$ memory Riesz energy summation.
+- **Alpha Release**: First functional alpha release of the PyEQSP Python port.
+- **Core Algorithms**: Implementation of `eq_regions`, `eq_point_set`, and `eq_caps` for Sᵈ (d ≥ 1).
+- **Performance Optimizations**: Implemented O(N log N) minimum distance calculations and O(N) memory Riesz energy summation.
 - **Thesis Reproductions**: Included scripts and results to reproduce figures and benchmarks from the original PhD thesis [Leo07].
 - **Optional Visualizations**: Logic for 2D Matplotlib projections and 3D Mayavi/PyQt interactive renderings.
 - **Documentation**: Initialized Sphinx documentation with Markdown support, including guides for installation and testing.

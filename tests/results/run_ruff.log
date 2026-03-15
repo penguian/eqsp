@@ -1,4 +1,16 @@
-warning: The top-level linter settings are deprecated in favour of their counterparts in the `lint` section. Please update the following options in `ruff.toml`:
-  - 'select' -> 'lint.select'
-  - 'per-file-ignores' -> 'lint.per-file-ignores'
-All checks passed!
+E902 No such file or directory (os error 2)
+--> benchmarks:1:1
+
+E902 No such file or directory (os error 2)
+--> eqsp:1:1
+
+E902 No such file or directory (os error 2)
+--> examples/phd-thesis:1:1
+
+E902 No such file or directory (os error 2)
+--> tests:1:1
+
+E902 No such file or directory (os error 2)
+--> verify_all.py:1:1
+
+Found 5 errors.

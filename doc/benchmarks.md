@@ -32,7 +32,7 @@ python3 benchmarks/run_benchmarks.py --even-collars
 | :--- | :--- | :--- |
 | `--results-dir` | Directory to save log files. | `benchmarks/results` |
 | `--n-max` | Scales the problem size for all benchmarks. | Varied (see below) |
-| `--dim` | Sphere dimension for partitioning and math. | 2 |
+| `--dim` | Sphere dimension for partitioning and mathematics. | 2 |
 | `--regions` | Number of regions in the partition for histogram lookups. | 1000 |
 | `--s` | Exponent for the Riesz energy calculation. | `dim - 1` |
 | `--even-collars` | Force an even number of collars (symmetric partitions). | `False` |
@@ -81,7 +81,7 @@ This allows for side-by-side performance comparison of the different partitionin
 - **Python Loop Overhead**: Evident in the recursive partitioning logic.
 - **Cache Misses**: May occur when $N$ exceeds specific size thresholds.
 
-For a detailed analysis of known bottlenecks and optimization opportunities, see the performance highlights in [performance.md](performance.md).
+For a detailed analysis of known bottlenecks and optimization opportunities, see the performance highlights in [Algorithmic Implementation & Optimizations](internal/algorithmic_optimizations.md).
 
 ## Future Optimization Opportunities
 

@@ -29,9 +29,15 @@ extensions = [
     "sphinx.ext.mathjax",
     "myst_parser",
     "sphinx_rtd_theme",
+    "sphinxcontrib.mermaid",
 ]
 
-myst_enable_extensions = ["dollarmath", "amsmath"]
+myst_enable_extensions = {
+    "dollarmath",
+    "amsmath",
+    "substitution",
+    "colon_fence",
+}
 myst_heading_anchors = 3
 
 autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]

@@ -78,11 +78,12 @@ def main():
         "-m",
         "coverage",
         "run",
-        "--source=eqsp",
+        "--source=eqsp,examples/user-guide/src",
         "-m",
         "pytest",
         "eqsp",
         "tests/src",
+        "examples/user-guide/src",
     ] + pytest_opts
 
     # Run the coverage measurement

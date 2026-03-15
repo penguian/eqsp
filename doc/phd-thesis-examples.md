@@ -50,44 +50,14 @@ source ../../.venvs/.venv/bin/activate
 python fig_3_4_max_diam_s2.py
 ```
 
-### Mayavi scripts — require `.venvs/.venv_sys`
-
-Scripts labelled **Mayavi** use `eqsp.visualizations` and require
-system-installed Mayavi via `.venvs/.venv_sys`:
-
-```bash
-cd examples/phd-thesis
-export QT_API="pyqt5"
-export QT_QPA_PLATFORM="xcb"
-```
-
-> **Important:** The environment variables shown above (`QT_API`, `QT_QPA_PLATFORM`) were configured specifically for **Kubuntu Linux 25.10**. Your specific environment may require different values or a different setup entirely.
-
-```bash
-# Display help and available arguments
-python fig_3_4_max_diam_s2.py --help
-
-# Run with custom parameters
-python fig_3_4_max_diam_s2.py --upper-bound 1000
-python fig_3_4_max_diam_s2.py --max-points 500
-python fig_3_1_partition_s2_33.py
-```
-
 All 21 scripts follow the `if __name__ == "__main__":` pattern and can be imported as modules without side effects.
 
-For full setup instructions for `.venvs/.venv_sys`, see
-[doc/python_environments.md](../doc/python_environments.md).
+For technical instructions on setting up the Mayavi environment (`venv_sys`) and troubleshooting display issues, see the [Reproduction Setup & Troubleshooting](internal/reproduction_setup.md) guide in the Maintenance Guide.
 
 ### Visual inspection of eqsp outputs
 
 To interactively inspect 2D illustrations and 3D visualizations from the
-main library (not thesis-specific), see the inspection scripts:
-```bash
-python ../../tests/src/inspect_illustrations.py
-python ../../tests/src/inspect_visualizations.py
-```
-
-For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.md).
+main library (not thesis-specific), see the [Visualization & Illustration Guide](visualization_guide.md).
 
 ## Notes on differences from the original figures
 

@@ -11,8 +11,8 @@ Most core functions retain their names. The main differences are in coordinate c
 | **Partitions** | | |
 | `eq_point_set` | `eq_point_set` | Identical usage. |
 | `eq_regions` | `eq_regions` | Identical usage. |
-| `eq_min_dist` | `eq_min_dist` | Identical usage; optimized ($O(N \log N)$) in Python. |
-| `eq_energy_dist` | `point_set_props.eq_energy_dist` | Optimized for $O(N)$ memory and symmetry. |
+| `eq_min_dist` | `eq_min_dist` | Identical usage; optimized (**O(N log N)**) in Python. |
+| `eq_energy_dist` | `point_set_props.eq_energy_dist` | Optimized for **O(N)** memory and symmetry. |
 | **Utilities** | | |
 | `pol2cart` | `utilities.polar2cart` | Renamed for clarity. |
 | `cart2pol` | `utilities.cart2polar2` | Renamed. Handles arrays. |
@@ -46,7 +46,7 @@ eq_point_set(2, 10, extra_offset=True)
 
 Furthermore, some Python parameters are entirely new to **PyEQSP** and did not exist in the Matlab toolbox:
 
-*   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise S² hemisphere splitting and $S^3 \rightarrow SO(3)$ quaternion sampling (for more details see [doc/even_collar_partitions.md](even_collar_partitions.md)).
+*   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise **S²** hemisphere splitting and **S³ → SO(3)** quaternion sampling (for more details see [Symmetric EQ Partitions](even_collar_partitions.md)).
 *   **Vectorized Properties**: All property evaluation functions (like `eq_min_dist`, `eq_energy_dist`, `eq_area_error`, and `eq_diam_coeff`) also accept the `even_collars` parameter to evaluate symmetric partitions.
 
 ### Return Values
@@ -77,8 +77,8 @@ This impacts loops and range-based operations:
 
 ### Array Orientation and Shape
 Matlab and NumPy differ in their default memory layout (Column-major vs Row-major).
-- **Default Shape**: Most `eqsp` coordinate functions return arrays of shape `(d+1, N)`. This matches the original Matlab convention.
-- **Interoperability**: Many other Python libraries (like `scikit-learn` or `pandas`) expect data in "long" format: `(N, features)`.
+- **Default Shape**: Most `eqsp` coordinate functions return arrays of shape **(d+1, N)**. This matches the original Matlab convention.
+- **Interoperability**: Many other Python libraries (like `scikit-learn` or `pandas`) expect data in "long" format: **(N, features)**.
 - **The Solution**: Use the transpose operator `.T` to swap axes efficiently:
   ```python
   points = eqsp.eq_point_set(2, 10)  # Shape: (3, 10)
@@ -88,14 +88,14 @@ Matlab and NumPy differ in their default memory layout (Column-major vs Row-majo
 ### 3D Plotting: `illustrations` vs. `visualizations`
 The Python port uses two separate modules for plotting, unlike the single Matlab illustration module:
 
-*   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`). Functions that require 3D rendering raise `NotImplementedError` and direct you to `eqsp.visualizations`.
+*   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`).
 *   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi; see [System Packages (Advanced)](#system-packages-advanced) for installation notes.
 
 ## Module Structure
 The package is organized into logical modules:
 
 *   `eqsp.partitions`: Core partition algorithms (`eq_regions`, `eq_point_set`).
-*   `eqsp.utilities`: Math helpers and coordinate conversions.
+*   `eqsp.utilities`: Mathematics helpers and coordinate conversions.
 *   `eqsp.region_props`: Properties of regions (area, diameter).
 *   `eqsp.point_set_props`: Properties of point sets (energy, distance).
 *   `eqsp.histograms`: Point-in-region lookup and counting for S^2.
@@ -137,7 +137,7 @@ vis.show_s2_partition(10)
 ```
 
 ### System Packages (Advanced)
-If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/python_environments.md](python_environments.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
+If you rely on system-installed packages like `mayavi` (via `apt`), see the [Installation Guide](installation.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
 
 > **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
 
@@ -145,9 +145,9 @@ If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/pyt
 
 The Python port includes several algorithmic optimizations that significantly outperform the original Matlab toolbox:
 
-- **Minimum Distance**: Optimized to $O(N \log N)$ using KDTrees. Calculating $d_{\min}$ for $N=100,000$ points is now nearly instantaneous.
-- **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains $O(N)$ and total work is halved compared to naive $O(N^2)$ implementations.
-- **Histogram Lookups**: Fully vectorized point-in-region assignment on $S^2$ for bulk processing of billions of points.
+- **Minimum Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
+- **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
+- **Histogram Lookups**: Fully vectorized point-in-region assignment on **S²** for bulk processing of billions of points.
 
 ## Common Matlab-to-Python "Gotchas"
 

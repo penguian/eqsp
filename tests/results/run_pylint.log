@@ -1,4 +1,61 @@
-
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
-
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/__main__.py", line 10, in <module>
+    pylint.run_pylint()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/__init__.py", line 34, in run_pylint
+    PylintRun(argv or sys.argv[1:])
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/run.py", line 239, in __init__
+    linter.check(args)
+    ~~~~~~~~~~~~^^^^^^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/pylinter.py", line 722, in check
+    ast_per_fileitem = self._get_asts(fileitems, data, progress_reporter)
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/pylinter.py", line 740, in _get_asts
+    for fileitem in fileitems:
+                    ^^^^^^^^^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/pylinter.py", line 908, in _iterate_file_descrs
+    for descr in self._expand_files(files_or_modules).values():
+                 ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/pylinter.py", line 919, in _expand_files
+    result, errors = expand_modules(
+                     ~~~~~~~~~~~~~~^
+        files_or_modules,
+        ^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        self._ignore_paths,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/expand_modules.py", line 171, in expand_modules
+    modpath = _modpath_from_file(
+        subfilepath, is_namespace, path=additional_search_path
+    )
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/pylint/lint/expand_modules.py", line 22, in _modpath_from_file
+    return modutils.modpath_from_file_with_callback(  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        filename, path=path, is_package_cb=_is_package_cb
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages/astroid/modutils.py", line 297, in modpath_from_file_with_callback
+    raise ImportError(
+    ...<3 lines>...
+    )
+ImportError: Unable to find module for /home/leopardi/sync/src/penguian/pyeqsp/eqsp/histograms.py in ., 
+/home/leopardi/sync/Documents/Antigravity/workspaces/eqsp, 
+/home/leopardi/sync/Documents/Antigravity/workspaces/eqsp, 
+/home/leopardi/sync/Documents/Antigravity/workspaces/eqsp/examples, 
+/usr/lib/python313.zip, 
+/usr/lib/python3.13, 
+/usr/lib/python3.13/lib-dynload, 
+/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages, 
+__editable__.pyeqsp-0.99.2.finder.__path_hook__, 
+/home/leopardi/sync/Documents/Antigravity/workspaces/eqsp, 
+/home/leopardi/sync/Documents/Antigravity/workspaces/eqsp/examples, 
+/usr/lib/python313.zip, 
+/usr/lib/python3.13, 
+/usr/lib/python3.13/lib-dynload, 
+/home/leopardi/sync/src/penguian/pyeqsp/.venvs/.venv/lib/python3.13/site-packages, 
+__editable__.pyeqsp-0.99.2.finder.__path_hook__

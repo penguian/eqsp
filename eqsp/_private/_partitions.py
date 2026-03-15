@@ -128,7 +128,7 @@ def centres_of_regions(regions):
     Returns
     -------
     points : ndarray
-        (dim, N) array of region center points.
+        (dim, N) array of region centre points.
 
     See Also
     --------
@@ -182,7 +182,7 @@ def centres_of_regions(regions):
 
 def circle_offset(n_top, n_bot, extra_twist=False):
     """
-    Maximize minimum distance of center points for S^2 collars.
+    Maximize minimum distance of centre points for S^2 collars.
 
     Parameters
     ----------
