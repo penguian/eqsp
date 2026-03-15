@@ -17,6 +17,10 @@ from eqsp.point_set_props import (
     eq_energy_coeff,
     eq_energy_dist,
     eq_min_dist,
+    point_set_dist_coeff,
+    point_set_energy_coeff,
+    point_set_energy_dist,
+    point_set_min_dist,
 )
 from eqsp.region_props import eq_diam_bound
 from eqsp.utilities import (
@@ -44,6 +48,10 @@ __all__ = [
     "eq_energy_dist",
     "eq_energy_coeff",
     "eq_diam_bound",
+    "point_set_min_dist",
+    "point_set_energy_dist",
+    "point_set_dist_coeff",
+    "point_set_energy_coeff",
 ]
 
 try:

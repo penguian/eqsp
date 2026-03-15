@@ -45,6 +45,13 @@ For detailed plotting options, see the [Visualization & Illustration Guide](visu
 A primary goal of PyEQSP is the faithful reproduction of research results from the original PhD thesis [Leo07].
 - **Thesis Examples**: A dedicated guide to the [Thesis Reproduction Scripts](phd-thesis-examples.md) is available.
 
+## Executable Examples
+
+Standalone Python scripts demonstrating these concepts are available in the [examples/user-guide/src/](https://github.com/penguian/pyeqsp/tree/main/examples/user-guide/src) directory:
+- `example_quick_start.py`: Basic partitioning and property analysis.
+- `example_visualize_2d.py` & `example_visualize_3d.py`: Plotting and interactive rendering.
+- `example_symmetric_partitions.py`: Using the `even_collars` parameter.
+
 ## Migration from MATLAB
 
 If you are transitioning from the original MATLAB toolbox, please refer to the [User Migration Guide](user_migration_guide.md) for a mapping of functions and major architectural changes.

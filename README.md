@@ -168,6 +168,13 @@ from eqsp.visualizations import project_s3_partition
 project_s3_partition(10, proj='stereo')
 ```
 
+## User Guide Examples
+
+Standalone Python scripts demonstrating core library features:
+- **[examples/user-guide/src/](examples/user-guide/src/)**: Contains `example_quick_start.py`, `example_visualize_2d.py`, `example_visualize_3d.py`, and `example_symmetric_partitions.py`.
+
+These examples are fully integrated into the test suite and documentation.
+
 ## Thesis Examples
 
 For users interested in reproducing the results from the

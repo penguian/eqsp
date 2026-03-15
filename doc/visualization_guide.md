@@ -19,6 +19,9 @@ illustrations.illustrate_eq_algorithm(dim=2, N=100)
 plt.show()
 ```
 
+> [!TIP]
+> For a clean, executable version of this plot, see [examples/user-guide/src/example_visualize_2d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_2d.py).
+
 ![EQ Algorithm 2D](_static/images/eq_algorithm_2d.png)
 
 ## Interactive 3D Visualizations
@@ -32,14 +35,18 @@ You can rotate, zoom, and inspect the individual regions of a partition in 3D sp
 from eqsp import visualizations
 
 # Show a 3D partition of 100 regions with centre points
-visualizations.show_s2_partition(N=100, show_points=True)
+# Show a 3D partition of 100 regions with centre points
+visualizations.show_s2_partition(100, show_points=True)
 ```
+
+> [!TIP]
+> The interactive 3D script, including environment checks for Mayavi, is available at [examples/user-guide/src/example_visualize_3d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_3d.py).
 
 ![S2 Partition 3d](_static/images/s2_partition_3d.png)
 
 ## Advanced Projections
 
-For specific research or mapping needs, the library also supports more advanced projections via `eqsp.visualizations.plot_regions_2d`.
+For specific research or mapping needs, the library also supports more advanced projections via `eqsp.illustrations.project_s2_partition`.
 
 *   **Mollweide**: Equal-area projection of the entire sphere.
 *   **Lambert**: Azimuthal equal-area projection.

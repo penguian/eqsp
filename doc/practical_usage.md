@@ -17,7 +17,7 @@ regions = eqsp.eq_regions(dim=2, N=1000)
 Use `eq_point_set` to get the centre points of each region.
 ```python
 points = eqsp.eq_point_set(dim=2, N=1000)
-# points is a (1000, 3) NumPy array
+# points is a (3, 1000) NumPy array (column-major convention)
 ```
 
 ## Analyzing Geometric Properties
@@ -27,16 +27,21 @@ Once you have a point set, you can measure its quality using various metrics.
 ### Minimum Distance
 Measuring the separation between points helps evaluate packing efficiency.
 ```python
-min_dist = eqsp.eq_min_dist(points)
+# Measure min distance from existing points
+min_dist = eqsp.point_set_min_dist(points)
 print(f"Minimum distance: {min_dist}")
 ```
 
 ### Riesz Energy
 Calculate the energy of the point set to evaluate its uniformity from a physical perspective.
 ```python
-energy = eqsp.eq_energy_dist(points, s=2)
+# Measure energy from existing points
+energy, _ = eqsp.point_set_energy_dist(points, s=2)
 print(f"Riesz s-energy: {energy}")
 ```
+
+> [!TIP]
+> A complete standalone version of this workflow can be found in [examples/user-guide/src/example_quick_start.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_quick_start.py).
 
 ## Advanced Partitioning: S^3 and SO(3)
 

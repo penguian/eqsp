@@ -26,6 +26,10 @@ __all__ = [
     "eq_energy_coeff",
     "eq_energy_dist",
     "eq_min_dist",
+    "point_set_dist_coeff",
+    "point_set_energy_coeff",
+    "point_set_energy_dist",
+    "point_set_min_dist",
     "sphere_int_energy",
 ]
 

@@ -4,7 +4,7 @@ PyEQSP is built on the mathematical framework for partitioning the unit sphere $
 
 ## The EQ Algorithm
 
-The Recursive Zonal Equal Area Sphere Partitioning (EQ) algorithm works by dividing the sphere into "collars" (latitudinal zones) and then further subdividing each collar into equal-area regions.
+The EQ algorithm partitions the **unit sphere $S^2$** (the 2-sphere in $\mathbb{R}^3$) into $N$ equal-area regions. It works by dividing the sphere into "collars" (latitudinal zones) and then further subdividing each collar into equal-area regions.
 
 ### Key Properties
 - **Equal Area**: Every region in a partition has exactly the same measure (area).
@@ -13,10 +13,10 @@ The Recursive Zonal Equal Area Sphere Partitioning (EQ) algorithm works by divid
 
 ## Supported Manifolds
 
-While most applications focus on the physical 2rd-sphere ($S^2$), PyEQSP supports a wide range of manifolds:
+While most applications focus on the physical 2-sphere ($S^2$), PyEQSP supports a wide range of manifolds:
 - **$S^1$ (Circle)**: Simple angular partitioning.
 - **$S^2$ (Sphere)**: The world-standard sphere, used in geophysics and climate modelling.
-- **$S^3$ (3rd-sphere)**: Essential for applications involving quaternions and rotations (SO(3)).
+- **$S^3$ (3-sphere)**: Essential for applications involving quaternions and rotations (SO(3)).
 - **$S^d$ (High-dimensional spheres)**: Generalized logic for any $d \ge 1$.
 
 ## Coordinate Systems
@@ -30,6 +30,8 @@ To support different research backgrounds, PyEQSP provides utilities for convert
 ### Euclidean / Cartesian Coordinates
 Points on the sphere are represented as unit vectors in $\mathbb{R}^{d+1}$:
 - For $S^2$, points are $(x, y, z)$ where $x^2 + y^2 + z^2 = 1$.
+
+The core logic resides in the `eqsp` package.
 
 ## Even Collar Symmetry
 

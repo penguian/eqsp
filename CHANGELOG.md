@@ -13,18 +13,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Interactive Citations**: Implemented consolidated bibliographies (`references_vol1.md`, `references_vol2.md`) and clickable links across all guides and docstrings.
 - **Troubleshooting**: Added guidance for release issues like TestPyPI version mismatches and pip caching.
 - **Architectural Diagrams**: Added Mermaid diagrams to the Design & Architecture guide.
+- **User Guide Examples**: Promoted core documentation snippets to standalone scripts in `examples/user-guide/src/`. These are named using the `example_*.py` convention and fully integrated into the test suite via doctests.
+- **Example Results**: Established `examples/user-guide/results/` for reference artifacts, using the `run_example_*.log` and `fig_example_*.png` naming convention to match the main test suite.
 - **Scientific Localisation**: Localised the entire project (documentation, README, and docstrings) to Australian English, standardising on "mathematics", "centre", "colour", and the "-ize" suffix convention.
+- **API Enhancement**: Formally exported point-set property functions (`point_set_min_dist`, `point_set_energy_dist`, etc.) at the `eqsp` package level.
 
 ### Changed
+- **Directory Structure**: Restructured the examples directory into `src/` (execution) and `results/` (artifacts) hubs.
 - **Documentation Structure**: Reorganized `doc/index.rst` into Volume 1 (User) and Volume 2 (Maintenance) book series.
 - **Audience Assessment**: Conducted a "What vs. How" audit to ensure content is correctly targeted at researchers (User Guide) and developers (Maintenance Guide).
 - **Release Roadmap**: Consolidated future growth and optimization suggestions from legacy outlines into a central roadmap.
+- **Illustration Stubs**: Removed legacy redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`.
 - **Linter Configuration**: "Flattened" `ruff.toml` to a compatibility format that works with both legacy (0.0.x) and modern (0.15.x) environments.
+- **Test Baseline**: Achieved 100% project-wide coverage by integrating newly restructured examples with doctests and targeted coverage pragmas.
 
 ### Fixed
+- **PR #17 Related**: Corrected API usage examples (positional `N`), fixed array shape descriptions ((3, N) vs. (N, 3)), and added `sphinxcontrib-mermaid` to documentation dependencies.
+- **Ghost Functions**: Replaced references to non-existent functions (`plot_regions_2d`) with verified ones (`project_s2_partition`).
 - **Documentation Build**: Updated `doc/Makefile` to use `python3` for Sphinx builds, improving compatibility on Linux systems.
 - **Docstring Cleanliness**: Fixed line-length lints in `point_set_props.py` triggered by citation links.
-- **Cross-References**: Resolved all MyST "target not found" warnings using global labels.
+- **Cross-References**: Resolved all MyST "target not found" warnings using global labels and added explicit links between documentation and examples.
 
 ## [0.99.3] - 2026-03-14
 
@@ -32,7 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Internal Maintenance**: Started tracking internal documentation for release procedures (`upload_guide.md`) and version stability.
 
 ### Changed
-- **Illustration Stubs**: Removed legacy redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`.
 - **Linter Configuration**: Updated `ruff.toml` to the modern `[lint]` section format to resolve deprecation warnings.
 - **Verification**: Updated test baseline results to align with the removal of illustration stubs.
 
