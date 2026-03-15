@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.4] - Unreleased
+## [0.99.4] - 2026-03-16
 
 ### Added
 - **Volume 1: User Guide**: Established `doc/user_guide.md` as the central entry point for end-user documentation.
@@ -13,9 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Interactive Citations**: Implemented consolidated bibliographies (`references_vol1.md`, `references_vol2.md`) and clickable links across all guides and docstrings.
 - **Troubleshooting**: Added guidance for release issues like TestPyPI version mismatches and pip caching.
 - **Architectural Diagrams**: Added Mermaid diagrams to the Design & Architecture guide.
+- **Scientific Localisation**: Localised the entire project (documentation, README, and docstrings) to Australian English, standardising on "mathematics", "centre", "colour", and the "-ize" suffix convention.
 
 ### Changed
 - **Documentation Structure**: Reorganized `doc/index.rst` into Volume 1 (User) and Volume 2 (Maintenance) book series.
+- **Audience Assessment**: Conducted a "What vs. How" audit to ensure content is correctly targeted at researchers (User Guide) and developers (Maintenance Guide).
+- **Release Roadmap**: Consolidated future growth and optimization suggestions from legacy outlines into a central roadmap.
 - **Linter Configuration**: "Flattened" `ruff.toml` to a compatibility format that works with both legacy (0.0.x) and modern (0.15.x) environments.
 
 ### Fixed
