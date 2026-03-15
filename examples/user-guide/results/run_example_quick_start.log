@@ -1,0 +1,7 @@
+--- Generating EQ partition for S^2 with N=1000 ---
+Generated 1000 regions.
+Point set shape: (3, 1000)
+
+--- Analyzing geometric properties ---
+Minimum distance: 0.1049
+Riesz s-energy (s=2): 822286.8661
