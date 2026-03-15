@@ -4,7 +4,7 @@ target-version = "py311"
 # Explicitly include all Python files across the project
 include = ["*.py", "eqsp/**/*.py", "tests/**/*.py", "examples/**/*.py", "benchmarks/**/*.py"]
 
-[lint]
+# Linting rules
 select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
@@ -12,7 +12,7 @@ select = [
     "I",  # isort
 ]
 
-[lint.per-file-ignores]
+[per-file-ignores]
 # thesis-examples require strictly ordered initialization of matplotlib.use("Agg")
 # and sys.path manipulation, which triggers I001 and E402.
 "examples/phd-thesis/src/*.py" = ["I001", "E402"]

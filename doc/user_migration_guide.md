@@ -46,7 +46,7 @@ eq_point_set(2, 10, extra_offset=True)
 
 Furthermore, some Python parameters are entirely new to **PyEQSP** and did not exist in the Matlab toolbox:
 
-*   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise **S²** hemisphere splitting and **S³ → SO(3)** quaternion sampling (for more details see [doc/even_collar_partitions.md](even_collar_partitions.md)).
+*   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise **S²** hemisphere splitting and **S³ → SO(3)** quaternion sampling (for more details see [Symmetric EQ Partitions](even_collar_partitions.md)).
 *   **Vectorized Properties**: All property evaluation functions (like `eq_min_dist`, `eq_energy_dist`, `eq_area_error`, and `eq_diam_coeff`) also accept the `even_collars` parameter to evaluate symmetric partitions.
 
 ### Return Values
@@ -137,7 +137,7 @@ vis.show_s2_partition(10)
 ```
 
 ### System Packages (Advanced)
-If you rely on system-installed packages like `mayavi` (via `apt`), see [doc/python_environments.md](python_environments.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
+If you rely on system-installed packages like `mayavi` (via `apt`), see the [Installation Guide](installation.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
 
 > **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
 

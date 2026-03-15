@@ -81,7 +81,7 @@ This allows for side-by-side performance comparison of the different partitionin
 - **Python Loop Overhead**: Evident in the recursive partitioning logic.
 - **Cache Misses**: May occur when $N$ exceeds specific size thresholds.
 
-For a detailed analysis of known bottlenecks and optimization opportunities, see the performance highlights in [performance.md](performance.md).
+For a detailed analysis of known bottlenecks and optimization opportunities, see the performance highlights in [Algorithmic Implementation & Optimizations](internal/algorithmic_optimizations.md).
 
 ## Future Optimization Opportunities
 

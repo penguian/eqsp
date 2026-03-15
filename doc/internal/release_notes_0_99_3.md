@@ -1,3 +1,6 @@
+---
+orphan: true
+---
 # Release Notes & Checklist: PyEQSP 0.99.3
 
 This document summarizes the changes and verification steps completed for the **0.99.3** release.
@@ -27,4 +30,4 @@ This document summarizes the changes and verification steps completed for the **
 ## Remaining Manual Steps before 1.0.0
 - [ ] Merge `release_0_99_3` to `main`.
 - [ ] Tag the merge commit as `release_0_99_3`.
-- [ ] Perform final SourceForge project web upload (see [doc/internal/sourceforge_upload_guide.md](sourceforge_upload_guide.md)).
+- [ ] Perform final SourceForge project web upload (see [doc/internal/upload_guide.md](upload_guide.md)).

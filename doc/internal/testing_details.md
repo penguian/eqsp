@@ -1,4 +1,4 @@
-# Testing Guide: PyEQSP
+# Technical Testing # Testing Guide: PyEQSP Verification
 
 This guide outlines the testing strategy, dependencies, and instructions for verifying the **PyEQSP** project and the `eqsp` package.
 
@@ -72,7 +72,7 @@ python3 fig_3_1_partition_s2_33.py
 
 > **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
 
-See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
+See [Thesis Research Reproduction](../phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
 
 ## Code Coverage
 
@@ -141,6 +141,15 @@ Ruff handles fast linting and automatic formatting:
 ruff check .
 ruff format .
 ```
+
+(configuration-compatibility)=
+### Configuration Compatibility
+The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]` section) to ensure compatibility across all project environments. This allows the same configuration to be parsed by both:
+- **Modern Ruff** (0.15.x+) in the main `.venv`.
+- **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
+
+> [!NOTE]
+> Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
 
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:

@@ -5,11 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.3] - 2026-03-14
+## [0.99.4] - Unreleased
+
+### Added
+- **Volume 1: User Guide**: Established `doc/user_guide.md` as the central entry point for end-user documentation.
+- **Volume 2: Maintenance Guide**: Created `doc/maintenance_guide.md` as a technical hub for maintainers and developers.
+- **Interactive Citations**: Implemented consolidated bibliographies (`references_vol1.md`, `references_vol2.md`) and clickable links across all guides and docstrings.
+- **Troubleshooting**: Added guidance for release issues like TestPyPI version mismatches and pip caching.
+- **Architectural Diagrams**: Added Mermaid diagrams to the Design & Architecture guide.
+
+### Changed
+- **Documentation Structure**: Reorganized `doc/index.rst` into Volume 1 (User) and Volume 2 (Maintenance) book series.
+- **Linter Configuration**: "Flattened" `ruff.toml` to a compatibility format that works with both legacy (0.0.x) and modern (0.15.x) environments.
 
 ### Fixed
-- **PyPI Rendering**: Switched project description (`README.md`) to use Unicode symbols for inline mathematical notation and double-dollar delimiters for block equations. This ensures proper rendering on PyPI and TestPyPI, where MathJax script execution is not supported.
-- **Branding Sweep**: Standardized the use of **PyEQSP** for the Python project and removed the term "legacy" in favor of "original" or "feature from the original MATLAB toolbox" across documentation, docstrings, and metadata. Standardized simple math notation to Unicode (S³, Sᵈ, O(N)) in top-level Markdown files.
+- **Documentation Build**: Updated `doc/Makefile` to use `python3` for Sphinx builds, improving compatibility on Linux systems.
+- **Docstring Cleanliness**: Fixed line-length lints in `point_set_props.py` triggered by citation links.
+- **Cross-References**: Resolved all MyST "target not found" warnings using global labels.
+
+## [0.99.3] - 2026-03-14
+
+### Added
+- **Internal Maintenance**: Started tracking internal documentation for release procedures (`upload_guide.md`) and version stability.
+
+### Changed
+- **Illustration Stubs**: Removed legacy redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`.
+- **Linter Configuration**: Updated `ruff.toml` to the modern `[lint]` section format to resolve deprecation warnings.
+- **Verification**: Updated test baseline results to align with the removal of illustration stubs.
+
+### Fixed
+- **PyPI Rendering**: Switched `README.md` to use Unicode symbols for inline mathematical notation to ensure proper rendering on PyPI/TestPyPI.
+- **Branding Standardized**: Replaced instances of "EQSP" with **PyEQSP** and standardized terminology to "original Matlab toolbox" across docstrings and documentation.
+- **Math Notation**: Converted inline LaTeX to Unicode (e.g., S², S³, O(N)) in all top-level Markdown files.
 
 ## [0.99.2] - 2026-03-10
 
