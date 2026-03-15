@@ -9,12 +9,6 @@ NOTE: This requires the 'mayavi' and 'PyQt5' packages.
 
 import sys
 
-try:
-    from eqsp import visualizations
-except ImportError: # pragma: no cover
-    print("Error: Mayavi or PyQt5 not found.")
-    print("Please install with: pip install 'pyeqsp[mayavi]'")
-    sys.exit(1)
 
 def main(): # pragma: no cover
     """
@@ -25,6 +19,13 @@ def main(): # pragma: no cover
     >>> # Skip this in automated tests to avoid opening windows
     >>> pass
     """
+    try:
+        from eqsp import visualizations  # pylint: disable=import-outside-toplevel
+    except ImportError: # pragma: no cover
+        print("Error: Mayavi or PyQt5 not found.")
+        print("Please install with: pip install 'pyeqsp[mayavi]'")
+        sys.exit(1)
+
     N = 100
 
     print(f"--- Launching 3D Visualization with N={N} ---")
