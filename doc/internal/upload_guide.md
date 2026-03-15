@@ -42,4 +42,4 @@ To update the project website at `http://eqsp.sourceforge.net`:
    ```
 
 3. **Verify Web Rendering**:
-   Check [http://eqsp.sourceforge.net](http://eqsp.sourceforge.net) to ensure all Markdown and math symbols render correctly.
+   Check [http://eqsp.sourceforge.net](http://eqsp.sourceforge.net) to ensure all Markdown and mathematics symbols render correctly.

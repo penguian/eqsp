@@ -15,7 +15,7 @@ The Recursive Zonal Equal Area Sphere Partitioning (EQ) algorithm works by divid
 
 While most applications focus on the physical 2rd-sphere ($S^2$), PyEQSP supports a wide range of manifolds:
 - **$S^1$ (Circle)**: Simple angular partitioning.
-- **$S^2$ (Sphere)**: The world-standard sphere, used in geophysics and climate modeling.
+- **$S^2$ (Sphere)**: The world-standard sphere, used in geophysics and climate modelling.
 - **$S^3$ (3rd-sphere)**: Essential for applications involving quaternions and rotations (SO(3)).
 - **$S^d$ (High-dimensional spheres)**: Generalized logic for any $d \ge 1$.
 
@@ -25,7 +25,7 @@ To support different research backgrounds, PyEQSP provides utilities for convert
 
 ### Spherical Coordinates
 - **Latitude/Longitude**: Standard for geospatial applications.
-- **Colatitude/Azimuth**: Common in physics and mathematical modeling.
+- **Colatitude/Azimuth**: Common in physics and mathematical modelling.
 
 ### Euclidean / Cartesian Coordinates
 Points on the sphere are represented as unit vectors in $\mathbb{R}^{d+1}$:

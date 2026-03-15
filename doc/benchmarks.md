@@ -32,7 +32,7 @@ python3 benchmarks/run_benchmarks.py --even-collars
 | :--- | :--- | :--- |
 | `--results-dir` | Directory to save log files. | `benchmarks/results` |
 | `--n-max` | Scales the problem size for all benchmarks. | Varied (see below) |
-| `--dim` | Sphere dimension for partitioning and math. | 2 |
+| `--dim` | Sphere dimension for partitioning and mathematics. | 2 |
 | `--regions` | Number of regions in the partition for histogram lookups. | 1000 |
 | `--s` | Exponent for the Riesz energy calculation. | `dim - 1` |
 | `--even-collars` | Force an even number of collars (symmetric partitions). | `False` |

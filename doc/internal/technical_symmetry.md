@@ -38,6 +38,6 @@ Symmetric partitions guarantee a palindromic `ideal_region_list`, ensuring a **1
 
 ### Interface Symmetry
 
-To maintain polymorphic compatibility, all property functions must accept `even_collars`, even if the property (like total area error) is parity-invariant. This ensures call-site stability for users while allowing internal math to exploit symmetry when available.
+To maintain polymorphic compatibility, all property functions must accept `even_collars`, even if the property (like total area error) is parity-invariant. This ensures call-site stability for users while allowing internal mathematics to exploit symmetry when available.
 
 For foundational citations, see the Volume 2 [References](../references_vol2.md).

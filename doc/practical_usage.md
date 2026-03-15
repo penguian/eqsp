@@ -14,7 +14,7 @@ regions = eqsp.eq_regions(dim=2, N=1000)
 ```
 
 ### Generating Point Sets
-Use `eq_point_set` to get the center points of each region.
+Use `eq_point_set` to get the centre points of each region.
 ```python
 points = eqsp.eq_point_set(dim=2, N=1000)
 # points is a (1000, 3) NumPy array

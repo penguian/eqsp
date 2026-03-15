@@ -8,7 +8,7 @@ The `eqsp` package is designed as a vectorized Python port of the original MATLA
 - `eqsp/partitions.py`: Recursive zonal partitioning algorithms.
 - `eqsp/point_set_props.py`: Metric calculation and energy summation.
 - `eqsp/region_props.py`: Geometric property analysis.
-- `eqsp/utilities.py`: Coordinate transforms and manifold math.
+- `eqsp/utilities.py`: Coordinate transforms and manifold mathematics.
 
 For more details on the internal layout, see the [Design & Architecture](design_and_architecture.md) guide.
 For the transition from MATLAB, see the [User Migration Guide](user_migration_guide.md).

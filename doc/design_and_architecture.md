@@ -4,7 +4,7 @@ This document tracks the technical philosophy and internal structure of the PyEQ
 
 ## Module Breakdown
 
-The library is organized to separate performance-critical mathematical logic from user-facing utilities.
+The library is organized to separate performance-critical mathematics logic from user-facing utilities.
 
 ### Public API (`eqsp.*`)
 - **`partitions.py`**: The core of the EQ algorithm. Contains `eq_regions` and `eq_point_set`.

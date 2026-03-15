@@ -400,7 +400,7 @@ def eq_energy_dist(
 
 def eq_min_dist(dim, N, extra_offset=False, show_progress=False, even_collars=False):
     """
-    Minimum distance between center points of an EQ partition.
+    Minimum distance between centre points of an EQ partition.
 
     Parameters
     ----------

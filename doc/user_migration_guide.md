@@ -95,7 +95,7 @@ The Python port uses two separate modules for plotting, unlike the single Matlab
 The package is organized into logical modules:
 
 *   `eqsp.partitions`: Core partition algorithms (`eq_regions`, `eq_point_set`).
-*   `eqsp.utilities`: Math helpers and coordinate conversions.
+*   `eqsp.utilities`: Mathematics helpers and coordinate conversions.
 *   `eqsp.region_props`: Properties of regions (area, diameter).
 *   `eqsp.point_set_props`: Properties of point sets (energy, distance).
 *   `eqsp.histograms`: Point-in-region lookup and counting for S^2.

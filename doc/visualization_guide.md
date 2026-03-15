@@ -31,7 +31,7 @@ You can rotate, zoom, and inspect the individual regions of a partition in 3D sp
 ```python
 from eqsp import visualizations
 
-# Show a 3D partition of 100 regions with center points
+# Show a 3D partition of 100 regions with centre points
 visualizations.show_s2_partition(N=100, show_points=True)
 ```
 

@@ -103,7 +103,7 @@ The private testing suite includes:
 - **`tests/src/test_private_partitions.py`**: Bridge test for `eqsp._private._partitions` doctests.
 - **`tests/src/test_private_region_props.py`**: Bridge test for `eqsp._private._region_props` doctests.
 
-These tests ensure that internal math optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
+These tests ensure that internal mathematics optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
 
 ## Performance Benchmarking
 

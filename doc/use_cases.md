@@ -27,7 +27,7 @@ The EQ algorithm provides a robust way to partition the unit sphere $\mathbb{S}^
 *   **Geomagnetic Virtual Observatories ([Hammer et al., 2021](#ham21))**: EQSP partitions were used to define a global grid of GVOs for studying sub-decadal variations in the Earth's core field.
 
 ### Engineering and Materials Science
-*   **Composite Fiber Orientations ([Sabiston et al., 2021](#sab21))**: EQSP partitioning (specifically with 1200 partitions) was used to define representative fiber orientations for micromechanics modeling of injection-molded composites.
+*   **Composite Fiber Orientations ([Sabiston et al., 2021](#sab21))**: EQSP partitioning (specifically with 1200 partitions) was used to define representative fiber orientations for micromechanics modelling of injection-molded composites.
 
 ### Numerical Weather Prediction
 *   **Parallel Load Balancing ([Mozdzynski et al., 2015](#moz15))**: EQ-regions were used to decompose reduced Gaussian grids into equal-area regions for efficient parallel processing in ECMWF's IFS model.

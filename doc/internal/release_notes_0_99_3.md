@@ -10,7 +10,7 @@ This document summarizes the changes and verification steps completed for the **
 ### Branding & Consistency
 - **Branding Standardized**: Replaced instances of "EQSP" with **PyEQSP** in `README.md`, `CHANGELOG.md`, and benchmark outputs.
 - **Removed "legacy"**: Standardized terminology to "original Matlab toolbox" or similar across docstrings and documentation.
-- **Math Notation**: Converted inline LaTeX to Unicode (e.g., **S²**, **S³**, **O(N)**) in all top-level Markdown files for better rendering on PyPI/SourceForge.
+- **Mathematics Notation**: Converted inline LaTeX to Unicode (e.g., **S²**, **S³**, **O(N)**) in all top-level Markdown files for better rendering on PyPI/SourceForge.
 
 ### Code Cleanup
 - **Visualization Stubs**: Removed redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`. Users are now directed to `eqsp.visualizations`.

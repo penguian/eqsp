@@ -41,10 +41,9 @@ PyEQSP Documentation
    Performance Benchmarks <benchmarks.md>
    Technical Testing & Verification <internal/testing_details.md>
    Documentation Maintenance <documentation_maintenance.md>
-   Upload & Release Guide <internal/upload_guide.md>
+    Upload & Release Guide <internal/upload_guide.md>
    Latest Release Notes <internal/release_notes_0_99_4.md>
    Release Roadmap <internal/release_roadmap.md>
-   Book Series Outline <internal/book_series_outline.md>
 
 .. toctree::
    :maxdepth: 1

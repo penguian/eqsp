@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **PyPI Rendering**: Switched `README.md` to use Unicode symbols for inline mathematical notation to ensure proper rendering on PyPI/TestPyPI.
 - **Branding Standardized**: Replaced instances of "EQSP" with **PyEQSP** and standardized terminology to "original Matlab toolbox" across docstrings and documentation.
-- **Math Notation**: Converted inline LaTeX to Unicode (e.g., S², S³, O(N)) in all top-level Markdown files.
+- **Mathematics Notation**: Converted inline LaTeX to Unicode (e.g., S², S³, O(N)) in all top-level Markdown files.
 
 ## [0.99.2] - 2026-03-10
 

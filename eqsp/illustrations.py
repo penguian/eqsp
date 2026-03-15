@@ -41,7 +41,7 @@ def project_point_set(
         Scale factor for points (unused in matplotlib implementation, kept for
         compatibility/kwargs).
     color : color spec, optional
-        Color of points. Default is 'k' for 2D, 'r' for 3D.
+        Colour of points. Default is 'k' for 2D, 'r' for 3D.
     show : bool or None, optional
         If True, call `plt.show()`. If None, call `plt.show()` only if `ax` was None.
     **_kwargs
@@ -83,7 +83,7 @@ def project_point_set(
             ax.set_aspect("equal")
             ax.set_axis_off()
         if color is None:
-            # Color based on colatitude (mimic Matlab)
+            # Colour based on colatitude (mimic MATLAB)
             # Matlab uses r = pi - acos(z)
             z = points[2, :]
             r = np.pi - np.arccos(np.clip(z, -1.0, 1.0))

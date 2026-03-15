@@ -34,12 +34,12 @@ bounded above by C(d)·N⁻¹/ᵈ.
 
 ## What is an EQ point set?
 
-An **EQ point set** is the set of center points of the regions
+An **EQ point set** is the set of centre points of the regions
 of an EQ partition. Each region is defined as a product of
-intervals in spherical polar coordinates. The center point of a
-region is defined via the center points of each interval, with
+intervals in spherical polar coordinates. The centre point of a
+region is defined via the centre points of each interval, with
 the exception of spherical caps and their descendants, where the
-center point is defined using the center of the spherical cap.
+centre point is defined using the centre of the spherical cap.
 
 ## Applications
 
@@ -65,7 +65,7 @@ environment setup and optional dependencies.
 ### 1. Create EQ partitions
 
 Create an array in Cartesian coordinates representing the
-center points of an EQ partition of Sᵈ into N regions:
+centre points of an EQ partition of Sᵈ into N regions:
 
 ```python
 import eqsp
@@ -77,7 +77,7 @@ points_x = eqsp.eq_point_set(dim, N)
 ```
 
 Create an array in spherical polar coordinates representing
-the center points:
+the centre points:
 
 ```python
 points_s = eqsp.eq_point_set_polar(dim, N)
@@ -104,7 +104,7 @@ diam_bound = eq_diam_bound(dim, N)
 
 ### 3. Find properties of EQ point sets
 
-Find the r⁻ˢ energy and min distance of the EQ center
+Find the r⁻ˢ energy and min distance of the EQ centre
 point sets of Sᵈ for N points:
 
 ```python

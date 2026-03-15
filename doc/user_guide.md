@@ -22,7 +22,7 @@ The library implements recursive zonal partitioning (the EQ algorithm) for vario
 - **Manifolds**: Operations on $S^2$ (sphere), $S^3$, and higher-dimensional spheres $S^d$.
 - **Coordinate Systems**: Support for both Spherical and Euclidean conventions.
 
-For more details on the underlying math, see the [Core Concepts & Geometries](core_concepts.md) guide.
+For more details on the underlying mathematics, see the [Core Concepts & Geometries](core_concepts.md) guide.
 
 ## Practical Usage
 
