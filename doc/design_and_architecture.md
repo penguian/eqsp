@@ -10,15 +10,14 @@ The library is organized to separate performance-critical mathematics logic from
 - **`partitions.py`**: The core of the EQ algorithm. Contains `eq_regions` and `eq_point_set`.
 - **`point_set_props.py`**: Modules for measuring distance, energy, and density.
 - **`visualizations.py`**: High-level wrappers for Matplotlib and Mayavi.
-- **`conversions.py`**: Coordinate system transformations.
+- **`utilities.py`**: Coordinate system transformations.
 
 ```{mermaid}
 graph TD
     subgraph PublicAPI ["Public API (eqsp.*)"]
         A[partitions.py] --> C[point_set_props.py]
         A --> V[visualizations.py]
-        A --> CONV[conversions.py]
-        C --> UTILS[utilities.py]
+        A --> UTILS[utilities.py]
     end
 
     subgraph Private ["Internal (_private.*)"]

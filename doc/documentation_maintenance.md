@@ -5,7 +5,7 @@ PyEQSP uses **Sphinx** and **ReadTheDocs (RTD)** to deliver both the User and Ma
 ## Technology Stack
 
 - **Sphinx**: The core documentation generator.
-- **MyST-Parser**: Enables writing documentation in MarkDown (.md) while retaining Sphinx features (tables, cross-references).
+- **MyST-Parser**: Enables writing documentation in Markdown (.md) while retaining Sphinx features (tables, cross-references).
 - **Sphinx RTD Theme**: Provides the responsive, premium look and feel.
 
 ## Local Build Workflow

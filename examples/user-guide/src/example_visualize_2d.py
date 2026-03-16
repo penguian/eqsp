@@ -4,10 +4,14 @@
 This script demonstrates 2D projections of the EQ algorithm and point sets
 using Matplotlib.
 """
+# ruff: noqa: E402
 
-import matplotlib.pyplot as plt
+import matplotlib
 
-from eqsp import illustrations
+matplotlib.use('Agg')  # Use non-interactive backend for headless environments
+import matplotlib.pyplot as plt  # pylint: disable=wrong-import-position
+
+from eqsp import illustrations  # pylint: disable=wrong-import-position
 
 
 def main():

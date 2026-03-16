@@ -4,7 +4,7 @@ This guide is intended for developers, contributors, and project maintainers of 
 
 ## Architecture & Design
 
-The `eqsp` package is designed as a vectorized Python port of the original MATLAB toolbox. The core logic is resides in:
+The `eqsp` package is designed as a vectorized Python port of the original MATLAB toolbox. The core logic resides in:
 - `eqsp/partitions.py`: Recursive zonal partitioning algorithms.
 - `eqsp/point_set_props.py`: Metric calculation and energy summation.
 - `eqsp/region_props.py`: Geometric property analysis.

@@ -33,7 +33,7 @@ pip install pyeqsp
 
 ## 3D Plotting Requirements
 
-While 2D illustrations work standard Matplotlib, **3D interactive visualizations** require **Mayavi**.
+While 2D illustrations work with standard Matplotlib, **3D interactive visualizations** require **Mayavi**.
 
 > [!IMPORTANT]
 > Mayavi and its underlying engine (VTK) can be complex to install from source on some systems. If `pip install mayavi` fails, please refer to the [System-Integrated Environment (venv_sys)](internal/venv_sys_setup.md) section in the Maintenance Guide for a reliable alternative using system-provided packages.

@@ -56,10 +56,10 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
     -----
     The expression for the lower bound on minimum distance of a minimum
     $r^{-s}$ energy point set on $S^{dim}$ was given by
-    [[RakSZ94]](#rak94) for s == 0, dim = 2,
-    [[Dahl78]](#dah78) for s == dim-1,
-    [[Kui04]](#kui04) for dim-1 <= s < dim,
-    and [[Kui98]](#kui98) for s > dim.
+    :ref:`[Rak94] <rak94>` for s == 0, dim = 2,
+    :ref:`[Dah78] <dah78>` for s == dim-1,
+    :ref:`[Kui04] <kui04>` for dim-1 <= s < dim,
+    and :ref:`[Kui98] <kui98>` for s > dim.
 
     See Also
     --------
@@ -98,7 +98,7 @@ def calc_energy_coeff(dim, N, s, energy):
     Notes
     -----
     The returned coefficient `coeff` (denoted $C$) corresponds to the second term
-    in the energy expansion. In the PhD thesis [[Leo07]](#leo07),
+    in the energy expansion. In the PhD thesis :ref:`[Leo07] <leo07>`,
     the "energy coefficient" $ec_d(\mathcal{N})$ is defined as:
     $ec_d(\mathcal{N}) := (1 - E/I(d,s)) \mathcal{N}^{s/d}$.
     For $s = dim-1$ (where $I(d,s)=1$ on $S^2$ and higher), this relates to $C$ as:
@@ -107,10 +107,10 @@ def calc_energy_coeff(dim, N, s, energy):
     The energy expansion is not valid for N == 1,
     and in particular, eq_energy_coeff(dim, N, 0, energy) := 0.
 
-    For s > 0, [[Kui98]](#kui98) has
+    For s > 0, :ref:`[Kui98] <kui98>` has
     E(dim, N, s) == (sphere_int_energy(dim, s)/2) N^2 + COEFF N^(1+s/dim) + ...
 
-    For s == 0 (logarithmic potential), see [[Saf97]](#saf97).
+    For s == 0 (logarithmic potential), see :ref:`[Saf97] <saf97>`.
 
     See Also
     --------
@@ -174,8 +174,8 @@ def sphere_int_energy(dim, s):
 
     Notes
     -----
-    Ref for s > 0: [[Kui98]](../references_vol1.md#kui98)
-    Ref for s == 0 and dim == 2: [[Saf97]](../references_vol1.md#saf97)
+    Ref for s > 0: :ref:`[Kui98] <kui98>`
+    Ref for s == 0 and dim == 2: :ref:`[Saf97] <saf97>`
 
     See Also
     --------
@@ -314,7 +314,7 @@ def eq_energy_coeff(
     -----
     The returned `coeff` ($C$) relates to the thesis metric $ec_d(\mathcal{N})$ as:
     $ec_d(\mathcal{N}) = -2 \times C$ (for $s=dim-1$).
-    See Remark on page 198 of [[Leo07]](../references_vol1.md#leo07).
+    See Remark on page 198 of :ref:`[Leo07] <leo07>`.
 
     Examples
     --------

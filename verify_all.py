@@ -35,6 +35,7 @@ def main():
                 "examples/phd-thesis",
                 "examples/user-guide/src",
                 "benchmarks",
+                "doc/scripts",
                 "verify_all.py",
             ],
             "Ruff Linter",
@@ -49,9 +50,18 @@ def main():
                 "examples/phd-thesis",
                 "examples/user-guide/src",
                 "benchmarks",
+                "doc/scripts",
                 "verify_all.py",
             ],
             "Pylint",
+        ),
+        (
+            [py, "doc/scripts/check_links.py"],
+            "Documentation Link Check",
+        ),
+        (
+            [py, "doc/scripts/quality_check.py"],
+            "Performance Quality Check",
         ),
         ([py, "tests/run_coverage.py", "--include-private"], "Test Suite & Coverage"),
     ]
