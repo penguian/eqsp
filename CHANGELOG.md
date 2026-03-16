@@ -8,31 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.99.4] - 2026-03-16
 
 ### Added
-- **Volume 1: User Guide**: Established `doc/user_guide.md` as the central entry point for end-user documentation.
-- **Volume 2: Maintenance Guide**: Created `doc/maintenance_guide.md` as a technical hub for maintainers and developers.
-- **Interactive Citations**: Implemented consolidated bibliographies (`references_vol1.md`, `references_vol2.md`) and clickable links across all guides and docstrings.
-- **Troubleshooting**: Added guidance for release issues like TestPyPI version mismatches and pip caching.
-- **Architectural Diagrams**: Added Mermaid diagrams to the Design & Architecture guide.
-- **User Guide Examples**: Promoted core documentation snippets to standalone scripts in `examples/user-guide/src/`. These are named using the `example_*.py` convention and fully integrated into the test suite via doctests.
-- **Example Results**: Established `examples/user-guide/results/` for reference artifacts, using the `run_example_*.log` and `fig_example_*.png` naming convention to match the main test suite.
-- **Scientific Localisation**: Localised the entire project (documentation, README, and docstrings) to Australian English, standardising on "mathematics", "centre", "colour", and the "-ize" suffix convention.
-- **API Enhancement**: Formally exported point-set property functions (`point_set_min_dist`, `point_set_energy_dist`, etc.) at the `eqsp` package level.
+- **Multi-Volume Documentation**: Established a comprehensive User Guide (Volume 1) and Maintenance Guide (Volume 2) with consolidated bibliographies, Mermaid diagrams, and interactive citations.
+- **Quality Safeguards**: Introduced automated drift-prevention scripts to validate documentation links, function references, and array conventions.
+- **Simplified Examples**: Promoted core documentation snippets to standalone, localised (AU English) examples with integrated reference artifacts.
+- **API Visibility**: Formally exported point-set property functions at the `eqsp` package level.
 
 ### Changed
-- **Directory Structure**: Restructured the examples directory into `src/` (execution) and `results/` (artifacts) hubs.
-- **Documentation Structure**: Reorganized `doc/index.rst` into Volume 1 (User) and Volume 2 (Maintenance) book series.
-- **Audience Assessment**: Conducted a "What vs. How" audit to ensure content is correctly targeted at researchers (User Guide) and developers (Maintenance Guide).
-- **Release Roadmap**: Consolidated future growth and optimization suggestions from legacy outlines into a central roadmap.
-- **Illustration Stubs**: Removed legacy redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`.
-- **Linter Configuration**: "Flattened" `ruff.toml` to a compatibility format that works with both legacy (0.0.x) and modern (0.15.x) environments.
-- **Test Baseline**: Achieved 100% project-wide coverage by integrating newly restructured examples with doctests and targeted coverage pragmas.
+- **Repository Structure**: Restructured examples into `src/` and `results/` hubs and promoted core property functions to the package level.
+- **Standards & Compatibility**: Standardized on canonical Sphinx `{ref}` labels and "flattened" linter configurations for better platform resilience.
+- **Verification**: Achieved 100% project-wide coverage and aligned test baselines with the removal of legacy illustration stubs.
 
 ### Fixed
-- **PR #17 Related**: Corrected API usage examples (positional `N`), fixed array shape descriptions ((3, N) vs. (N, 3)), and added `sphinxcontrib-mermaid` to documentation dependencies.
-- **Ghost Functions**: Replaced references to non-existent functions (`plot_regions_2d`) with verified ones (`project_s2_partition`).
-- **Documentation Build**: Updated `doc/Makefile` to use `python3` for Sphinx builds, improving compatibility on Linux systems.
-- **Docstring Cleanliness**: Fixed line-length lints in `point_set_props.py` triggered by citation links.
-- **Cross-References**: Resolved all MyST "target not found" warnings using global labels and added explicit links between documentation and examples.
+- **PR #17 Resolution**: Addressed 11 technical and documentation issues, including toctree indentation, array shape descriptions, and MyST configuration types.
+- **Build Integrity**: Resolved all "ghost" function references and build warnings to achieve a 100% warning-free Sphinx build.
+- **Docstring Refinement**: Fixed line-length lints and standardized citation syntax across all source code documentation.
 
 ## [0.99.3] - 2026-03-14
 
@@ -41,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Linter Configuration**: Updated `ruff.toml` to the modern `[lint]` section format to resolve deprecation warnings.
-- **Verification**: Updated test baseline results to align with the removal of illustration stubs.
 
 ### Fixed
 - **PyPI Rendering**: Switched `README.md` to use Unicode symbols for inline mathematical notation to ensure proper rendering on PyPI/TestPyPI.
