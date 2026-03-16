@@ -15,6 +15,9 @@ This document summarizes the changes and verification steps completed for the **
 - **Makefile**: Fixed `doc/Makefile` to explicitly use `python3`.
 - **Ruff Configuration**: Transitioned `ruff.toml` to a flat format for cross-environment compatibility.
 
+### Code Cleanup
+- **Visualization Stubs**: Removed redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`. Users are now directed to `eqsp.visualizations`.
+
 ## Verification Results
 - [x] **Pylint**: 10.00/10 (Verified by `verify_all.py`)
 - [x] **Ruff**: Passed (Verified by `verify_all.py`)

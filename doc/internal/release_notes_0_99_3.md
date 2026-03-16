@@ -12,8 +12,6 @@ This document summarizes the changes and verification steps completed for the **
 - **Removed "legacy"**: Standardized terminology to "original Matlab toolbox" or similar across docstrings and documentation.
 - **Mathematics Notation**: Converted inline LaTeX to Unicode (e.g., **S²**, **S³**, **O(N)**) in all top-level Markdown files for better rendering on PyPI/SourceForge.
 
-### Code Cleanup
-- **Visualization Stubs**: Removed redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`. Users are now directed to `eqsp.visualizations`.
 - **Lint Configuration**: Updated `ruff.toml` to the modern `[lint]` section format to resolve deprecation warnings.
 
 ### Verification Results
