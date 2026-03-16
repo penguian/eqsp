@@ -43,7 +43,7 @@ For detailed plotting options, see the [Visualization & Illustration Guide](visu
 ## Reproducing Research
 
 A primary goal of PyEQSP is the faithful reproduction of research results from the original PhD thesis [Leo07].
-- **Thesis Examples**: A dedicated guide to the [Thesis Reproduction Scripts](phd-thesis-examples.md) is available.
+- **Thesis Examples**: A dedicated guide to the [Thesis Reproduction Scripts](phd-thesis-examples.md) is available. For technical setup details, see the [Reproduction Setup](internal/reproduction_setup.md) guide in Volume 2.
 
 ## Executable Examples
 

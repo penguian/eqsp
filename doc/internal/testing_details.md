@@ -1,4 +1,4 @@
-# Technical Testing # Testing Guide: PyEQSP Verification
+# Testing Guide: PyEQSP Verification
 
 This guide outlines the testing strategy, dependencies, and instructions for verifying the **PyEQSP** project and the `eqsp` package.
 
@@ -104,6 +104,12 @@ The private testing suite includes:
 - **`tests/src/test_private_region_props.py`**: Bridge test for `eqsp._private._region_props` doctests.
 
 These tests ensure that internal mathematics optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
+
+### Diagnostic Tool Validation
+
+To maintain the quality of the project's prevention mechanisms, the scripts in `doc/scripts/` are verified via:
+- **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
+- **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that verifies the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
 
 ## Performance Benchmarking
 

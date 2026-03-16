@@ -1,6 +1,6 @@
 # Core Concepts & Geometries
 
-PyEQSP is built on the mathematical framework for partitioning the unit sphere $S^d$ into regions of equal area.
+PyEQSP is built on the mathematical framework for partitioning the unit sphere **Sᵈ** into regions of equal area.
 
 ## The EQ Algorithm
 

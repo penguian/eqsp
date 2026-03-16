@@ -30,6 +30,6 @@ This document summarizes the changes and verification steps completed for the **
 - **Tag Convention**: `release_0_99_4`
 
 ## Remaining Steps
-- [ ] Finalize documentation content for all hub sections.
-- [ ] Perform TestPyPI verification.
-- [ ] Merge to `main`.
+- [x] Finalize documentation content for all hub sections.
+- [x] Perform TestPyPI verification.
+- [x] Merge to `main`.
