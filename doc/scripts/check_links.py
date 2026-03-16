@@ -16,7 +16,8 @@ TARGET_RE = re.compile(r"^\((?P<target>[\w.-]+)\)=", re.MULTILINE)
 LINK_RE = re.compile(r"\[(?P<text>[^\]]+)\]\((?P<link>[^\)]+)\)")
 
 # Regex for MyST ref: {ref}`target` or {ref}`text <target>`
-REF_RE = re.compile(r"\{ref\}`(?:[^<`]+<)?(?P<target>[^>`]+)>?`")
+# Must be exactly {ref}`...` and not preceded by a backtick
+REF_RE = re.compile(r"(?<!`)\{ref\}`(?:[^<`\n]+<)?(?P<target>[^>`\n]+)>?`")
 
 def get_all_md_files():
     """Return a list of all .md files in the repository."""

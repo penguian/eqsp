@@ -28,8 +28,7 @@ results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 | `fig_4_7_packing_s4.py` | Fig 4.7 | Matplotlib (Agg) | Packing density of EQP(4, N), N=1..20,000 |
 | `fig_4_8_wyner_s2_s3_s4.py` | Fig 4.8 | Matplotlib (Agg) | Wyner ratios for EQP(2), EQP(3), EQP(4), N=2..20,000 |
 | `fig_4_9_wyner_s5_s6_s7.py` | Fig 4.9 | Matplotlib (Agg) | Wyner ratios for EQP(5), EQP(6), EQP(7), N=2..20,000 |
-| `fig_4_10_eqp_voronoi_s2_33.py` | Fig 4.10 | Matplotlib (Agg) | EQP(2, 33) Voronoi cells in 2D stereographic projection (headless) |
-| `fig_4_10_eqp_voronoi_s2_33_3d.py` | Fig 4.10 | **Mayavi** | EQP(2, 33) Voronoi edges projected back to S² in 3D |
+| `fig_4_10_eqp_voronoi_s2_33.py` | Fig 4.10 | **Mayavi** | EQP(2, 33) Voronoi edges on S² in 3D |
 | `fig_5_1_normalized_energy.py` | Fig 5.1 | Matplotlib (Agg) | Normalized energy of EQP(d, N), d=2,3,4 |
 | `fig_5_2_diff_normalized_energy.py` | Fig 5.2 | Matplotlib (Agg) | Convergence of normalized energy |
 | `fig_5_3_energy_coeff_s2.py` | Fig 5.3 | Matplotlib (Agg) | Energy coefficient of EQP(2, N), N=2..20,000 |
@@ -69,8 +68,7 @@ main library (not thesis-specific), see the [Visualization & Illustration Guide]
 - **Fig 4.10 (3D Voronoi)**: Computed using `scipy.spatial.SphericalVoronoi`.
   Edges are rendered as true great circle arcs on the sphere using SLERP
   (Spherical Linear Interpolation). This ensures geometric accuracy that
-  matches the blue region boundaries. A 2D stereographic projection
-  fallback (`fig_4_10_eqp_voronoi_s2_33.py`) is also provided.
+  matches the blue region boundaries.
 - **Figs 5.1–5.5 (Energy/Distance)**: 
   - Minimum distance calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
   - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory). For $N=20,000$, these typically complete in 5–10 minutes.

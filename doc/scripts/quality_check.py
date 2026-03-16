@@ -7,7 +7,9 @@ import re
 import sys
 from pathlib import Path
 
+# Add REPO_ROOT to sys.path to allow importing eqsp from source
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(REPO_ROOT))
 
 def check_matplotlib_init():
     """Ensure matplotlib.use('Agg') comes before pyplot import in examples."""
@@ -96,12 +98,78 @@ def check_docstring_links():
 
     return errors
 
+def check_doc_functions():
+    """Ensure all eqsp.function calls in docs exist in the package."""
+    import eqsp  # pylint: disable=import-outside-toplevel
+    exported = set(dir(eqsp))
+    errors = []
+
+    # Files to check
+    docs_to_check = list((REPO_ROOT / "doc").rglob("*.md"))
+    docs_to_check.extend((REPO_ROOT / "doc").rglob("*.rst"))
+    docs_to_check.append(REPO_ROOT / "README.md")
+
+    # Regex for eqsp.function_name
+    # Handle optional RST backslash escape for underscores: eqsp.region\_props
+    func_pattern = r"(?<![\/\.a-zA-Z0-9_-])eqsp\.(?P<func>[a-zA-Z_][a-zA-Z0-9_\\-]*)"
+    func_re = re.compile(func_pattern)
+
+    ignore_funcs = {
+        "visualizations", "illustrations", "histograms", "partitions",
+        "point_set_props", "region_props", "utilities", "sourceforge",
+        "region\\_props", "point\\_set\\_props"
+    }
+
+    for f in docs_to_check:
+        if not f.exists():
+            continue
+        content = f.read_text(encoding="utf-8")
+        matches = set(func_re.findall(content))
+        for m in matches:
+            if m in ignore_funcs:
+                continue
+            if m not in exported:
+                f_rel = f.relative_to(REPO_ROOT)
+                errors.append(f"{f_rel}: Referenced non-existent function `eqsp.{m}`")
+
+    return errors
+
+def check_doc_shapes():
+    """Ensure array shape comments follow the (3, N) column-major convention."""
+    errors = []
+    docs_to_check = list((REPO_ROOT / "doc").rglob("*.md"))
+
+    # Regex for (1000, 3) or (N, 3) which is usually an error in PyEQSP
+    wrong_shape_re = re.compile(r"\(N,\s*[234]\)|\(\d+,\s*[234]\)")
+
+    for f in docs_to_check:
+        if not f.exists() or "migration" in f.name:
+            continue
+        content = f.read_text(encoding="utf-8")
+
+        # Exclude common migration guide "intentional" mentions of other shapes
+        if "scikit-learn" in content and "pandas" in content:
+            # Simple heuristic: if we are talking about other libs, skip the shape check
+            # for the features description line
+            content = content.replace("(N, features)", "(EXCLUDED)")
+
+        if wrong_shape_re.search(content):
+            f_rel = f.relative_to(REPO_ROOT)
+            errors.append(
+                f"{f_rel}: Documentation likely uses incorrect (N, dim) shape. "
+                "PyEQSP uses (dim+1, N) columns."
+            )
+
+    return errors
+
 def main():
     """Run all quality checks."""
     all_errors = []
     all_errors.extend(check_matplotlib_init())
     all_errors.extend(check_conf_types())
     all_errors.extend(check_docstring_links())
+    all_errors.extend(check_doc_functions())
+    all_errors.extend(check_doc_shapes())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")

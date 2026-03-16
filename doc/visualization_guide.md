@@ -6,23 +6,23 @@ PyEQSP provides powerful tools for visualizing partitions and point sets in both
 
 For quick analysis, 2D projections of the EQ algorithm are highly effective. The standard illustration shows how the sphere is partitioned into collars and regions.
 
-### EQ Algorithm Illustration
-The `eqsp.illustrations` module provides functions to visualize the "igloo" partitioning scheme.
+### Standard 2D Projection
+The `eqsp.illustrations` module provides functions to visualize the resulting partitions in common projections.
 
 ```python
 import matplotlib.pyplot as plt
 from eqsp import illustrations
 
-# Show the partitioning for 100 regions on S2
-plt.figure()
-illustrations.illustrate_eq_algorithm(dim=2, N=100)
+# Show a stereographic projection of 100 regions on S2
+plt.figure(figsize=(8, 8))
+illustrations.project_s2_partition(N=100, proj='stereo', show_points=True)
 plt.show()
 ```
 
 > [!TIP]
 > For a clean, executable version of this plot, see [examples/user-guide/src/example_visualize_2d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_2d.py).
 
-![EQ Algorithm 2D](_static/images/eq_algorithm_2d.png)
+![EQ Partition 2D](_static/images/eq_projection_2d.png)
 
 ## Interactive 3D Visualizations
 

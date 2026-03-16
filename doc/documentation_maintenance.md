@@ -34,6 +34,16 @@ The project is configured with GitHub webhooks.
 - **Automation**: Every push to `main` triggers a build of the "Latest" version.
 - **Versioning**: Branch tags (e.g., `release_0_99_4`) can be specifically enabled on the RTD dashboard to preserve documentation for older releases.
 
+## Automated Quality Safeguards
+
+To prevent documentation drift and common technical errors, PyEQSP includes a suite of automated checks integrated into `verify_all.py`:
+
+*   **Link & Citation Check** (`doc/scripts/check_links.py`): Validates all internal anchors, cross-file `{ref}` targets, and citation links.
+*   **Function Existence Check** (`doc/scripts/quality_check.py`): Scans all guides and `README.md` to ensure any code snippet referencing `eqsp.<func>` actually exists in the current package version. This prevents "ghost" references like the legacy `plot_regions_2d`.
+*   **Coordinate Convention Check**: Validates that array shape descriptions in documentation follow the **column-major (dim+1, N)** convention rather than the common Row-major error.
+*   **Matplotlib Initialization Check**: Enforces that `matplotlib.use('Agg')` is called before any `pyplot` imports in examples to ensure headless environment compatibility.
+*   **Configuration Type Check**: Validates that `doc/conf.py` variables use the correct data types expected by Sphinx extensions.
+
 ## Guide Lifecycle
 
 - **Volume 1 (User)**: Should be updated whenever a new public feature or visualization method is added.

@@ -9,18 +9,18 @@ PyEQSP Documentation
    :caption: Volume 1: User Guide
    :numbered:
 
-    User Guide Overview <user_guide.md>
-    Installation & Requirements <installation.md>
-    Use Cases & Applicability <use_cases.md>
-    Core Concepts & Geometries <core_concepts.md>
-    Practical Usage & Examples <practical_usage.md>
-    Symmetric EQ Partitions <even_collar_partitions.md>
-    Visualization & Illustration <visualization_guide.md>
-    Performance Expectations <performance_expectations.md>
-    Quality & Research Integrity <quality_policy.md>
-    Thesis Research Reproduction <phd-thesis-examples.md>
-    User Migration Guide <user_migration_guide.md>
-    Appendix A: eqsp package API <api/modules>
+   User Guide Overview <user_guide.md>
+   Installation & Requirements <installation.md>
+   Use Cases & Applicability <use_cases.md>
+   Core Concepts & Geometries <core_concepts.md>
+   Practical Usage & Examples <practical_usage.md>
+   Symmetric EQ Partitions <even_collar_partitions.md>
+   Visualization & Illustration <visualization_guide.md>
+   Performance Expectations <performance_expectations.md>
+   Quality & Research Integrity <quality_policy.md>
+   Thesis Research Reproduction <phd-thesis-examples.md>
+   User Migration Guide <user_migration_guide.md>
+   Appendix A: eqsp package API <api/modules>
 
 .. toctree::
    :maxdepth: 1
