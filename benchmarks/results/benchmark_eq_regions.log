@@ -2,7 +2,7 @@ Running Thesis Benchmark for eq_regions: d=[1..2], N=2^[1..22]
 Iterations per point: 1
 
 Scaling Analysis (t ~ N^x) for eq_regions:
-Dimension 1 : x = 0.6196 (Thesis baseline: ~0.60)
-Dimension 2 : x = 0.4925 (Thesis baseline: ~0.60)
+Dimension 1 : x = 0.6121 (Thesis baseline: ~0.60)
+Dimension 2 : x = 0.4877 (Thesis baseline: ~0.60)
 
-Total benchmark wall time: 0.69 seconds
+Total benchmark wall time: 0.65 seconds
