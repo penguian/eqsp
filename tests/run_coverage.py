@@ -10,6 +10,7 @@ Usage:
 """
 
 import argparse
+import importlib.util
 import os
 import subprocess
 import sys
@@ -49,13 +50,14 @@ def main():
     # --ignore=eqsp/_private: ignore the private package itself by default
     pytest_opts = ["--doctest-modules", "--ignore=eqsp/_private"]
 
-    # If mayavi is not installed (e.g. in CI), skip visualizations.py
-    # to avoid ImportError during doctest collection.
-    import importlib.util  # pylint: disable=import-outside-toplevel
-
+    omit_opts = []
     if importlib.util.find_spec("mayavi") is None:
-        print("Mayavi not found — skipping eqsp/visualizations.py doctests.")
+        print(
+            "Mayavi not found — skipping eqsp/visualizations.py "
+            "doctests and coverage."
+        )
         pytest_opts.append("--ignore=eqsp/visualizations.py")
+        omit_opts.append("--omit=eqsp/visualizations.py")
 
     if args.include_private:
         print("Running coverage including private tests...")
@@ -78,12 +80,14 @@ def main():
         "-m",
         "coverage",
         "run",
-        "--source=eqsp,examples/user-guide/src",
+        "--source=eqsp,examples/user-guide/src,doc/scripts",
+    ] + omit_opts + [
         "-m",
         "pytest",
         "eqsp",
         "tests/src",
         "examples/user-guide/src",
+        "doc/scripts",
     ] + pytest_opts
 
     # Run the coverage measurement

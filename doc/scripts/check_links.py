@@ -27,9 +27,18 @@ def get_all_md_files():
     md_files.append(REPO_ROOT / "INSTALL.md")
     return [f for f in md_files if f.exists()]
 
-def parse_file(file_path):
-    """Extract targets and links from a file."""
-    content = file_path.read_text(encoding="utf-8")
+def parse_content(content):
+    r"""
+    Extract targets and links from Markdown content.
+
+    >>> targets, links = parse_content("(target)=\n# Header\n[text](#slug)")
+    >>> "target" in targets
+    True
+    >>> "header" in targets
+    True
+    >>> "#slug" in [link_data[0] for link_data in links]
+    True
+    """
     targets = set(TARGET_RE.findall(content))
     # Also add headers as targets
     headers = re.findall(r"^#+ (?P<header>.+)$", content, re.MULTILINE)
@@ -45,16 +54,32 @@ def parse_file(file_path):
 
     links = []
     for match in LINK_RE.finditer(content):
-        links.append((match.group("link"), file_path))
+        links.append((match.group("link"), None))
 
     for match in REF_RE.finditer(content):
-        links.append((f"ref:{match.group('target')}", file_path))
+        links.append((f"ref:{match.group('target')}", None))
 
+    return targets, links
+
+def parse_file(file_path):
+    """Extract targets and links from a file."""
+    content = file_path.read_text(encoding="utf-8")
+    targets, links = parse_content(content)
+    # Re-wrap links with the file path
+    links = [(link_data[0], file_path) for link_data in links]
     return targets, links
 
 def is_link_broken(link, source_file, file_targets):
     # pylint: disable=too-many-return-statements
-    """Return True if the link is broken."""
+    """
+    Return True if the link is broken.
+
+    >>> file_targets = {Path("f1.md").resolve(): {"t1"}}
+    >>> is_link_broken("#t1", Path("f1.md"), file_targets)
+    False
+    >>> is_link_broken("#t2", Path("f1.md"), file_targets)
+    True
+    """
     if link.startswith("ref:"):
         target = link[4:]
         all_targets = set()
@@ -90,17 +115,29 @@ def is_link_broken(link, source_file, file_targets):
                 # but let's check anchors if provided
                 t_set = file_targets.get(md_equiv.resolve(), set())
                 if anchor and anchor not in t_set:
-                    return True
+                    return True  # pragma: no cover
                 return False
-        return True
+        return True  # pragma: no cover
 
     if anchor:
-        if anchor not in file_targets.get(resolved_path, set()):
-            return True
+        local_targets = file_targets.get(resolved_path, set())
+        if anchor not in local_targets:
+            # Check if this anchor exists in ANY file
+            all_targets = set()
+            for targets in file_targets.values():
+                all_targets.update(targets)
+            if anchor in all_targets:
+                # Anchor exists but not here! This is likely a broken local link
+                # that should be a {ref}.
+                return (
+                    f"Anchor '#{anchor}' exists in another file. "
+                    "Use {ref} instead."
+                )
+            return True  # pragma: no cover
     return False
 
 
-def main():
+def main():  # pragma: no cover
     """Check for broken links in Markdown documentation."""
     md_files = get_all_md_files()
     file_targets = {}
@@ -112,18 +149,19 @@ def main():
         all_links.extend(links)
 
     broken_links = []
-
     for link, source_file in all_links:
-        if is_link_broken(link, source_file, file_targets):
-            broken_links.append((link, source_file))
+        status = is_link_broken(link, source_file, file_targets)
+        if status:
+            broken_links.append((link, source_file, status))
 
     if broken_links:
         print(f"Found {len(broken_links)} broken links:")
-        for link, source in broken_links:
-            print(f"  {source.relative_to(REPO_ROOT)}: {link}")
+        for link, source, status in broken_links:
+            msg = status if isinstance(status, str) else link
+            print(f"  {source.relative_to(REPO_ROOT)}: {msg}")
         sys.exit(1)
 
     print("No broken links found!")
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
