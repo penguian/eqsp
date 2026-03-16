@@ -1,3 +1,7 @@
+warning: The top-level linter settings are deprecated in favour of their counterparts in the `lint` section. Please update the following options in `ruff.toml`:
+  - 'select' -> 'lint.select'
+  - 'per-file-ignores' -> 'lint.per-file-ignores'
+All checks passed!
 
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
@@ -5,46 +9,50 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 No broken links found!
 Quality checks passed!
 ============================= test session starts ==============================
-platform linux -- Python 3.13.7, pytest-8.3.5, pluggy-1.5.0
+platform linux -- Python 3.13.7, pytest-9.0.2, pluggy-1.6.0
 rootdir: /home/leopardi/sync/src/penguian/pyeqsp
 configfile: pyproject.toml
-plugins: typeguard-4.4.2
-collected 166 items
+collected 175 items
 
 eqsp/histograms.py ...                                                   [  1%]
-eqsp/illustrations.py ..                                                 [  3%]
+eqsp/illustrations.py ..                                                 [  2%]
 eqsp/partitions.py ....                                                  [  5%]
-eqsp/point_set_props.py .............                                    [ 13%]
-eqsp/region_props.py .......                                             [ 17%]
-eqsp/utilities.py ..............                                         [ 25%]
-eqsp/visualizations.py ...                                               [ 27%]
-tests/src/test_coverage_edge_cases.py .......................            [ 41%]
+eqsp/point_set_props.py .............                                    [ 12%]
+eqsp/region_props.py .......                                             [ 16%]
+eqsp/utilities.py ..............                                         [ 24%]
+tests/src/test_coverage_edge_cases.py .......................            [ 37%]
+tests/src/test_doc_scripts.py ........                                   [ 42%]
 tests/src/test_histograms.py ........                                    [ 46%]
 tests/src/test_illustrations_extra.py ........                           [ 51%]
 tests/src/test_illustrations_mock.py .....                               [ 54%]
 tests/src/test_partitions.py ..........                                  [ 60%]
-tests/src/test_point_set_props.py ..........                             [ 66%]
-tests/src/test_private_histograms.py ...                                 [ 68%]
+tests/src/test_point_set_props.py ..........                             [ 65%]
+tests/src/test_private_histograms.py ...                                 [ 67%]
 tests/src/test_private_partitions.py .                                   [ 68%]
-tests/src/test_private_region_props.py .                                 [ 69%]
-tests/src/test_region_props.py ........                                  [ 74%]
-tests/src/test_utilities.py ...                                          [ 75%]
-tests/src/test_visualizations_mock.py .................................. [ 96%]
-..                                                                       [ 97%]
-examples/user-guide/src/example_quick_start.py .                         [ 98%]
-examples/user-guide/src/example_symmetric_partitions.py .                [ 98%]
-examples/user-guide/src/example_visualize_2d.py .                        [ 99%]
-examples/user-guide/src/example_visualize_3d.py .                        [100%]
+tests/src/test_private_region_props.py .                                 [ 68%]
+tests/src/test_region_props.py ........                                  [ 73%]
+tests/src/test_utilities.py ...                                          [ 74%]
+tests/src/test_visualizations_mock.py .................................. [ 94%]
+..                                                                       [ 95%]
+examples/user-guide/src/example_quick_start.py .                         [ 96%]
+examples/user-guide/src/example_symmetric_partitions.py .                [ 96%]
+examples/user-guide/src/example_visualize_2d.py .                        [ 97%]
+examples/user-guide/src/example_visualize_3d.py .                        [ 97%]
+doc/scripts/check_links.py ..                                            [ 98%]
+doc/scripts/quality_check.py ..                                          [100%]
 
 =============================== warnings summary ===============================
 examples/user-guide/src/example_visualize_2d.py::example_visualize_2d.main
-  /home/leopardi/sync/src/penguian/pyeqsp/examples/user-guide/src/example_visualize_2d.py:52: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  /home/leopardi/sync/src/penguian/pyeqsp/examples/user-guide/src/example_visualize_2d.py:46: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
     plt.show() # pragma: no cover
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 166 passed, 1 warning in 4.69s ========================
+======================== 175 passed, 1 warning in 2.03s ========================
 Name                                                      Stmts   Miss  Cover
 -----------------------------------------------------------------------------
+doc/scripts/__init__.py                                       0      0   100%
+doc/scripts/check_links.py                                   65      0   100%
+doc/scripts/quality_check.py                                116      0   100%
 eqsp/__init__.py                                              9      0   100%
 eqsp/_private/_histograms.py                                 57      0   100%
 eqsp/_private/_partitions.py                                142      0   100%
@@ -55,13 +63,13 @@ eqsp/partitions.py                                          179      0   100%
 eqsp/point_set_props.py                                     183      0   100%
 eqsp/region_props.py                                         92      0   100%
 eqsp/utilities.py                                           166      0   100%
-eqsp/visualizations.py                                      142      0   100%
 examples/user-guide/src/example_quick_start.py               14      0   100%
 examples/user-guide/src/example_symmetric_partitions.py      16      0   100%
-examples/user-guide/src/example_visualize_2d.py              15      0   100%
+examples/user-guide/src/example_visualize_2d.py              12      0   100%
 examples/user-guide/src/example_visualize_3d.py               1      0   100%
 -----------------------------------------------------------------------------
-TOTAL                                                      1362      0   100%
+TOTAL                                                      1398      0   100%
+Mayavi not found — skipping eqsp/visualizations.py doctests and coverage.
 Running coverage including private tests...
 
 Coverage Report:
