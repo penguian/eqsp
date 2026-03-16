@@ -58,7 +58,7 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
     $r^{-s}$ energy point set on $S^{dim}$ was given by
     :ref:`[Rak94] <rak94>` for s == 0, dim = 2,
     :ref:`[Dah78] <dah78>` for s == dim-1,
-    :ref:`[Kui04] <kui04>` for dim-1 <= s < dim,
+    :ref:`[Kui07] <kui07>` for dim-1 <= s < dim,
     and :ref:`[Kui98] <kui98>` for s > dim.
 
     See Also

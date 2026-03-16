@@ -1,6 +1,6 @@
 # The Applicability of PyEQSP: Use Cases
 
-Based on: *"The applicability of equal area partitions of the unit sphere"*, {ref}`Leopardi (2024) <leo24>`, Journal of Applied Statistics, 1(2), 2024.
+Based on: *"The applicability of equal area partitions of the unit sphere"*, {ref}`Leopardi (2024) <leo24jas>`, Journal of Approximation Software, 1(2).
 
 ## History: From Toolbox to Library
 

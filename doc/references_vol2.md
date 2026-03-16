@@ -8,8 +8,8 @@ This chapter lists all mathematical foundations and technical resources cited th
 - **[Dah78]** Dahlberg, B. E. J. (1978). *"On the distribution of Fekete points"*, Duke Math. J. 45 (1978), no. 3, pp. 537--542.
 (v2-kui98)=
 - **[Kui98]** Kuijlaars, A. B. J. and Saff, E. B. (1998). *"Asymptotics for minimal discrete energy on the sphere"*, Transactions of the American Mathematical Society, v. 350 no. 2, pp. 523--538.
-(v2-kui04)=
-- **[Kui04]** Kuijlaars, A. B. J., Saff, E. B., and Sun, X. (2004). *"On the asymptotic distribution of Fekete points"*, Scanning foundational results.
+(v2-kui07)=
+- **[Kui07]** Kuijlaars, A. B. J., Saff, E. B., and Sun, X. (2007). *"On separation of minimal Riesz energy points on spheres in Euclidean spaces"*, Journal of Computational and Applied Mathematics, 199(1), 172-180.
 (v2-leo07)=
 - **[Leo07]** Leopardi, P. (2007). *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*, PhD thesis, UNSW.
 (v2-leo09)=

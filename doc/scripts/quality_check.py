@@ -162,6 +162,31 @@ def check_doc_shapes():
 
     return errors
 
+def check_typos():
+    """Scan for common or previously identified typos."""
+    errors = []
+    # Known typos to scan for
+    typo_map = {
+        "excitiation": "excitation",
+        "Scanning foundational results": "proper metadata entry",
+    }
+
+    files_to_check = list(REPO_ROOT.rglob("*.md"))
+    files_to_check.extend(REPO_ROOT.rglob("*.rst"))
+    files_to_check.extend((REPO_ROOT / "eqsp").rglob("*.py"))
+
+    for f in files_to_check:
+        if not f.exists() or ".build" in str(f) or "results.0" in str(f):
+            continue
+        content = f.read_text(encoding="utf-8")
+        for typo, correction in typo_map.items():
+            if typo in content:
+                f_rel = f.relative_to(REPO_ROOT)
+                msg = f"{f_rel}: Found typo `{typo}`. Should be `{correction}`."
+                errors.append(msg)
+
+    return errors
+
 def main():
     """Run all quality checks."""
     all_errors = []
@@ -170,6 +195,7 @@ def main():
     all_errors.extend(check_docstring_links())
     all_errors.extend(check_doc_functions())
     all_errors.extend(check_doc_shapes())
+    all_errors.extend(check_typos())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")
