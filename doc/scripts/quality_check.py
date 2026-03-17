@@ -238,6 +238,38 @@ def check_typos():
 
     return errors
 
+def check_orthography():
+    """Ensure Australian -ize English (Oxford spelling) project-wide."""
+    errors = []
+    # Known non-compliant spellings (Standardisation -> Standardization)
+    ortho_map = {
+        r"(?<!\w)standardisation(?!\w)": "standardization",
+        r"(?<!\w)organise(?!\w)": "organize",
+        r"(?<!\w)analyse(?!\w)": "analyze",
+        r"(?<!\w)optimise(?!\w)": "optimize",
+    }
+
+    files_to_check = list(REPO_ROOT.rglob("*.md"))
+    files_to_check.extend(REPO_ROOT.rglob("*.rst"))
+    files_to_check.extend((REPO_ROOT / "eqsp").rglob("*.py"))
+
+    for f in files_to_check:
+        if not f.exists() or ".build" in str(f) or "results.0" in str(f):
+            continue
+        content = f.read_text(encoding="utf-8")
+
+        # Skip references_vol1.md for title quotes in paper titles
+        if "references_vol1.md" in f.name:
+            continue
+
+        for pattern, correction in ortho_map.items():
+            if re.search(pattern, content, re.IGNORECASE):
+                f_rel = f.relative_to(REPO_ROOT)
+                msg = f"{f_rel}: Found non-Oxford spelling. Use `{correction}`."
+                errors.append(msg)
+
+    return errors
+
 def main():  # pragma: no cover
     """Run all quality checks."""
     all_errors = []
@@ -248,6 +280,7 @@ def main():  # pragma: no cover
     all_errors.extend(check_doc_shapes())
     all_errors.extend(check_headings())
     all_errors.extend(check_typos())
+    all_errors.extend(check_orthography())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")
