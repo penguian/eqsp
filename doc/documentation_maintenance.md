@@ -14,7 +14,7 @@ To build and preview the documentation locally:
 
 1. **Install Dependencies**:
    ```bash
-   pip install .[docs]
+   pip install ".[docs]"
    ```
 2. **Execute Build**:
    ```bash

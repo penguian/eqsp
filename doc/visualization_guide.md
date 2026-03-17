@@ -15,7 +15,7 @@ from eqsp import illustrations
 
 # Show a stereographic projection of 100 regions on S2
 plt.figure(figsize=(8, 8))
-illustrations.project_s2_partition(N=100, proj='stereo', show_points=True)
+illustrations.project_s2_partition(100, proj='stereo', show_points=True)
 plt.show()
 ```
 

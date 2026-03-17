@@ -31,6 +31,9 @@ Documentation is managed using Sphinx and MyST-Parser.
 - **Build Command**: `cd doc && make html`
 - **Configuration**: Managed via `doc/conf.py`.
 - **Branding**: Ensure the distinction between the project name (**PyEQSP**) and the import name (`eqsp`) is maintained in all documents.
+- **Linguistic Standard**: Adopt **Australian -ize English** (Oxford spelling).
+  - Use `-re` and `-our` (e.g., *centre*, *colour*).
+  - Prefer `-ize` and `-yze` suffixes (e.g., *organized*, *analyze*).
 
 For standard operating procedures regarding building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
 
