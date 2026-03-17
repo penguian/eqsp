@@ -43,7 +43,7 @@ def main():
 
     print("Projection generated. Run plt.show() to view if in an interactive session.")
     # Show everything at the end
-    if plt.get_backend() != 'Agg':  # pragma: no cover
+    if plt.get_backend().lower() != 'agg':  # pragma: no cover
         plt.show()
 
 if __name__ == "__main__": # pragma: no cover

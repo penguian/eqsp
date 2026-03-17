@@ -258,8 +258,8 @@ def check_orthography():
             continue
         content = f.read_text(encoding="utf-8")
 
-        # Skip references_vol1.md for title quotes in paper titles
-        if "references_vol1.md" in f.name:
+        # Skip reference volumes for title quotes (must be verbatim)
+        if "references_vol" in f.name and f.suffix == ".md":
             continue
 
         for pattern, correction in ortho_map.items():
