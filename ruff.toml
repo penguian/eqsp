@@ -2,7 +2,7 @@ line-length = 88
 target-version = "py311"
 
 # Explicitly include all Python files across the project
-include = ["*.py", "eqsp/**/*.py", "tests/**/*.py", "examples/**/*.py", "benchmarks/**/*.py"]
+include = ["*.py", "eqsp/**/*.py", "tests/**/*.py", "examples/**/*.py", "benchmarks/**/*.py", "doc/scripts/**/*.py"]
 
 # Linting rules
 select = [

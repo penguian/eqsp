@@ -162,5 +162,5 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
-pylint eqsp benchmarks examples tests  # Project-wide scan
+pylint eqsp benchmarks examples tests doc/scripts verify_all.py  # Project-wide scan
 ```
