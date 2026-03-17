@@ -9,19 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Multi-Volume Documentation**: Established a comprehensive User Guide (Volume 1) and Maintenance Guide (Volume 2) with consolidated bibliographies, Mermaid diagrams, and interactive citations.
-- **Quality Safeguards**: Introduced automated drift-prevention scripts to validate documentation links, function references, and array conventions.
-- **Simplified Examples**: Promoted core documentation snippets to standalone, localised (AU English) examples with integrated reference artifacts.
+- **Quality Safeguards**: Introduced automated drift-prevention scripts (`check_links.py`, `quality_check.py`) to validate documentation links, function references, array conventions, and **Australian -ize English** orthography.
+- **Simplified Examples**: Promoted core documentation snippets to standalone, localized examples with integrated reference artifacts.
 - **API Visibility**: Formally exported point-set property functions at the `eqsp` package level.
 
 ### Changed
+- **Research Integrity**: Conducted a comprehensive bibliographic audit, upgrading internal citations to finalized peer-reviewed publications (e.g., `[Kui07]`, `[Leo24-JAS]`) and ensuring all paper titles are quoted **verbatim**, regardless of regional spelling standards.
 - **Repository Structure**: Restructured examples into `src/` and `results/` hubs and promoted core property functions to the package level.
 - **Standards & Compatibility**: Standardized on canonical Sphinx `{ref}` labels and "flattened" linter configurations for better platform resilience.
 - **Verification**: Achieved 100% project-wide coverage and aligned test baselines with the removal of legacy illustration stubs.
 
 ### Fixed
-- **PR #17 Resolution**: Addressed 11 technical and documentation issues, including toctree indentation, array shape descriptions, and MyST configuration types.
+- **Robust Visualization**: Applied robust case-insensitive guards (`.lower() != 'agg'`) to all Matplotlib backend checks project-wide, ensuring warning-free operation in both interactive and headless environments.
+- **PR #17 Resolution**: Addressed 11 technical and documentation issues, including toctree indentation, array shape descriptions, quoted `pip install` extras, and MyST configuration types.
+- **Diagnostic Portability**: Implemented `sys.path` isolation in standalone inspection and quality scripts to allow direct execution from any environment.
 - **Build Integrity**: Resolved all "ghost" function references and build warnings to achieve a 100% warning-free Sphinx build.
-- **Docstring Refinement**: Fixed line-length lints and standardized citation syntax across all source code documentation.
 
 ## [0.99.3] - 2026-03-14
 

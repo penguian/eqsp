@@ -109,6 +109,7 @@ These tests ensure that internal mathematics optimizations (such as vectorized c
 
 To maintain the quality of the project's prevention mechanisms, the scripts in `doc/scripts/` are verified via:
 - **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
+- **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose.
 - **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that verifies the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
 
 All diagnostic scripts utilize **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.

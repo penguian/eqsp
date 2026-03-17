@@ -43,6 +43,7 @@ To prevent documentation drift and common technical errors, PyEQSP includes a su
 *   **Coordinate Convention Check**: Validates that array shape descriptions in documentation follow the **column-major (dim+1, N)** convention rather than the common Row-major error.
 *   **Matplotlib Initialization Check**: Enforces that `matplotlib.use('Agg')` is called before any `pyplot` imports in examples to ensure headless environment compatibility.
 *   **Configuration Type Check**: Validates that `doc/conf.py` variables use the correct data types expected by Sphinx extensions.
+*   **Orthography Check** (`doc/scripts/quality_check.py`): Enforces the project's linguistic standard (**Australian -ize English**), flagging non-compliant spellings (e.g., "-ise" suffixes) to ensure global academic consistency.
 
 To ensure stability across CI/CD and diverse local environments, these scripts are designed with **architectural isolation** (using independent `sys.path` setup) and **headless environment support** (automatically forcing `matplotlib.use('Agg')` if executed on a machine without a display).
 
