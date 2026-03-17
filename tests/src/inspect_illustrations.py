@@ -3,14 +3,22 @@ PyEQSP Tests: Inspect Illustrations features
 
 Copyright Paul Leopardi 2026
 """
+# ruff: noqa: E402
 
 import argparse
 import os
+import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from eqsp import illustrations
-from eqsp.partitions import eq_point_set
+# Add REPO_ROOT to sys.path to allow importing eqsp from source
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from eqsp import illustrations  # pylint: disable=wrong-import-position
+from eqsp.partitions import eq_point_set  # pylint: disable=wrong-import-position
 
 
 def run(save=False):
@@ -39,7 +47,7 @@ def run(save=False):
         plt.close()
         print(f"  Saved to {path}")
     else:
-        if plt.get_backend() != "Agg": # pragma: no cover
+        if plt.get_backend().lower() != "agg": # pragma: no cover
             plt.show()
 
     # --- project_s2_partition ---
@@ -54,7 +62,7 @@ def run(save=False):
         plt.close(fig)
         print(f"  Saved to {path}")
     else:
-        if plt.get_backend() != "Agg": # pragma: no cover
+        if plt.get_backend().lower() != "agg": # pragma: no cover
             plt.show()
 
     # --- project_point_set ---
@@ -68,7 +76,7 @@ def run(save=False):
         plt.close(fig)
         print(f"  Saved to {path}")
     else:
-        if plt.get_backend() != "Agg": # pragma: no cover
+        if plt.get_backend().lower() != "agg": # pragma: no cover
             plt.show()
 
     print("2D Illustrations inspection complete.")

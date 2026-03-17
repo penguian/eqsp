@@ -3,13 +3,21 @@ PyEQSP Tests: Inspect Visualizations features
 
 Copyright Paul Leopardi 2026
 """
+# ruff: noqa: E402
 
 # pylint: disable=import-outside-toplevel
 
 import argparse
 import os
+import sys
+from pathlib import Path
 
-from eqsp.partitions import eq_point_set
+# Add REPO_ROOT to sys.path to allow importing eqsp from source
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from eqsp.partitions import eq_point_set  # pylint: disable=wrong-import-position
 
 
 def run(save=False):
