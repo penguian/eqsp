@@ -89,7 +89,10 @@ Matlab and NumPy differ in their default memory layout (Column-major vs Row-majo
 The Python port uses two separate modules for plotting, unlike the single Matlab illustration module:
 
 *   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`).
-*   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi; see [System Packages (Advanced)](#system-packages-advanced) for installation notes.
+*   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi.
+
+### Documentation Philosophy: Two Volumes
+Starting with 0.99.4, the documentation is divided into a **User Guide (Volume 1)** for researchers and a **Maintenance Guide (Volume 2)** for developers. This ensures that technical implementation details (like CI setup or release procedures) do not clutter the practical usage guides.
 
 ## Module Structure
 The package is organized into logical modules:
@@ -148,6 +151,7 @@ The Python port includes several algorithmic optimizations that significantly ou
 - **Minimum Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
 - **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
 - **Histogram Lookups**: Fully vectorized point-in-region assignment on **S²** for bulk processing of billions of points.
+- **Robustness**: 0.99.4 introduces **case-insensitive backend guards** and **environment isolation**, ensuring scripts run warning-free in both interactive and headless/CI environments.
 
 ## Common Matlab-to-Python "Gotchas"
 
