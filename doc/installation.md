@@ -1,5 +1,7 @@
 # Installation Guide
 
+**PyEQSP: Python Equal Area Sphere Partitioning Library**
+
 PyEQSP requires Python 3.11 or later. We recommend using a virtual environment to manage dependencies locally.
 
 ## Basic Installation

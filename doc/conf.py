@@ -7,7 +7,7 @@ from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
 # The project name used for branding and titles.
-project = "PyEQSP"
+project = "PyEQSP: Python Equal Area Sphere Partitioning Library"
 
 # The package name used for version lookup.
 distribution_name = "pyeqsp"

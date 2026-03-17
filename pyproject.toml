@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "pyeqsp"
 version = "0.99.4"
-description = "Equal Area Sphere Partitioning Library"
+description = "Python Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
   { name = "Paul Leopardi", email = "paul.leopardi@gmail.com" },

@@ -1,5 +1,5 @@
-PyEQSP Documentation
-====================
+PyEQSP: Python Equal Area Sphere Partitioning Library
+=====================================================
 
 .. important::
    **Naming Distinction**: The project is named **PyEQSP** (installed via ``pip install pyeqsp``), but the Python package is imported as ``eqsp``.
