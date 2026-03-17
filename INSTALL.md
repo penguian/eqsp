@@ -1,7 +1,11 @@
+# PyEQSP: Python Equal Area Sphere Partitioning Library
+
+**Release 0.99.4** (2026-03-17): Copyright 2026 Paul Leopardi
+
 # Installation
 
-This guide covers the installation of the **PyEQSP** (Equal Area
-Sphere Partitioning) library for Python.
+This guide covers the installation of **PyEQSP**,
+the Python Equal Area Sphere Partitioning Library.
 
 ## Prerequisites
 

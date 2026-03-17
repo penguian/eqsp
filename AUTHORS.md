@@ -1,17 +1,24 @@
+# PyEQSP: Python Equal Area Sphere Partitioning Library
+
+Copyright 2026 Paul Leopardi
+
 # Authors and Acknowledgements
 
-**Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox**
-
-- **Release 1.12.1** (2025-08-10)
-- **Release 1.12** (2024-10-20): Copyright 2024-2025 Paul Leopardi
-- **Release 1.10** (2005-06-26): Copyright 2004-2005 Paul Leopardi for the University of New South Wales.
-
 For licensing, see `COPYING`.
-For revision history, see `CHANGELOG`.
+For revision history, see `CHANGELOG.md`.
+
+## Ancestry
+
+The **PyEQSP** Python library is a new implementation based on the original **Recursive Zonal Equal Area (EQ) Sphere Partitioning Toolbox** for Matlab.
+
+### Matlab Toolbox History
+- **Matlab Release 1.12.1** (2025-08-10)
+- **Matlab Release 1.12** (2024-10-20)
+- **Matlab Release 1.10** (2005-06-26)
 
 ## Origin
 
-Maple and Matlab code is based on work by:
+The prototype Maple code and the Matlab toolbox are based on work by:
 - **Ed Saff** [SafSP], [Saf03]
 - **Ian Sloan** [Slo03]
 
@@ -43,7 +50,7 @@ The **PyEQSP** repository is the software implementation of research into Recurs
 - **PhD Thesis (2007)**: *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*. This thesis describes the partition of the unit sphere into regions of equal area and bounded diameter, establishing the theoretical bounds that justify the partitioning algorithm.
 - **Publications**: The core algorithms and diameter bounds are described and proven in **Leopardi (2006)** and **Leopardi (2009)**. A more recent case study, **Leopardi (2024)**, examines the applicability and impact of these constructions.
 
-The **PyEQSP** library is the modern Python-native incarnation of the research presented in these documents, evolving from the original Matlab implementation to provide an open-source tool for the scientific community.
+The **PyEQSP** library is the Python implementation of the research presented in these documents, evolving from the original Matlab implementation to provide an open-source tool for the scientific community.
 
 ## Installation and Utilities (Matlab Original)
 
