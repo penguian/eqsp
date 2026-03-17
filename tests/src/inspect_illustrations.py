@@ -39,7 +39,8 @@ def run(save=False):
         plt.close()
         print(f"  Saved to {path}")
     else:
-        plt.show()
+        if plt.get_backend() != "Agg": # pragma: no cover
+            plt.show()
 
     # --- project_s2_partition ---
     print("Testing project_s2_partition(20, proj='eqarea', show_points=True)...")
@@ -53,7 +54,8 @@ def run(save=False):
         plt.close(fig)
         print(f"  Saved to {path}")
     else:
-        plt.show()
+        if plt.get_backend() != "Agg": # pragma: no cover
+            plt.show()
 
     # --- project_point_set ---
     print("Testing project_point_set(points, proj='stereo')...")
@@ -66,7 +68,8 @@ def run(save=False):
         plt.close(fig)
         print(f"  Saved to {path}")
     else:
-        plt.show()
+        if plt.get_backend() != "Agg": # pragma: no cover
+            plt.show()
 
     print("2D Illustrations inspection complete.")
 
