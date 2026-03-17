@@ -9,7 +9,20 @@ from pathlib import Path
 
 # Add REPO_ROOT to sys.path to allow importing eqsp from source
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(REPO_ROOT))
+
+def setup_environment():
+    """Set up the environment for quality checks."""
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+
+    # Force headless Matplotlib for diagnostic scripts
+    try:
+        import matplotlib  # pylint: disable=import-outside-toplevel
+        matplotlib.use("Agg")
+    except ImportError:  # pragma: no cover
+        pass
+
+setup_environment()
 
 def check_matplotlib_init():
     """Ensure matplotlib.use('Agg') comes before pyplot import in examples."""

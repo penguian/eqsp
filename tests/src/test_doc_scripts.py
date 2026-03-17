@@ -2,6 +2,8 @@
 Unit tests for documentation diagnostic scripts.
 """
 # pylint: disable=redefined-outer-name, unused-argument
+import sys
+
 import pytest
 
 from doc.scripts import check_links, quality_check
@@ -57,6 +59,10 @@ def mock_repo(tmp_path, monkeypatch):
     monkeypatch.setattr(check_links, "REPO_ROOT", tmp_path)
     monkeypatch.setattr(check_links, "DOC_DIR", doc_dir)
     monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    # Ensure the test environment uses the mock eqsp
+    monkeypatch.syspath_prepend(str(tmp_path))
+    monkeypatch.delitem(sys.modules, "eqsp", raising=False)  # Force reload if imported
 
     return tmp_path
 

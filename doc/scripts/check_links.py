@@ -9,6 +9,10 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DOC_DIR = REPO_ROOT / "doc"
 
+# Ensure REPO_ROOT is in sys.path for internal lookups if needed
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 # Regex for MyST targets: (target)=
 TARGET_RE = re.compile(r"^\((?P<target>[\w.-]+)\)=", re.MULTILINE)
 
