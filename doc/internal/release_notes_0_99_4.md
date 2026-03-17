@@ -14,6 +14,7 @@ This document summarizes the changes and verification steps completed for the **
 ### Build Improvements
 - **Makefile**: Fixed `doc/Makefile` to explicitly use `python3`.
 - **Ruff Configuration**: Transitioned `ruff.toml` to a flat format for cross-environment compatibility.
+- **Diagnostic Tool Infrastructure**: Enhanced `doc/scripts/` with `sys.path` isolation and headless Matplotlib defaults to ensure verification stability across local and CI environments.
 
 ### Code Cleanup
 - **Visualization Stubs**: Removed redirection stubs (`show_s2_sphere`, etc.) from `eqsp.illustrations`. Users are now directed to `eqsp.visualizations`.

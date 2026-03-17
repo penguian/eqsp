@@ -44,6 +44,8 @@ To prevent documentation drift and common technical errors, PyEQSP includes a su
 *   **Matplotlib Initialization Check**: Enforces that `matplotlib.use('Agg')` is called before any `pyplot` imports in examples to ensure headless environment compatibility.
 *   **Configuration Type Check**: Validates that `doc/conf.py` variables use the correct data types expected by Sphinx extensions.
 
+To ensure stability across CI/CD and diverse local environments, these scripts are designed with **architectural isolation** (using independent `sys.path` setup) and **headless environment support** (automatically forcing `matplotlib.use('Agg')` if executed on a machine without a display).
+
 ## Guide Lifecycle
 
 - **Volume 1 (User)**: Should be updated whenever a new public feature or visualization method is added.
