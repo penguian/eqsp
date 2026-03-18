@@ -12,7 +12,7 @@ This document provides a technical summary of the key algorithmic optimizations 
 - **Result:** Calculating the minimum distance for $N=100,000$ points now takes seconds rather than minutes, and memory usage remains linear.
 
 ### Recursive Partitioning Scaling
-**Status:** Verified $O(\mathcal{N}^{0.6})$ scaling (Thesis Section 3.10.2).
+**Status:** Verified $O(\mathcal{N}^{0.6})$ scaling ({ref}`[Leo07] <v2-leo07>`, Section 3.10.2).
 
 - **Approach:** The `eq_regions` function implements the Recursive Zonal Equal Area Partitioning algorithm. We performed a high-fidelity verification sweep for $d$ up to 11 and $\mathcal{N}$ up to $2^{22}$ ($\approx 4.2 \times 10^6$).
 - **Result:** The performance follows the theoretical $O(\mathcal{N}^{0.6})$ scaling for $S^2$, ensuring that even millions of regions can be calculated in minutes.
@@ -54,7 +54,7 @@ Functions in `utilities.py` (like `cart2polar2`) were refactored to use:
 ### Avoiding Massive Intermediate Arrays
 Common patterns like `np.linalg.norm(a[:, None] - b, axis=2)` were replaced with more memory-conscious implementations or block-based loops where the intermediate broadcasting would exceed available RAM.
 
-### Parallel Dimension Calculations (Figure 3.7)
+### Parallel Dimension Calculations ({ref}`[Leo07] <v2-leo07>`, Figure 3.7)
 
 `fig_3_7_max_diam_multi_dim.py` calculates max diameter coefficients for EQ partitions across dimensions $d=2$ to $d=8$. The dimension-8 calculation alone accounts for approximately **81%** of the total CPU time, making it the dominant bottleneck.
 
@@ -63,4 +63,4 @@ Common patterns like `np.linalg.norm(a[:, None] - b, axis=2)` were replaced with
 
 ---
 
-For detailed benchmarks and instructions on running performance tests yourself, see the [Performance Benchmarks Guide](benchmarks.md).
+For detailed benchmarks and instructions on running performance tests yourself, see the [Performance Benchmarks](../benchmarks.md).

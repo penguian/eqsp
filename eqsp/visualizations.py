@@ -124,7 +124,7 @@ def show_s2_partition(
     extra_offset : bool, optional
         Use extra offsets. Default False.
     show_points : bool, optional
-        Show center points. Default True.
+        Show centre points. Default True.
     show_sphere : bool, optional
         Show unit sphere. Default True.
     title : str, optional
@@ -206,14 +206,14 @@ def project_point_set(
     Parameters
     ----------
     points : ndarray
-        Array of shape (dim+1, N) containing center points of each region in
+        Array of shape (dim+1, N) containing centre points of each region in
         Cartesian coordinates.
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default 'stereo'.
     scale_factor : float, optional
         Scale factor for points. Default 0.1.
     color : tuple, optional
-        Color of points in RGB format (0 to 1). Default (1, 0, 0).
+        Colour of points in RGB format (0 to 1). Default (1, 0, 0).
     **kwargs
         Passed to Mayavi plotting functions.
 

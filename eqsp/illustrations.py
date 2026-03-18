@@ -23,92 +23,6 @@ from .utilities import (
 )
 
 
-def show_s2_sphere(*args, **kwargs):
-    """
-    Illustrate the unit sphere S^2 (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
-def show_r3_point_set(*args, **kwargs):
-    """
-    3D illustration of a point set (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
-def show_s2_region(*args, **kwargs):
-    """
-    Illustrate a region of S^2 (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
-def show_s2_partition(
-    N,
-    *,
-    extra_offset=False,
-    fontsize=16,
-    title="long",
-    show_points=True,
-    show_sphere=True,
-    **_kwargs,
-):
-    """
-    3D illustration of an EQ partition of S^2 into N regions.
-
-    This function is a legacy Matplotlib-based implementation. It is considered
-    deprecated for 3D use and currently raises NotImplementedError.
-    Use `eqsp.visualizations.show_s2_partition` for high-quality 3D rendering.
-
-    Parameters
-    ----------
-    N : int
-        Number of regions.
-    extra_offset : bool, optional
-        If True, use extra rotation offsets for regions. Default is False.
-    fontsize : int, optional
-        Font size for the title. Default is 16.
-    title : {'long', 'short', 'none'}, optional
-        Type of title to display. 'long' (default), 'short', or 'none'.
-    show_points : bool, optional
-        If True (default), show the center points of regions.
-    show_sphere : bool, optional
-        If True (default), show the unit sphere surface.
-    **_kwargs
-        Additional arguments passed to underlying plotting functions.
-
-    Returns
-    -------
-    ax : Axes3D
-        The matplotlib 3D axes object (deprecated/removed).
-
-    Examples
-    --------
-    >>> from eqsp.illustrations import show_s2_partition
-    >>> import pytest
-    >>> with pytest.raises(NotImplementedError):
-    ...     show_s2_partition(4)
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
-
-
 def project_point_set(
     points, ax=None, proj="stereo", _scale_factor=0.05, color=None, show=None, **_kwargs
 ):
@@ -127,7 +41,7 @@ def project_point_set(
         Scale factor for points (unused in matplotlib implementation, kept for
         compatibility/kwargs).
     color : color spec, optional
-        Color of points. Default is 'k' for 2D, 'r' for 3D.
+        Colour of points. Default is 'k' for 2D, 'r' for 3D.
     show : bool or None, optional
         If True, call `plt.show()`. If None, call `plt.show()` only if `ax` was None.
     **_kwargs
@@ -169,7 +83,7 @@ def project_point_set(
             ax.set_aspect("equal")
             ax.set_axis_off()
         if color is None:
-            # Color based on colatitude (mimic Matlab)
+            # Colour based on colatitude (mimic MATLAB)
             # Matlab uses r = pi - acos(z)
             z = points[2, :]
             r = np.pi - np.arccos(np.clip(z, -1.0, 1.0))
@@ -185,7 +99,7 @@ def project_point_set(
         )
 
     if show is True or (show is None and ax is None):
-        if plt.get_backend() != "Agg":  # pragma: no cover
+        if plt.get_backend().lower() != "agg":  # pragma: no cover
             plt.show()  # pragma: no cover
     return ax
 
@@ -311,21 +225,11 @@ def project_s2_partition(
         ax.set_title(title_text, fontsize=fontsize, color="k")
 
     if show is True or (show is None and ax is None):
-        if plt.get_backend() != "Agg":  # pragma: no cover
+        if plt.get_backend().lower() != "agg":  # pragma: no cover
             plt.show()  # pragma: no cover
 
     return ax
 
-
-def project_s3_partition(*args, **kwargs):
-    """
-    Use projection to illustrate an EQ partition of S^3 (Moved to eqsp.visualizations).
-    """
-    raise NotImplementedError(
-        "3D plotting has been moved to eqsp.visualizations. Use "
-        "visualizations.show_s2_partition(N) or project_s3_partition(N) "
-        "for 3D plots."
-    )
 
 
 def illustrate_eq_algorithm(
@@ -429,7 +333,7 @@ def illustrate_eq_algorithm(
             opts_k["title"] = "none"
             project_s2_partition(int(m[k]), ax=ax_sub, **opts_k)
 
-    if show and plt.get_backend() != "Agg":
+    if show and plt.get_backend().lower() != "agg":
         plt.show()  # pragma: no cover
 
 

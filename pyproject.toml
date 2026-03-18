@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyeqsp"
-version = "0.99.2"
-description = "Equal Area Sphere Partitioning Library"
+version = "0.99.4"
+description = "Python Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
   { name = "Paul Leopardi", email = "paul.leopardi@gmail.com" },
@@ -32,6 +32,7 @@ docs = [
     "sphinx>=5.0",
     "sphinx_rtd_theme",
     "myst_parser",
+    "sphinxcontrib-mermaid",
 ]
 dev = [
     "ruff",
@@ -52,7 +53,7 @@ where = ["."]
 include = ["eqsp*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests/src"]
+testpaths = ["tests/src", "examples/user-guide/src"]
 filterwarnings = [
     "ignore:module 'sre_parse' is deprecated:DeprecationWarning",
     "ignore:module 'sre_constants' is deprecated:DeprecationWarning",

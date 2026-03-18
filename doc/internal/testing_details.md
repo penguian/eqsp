@@ -1,4 +1,4 @@
-# Testing Guide: PyEQSP
+# Testing Guide: PyEQSP Verification
 
 This guide outlines the testing strategy, dependencies, and instructions for verifying the **PyEQSP** project and the `eqsp` package.
 
@@ -72,7 +72,7 @@ python3 fig_3_1_partition_s2_33.py
 
 > **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
 
-See [PhD Thesis Example Reproductions](phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
+See [Thesis Research Reproduction](../phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
 
 ## Code Coverage
 
@@ -103,7 +103,16 @@ The private testing suite includes:
 - **`tests/src/test_private_partitions.py`**: Bridge test for `eqsp._private._partitions` doctests.
 - **`tests/src/test_private_region_props.py`**: Bridge test for `eqsp._private._region_props` doctests.
 
-These tests ensure that internal math optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
+These tests ensure that internal mathematics optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
+
+### Diagnostic Tool Validation
+
+To maintain the quality of the project's prevention mechanisms, the scripts in `doc/scripts/` are verified via:
+- **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
+- **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose.
+- **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that verifies the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
+
+All diagnostic scripts utilize **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
 
 ## Performance Benchmarking
 
@@ -142,8 +151,17 @@ ruff check .
 ruff format .
 ```
 
+(configuration-compatibility)=
+### Configuration Compatibility
+The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]` section) to ensure compatibility across all project environments. This allows the same configuration to be parsed by both:
+- **Modern Ruff** (0.15.x+) in the main `.venv`.
+- **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
+
+> [!NOTE]
+> Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
+
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
-pylint eqsp benchmarks examples tests  # Project-wide scan
+pylint eqsp benchmarks examples tests doc/scripts verify_all.py  # Project-wide scan
 ```

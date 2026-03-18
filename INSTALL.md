@@ -1,7 +1,11 @@
+# PyEQSP: Python Equal Area Sphere Partitioning Library
+
+**Release 0.99.4** (2026-03-17): Copyright 2026 Paul Leopardi
+
 # Installation
 
-This guide covers the installation of the **PyEQSP** (Equal Area
-Sphere Partitioning) library for Python.
+This guide covers the installation of **PyEQSP**,
+the Python Equal Area Sphere Partitioning Library.
 
 ## Prerequisites
 
@@ -41,10 +45,9 @@ python3 -m venv --system-site-packages .venvs/.venv_sys
 source .venvs/.venv_sys/bin/activate
 ```
 
-For detailed guidance on choosing between these two approaches,
 configuring Qt environment variables, and using virtual
-environments with Jupyter, see
-[doc/python_environments.md](doc/python_environments.md).
+environments with Jupyter, see the [Installation Guide](doc/installation.md)
+or the [System-Integrated Setup (venv_sys)](doc/internal/venv_sys_setup.md).
 
 ## 1. Installation from Source (Git Clone)
 

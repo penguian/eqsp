@@ -1,14 +1,16 @@
-# PyEQSP: Equal Area Sphere Partitioning Library
+# PyEQSP: Python Equal Area Sphere Partitioning Library
 
-EQSP is a Python library that implements the **Recursive Zonal
+**Release 0.99.4** (2026-03-17): Copyright 2026 Paul Leopardi
+
+PyEQSP is a Python library that implements the **Recursive Zonal
 Equal Area (EQ) Sphere Partitioning** algorithm, originally
-developed as a Matlab toolbox by Paul Leopardi.
+implemented as a Matlab toolbox by Paul Leopardi.
 
-An EQ partition is a partition of $S^d$ (the unit sphere in
-the $(d+1)$-dimensional Euclidean space $\mathbb{R}^{d+1}$) into
+An EQ partition is a partition of Sᵈ (the unit sphere in
+the (d+1)-dimensional Euclidean space ℝᵈ⁺¹) into
 a finite number of regions of equal area. The area of each region
 is defined using the Lebesgue measure inherited from
-$\mathbb{R}^{d+1}$.
+ℝᵈ⁺¹.
 
 > [!IMPORTANT]
 > **Naming Distinction**: The project and GitHub repository are named **PyEQSP** (or **pyeqsp** on PyPI), but the Python package is imported as **eqsp**.
@@ -19,27 +21,27 @@ $\mathbb{R}^{d+1}$.
 
 ## What is an EQ partition?
 
-An **EQ partition** is a partition of $S^d$ (the unit sphere in
-the $(d+1)$-dimensional Euclidean space $\mathbb{R}^{d+1}$) into
+An **EQ partition** is a partition of Sᵈ (the unit sphere in
+the (d+1)-dimensional Euclidean space ℝᵈ⁺¹) into
 a finite number of regions of equal area. The area of each region
 is defined using the Lebesgue measure inherited from
-$\mathbb{R}^{d+1}$.
+ℝᵈ⁺¹.
 
 The **diameter** of a region is the supremum of the Euclidean
 distance between any two points of the region. The regions of an
 EQ partition have been proven to have small diameter, in the
-sense that there exists a constant $C(d)$ such that the maximum
-diameter of the regions of an $N$ region EQ partition of $S^d$ is
-bounded above by $C(d) \cdot N^{-1/d}$.
+sense that there exists a constant C(d) such that the maximum
+diameter of the regions of an N-region EQ partition of Sᵈ is
+bounded above by C(d)·N⁻¹/ᵈ.
 
 ## What is an EQ point set?
 
-An **EQ point set** is the set of center points of the regions
+An **EQ point set** is the set of centre points of the regions
 of an EQ partition. Each region is defined as a product of
-intervals in spherical polar coordinates. The center point of a
-region is defined via the center points of each interval, with
+intervals in spherical polar coordinates. The centre point of a
+region is defined via the centre points of each interval, with
 the exception of spherical caps and their descendants, where the
-center point is defined using the center of the spherical cap.
+centre point is defined using the centre of the spherical cap.
 
 ## Applications
 
@@ -65,7 +67,7 @@ environment setup and optional dependencies.
 ### 1. Create EQ partitions
 
 Create an array in Cartesian coordinates representing the
-center points of an EQ partition of $S^d$ into $N$ regions:
+centre points of an EQ partition of Sᵈ into N regions:
 
 ```python
 import eqsp
@@ -77,7 +79,7 @@ points_x = eqsp.eq_point_set(dim, N)
 ```
 
 Create an array in spherical polar coordinates representing
-the center points:
+the centre points:
 
 ```python
 points_s = eqsp.eq_point_set_polar(dim, N)
@@ -104,8 +106,8 @@ diam_bound = eq_diam_bound(dim, N)
 
 ### 3. Find properties of EQ point sets
 
-Find the $r^{-s}$ energy and min distance of the EQ center
-point sets of $S^d$ for $N$ points:
+Find the r⁻ˢ energy and min distance of the EQ centre
+point sets of Sᵈ for N points:
 
 ```python
 from eqsp.point_set_props import eq_energy_dist
@@ -126,7 +128,7 @@ The **PyEQSP** package provides two kinds of plot:
 
 #### 2D Illustrations (Matplotlib)
 
-Project the EQ partition of $S^2$ into $N$ regions onto a
+Project the EQ partition of S² into N regions onto a
 2D plane:
 
 ```python
@@ -137,8 +139,8 @@ project_s2_partition(10, proj='stereo')
 plt.show()
 ```
 
-Illustrate the EQ algorithm steps for the partition of $S^d$
-into $N$ regions:
+Illustrate the EQ algorithm steps for the partition of Sᵈ
+into N regions:
 
 ```python
 from eqsp.illustrations import illustrate_eq_algorithm
@@ -149,7 +151,7 @@ plt.show()
 
 #### 3D Visualizations (Mayavi)
 
-Display a 3D rendering of the EQ partition of $S^2$ into $N$
+Display a 3D rendering of the EQ partition of S² into N
 regions:
 
 ```python
@@ -160,13 +162,20 @@ show_s2_partition(10)
 ```
 
 Display a 3D stereographic projection of the EQ partition of
-$S^3$ into $N$ regions:
+S³ into N regions:
 
 ```python
 from eqsp.visualizations import project_s3_partition
 
 project_s3_partition(10, proj='stereo')
 ```
+
+## User Guide Examples
+
+Standalone Python scripts demonstrating core library features:
+- **[examples/user-guide/src/](examples/user-guide/src/)**: Contains `example_quick_start.py`, `example_visualize_2d.py`, `example_visualize_3d.py`, and `example_symmetric_partitions.py`.
+
+These examples are fully integrated into the test suite and documentation.
 
 ## Thesis Examples
 
@@ -184,10 +193,10 @@ core partitioning and mathematical operations. See
 
 ## Frequently Asked Questions
 
-### Is EQSP for S² and S³ only? What is the maximum dimension?
+### Is PyEQSP for S² and S³ only? What is the maximum dimension?
 
 In principle, any function which has `dim` as a parameter will
-work for any integer `dim >= 1` (where $S^1$ is the circle). In
+work for any integer dim ≥ 1 (where S¹ is the circle). In
 practice, for large $d$, the functions may be slow or consume
 large amounts of memory due to the recursive nature or array
 sizes.
@@ -201,13 +210,13 @@ very large `N`, the functions may be slow or memory-intensive.
 ### Visualization options
 
 - `illustrations.project_s2_partition(N, proj=...)`:
-  2D projection of $S^2$ partition (Matplotlib).
+  2D projection of S² partition (Matplotlib).
 - `illustrations.illustrate_eq_algorithm(dim, N)`:
   Step-by-step visualization (Matplotlib).
 - `visualizations.show_s2_partition(N)`:
-  3D plot of $S^2$ partition (Mayavi).
+  3D plot of S² partition (Mayavi).
 - `visualizations.project_s3_partition(N, proj=...)`:
-  3D projection of $S^3$ partition (Mayavi).
+  3D projection of S³ partition (Mayavi).
 
 See the docstrings for more details (e.g.
 `help(eqsp.visualizations.show_s2_partition)`).
@@ -244,6 +253,14 @@ work:
 > of equal area and small diameter", Electronic Transactions on
 > Numerical Analysis, Volume 25, 2006, pp. 309-327.
 > http://etna.mcs.kent.edu/vol.25.2006/pp309-327.dir/pp309-327.html
+
+For a recent case study and discussion on the applicability of these
+constructions, see:
+
+> Paul Leopardi, "The applicability of equal area partitions of
+> the unit sphere", Journal of Approximation Software, Volume 1,
+> Issue 2, 2024.
+> https://doi.org/10.13135/jas.10248
 
 ## License
 

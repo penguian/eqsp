@@ -28,8 +28,7 @@ results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 | `fig_4_7_packing_s4.py` | Fig 4.7 | Matplotlib (Agg) | Packing density of EQP(4, N), N=1..20,000 |
 | `fig_4_8_wyner_s2_s3_s4.py` | Fig 4.8 | Matplotlib (Agg) | Wyner ratios for EQP(2), EQP(3), EQP(4), N=2..20,000 |
 | `fig_4_9_wyner_s5_s6_s7.py` | Fig 4.9 | Matplotlib (Agg) | Wyner ratios for EQP(5), EQP(6), EQP(7), N=2..20,000 |
-| `fig_4_10_eqp_voronoi_s2_33.py` | Fig 4.10 | Matplotlib (Agg) | EQP(2, 33) Voronoi cells in 2D stereographic projection (headless) |
-| `fig_4_10_eqp_voronoi_s2_33_3d.py` | Fig 4.10 | **Mayavi** | EQP(2, 33) Voronoi edges projected back to S² in 3D |
+| `fig_4_10_eqp_voronoi_s2_33.py` | Fig 4.10 | **Mayavi** | EQP(2, 33) Voronoi edges on S² in 3D |
 | `fig_5_1_normalized_energy.py` | Fig 5.1 | Matplotlib (Agg) | Normalized energy of EQP(d, N), d=2,3,4 |
 | `fig_5_2_diff_normalized_energy.py` | Fig 5.2 | Matplotlib (Agg) | Convergence of normalized energy |
 | `fig_5_3_energy_coeff_s2.py` | Fig 5.3 | Matplotlib (Agg) | Energy coefficient of EQP(2, N), N=2..20,000 |
@@ -50,44 +49,14 @@ source ../../.venvs/.venv/bin/activate
 python fig_3_4_max_diam_s2.py
 ```
 
-### Mayavi scripts — require `.venvs/.venv_sys`
-
-Scripts labelled **Mayavi** use `eqsp.visualizations` and require
-system-installed Mayavi via `.venvs/.venv_sys`:
-
-```bash
-cd examples/phd-thesis
-export QT_API="pyqt5"
-export QT_QPA_PLATFORM="xcb"
-```
-
-> **Important:** The environment variables shown above (`QT_API`, `QT_QPA_PLATFORM`) were configured specifically for **Kubuntu Linux 25.10**. Your specific environment may require different values or a different setup entirely.
-
-```bash
-# Display help and available arguments
-python fig_3_4_max_diam_s2.py --help
-
-# Run with custom parameters
-python fig_3_4_max_diam_s2.py --upper-bound 1000
-python fig_3_4_max_diam_s2.py --max-points 500
-python fig_3_1_partition_s2_33.py
-```
-
 All 21 scripts follow the `if __name__ == "__main__":` pattern and can be imported as modules without side effects.
 
-For full setup instructions for `.venvs/.venv_sys`, see
-[doc/python_environments.md](../doc/python_environments.md).
+For technical instructions on setting up the Mayavi environment (`venv_sys`) and troubleshooting display issues, see the [Reproduction Setup & Troubleshooting](internal/reproduction_setup.md) guide in the Maintenance Guide.
 
 ### Visual inspection of eqsp outputs
 
 To interactively inspect 2D illustrations and 3D visualizations from the
-main library (not thesis-specific), see the inspection scripts:
-```bash
-python ../../tests/src/inspect_illustrations.py
-python ../../tests/src/inspect_visualizations.py
-```
-
-For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.md).
+main library (not thesis-specific), see the [Visualization & Illustration Guide](visualization_guide.md).
 
 ## Notes on differences from the original figures
 
@@ -99,8 +68,7 @@ For the full testing strategy, see [doc/testing_guide.md](../doc/testing_guide.m
 - **Fig 4.10 (3D Voronoi)**: Computed using `scipy.spatial.SphericalVoronoi`.
   Edges are rendered as true great circle arcs on the sphere using SLERP
   (Spherical Linear Interpolation). This ensures geometric accuracy that
-  matches the blue region boundaries. A 2D stereographic projection
-  fallback (`fig_4_10_eqp_voronoi_s2_33.py`) is also provided.
+  matches the blue region boundaries.
 - **Figs 5.1–5.5 (Energy/Distance)**: 
   - Minimum distance calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
   - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory). For $N=20,000$, these typically complete in 5–10 minutes.

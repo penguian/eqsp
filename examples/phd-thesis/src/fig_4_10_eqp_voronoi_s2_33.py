@@ -7,7 +7,7 @@ arc via spherical linear interpolation (SLERP). This correctly represents Vorono
 cell edges, which are great circle arcs, not straight lines.
 
 Requires Mayavi. Run with venv_sys:
-    ../venv_sys/bin/python fig_4_10_eqp_voronoi_s2_33_3d.py
+    ../venv_sys/bin/python fig_4_10_eqp_voronoi_s2_33.py
 """
 
 from pathlib import Path

@@ -141,7 +141,7 @@ def eq_caps(dim, N, even_collars=False):
 
 def eq_point_set(dim, N, extra_offset=False, even_collars=False):
     """
-    Center points of regions of EQ partition, in Cartesian coordinates.
+    Centre points of regions of EQ partition, in Cartesian coordinates.
 
     Parameters
     ----------
@@ -151,7 +151,7 @@ def eq_point_set(dim, N, extra_offset=False, even_collars=False):
         The number of regions.
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
-        a legacy feature from the MATLAB toolbox and is no longer planned
+        a feature from the original MATLAB toolbox and is no longer planned
         for expansion to dim > 3.
     even_collars : bool, optional
         If True, force an even number of collars. See `eq_caps` for details.
@@ -159,7 +159,7 @@ def eq_point_set(dim, N, extra_offset=False, even_collars=False):
     Returns
     -------
     points_x : ndarray
-        Array of shape (dim+1, N) containing center points of each region in
+        Array of shape (dim+1, N) containing centre points of each region in
         Cartesian coordinates. Each column is a point on S^dim.
 
     Raises
@@ -196,7 +196,7 @@ def eq_point_set(dim, N, extra_offset=False, even_collars=False):
 
 def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
     """
-    Center points of regions of an EQ partition in polar coordinates.
+    Centre points of regions of an EQ partition in polar coordinates.
 
     Parameters
     ----------
@@ -204,7 +204,7 @@ def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
         The spatial dimension of the sphere (S^dim in R^{dim+1}).
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
-        a legacy feature from the MATLAB toolbox and is no longer planned
+        a feature from the original MATLAB toolbox and is no longer planned
         for expansion to dim > 3.
     even_collars : bool, optional
         If True, force an even number of collars. See `eq_caps` for details.
@@ -212,7 +212,7 @@ def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
     Returns
     -------
     points_s : ndarray
-        Array of shape (dim, N) containing center points in spherical polar
+        Array of shape (dim, N) containing centre points in spherical polar
         coordinates. Each column is a point on S^dim.
 
     Raises
@@ -227,7 +227,7 @@ def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
     Notes
     -----
     - If dim > 3, extra offsets are ignored.
-    - Points are arranged such that each region center is the centre of the
+    - Points are arranged such that each region centre is the centre of the
       corresponding product interval in spherical coordinates, except for
       polar caps where the spherical cap centre is used.
 
@@ -349,7 +349,7 @@ def eq_regions(dim, N, extra_offset=False, even_collars=False):
         The spatial dimension of the sphere (S^dim).
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
-        a legacy feature from the MATLAB toolbox and is no longer planned
+        a feature from the original MATLAB toolbox and is no longer planned
         for expansion to dim > 3.
     even_collars : bool, optional
         If True, force an even number of collars. See `eq_caps` for details.

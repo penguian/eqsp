@@ -55,7 +55,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
    ```bash
    python3 verify_all.py
    ```
-   For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/testing_guide.md).
+   For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/internal/testing_details.md).
 
 7. **Submit a Pull Request**: Once your changes are ready, submit a Pull Request (PR) from your fork to our `main` branch.
 

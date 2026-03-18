@@ -7,7 +7,7 @@ from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
 # The project name used for branding and titles.
-project = "PyEQSP"
+project = "PyEQSP: Python Equal Area Sphere Partitioning Library"
 
 # The package name used for version lookup.
 distribution_name = "pyeqsp"
@@ -29,9 +29,15 @@ extensions = [
     "sphinx.ext.mathjax",
     "myst_parser",
     "sphinx_rtd_theme",
+    "sphinxcontrib.mermaid",
 ]
 
-myst_enable_extensions = ["dollarmath", "amsmath"]
+myst_enable_extensions = [
+    "dollarmath",
+    "amsmath",
+    "substitution",
+    "colon_fence",
+]
 myst_heading_anchors = 3
 
 autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]

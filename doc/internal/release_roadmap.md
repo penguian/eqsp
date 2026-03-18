@@ -13,7 +13,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 ### API Stabilization & Cleanup
 - **Final Feature**: Implement the symmetric `even_collars` partition feature to support SO(3) sampling and 3rd-party use cases.
 - **API Freeze**: Execute a strict feature freeze. Perform a final audit of the Public API (`point_set_props.py`, `region_props.py`, `visualizations.py`) to ensure naming consistency and stability.
-- **Enhanced Documentation**: Ensure all internal math optimizations and complex logic are professionally documented in docstrings.
+- **Enhanced Documentation**: Ensure all internal mathematics optimizations and complex logic are professionally documented in docstrings.
 
 ### Automated Testing Infrastructure
 - **Comprehensive CI**: Expand GitHub Actions to automate testing across Python 3.11, 3.12, and 3.13.
@@ -41,3 +41,11 @@ The following guides are planned for finalization and integration as official do
 ### Final Verification
 - **Clean-room Validation**: Comprehensive final verification of the library installed directly from PyPI against the thesis baseline.
 - **Release Ready**: Final audit to ensure all developer-only artifacts and internal tools are purged from the public release branch.
+
+---
+
+## Future Growth & Optimization
+These items represent the long-term vision for the library post-1.0:
+- **Compiled Kernels (Cython/Numba)**: Transitioning recursive collar loops to compiled C/LLVM for near-native speed.
+- **Persistent Caching**: Implementing disk-based or memory-resident caches for regional properties across sequential research runs.
+- **Advanced Vectorization**: Researching "ragged array" structures (e.g., via `awkward-array`) to eliminate loops over varying partition sizes $N$.
