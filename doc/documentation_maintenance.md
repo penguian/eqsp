@@ -45,6 +45,18 @@ To prevent documentation drift and common technical errors, PyEQSP includes a su
 *   **Configuration Type Check**: Validates that `doc/conf.py` variables use the correct data types expected by Sphinx extensions.
 *   **Orthography Check** (`doc/maint/quality_check.py`): Enforces the project's linguistic standard (**Australian -ize English**), flagging non-compliant spellings (e.g., "-ise" suffixes) to ensure global academic consistency.
 
+## Optional Linting: Vale
+
+The project is configured for **Vale**, a prose linter that checks for style, clarity, and readability.
+
+- **Configuration**: Uses `.vale.ini` and a custom `.vale/styles` directory.
+- **Rulesets**: Integrates `proselint`, `write-good`, and `Readability`.
+- **Manual Execution**: To run a manual prose audit, use:
+  ```bash
+  vale README.md doc/*.md
+  ```
+- **Optional Status**: Vale is **not** currently part of the mandatory `verify_all.py` suite. If you do not have Vale installed, the standard verification process will still pass.
+
 To ensure stability across CI/CD and diverse local environments, these scripts are designed with **architectural isolation** (using independent `sys.path` setup) and **headless environment support** (automatically forcing `matplotlib.use('Agg')` if executed on a machine without a display).
 
 ## Guide Lifecycle

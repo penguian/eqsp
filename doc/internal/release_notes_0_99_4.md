@@ -35,6 +35,6 @@ This document summarizes the changes and verification steps completed for the **
 - **Tag Convention**: `release_0_99_4`
 
 ## Remaining Steps
-- [x] Finalize documentation content for all hub sections.
+- [x] Update `CHANGELOG.md` with the finalized 0.99.4 entry.
 - [x] Perform TestPyPI verification.
 - [x] Merge to `main`.

@@ -9,7 +9,7 @@ PyEQSP is optimized to handle millions of regions on standard hardware.
 | Operation | Complexity | Expectation |
 | :--- | :--- | :--- |
 | **Partition Generation** | $O(N^{0.6})$ | Millions of regions in minutes on $S^2$. |
-| **Minimum Distance** | $O(N \log N)$ | Seconds for $N=100,000$. |
+| **Min-Distance** | $O(N \log N)$ | Seconds for $N=100,000$. |
 | **Packing Density** | $O(N \log N)$ | Near-instant results for research-grade $N$. |
 | **Riesz Energy** | $O(N^2)$ | 5–10 minutes for $N=20,000$. |
 
@@ -23,7 +23,7 @@ PyEQSP uses **tiling** and **block-based summation** to ensure that large calcul
 ## High-Dimensional Considerations ($S^3$ and above)
 
 As the dimension increases, the recursive depth of the algorithm grows.
-- **Symmetry Speed-up**: Using `even_collars=True` can significantly accelerate calculations on $S^3$ by enabling a 100% cache hit rate for the southern hemisphere.
+- **Symmetry Speed-up**: Using `even_collars=True` can speed up calculations on $S^3$ by enabling a 100% cache hit rate for the southern hemisphere.
 - **Parallelization**: Scripts like `fig_3_7_max_diam_multi_dim.py` are already parallelized to handle the increased complexity of higher dimensions (up to $S^8$).
 
 For technical details on the underlying optimizations (KDTrees, Symmetry exploitation, and Process Pools), see the [Algorithmic Optimizations](internal/algorithmic_optimizations.md) guide.

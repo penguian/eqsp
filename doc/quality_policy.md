@@ -15,6 +15,6 @@ We adhere to the following benchmarks for every release:
 Our hybrid testing approach combines:
 1.  **Unit Tests**: Comparing results against known-good values from the original MATLAB implementation.
 2.  **Doctests**: Ensuring that every example shown in the documentation is live-tested and correct.
-3.  **Property Assertions**: Verifying that partitions always satisfy the "Equal Area" and "Small Diameter" requirements.
+3.  **Property Assertions**: Verifying that partitions always meet the "Equal Area" and "Small Diameter" requirements.
 
 For technical details on running the test suite, coverage audits, and performance benchmarks, see the [Technical Testing & Verification](internal/testing_details.md) guide in the Maintenance Guide.

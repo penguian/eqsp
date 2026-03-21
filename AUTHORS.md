@@ -61,8 +61,8 @@ Files modified and relicensed with permission of Rasmus Anthin in the original M
 - `private/install.m`
 - `private/uninstall.m`
 
-## AI Assistance
+## AI Support
 
-The original port from Matlab to Python was assisted by **GitHub Copilot**.
+GitHub Copilot assisted with the original port from Matlab to Python.
 
-The completion of the port, including verification, testing, illustration porting, and documentation, was performed with the assistance of **Google Antigravity** powered by **Gemini 3 Pro**.
+Google Antigravity, powered by Gemini 3 Pro, completed the port, including verification, testing, illustration porting, and documentation.

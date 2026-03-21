@@ -32,9 +32,7 @@ $$
 
 ### Cache Reuse Strategy
 
-PyEQSP's recursive partitioning uses a `_private` cache for $S^{d-1}$ partitions. Asymmetric partitions typically result in slightly different region counts for northern vs. southern collars (e.g., 7 vs. 8 due to greedy rounding), leading to cache misses.
-
-Symmetric partitions guarantee a palindromic `ideal_region_list`, ensuring a **100% cache hit rate** for the southern hemisphere and significantly accelerating generation for $S^3$.
+PyEQSP's recursive partitioning uses a `_private` cache for $S^{d-1}$ partitions. **Hemispherical Symmetry**: Partitions generated with `even_collars=True` are perfectly symmetric about the equator. This allows the Southern hemisphere regions to be calculated once and then mirrored, providing a 100% cache hit rate for the second half of the partition generation for $S^3$.
 
 ### Interface Symmetry
 

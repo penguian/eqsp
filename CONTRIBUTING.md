@@ -43,7 +43,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
 4. **Draft your Changes**: We recommend creating a new branch for your fix or feature.
 5. **Coding Standards**:
    To maintain high code quality, we require:
-   - **Linting**: Code must satisfy `ruff` and `pylint`.
+   - **Linting**: Code must meet `ruff` and `pylint`.
    - **Docstrings**: Use the [NumPy docstring format](https://numpydoc.readthedocs.io/en/latest/format.html).
    - **Code Coverage**: We maintain a strict **100% test coverage** policy.
        - All new features must include comprehensive tests.
@@ -51,7 +51,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
        - Every pragma usage must be justified and reviewed.
    - **Minimalism**: Keep changes focused and brief.
 
-6. **Run Tests & Linters**: Ensure that your changes satisfy all quality checks and do not break existing functionality. We provide a single verification script that runs Ruff, Pylint, and Pytest with coverage:
+6. **Run Tests & Linters**: Ensure that your changes meet all quality checks and do not break existing functionality. We provide a single verification script that runs Ruff, Pylint, and Pytest with coverage:
    ```bash
    python3 verify_all.py
    ```
@@ -68,7 +68,7 @@ git merge upstream/main
 
 ### Advanced Maintenance
 
-For advanced topics regarding releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/documentation_maintenance.md).
+For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/documentation_maintenance.md).
 
 ## Community Standards
 Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.

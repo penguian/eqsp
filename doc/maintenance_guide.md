@@ -35,7 +35,7 @@ Documentation is managed using Sphinx and MyST-Parser.
   - Use `-re` and `-our` (e.g., *centre*, *colour*).
   - Prefer `-ize` and `-yze` suffixes (e.g., *organized*, *analyze*).
 
-For standard operating procedures regarding building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
+For standard operating procedures about building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
 
 ## Project Governance
 
@@ -62,7 +62,7 @@ Non-owners should never have access to production secrets. All automation is des
 
 Release 0.99.5 introduced a suite of automated scripts to ensure consistency and prevent common errors:
 
-1. **Build and Validate**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
+1. **Build and Check**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
 2. **PyPI Upload**: Use `scripts/upload_release.py --testpypi` or `--pypi`. This script ensures a fresh build and converts relative documentation links to absolute URLs for correct rendering on PyPI.
 3. **SourceForge Upload**: Use `doc/maint/upload_sourceforge.py` to generate the `scp` command for hosting the HTML documentation.
 
@@ -70,6 +70,7 @@ For detailed instructions on these scripts, see the internal [Upload Guide](inte
 
 ### Latest Release Notes
 Historical and current release details are tracked in the `doc/internal/` directory:
+- [Release Notes 0.99.5](internal/release_notes_0_99_5.md)
 - [Release Notes 0.99.4](internal/release_notes_0_99_4.md)
 - [Release Roadmap](internal/release_roadmap.md)
 

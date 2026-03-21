@@ -20,9 +20,9 @@ export QT_QPA_PLATFORM="xcb"
 
 ## Bitwise Reproducibility
 
-PyEQSP aims for identical numerical results to the original thesis. However, users should be aware of two potential sources of variance:
+PyEQSP aims for identical numerical results to the original thesis. But users should be aware of two potential sources of variance:
 
-1.  **Hardware Rasterization**: 3D plots generated via Mayavi/VTK utilize GPU hardware. Minor variances (e.g., ~2 pixel differences) can occur between different GPUs or drivers due to non-deterministic anti-aliasing.
+1.  **Hardware Rasterization**: 3D plots generated via Mayavi/VTK use GPU hardware. Minor variances (e.g., ~2 pixel differences) can occur between different GPUs or drivers due to non-deterministic anti-aliasing.
 2.  **Floating-Point Drift**: While we use `numpy.longdouble` for critical recursions, extreme depths in high dimensions ($d > 8$) may show sub-microscopic differences across different CPU architectures.
 
 ## Headless Execution

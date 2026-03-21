@@ -5,11 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.5] - 2026-03-21
+
+### Added
+- **Release Automation**: Introduced `scripts/` to automate the sanitisation of `README.md` for PyPI, build distribution packages, and manage authenticated uploads to TestPyPI/PyPI.
+- **Bibliography Consistency**: Enhanced `quality_check.py` to strictly enforce metadata parity across all reference documents (`AUTHORS.md`, `doc/references_vol*.md`).
+- **Reference Alignment**: Conducted a manual audit to align citation keys across multiple volumes, ensuring all documents use the final, canonical keys from the PhD thesis.
+- **Readability Integration**: Integrated Vale `Readability` style to establish and monitor readability baselines across three documentation tiers.
+
+### Changed
+- **Tonal Alignment**: Shifted the project's primary voice from passive/academic to active/guidance-oriented across `README.md`, `INSTALL.md`, and the `User Guide`.
+- **Structural Improvements**: Consolidated redundant definitions and simplified technical terminology in `README.md` for better accessibility.
+- **Refined Standards**: Updated the `Maintenance Guide` with formalized project roles, security credential management, and automated Sphinx doctest verification in `verify_all.py`.
+
+### Fixed
+- **Migration Guide**: Corrected several porting attributions and coordinate convention notes to match the original Matlab toolbox logic.
+
 ## [0.99.4] - 2026-03-17
 
 ### Added
 - **Multi-Volume Documentation**: Established a comprehensive User Guide (Volume 1) and Maintenance Guide (Volume 2) with consolidated bibliographies, Mermaid diagrams, and interactive citations.
-- **Quality Safeguards**: Introduced automated drift-prevention scripts (`check_links.py`, `quality_check.py`) to validate documentation links, function references, array conventions, and **Australian -ize English** orthography.
+- **Quality Safeguards**: Introduced automated drift-prevention scripts (`check_links.py`, `quality_check.py`) to verify documentation links, function references, array conventions, and **Australian -ize English** orthography.
 - **Simplified Examples**: Promoted core documentation snippets to standalone, localized examples with integrated reference artifacts.
 - **API Visibility**: Formally exported point-set property functions at the `eqsp` package level.
 
@@ -20,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Verification**: Achieved 100% project-wide coverage and aligned test baselines with the removal of legacy illustration stubs.
 
 ### Removed
-- **Illustration Stubs**: Removed four `eqsp.illustrations` migration stubs (`show_s2_sphere`, `show_r3_point_set`, `show_s2_region`, `show_s2_partition`) that previously raised `NotImplementedError`.
+- **Illustration Stubs**: Removed four `eqsp.illustrations` migration stubs (`show_s2_sphere`, `show_r3_point_set`, `show_s2_region`, `show_s2_partition`) that raised `NotImplementedError`.
 
 ### Fixed
 - **Robust Visualization**: Applied robust case-insensitive guards (`.lower() != 'agg'`) to all Matplotlib backend checks project-wide, ensuring warning-free operation in both interactive and headless environments.
@@ -76,7 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Alpha Release**: First functional alpha release of the PyEQSP Python port.
 - **Core Algorithms**: Implementation of `eq_regions`, `eq_point_set`, and `eq_caps` for Sᵈ (d ≥ 1).
-- **Performance Optimizations**: Implemented O(N log N) minimum distance calculations and O(N) memory Riesz energy summation.
+- **Performance Optimizations**: Implemented O(N log N) min-distance calculations and O(N) memory Riesz energy summation.
 - **Thesis Reproductions**: Included scripts and results to reproduce figures and benchmarks from the original PhD thesis [Leo07].
 - **Optional Visualizations**: Logic for 2D Matplotlib projections and 3D Mayavi/PyQt interactive renderings.
 - **Documentation**: Initialized Sphinx documentation with Markdown support, including guides for installation and testing.

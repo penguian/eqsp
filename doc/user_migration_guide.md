@@ -4,7 +4,7 @@ This guide helps users of the original Matlab `eq_sphere_partitions` toolbox tra
 
 ## Quick Reference: Function Name Mapping
 
-Most core functions retain their names. The main differences are in coordinate conversion utilities and illustration functions.
+Most core functions keep their names. The main differences are in coordinate conversion utilities and illustration functions.
 
 | Matlab Function | Python Function (`eqsp`) | Notes |
 | :--- | :--- | :--- |
@@ -59,14 +59,14 @@ eq_point_set(2, 10, 'offset', 'extra')
 eq_point_set(2, 10, extra_offset=True)
 ```
 
-> **Note:** The Matlab `partition_options` object is replaced by keyword arguments in Python. No equivalent configuration object exists in **PyEQSP**.
+> **Note:** The Matlab `partition_options` object is replaced by keyword arguments in Python. No same configuration object exists in **PyEQSP**.
 
 > **Python Exclusive:** The Python port introduces an `even_collars=True` boolean parameter to `eq_caps` (and downstream functions like `eq_regions` and `eq_point_set`). This forces the partition to have an even number of collars, ensuring the equatorial hyperplane cleanly splits the partition into two equal hemispheres. This parameter does not exist in the Matlab toolbox.
 
 Furthermore, some Python parameters are entirely new to **PyEQSP** and did not exist in the Matlab toolbox:
 
 *   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise **S²** hemisphere splitting and **S³ → SO(3)** quaternion sampling (for more details see [Symmetric EQ Partitions](even_collar_partitions.md)).
-*   **Vectorized Properties**: All property evaluation functions (like `eq_min_dist`, `eq_energy_dist`, `eq_area_error`, and `eq_diam_coeff`) also accept the `even_collars` parameter to evaluate symmetric partitions.
+*   **Vectorized Properties**: All property evaluation functions (like `eq_min_dist`, `eq_energy_dist`, `eq_area_error`, and `eq_diam_coeff`) also accept the `even_collars` parameter to test symmetric partitions.
 
 ### Return Values
 Some functions have been refactored to return consistent types, avoiding fragile dependence on the number of output arguments (`nargout`).
@@ -83,7 +83,7 @@ Some functions have been refactored to return consistent types, avoiding fragile
 
 ### Array Handling
 *   Input arrays are generally handled as Numpy arrays.
-*   Functions are vectorized where appropriate, similar to Matlab.
+*   Functions are vectorized where appropriate, as in Matlab.
 
 ### Indexing: 0-based vs 1-based
 Perhaps the most significant difference for Matlab users is that **Python uses 0-based indexing**.
@@ -177,9 +177,9 @@ Compared to the original MATLAB toolbox, **PyEQSP** provides some distinct advan
 
 ## Performance Features
 
-The Python port includes several algorithmic optimizations that were not included in the original Matlab toolbox:
+The Python port includes many algorithmic optimizations that were not included in the original Matlab toolbox:
 
-- **Minimum Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
+- **Min-Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
 - **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
 - **Histogram Lookups**: Fully vectorized point-in-region assignment on **S²** for bulk processing of points.
 
@@ -187,7 +187,7 @@ The Python port includes several algorithmic optimizations that were not include
 
 | Feature | Matlab | Python / **eqsp** (Package) |
 | :--- | :--- | :--- |
-| **Indexing** | 1, 2, 3... | 0, 1, 2... |
+| **Indexing** | 1, 2, 3… | 0, 1, 2… |
 | **Loops** | `for i=1:N` (inclusive) | `for i in range(N)` (exclusive of N) |
 | **Functions** | No `import` needed | `import eqsp` |
 | **Logic** | `&&`, `||`, `~` | `and`, `or`, `not` |

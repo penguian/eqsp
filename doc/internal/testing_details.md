@@ -110,9 +110,9 @@ These tests ensure that internal mathematics optimizations (such as vectorized c
 To maintain the quality of the project's prevention mechanisms, the scripts in `doc/maint/` are verified via:
 - **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
 - **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose.
-- **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that verifies the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
+- **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that checks the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
 
-All diagnostic scripts utilize **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
+All diagnostic scripts use **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
 
 ## Performance Benchmarking
 
@@ -157,7 +157,7 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 - **Modern Ruff** (0.15.x+) in the main `.venv`.
 - **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
 
-> [!NOTE]
+> [!IMPORTANT]
 > Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
 
 ### Pylint (Deep Static Analysis)
@@ -165,3 +165,7 @@ Pylint is used for deep semantic analysis. The configuration is refined to allow
 ```bash
 pylint eqsp benchmarks examples tests doc/maint verify_all.py  # Project-wide scan
 ```
+
+### Vale (Optional Prose Linting)
+
+The project includes a `.vale.ini` configuration for optional prose linting. Unlike `ruff` and `pylint`, `vale` is **not** part of the mandatory `verify_all.py` suite and is not required for standard verification. It is intended for manual documentation audits.

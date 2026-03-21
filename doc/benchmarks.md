@@ -12,7 +12,7 @@ python3 benchmarks/run_benchmarks.py
 ```
 
 ### Configurable Runs
-The runner supports several flags to control the problem size and duration:
+The runner supports many flags to configure the benchmark run:
 
 ```bash
 # Quick sanity check with small problem size
@@ -51,7 +51,7 @@ python3 benchmarks/run_benchmarks.py --even-collars
 2.  **`point_set_energy_dist`**: Measures energy and distance calculations. This captures the optimized block-based summation performance.
 3.  **`sradius_of_cap`**: Benchmarks the root-finding logic used for spherical cap calculations.
 4.  **`eq_regions`**: Measures the overhead of the Python loop used in recursive partitioning.
-5.  **`eq_min_dist`**: Measures the performance of the structure-aware minimum distance calculation.
+5.  **`eq_min_dist`**: Measures the performance of the structure-aware min-distance calculation.
 6.  **`eq_find_s2_region`**: Measures the performance of the vectorized histogram-based region lookup on $S^2$.
 
 ## Thesis Scaling Benchmark (Section 3.10.2)
@@ -88,7 +88,7 @@ For a detailed analysis of known bottlenecks and optimization opportunities, see
 ### Persistent Caching
 The current implementation of `eq_regions` use a **local, ephemeral cache** to exploit hemispherical symmetry within a single function call. 
 
-An opportunity exists to implement a **persistent caching layer** (e.g., using `functools.lru_cache` or a disk-backed cache) for common partition sizes ($N$). This would provide significant speedups for analyses that repeatedly iterate through ranges of $N$, common in property convergence studies.
+An opportunity exists to add a **persistent caching layer** (e.g., using `functools.lru_cache` or a disk-backed cache) for common partition sizes ($N$). This would provide significant speedups for analyses that repeatedly iterate through ranges of $N$, common in property convergence studies.
 
 ### Energy Calculation Optimization
 The calculation of the full Riesz energy sum ($s \neq 0$) is inherently $O(N^2)$, as it requires visiting every pair of points.
@@ -96,4 +96,4 @@ The calculation of the full Riesz energy sum ($s \neq 0$) is inherently $O(N^2)$
 To address the $O(N^2)$ memory bottleneck, `eqsp` uses a **block-based processing (tiling) approach** that limits peak memory usage to $O(N \times \text{block\_size})$. Additionally, the implementation **exploits symmetry** ($d_{ij} = d_{ji}$) to reduce the computational work by half.
 
 ### Accelerated Loops
-The recursive structure of the partitioning algorithm and the coordinate search logic are prime candidates for acceleration using **Numba** or **Cython** to eliminate Python interpreter overhead in hot loops.
+The recursive structure of the partitioning algorithm and the coordinate search logic are prime candidates for acceleration using **Numba** or **Cython** to remove Python interpreter overhead in hot loops.

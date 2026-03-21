@@ -1,6 +1,6 @@
 # Volume 1: The User Guide
 
-This guide provides an accessible entry point for researchers and scientists using the **PyEQSP** library. It covers everything from initial setup to reproducing published research results.
+This guide enables researchers and scientists to set up **PyEQSP** and reproduce published research results.
 
 ## Introduction & Setup
 
@@ -9,7 +9,7 @@ PyEQSP requires Python 3.11 or later. We recommend using a virtual environment t
 
 ## Use Cases & Applicability
 
-PyEQSP is the Python successor to the original MATLAB Equal Area Sphere Partitioning toolbox. It is used across various fields:
+PyEQSP is the Python successor to the original MATLAB Equal Area Sphere Partitioning toolbox. Researchers use it in many fields:
 - **Climate Science**: Spatio-temporal reconstructions.
 - **Bio-Medicine**: RNA folding simulations and MRI sampling.
 - **Physics**: Correlation energy in Fermi gases.
@@ -18,7 +18,7 @@ For a comprehensive review of applications, see the [Use Cases Guide](use_cases.
 
 ## Core Concepts & Geometries
 
-The library implements recursive zonal partitioning (the EQ algorithm) for various manifolds:
+The library implements recursive zonal partitioning (the EQ algorithm) for these manifolds:
 - **Manifolds**: Operations on $S^2$ (sphere), $S^3$, and higher-dimensional spheres $S^d$.
 - **Coordinate Systems**: Support for both Spherical and Euclidean conventions.
 
@@ -28,7 +28,7 @@ For more details on the underlying mathematics, see the [Core Concepts & Geometr
 
 Generate partitions and analyze their properties using the core API:
 - **Partitioning**: Creating regions and point sets via `eq_regions` and `eq_point_set`.
-- **Property Analysis**: Measuring minimum distance, packing density, and Riesz energy.
+- **Property Analysis**: Measuring min-distance, packing density, and Riesz energy.
 
 For step-by-step examples, see the [Practical Usage Guide](practical_usage.md).
 

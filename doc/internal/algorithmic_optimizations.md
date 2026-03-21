@@ -4,12 +4,12 @@ This document provides a technical summary of the key algorithmic optimizations 
 
 ## Algorithmic Improvements
 
-### Minimum Distance Optimization
+### Min-Distance Optimization
 **Status:** Improved from $O(N^2)$ to $O(N \log N)$.
 
 - **Previous Bottleneck:** Pairwise distance matrices created using `scipy.spatial.distance.pdist` or NumPy broadcasting consumed $O(N^2)$ memory and time.
 - **Approach:** We leverage **KDTrees** (`scipy.spatial.KDTree`) for $S^d$ ($d \le 4$) to perform localized neighbour searches. For higher dimensions or specific partition types, we use **structure-aware searches** that exploit the recursive nature of the EQ algorithm to bound the search space.
-- **Result:** Calculating the minimum distance for $N=100,000$ points now takes seconds rather than minutes, and memory usage remains linear.
+- **Result:** Calculating the min-distance for $N=100,000$ points now takes seconds rather than minutes, and memory usage remains linear.
 
 ### Recursive Partitioning Scaling
 **Status:** Verified $O(\mathcal{N}^{0.6})$ scaling ({ref}`[Leo07] <v2-leo07>`, Section 3.10.2).
@@ -29,7 +29,7 @@ This document provides a technical summary of the key algorithmic optimizations 
 ### Histogram-Based Region Lookup ($S^2$)
 **Status:** Fully Vectorized.
 
-- **Approach:** Assigning points to regions on $S^2$ previously used a recursive Python loop. The new implementation uses **logarithmic searching** (`np.searchsorted`) across vectorized "collar" boundaries.
+- **Approach:** Assigning points to regions on $S^2$ used a recursive Python loop. The new implementation uses **logarithmic searching** (`np.searchsorted`) across vectorized "collar" boundaries.
 - **Result:** Billions of sample points can be binned into partitions in a single vectorized pass.
 
 ### Symmetric Partition Performance (`even_collars`)
@@ -40,7 +40,7 @@ This document provides a technical summary of the key algorithmic optimizations 
 
 ## Optimized NumPy & SciPy Patterns
 
-During development, several "hot" paths were refactored to use more efficient library patterns:
+During development, many "hot" paths were refactored to use more efficient library patterns:
 
 ### Vectorized Root Finding
 In `sradius_of_cap`, we replaced a Python loop over `scipy.optimize.root_scalar` with a vectorized Newton-Raphson implementation using `scipy.optimize.newton` on arrays. This provides a 10–50x speedup for high-dimensional spherical cap radius calculations.
@@ -59,7 +59,7 @@ Common patterns like `np.linalg.norm(a[:, None] - b, axis=2)` were replaced with
 `fig_3_7_max_diam_multi_dim.py` calculates max diameter coefficients for EQ partitions across dimensions $d=2$ to $d=8$. The dimension-8 calculation alone accounts for approximately **81%** of the total CPU time, making it the dominant bottleneck.
 
 - **Approach:** Uses `concurrent.futures.ProcessPoolExecutor` with `max_workers=2`. Dimensions are dispatched in **decreasing order** so that `dim=8` begins immediately, while the second worker handles `dim=7` and then the remaining smaller dimensions sequentially.
-- **Result:** For a full-fidelity thesis run ($N=2^{20}$), wall-clock time is significantly reduced (e.g., from ~1h 45m to ~1h 24m). This matches the theoretical maximum improvement for a 2-worker strategy given the Amdahl's Law limit imposed by the serial `dim=8` task.
+- **Result:** For a full-fidelity thesis run ($N=2^{20}$), wall-clock time is reduced (e.g., from ~1h 45m to ~1h 24m). This matches the theoretical max improvement for a 2-worker strategy given the Amdahl's Law limit imposed by the serial `dim=8` task.
 
 ---
 

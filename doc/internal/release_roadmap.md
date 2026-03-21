@@ -1,6 +1,6 @@
 # Release Roadmap: PyEQSP
 
-This document outlines the technical path from the current **0.99.4** state to a production **1.00** release on PyPI. It is intended for beta testers and contributors to understand the remaining milestones and stability goals.
+This document outlines the technical path from the current **0.99.4** state to a production **1.00** release on PyPI. Beta testers and contributors can use this to understand the remaining milestones and stability goals.
 
 ## Current Status: 0.99.4 (Feature Complete)
 The codebase has been successfully migrated from Matlab to a vectorized Python implementation. Core features, high-fidelity thesis reproduction scripts, and $O(\mathcal{N}^{0.6})$ scaling have been verified. The `even_collars` feature was shipped in 0.99.0.
@@ -8,7 +8,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 ---
 
 ## Phase 1: 0.99 Beta (Functional & Quality Parity) - [COMPLETED]
-**Goal**: Final feature inclusion (`even_collars` symmetry), resolution of phase-one code review defects, subsequent feature freeze, CI stabilization, and release candidate verification.
+**Goal**: Final feature inclusion (`even_collars` symmetry), resolution of phase-one code review defects, then feature freeze, CI stabilization, and release candidate verification.
 
 ### API Stabilisation & Cleanup — ✅ Done
 - **Symmetric Partitions** (`even_collars`): Shipped in **0.99.0**. The `even_collars` parameter in `eq_caps`, `eq_regions`, and `eq_point_set` ensures the equatorial hyperplane aligns with a cap boundary, enabling S² hemisphere splitting and S³ → SO(3) quaternion sampling.
@@ -31,26 +31,26 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 
 ---
 
-## Phase 2: 0.99.5 Maintenance — IN PROGRESS (Distribution & Governance)
+## Phase 2: 0.99.5 Maintenance — [COMPLETED] (2026-03-21)
 **Goal**: Automate the distribution pipeline, resolve PyPI link rendering, and formalise project governance.
 
 ### Automated Distribution Pipeline
-- [ ] **`scripts/pypi_readme_fix.py`**: Convert relative Markdown links in `README.md` to absolute GitHub URLs for the PyPI distribution.
-- [ ] **`scripts/build_dist.py`**: Automate the clean-build-check cycle (`pypi_readme_fix.py` → `python -m build` → `twine check`).
-- [ ] **`scripts/upload_release.py`**: Automate TestPyPI and PyPI uploads with credential checking and structured failure diagnostics.
-- [ ] **`doc/maint/upload_sourceforge.py`**: Automate the SourceForge documentation upload workflow.
+- [x] **`scripts/pypi_readme_fix.py`**: Convert relative Markdown links in `README.md` to absolute GitHub URLs for the PyPI distribution.
+- [x] **`scripts/build_dist.py`**: Automate the clean-build-check cycle (`pypi_readme_fix.py` → `python -m build` → `twine check`).
+- [x] **`scripts/upload_release.py`**: Automate TestPyPI and PyPI uploads with credential checking and structured failure diagnostics.
+- [x] **`doc/maint/upload_sourceforge.py`**: Automate the SourceForge documentation upload workflow.
 
 ### Verification Runner Enhancements
-- [ ] Extend Ruff/Pylint scans to include the new `scripts/` directory.
-- [ ] Integrate `make doctest` into `verify_all.py`.
-- [ ] Add `--pre-release` flag to `verify_all.py` (runs `build_dist.py` without uploading).
+- [x] Extend Ruff/Pylint scans to include the new `scripts/` directory.
+- [x] Integrate `make doctest` into `verify_all.py`.
+- [x] Add `--pre-release` flag to `verify_all.py` (runs `build_dist.py` without uploading).
 
 ### Project Governance
-- [ ] **Role Matrix**: Define Owner, Administrator, Maintainer, and Contributor roles in the Maintenance Guide.
-- [ ] **Security Audit**: Document credential management for PyPI tokens, CI secrets, and ReadTheDocs webhooks.
+- [x] **Role Matrix**: Define Owner, Administrator, Maintainer, and Contributor roles in the Maintenance Guide.
+- [x] **Security Audit**: Document credential management for PyPI tokens, CI secrets, and ReadTheDocs webhooks.
 
 ### Testing
-- [ ] Mock-based tests for all new distribution scripts in `scripts/`.
+- [x] Mock-based tests for all new distribution scripts in `scripts/`.
 
 ---
 
@@ -58,7 +58,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 **Goal**: Apply prose-level linting and deepen link validation. Lower priority; should not block the path to 1.00.
 
 - [ ] **Vale Prose Linting**: Configure `vale` with the Google style base and custom rules for Australian English. Integrate as a warning-only step in `verify_all.py`.
-- [ ] **Sphinx Inventory Validation**: Upgrade `check_links.py` to validate intersphinx targets via `objects.inv`. Prerequisite: adopt `intersphinx_mapping` in `doc/conf.py` for NumPy/SciPy.
+- [ ] **Sphinx Inventory Validation**: Upgrade `check_links.py` to check intersphinx targets via `objects.inv`. Prerequisite: adopt `intersphinx_mapping` in `doc/conf.py` for NumPy/SciPy.
 
 ---
 
@@ -71,7 +71,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 
 ### Production Deployment
 - [ ] Bump version to `1.0.0` in `pyproject.toml`.
-- [ ] Finalize `CHANGELOG.md` with the 1.00 entry.
+- [ ] Update `CHANGELOG.md` with the 1.00 entry.
 - [ ] Run `scripts/upload_release.py --testpypi` and perform a visual audit.
 - [ ] Create signed tag: `git tag -s v1.0.0 -m "PyEQSP 1.0.0"` and push.
 - [ ] Run `scripts/upload_release.py --pypi` for production upload.
@@ -79,7 +79,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 
 ### Final Verification
 - [ ] **Clean-room Validation**: Install from PyPI in a fresh venv; confirm all PhD thesis reproduction scripts pass.
-- [ ] **Documentation Release**: Finalize Volume 1 and Volume 2 as official public-facing books. Confirm all developer-only artifacts are excluded from the public release branch.
+- [ ] **Documentation Release**: Review Volume 1 and Volume 2 as official public-facing books. Confirm all developer-only artifacts are excluded from the public release branch.
 
 ---
 
@@ -90,5 +90,5 @@ These items represent the long-term vision for the library:
 |---|---|
 | **Compiled Kernels** | Port recursive collar loops to Cython or Numba for near-native C/LLVM speed. |
 | **Persistent Caching** | Disk-based or memory-resident caches for regional properties across sequential research runs. |
-| **Advanced Vectorization** | Research `awkward-array` ragged structures to eliminate loops over varying partition sizes $N$. |
+| **Advanced Vectorization** | Research `awkward-array` ragged structures to remove loops over varying partition sizes $N$. |
 | **Intersphinx Integration** | Link PyEQSP docs to NumPy/SciPy API references; prerequisite for Phase 2b Sphinx Inventory Validation. |

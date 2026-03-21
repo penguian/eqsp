@@ -61,8 +61,8 @@ graph LR
 ## Extensibility
 
 ### Adding New Manifolds
-The library is designed to be extensible. To add support for a new manifold:
-1. Implement the measure (area) calculation.
+The library is designed for extension. To add support for a new manifold:
+1. Define the measure (area) calculation.
 2. Define the recursive partitioning logic in `partitions.py`.
 3. Update the visualization suite to handle the new projection requirements.
 
