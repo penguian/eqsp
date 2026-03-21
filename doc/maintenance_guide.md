@@ -82,8 +82,10 @@ Non-owners should never have access to production secrets. All automation is des
 Release 0.99.6 introduced a suite of automated scripts to ensure consistency and prevent common errors:
 
 1. **Build and Check**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
-2. **PyPI Upload**: Use `scripts/upload_release.py --testpypi` or `--pypi`. This script ensures a fresh build and converts relative documentation links to absolute URLs for correct rendering on PyPI.
-3. **SourceForge Upload**: Use `doc/maint/upload_sourceforge.py` to generate the `scp` command for hosting the HTML documentation.
+2. **TestPyPI Upload**: Use `scripts/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
+3. **GitHub Synchronisation & CI**: Commit changes to a release branch, push to GitHub, and create a Pull Request to trigger the final CI verification suite.
+4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `scripts/upload_release.py --pypi` for the final deployment.
+5. **SourceForge Upload**: Use `doc/maint/upload_sourceforge.py` to host the Sphinx HTML documentation.
 
 For detailed instructions on these scripts, see the internal [Upload Guide](internal/upload_guide.md).
 

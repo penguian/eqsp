@@ -24,8 +24,25 @@ python3 -m venv test_env && source test_env/bin/activate
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyeqsp
 ```
 
-### 3. Production PyPI Upload
-Once verified on TestPyPI:
+### 3. GitHub Synchronisation & CI Verification
+Once the TestPyPI rendering is confirmed, commit the changes and trigger a final CI run on GitHub:
+
+1. **Commit and Push**:
+   ```bash
+   git checkout -b release_v0.99.6
+   git add .
+   git commit -m "Beta release 0.99.6: documentation audit and release automation"
+   git push -u origin release_v0.99.6
+   ```
+
+2. **Create Pull Request**:
+   Create a PR from your release branch to `main`. 
+
+3. **Verify CI**:
+   Ensure that the GitHub Actions "CI" and "Verify Distribution Build" workflows pass 100%. This serves as the final gatekeeper before the production upload.
+
+### 4. Production PyPI Upload
+Once the PR is approved and the CI has passed:
 ```bash
 python3 scripts/upload_release.py --pypi
 ```
