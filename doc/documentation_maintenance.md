@@ -44,6 +44,7 @@ To prevent documentation drift and common technical errors, PyEQSP includes a su
 *   **Matplotlib Initialization Check**: Enforces that `matplotlib.use('Agg')` is called before any `pyplot` imports in examples to ensure headless environment compatibility.
 *   **Configuration Type Check**: Validates that `doc/conf.py` variables use the correct data types expected by Sphinx extensions.
 *   **Orthography Check** (`doc/maint/quality_check.py`): Enforces the project's linguistic standard (**Australian -ize English**), flagging non-compliant spellings (e.g., "-ise" suffixes) to ensure global academic consistency.
+*   **Readability Check** (`scripts/compute_readability.py`): Calculates Flesch-Kincaid and Gunning-Fog scores to monitor prose complexity and prevent academic drift.
 
 ## Optional Linting: Vale
 

@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.5] - 2026-03-21
+## [0.99.6] - 2026-03-21
 
 ### Added
-- **Release Automation**: Introduced `scripts/` to automate the sanitisation of `README.md` for PyPI, build distribution packages, and manage authenticated uploads to TestPyPI/PyPI.
+- **Release Automation**: Introduced `scripts/` to automate build orchestration and PyPI deployment.
+  - `pypi_readme_fix.py`: Sanitises documentation links by converting relative paths to absolute GitHub URLs (targeting the `main` branch).
+  - `build_dist.py`: Orchestrates the build cycle using a "swap-and-restore" mechanism for PyPI-ready READMEs.
+  - `upload_release.py`: Manages authenticated uploads to PyPI and TestPyPI.
 - **Bibliography Consistency**: Enhanced `quality_check.py` to strictly enforce metadata parity across all reference documents (`AUTHORS.md`, `doc/references_vol*.md`).
 - **Reference Alignment**: Conducted a manual audit to align citation keys across multiple volumes, ensuring all documents use the final, canonical keys from the PhD thesis.
 - **Readability Integration**: Integrated Vale `Readability` style to establish and monitor readability baselines across three documentation tiers.
@@ -20,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - **Migration Guide**: Corrected several porting attributions and coordinate convention notes to match the original Matlab toolbox logic.
+
+## [0.99.5] - Skipped
+- Version 0.99.5 was bypassed in favour of 0.99.6 to resolve TestPyPI immutability conflicts during distribution testing.
 
 ## [0.99.4] - 2026-03-17
 

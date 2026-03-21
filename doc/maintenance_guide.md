@@ -21,9 +21,28 @@ PyEQSP leverages NumPy for vectorization and spatial indexing to achieve $O(N \l
 
 ## Quality Assurance & Verification
 
-We maintain a strict quality policy to ensure the reliability of the research outputs:
-- **Linting**: 10.00/10 Pylint and zero-Ruff compliance is required. The `ruff.toml` uses a [flat compatibility format](internal/testing_details.md#configuration-compatibility) to support both legacy and modern environments.
-- **Testing**: See [Technical Testing & Verification](internal/testing_details.md) for details on the `pytest` suite and coverage analysis.
+We maintain a strict quality policy to ensure the reliability of the research outputs.
+
+### Automated Verification
+
+The primary entry point for quality control is `verify_all.py` (located in the root).
+- **Pull Requests**: Every PR must pass `python3 verify_all.py` (Ruff, Pylint, Pytest).
+- **Pre-release**: Use `python3 verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
+
+### Maintenance Scripts Inventory
+
+| Script | Location | Purpose |
+|---|---|---|
+| **Verification** | `verify_all.py` | Orchestrates Ruff, Pylint, and Pytest with coverage. |
+| **Readability** | `scripts/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
+| **Link Check** | `doc/maint/check_links.py` | Validates internal and external documentation URLs. |
+| **Quality Audit** | `doc/maint/quality_check.py` | Enforces bibliography/citation consistency. |
+| **Packaging** | `scripts/build_dist.py` | Orchestrates link sanitisation and distribution build. |
+| **Link Fix** | `scripts/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
+| **Upload** | `scripts/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
+| **SourceForge** | `doc/maint/upload_sourceforge.py` | Generates the SCP command for website hosting. |
+
+For technical details on the testing infrastructure, see [Technical Testing & Verification](internal/testing_details.md).
 
 ## Documentation Management
 
@@ -60,7 +79,7 @@ Non-owners should never have access to production secrets. All automation is des
 
 ### Release Procedures
 
-Release 0.99.5 introduced a suite of automated scripts to ensure consistency and prevent common errors:
+Release 0.99.6 introduced a suite of automated scripts to ensure consistency and prevent common errors:
 
 1. **Build and Check**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
 2. **PyPI Upload**: Use `scripts/upload_release.py --testpypi` or `--pypi`. This script ensures a fresh build and converts relative documentation links to absolute URLs for correct rendering on PyPI.
@@ -70,7 +89,7 @@ For detailed instructions on these scripts, see the internal [Upload Guide](inte
 
 ### Latest Release Notes
 Historical and current release details are tracked in the `doc/internal/` directory:
-- [Release Notes 0.99.5](internal/release_notes_0_99_5.md)
+- [Release Notes 0.99.6](internal/release_notes_0_99_6.md)
 - [Release Notes 0.99.4](internal/release_notes_0_99_4.md)
 - [Release Roadmap](internal/release_roadmap.md)
 

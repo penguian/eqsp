@@ -1,45 +1,46 @@
 # SourceForge & TestPyPI Upload Guide
 
-This guide details the procedures for uploading PyEQSP distributions and documentation to their respective hosting platforms.
+This guide details the procedures for uploading PyEQSP distributions and documentation to their respective hosting platforms using the project's automation suite.
 
-## TestPyPI Upload Procedure
+## Release Distribution (PyPI / TestPyPI)
 
-To verify the distribution before a public PyPI release:
+To build and upload the package, use the scripts in the `scripts/` directory. These scripts ensure that all documentation links are converted to absolute GitHub URLs for correct rendering on project pages.
 
-1. **Clean & Build**:
-   ```bash
-   rm -rf dist/ build/ *.egg-info
-   python3 -m build
-   ```
+### 1. Verification & Build
+Before uploading, run the full verification suite with the pre-release build check:
+```bash
+python3 verify_all.py --pre-release
+```
+This command builds the distribution into `dist/` and runs `twine check` automatically.
 
-2. **Upload via Twine**:
-   ```bash
-   python3 -m twine upload --repository testpypi dist/*
-   ```
+### 2. TestPyPI Upload
+To verify the rendering and installation on TestPyPI:
+```bash
+python3 scripts/upload_release.py --testpypi
+```
+Verify the installation in a clean environment:
+```bash
+python3 -m venv test_env && source test_env/bin/activate
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyeqsp
+```
 
-3. **Verify Installation**:
-   ```bash
-   python3 -m venv test_env
-   source test_env/bin/activate
-   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyeqsp
-   ```
+### 3. Production PyPI Upload
+Once verified on TestPyPI:
+```bash
+python3 scripts/upload_release.py --pypi
+```
 
 ## SourceForge Documentation Upload
 
 To update the project website at `http://eqsp.sourceforge.net`:
 
-1. **Generate Documentation**:
-   ```bash
-   cd doc
-   make html
-   ```
+### 1. Generate & Upload
+The documentation upload is semi-automated via the `doc/maint/upload_sourceforge.py` script.
+```bash
+# This script builds the docs and generates the scp command
+python3 doc/maint/upload_sourceforge.py
+```
+After reviewing the generated command, execute it to upload the `doc/_build/html` contents to your SourceForge `htdocs` directory.
 
-2. **Upload via SCP**:
-   Upload the contents of `doc/_build/html` to your SourceForge htdocs directory.
-   ```bash
-   # Replace USER with your SourceForge username
-   scp -r doc/_build/html/* USER@web.sourceforge.net:/home/project-web/eqsp/htdocs/
-   ```
-
-3. **Verify Web Rendering**:
-   Check [http://eqsp.sourceforge.net](http://eqsp.sourceforge.net) to ensure all Markdown and mathematics symbols render correctly.
+### 2. Verify Web Rendering
+Check [http://eqsp.sourceforge.net](http://eqsp.sourceforge.net) to ensure all Markdown, mathematics symbols, and navigation elements render correctly.

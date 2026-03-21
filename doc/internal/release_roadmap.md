@@ -31,13 +31,13 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 
 ---
 
-## Phase 2: 0.99.5 Maintenance — [COMPLETED] (2026-03-21)
+## Phase 2: 0.99.6 Maintenance — [COMPLETED] (2026-03-21)
 **Goal**: Automate the distribution pipeline, resolve PyPI link rendering, and formalise project governance.
 
 ### Automated Distribution Pipeline
 - [x] **`scripts/pypi_readme_fix.py`**: Convert relative Markdown links in `README.md` to absolute GitHub URLs for the PyPI distribution.
-- [x] **`scripts/build_dist.py`**: Automate the clean-build-check cycle (`pypi_readme_fix.py` → `python -m build` → `twine check`).
-- [x] **`scripts/upload_release.py`**: Automate TestPyPI and PyPI uploads with credential checking and structured failure diagnostics.
+- [x] **`scripts/build_dist.py`**: Automate the clean-build-check cycle with a "swap-and-restore" mechanism to ensure absolute links are used in the distribution. [VERIFIED in METADATA]
+- [x] **`scripts/upload_release.py`**: Automate TestPyPI and PyPI uploads.
 - [x] **`doc/maint/upload_sourceforge.py`**: Automate the SourceForge documentation upload workflow.
 
 ### Verification Runner Enhancements
