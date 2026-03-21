@@ -67,6 +67,10 @@ def main():
             "Performance Quality Check",
         ),
         (["make", "-C", "doc", "doctest"], "Sphinx Doctest"),
+        (
+            ["make", "-C", "doc", "html", 'SPHINXOPTS="-W"'],
+            "Sphinx HTML Build (Zero Warning Policy)",
+        ),
         ([py, "tests/run_coverage.py", "--include-private"], "Test Suite & Coverage"),
     ]
 

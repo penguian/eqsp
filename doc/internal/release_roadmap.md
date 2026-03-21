@@ -2,8 +2,8 @@
 
 This document outlines the technical path from the current **0.99.4** state to a production **1.00** release on PyPI. Beta testers and contributors can use this to understand the remaining milestones and stability goals.
 
-## Current Status: 0.99.4 (Feature Complete)
-The codebase has been successfully migrated from Matlab to a vectorized Python implementation. Core features, high-fidelity thesis reproduction scripts, and $O(\mathcal{N}^{0.6})$ scaling have been verified. The `even_collars` feature was shipped in 0.99.0.
+## Current Status: 0.99.7 (Infrastructure Hardened)
+The codebase has been successfully migrated from Matlab to a vectorized Python implementation. Core features, high-fidelity thesis reproduction scripts, and $O(\mathcal{N}^{0.6})$ scaling have been verified. Release 0.99.7 introduced strict automated quality guardrails and CI hardening.
 
 ---
 
@@ -54,8 +54,25 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 
 ---
 
-## Phase 2b: 0.99.6 — Optional Quality Polish (Deferred)
-**Goal**: Apply prose-level linting and deepen link validation. Lower priority; should not block the path to 1.00.
+## Phase 2b: 0.99.7 Infrastructure Hardening — [COMPLETED] (2026-03-22)
+**Goal**: Harden CI infrastructure, implement automated quality guardrails, and address legacy environment compatibility.
+
+### CI & Environment
+- [x] **CI Hardening**: Resolve missing documentation dependencies and ensure 100% pass rate in headless environments via `unittest.mock`.
+- [x] **Ruff Compatibility**: Enforce flat-format `ruff.toml` for legacy environment compatibility.
+- [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `verify_all.py` to prevent documentation drift.
+
+### Automated Quality Guardrails (`quality_check.py`)
+- [x] **Positional-Only Violation Check**: Automatically prevent `N=100` keyword usage in docs for positional-only arguments.
+- [x] **Terminology Enforcement**: Automated checks for ordinals ("2rd", "3th") and manifold naming ("N-sphere").
+- [x] **Pragma Verification**: Automated audit for orphaned or ineffective `# pragma: no cover` placements.
+
+### Manual Verification
+- [x] **`doc/internal/pr_checklist.md`**: Establish a definitive manual checklist for all future maintainer Pull Requests.
+
+---
+
+## Phase 2c: 0.99.x — Optional Quality Polish (Deferred)
 
 - [ ] **Vale Prose Linting**: Configure `vale` with the Google style base and custom rules for Australian English. Integrate as a warning-only step in `verify_all.py`.
 - [ ] **Sphinx Inventory Validation**: Upgrade `check_links.py` to check intersphinx targets via `objects.inv`. Prerequisite: adopt `intersphinx_mapping` in `doc/conf.py` for NumPy/SciPy.

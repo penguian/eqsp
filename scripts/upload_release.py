@@ -48,14 +48,16 @@ def print_structured_diagnostic(stderr_output):
 
 def check_credentials():
     has_pypirc = os.path.exists(os.path.expanduser("~/.pypirc"))
-    has_env_token = "TWINE_PASSWORD" in os.environ or "TWINE_TOKEN" in os.environ
-    has_twine_username = "TWINE_USERNAME" in os.environ
+    # Twine typically expects TWINE_PASSWORD (and optionally TWINE_USERNAME).
+    # Project-specific tokens are often passed via TWINE_PASSWORD with
+    # TWINE_USERNAME set to "__token__".
+    has_env_creds = "TWINE_PASSWORD" in os.environ
 
-    if not (has_pypirc or (has_twine_username and has_env_token)):
+    if not (has_pypirc or has_env_creds):
         print("ERROR: No PyPI credentials found.", file=sys.stderr)
         print(
-            "Store them in ~/.pypirc or set TWINE_USERNAME and "
-            "TWINE_PASSWORD environment variables.",
+            "Store them in ~/.pypirc or set TWINE_PASSWORD (and optionally "
+            "TWINE_USERNAME if using a username/password pair) environment variables.",
             file=sys.stderr,
         )
         print(

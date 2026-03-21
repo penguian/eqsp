@@ -26,7 +26,7 @@ We maintain a strict quality policy to ensure the reliability of the research ou
 ### Automated Verification
 
 The primary entry point for quality control is `verify_all.py` (located in the root).
-- **Pull Requests**: Every PR must pass `python3 verify_all.py` (Ruff, Pylint, Pytest).
+- **Pull Requests**: Every PR must pass `python3 verify_all.py` (Ruff, Pylint, Pytest). See the internal [Pull Request Checklist](internal/pr_checklist.md) for a manual pre-submission guide.
 - **Pre-release**: Use `python3 verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
 
 ### Maintenance Scripts Inventory
@@ -70,7 +70,7 @@ For standard operating procedures about building and hosting, see the [Documenta
 ### Security & Credential Management
 
 Release operations to PyPI and SourceForge require owner or administrator credentials.
-- **PyPI**: Use API tokens rather than account passwords. Store tokens in `~/.pypirc` or provide them via the `TWINE_TOKEN` environment variable.
+- **PyPI**: Use API tokens rather than account passwords. Store tokens in `~/.pypirc` or provide them via the `TWINE_PASSWORD` environment variable (the standard for both tokens and passwords).
 - **SourceForge**: Managed via SSH keys. The `upload_sourceforge.py` script generates an `scp` command but does not execute it, allowing the maintainer to review and authenticate manually.
 
 Non-owners should never have access to production secrets. All automation is designed to be run from developers' local machines using their own credentials.
@@ -79,7 +79,7 @@ Non-owners should never have access to production secrets. All automation is des
 
 ### Release Procedures
 
-Release 0.99.6 introduced a suite of automated scripts to ensure consistency and prevent common errors:
+Release 0.99.7 introduced a suite of automated scripts and strict quality guardrails to ensure consistency:
 
 1. **Build and Check**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
 2. **TestPyPI Upload**: Use `scripts/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
@@ -91,6 +91,7 @@ For detailed instructions on these scripts, see the internal [Upload Guide](inte
 
 ### Latest Release Notes
 Historical and current release details are tracked in the `doc/internal/` directory:
+- [Release Notes 0.99.7](internal/release_notes_0_99_7.md)
 - [Release Notes 0.99.6](internal/release_notes_0_99_6.md)
 - [Release Notes 0.99.4](internal/release_notes_0_99_4.md)
 - [Release Roadmap](internal/release_roadmap.md)

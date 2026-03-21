@@ -80,7 +80,7 @@ def main():
             "-m",
             "coverage",
             "run",
-            "--source=eqsp,examples/user-guide/src,doc/maint",
+            "--source=eqsp,examples/user-guide/src,doc/maint,scripts",
         ]
         + omit_opts
         + [
@@ -90,6 +90,7 @@ def main():
             "tests/src",
             "examples/user-guide/src",
             "doc/maint",
+            "scripts",
         ]
         + pytest_opts
     )

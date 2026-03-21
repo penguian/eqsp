@@ -32,10 +32,12 @@ pip install pytest coverage
 ## Running Tests
 
 ### Project-Wide Run
-To run the entire suite (recommended):
+To run the entire suite, including linting, link checks, and documentation verification (recommended):
 ```bash
-pytest
+python3 verify_all.py
 ```
+
+This orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
 
 ### Granular Control
 You can run tests at three levels of granularity:
@@ -109,8 +111,9 @@ These tests ensure that internal mathematics optimizations (such as vectorized c
 
 To maintain the quality of the project's prevention mechanisms, the scripts in `doc/maint/` are verified via:
 - **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
-- **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose.
-- **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that checks the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
+- **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose. It also enforces canonical terminology (e.g., ensuring "N-sphere" rather than "Nrd-sphere") and catches positional-only argument violations in doc examples.
+- **Structural Integrity**: The suite verifies that `ruff.toml` maintains its flat-format compatibility and ensures that all `# pragma: no cover` exclusions are effectively attached to statements.
+- **Unit Tests (`tests/src/test_maintenance_scripts.py`)**: A dedicated suite that checks the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
 
 All diagnostic scripts use **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
 

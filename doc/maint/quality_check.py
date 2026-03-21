@@ -236,6 +236,12 @@ def check_typos():
     typo_map = {
         "excitiation": "excitation",
         "Scanning foundational results": "proper metadata entry",
+        "2rd": "2nd",
+        "3th": "3rd",
+        "4th-sphere": "4-sphere",
+        "3rd-sphere": "3-sphere",
+        "2nd-sphere": "2-sphere",
+        "show_s2_partition(N=": "show_s2_partition(100, (N is positional-only)",
     }
 
     files_to_check = list(REPO_ROOT.rglob("*.md"))
@@ -243,7 +249,9 @@ def check_typos():
     files_to_check.extend((REPO_ROOT / "eqsp").rglob("*.py"))
 
     for f in files_to_check:
-        if not f.exists() or ".build" in str(f) or "results.0" in str(f):
+        ignore_names = [".build", "results.0", "pr_checklist.md"]
+        ignore = any(name in str(f) for name in ignore_names)
+        if not f.exists() or ignore:
             continue  # pragma: no cover
         content = f.read_text(encoding="utf-8")
         for typo, correction in typo_map.items():
@@ -354,6 +362,47 @@ def check_reference_consistency(repo_root=REPO_ROOT):
     return errors
 
 
+def check_ruff_config_format():
+    """Ensure ruff.toml uses the legacy-compatible flat format (no [lint])."""
+    ruff_toml = REPO_ROOT / "ruff.toml"
+    if not ruff_toml.exists():
+        return []  # pragma: no cover
+
+    content = ruff_toml.read_text(encoding="utf-8")
+    if "[lint]" in content or "[lint." in content:
+        return [
+            "ruff.toml: uses modern [lint] section. "
+            "Revert to flat format for legacy compatibility."
+        ]
+    return []
+
+
+def check_standalone_pragmas():
+    """Ensure '# pragma: no cover' is attached to a statement, not on its own line."""
+    errors = []
+    # Check package and scripts but skip third-party/venv
+    python_files = list((REPO_ROOT / "eqsp").rglob("*.py"))
+    python_files.extend((REPO_ROOT / "scripts").glob("*.py"))
+    python_files.extend((REPO_ROOT / "tests").rglob("*.py"))
+    python_files.extend((REPO_ROOT / "doc" / "maint").glob("*.py"))
+
+    # Standalone pragma: line consists only of whitespace and the pragma
+    standalone_re = re.compile(r"^\s*#\s*pragma:\s*no\s*cover\s*$")
+
+    for f in python_files:
+        if not f.exists():
+            continue  # pragma: no cover
+        content = f.read_text(encoding="utf-8")
+        for i, line in enumerate(content.splitlines()):
+            if standalone_re.match(line):
+                f_rel = f.relative_to(REPO_ROOT)
+                errors.append(
+                    f"{f_rel}:{i+1}: Standalone '# pragma: no cover' is ineffective. "
+                    "Attach to the statement."
+                )
+    return errors
+
+
 def main():  # pragma: no cover
     """Run all quality checks."""
     all_errors = []
@@ -366,6 +415,8 @@ def main():  # pragma: no cover
     all_errors.extend(check_typos())
     all_errors.extend(check_orthography())
     all_errors.extend(check_reference_consistency())
+    all_errors.extend(check_ruff_config_format())
+    all_errors.extend(check_standalone_pragmas())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")

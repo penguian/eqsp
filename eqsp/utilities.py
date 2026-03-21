@@ -803,8 +803,6 @@ def x2eqarea(x):
     return result
 
 
-if __name__ == "__main__":
-    import doctest  # pragma: no cover
-
-    # pragma: no cover
-    doctest.testmod()  # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
+    import doctest
+    doctest.testmod()

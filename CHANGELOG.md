@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.7] - 2026-03-21
+
+### Fixed
+- **CI Hardening**: Resolved "module not found" errors in GitHub Actions by adding missing Sphinx and documentation dependencies to the CI runner.
+- **Headless Doctests**: Implemented `mayavi` and `PyQt5` mocking in `doc/conf.py` to allow 3D visualization doctests to pass in headless CI environments.
+- **Environment Compatibility**: Reverted `ruff.toml` to the legacy-compatible flat configuration format to support restricted environments (e.g., `.venv_sys`).
+- **Credential Validation**: Refined `upload_release.py` to correctly validate `TWINE_PASSWORD` (and handle tokens) without misidentifying `TWINE_TOKEN` as a standard variable.
+- **Coverage Transparency**: Expanded `tests/run_coverage.py` to include the `scripts/` directory in formal quality and coverage reports.
+- **Documentation Refinement**: Resolved `toc.not_included` warnings by properly indexing all historical release notes in the master documentation.
+
 ## [0.99.6] - 2026-03-21
 
 ### Added
