@@ -144,9 +144,17 @@ If you rely on system-installed packages like `mayavi` (via `apt`), see the [Ins
 
 > **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
 
-## Performance "Killer Features"
+## Key Features of PyEQSP
 
-The Python port includes several algorithmic optimizations that significantly outperform the original Matlab toolbox:
+Compared to the original MATLAB toolbox, **PyEQSP** provides some distinct advantages:
+
+- **Symmetry Support**: The `even_collars` parameter enables symmetric partitions for $S^3 \to SO(3)$ sampling.
+- **High Performance**: Vectorized mathematical operations and $O(N \log N)$ spatial lookups.
+
+
+## Performance Features
+
+The Python port includes several algorithmic optimizations that were not included in the original Matlab toolbox:
 
 - **Minimum Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
 - **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
