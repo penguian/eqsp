@@ -231,7 +231,6 @@ def project_s2_partition(
     return ax
 
 
-
 def illustrate_eq_algorithm(
     dim,
     N,

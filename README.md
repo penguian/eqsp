@@ -55,6 +55,10 @@ including:
 - Monte Carlo sampling on spherical domains
 - Computer graphics and rendering
 
+## Documentation
+
+For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/core_concepts.md).
+
 ## Installation
 
 Requires **Python 3.11+**. It is recommended that you install

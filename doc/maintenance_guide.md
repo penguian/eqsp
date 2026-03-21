@@ -37,10 +37,36 @@ Documentation is managed using Sphinx and MyST-Parser.
 
 For standard operating procedures regarding building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
 
+## Project Governance
+
+### Roles and Responsibilities
+
+| Role | Scope | Production Credential Access |
+|---|---|---|
+| **Owner** | Full admin of GitHub, SourceForge, PyPI | Yes (all) |
+| **Administrator** | CI secrets, API tokens, ReadTheDocs | Yes (scoped) |
+| **Maintainer** | PR review, merges into `main`, release tags | No |
+| **Contributor** | Forked PRs, bug reports, documentation | No |
+
+### Security & Credential Management
+
+Release operations to PyPI and SourceForge require owner or administrator credentials.
+- **PyPI**: Use API tokens rather than account passwords. Store tokens in `~/.pypirc` or provide them via the `TWINE_TOKEN` environment variable.
+- **SourceForge**: Managed via SSH keys. The `upload_sourceforge.py` script generates an `scp` command but does not execute it, allowing the maintainer to review and authenticate manually.
+
+Non-owners should never have access to production secrets. All automation is designed to be run from developers' local machines using their own credentials.
+
 ## Release & Lifecycle
 
 ### Release Procedures
-For detailed instructions on uploading to TestPyPI and SourceForge, see the internal [Upload Guide](internal/upload_guide.md).
+
+Release 0.99.5 introduced a suite of automated scripts to ensure consistency and prevent common errors:
+
+1. **Build and Validate**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
+2. **PyPI Upload**: Use `scripts/upload_release.py --testpypi` or `--pypi`. This script ensures a fresh build and converts relative documentation links to absolute URLs for correct rendering on PyPI.
+3. **SourceForge Upload**: Use `doc/maint/upload_sourceforge.py` to generate the `scp` command for hosting the HTML documentation.
+
+For detailed instructions on these scripts, see the internal [Upload Guide](internal/upload_guide.md).
 
 ### Latest Release Notes
 Historical and current release details are tracked in the `doc/internal/` directory:

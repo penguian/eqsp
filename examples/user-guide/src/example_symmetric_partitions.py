@@ -41,14 +41,16 @@ def main():
     z_coords = points[2, :]
     northern = (z_coords > 0).sum()
     southern = (z_coords < 0).sum()
-    equatorial = (z_coords == 0).sum() # Boundary points
+    equatorial = (z_coords == 0).sum()  # Boundary points
 
     print("\nSymmetry distribution:")
     print(f"  Northern points: {northern}")
     print(f"  Southern points: {southern}")
     print(f"  Equatorial points: {equatorial}")
 
-if __name__ == "__main__": # pragma: no cover
+
+if __name__ == "__main__":  # pragma: no cover
     import doctest
+
     doctest.testmod()
     main()

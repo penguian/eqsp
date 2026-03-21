@@ -1,6 +1,7 @@
 """
 Unified verification script.
 """
+
 import subprocess
 import sys
 from pathlib import Path
@@ -35,7 +36,8 @@ def main():
                 "examples/phd-thesis",
                 "examples/user-guide/src",
                 "benchmarks",
-                "doc/scripts",
+                "doc/maint",
+                "scripts",
                 "verify_all.py",
             ],
             "Ruff Linter",
@@ -50,26 +52,34 @@ def main():
                 "examples/phd-thesis",
                 "examples/user-guide/src",
                 "benchmarks",
-                "doc/scripts",
+                "doc/maint",
+                "scripts",
                 "verify_all.py",
             ],
             "Pylint",
         ),
         (
-            [py, "doc/scripts/check_links.py"],
+            [py, "doc/maint/check_links.py"],
             "Documentation Link Check",
         ),
         (
-            [py, "doc/scripts/quality_check.py"],
+            [py, "doc/maint/quality_check.py"],
             "Performance Quality Check",
         ),
+        (["make", "-C", "doc", "doctest"], "Sphinx Doctest"),
         ([py, "tests/run_coverage.py", "--include-private"], "Test Suite & Coverage"),
     ]
+
+    if "--pre-release" in sys.argv:
+        steps.append(
+            ([py, "scripts/build_dist.py"], "Pre-release Package Build & Check")
+        )
 
     for cmd, name in steps:
         run_step(cmd, name)
 
     print("All verification steps passed successfully!")
+
 
 if __name__ == "__main__":
     main()

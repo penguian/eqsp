@@ -8,7 +8,7 @@ using Matplotlib.
 
 import matplotlib
 
-matplotlib.use('Agg')  # Use non-interactive backend for headless environments
+matplotlib.use("Agg")  # Use non-interactive backend for headless environments
 import matplotlib.pyplot as plt  # pylint: disable=wrong-import-position
 
 from eqsp import illustrations  # pylint: disable=wrong-import-position
@@ -31,22 +31,24 @@ def main():
     # Use Agg backend if running in a non-interactive environment
     try:
         plt.figure(figsize=(8, 8))
-    except Exception: # pylint: disable=broad-exception-caught  # pragma: no cover
-        plt.switch_backend('Agg')
+    except Exception:  # pylint: disable=broad-exception-caught  # pragma: no cover
+        plt.switch_backend("Agg")
         plt.figure(figsize=(8, 8))
 
     print(f"--- Visualizing EQ Partition with N={N} ---")
 
     # Show a specific projection of a partition
-    illustrations.project_s2_partition(N=N, proj='stereo', show_points=True, show=False)
+    illustrations.project_s2_partition(N=N, proj="stereo", show_points=True, show=False)
     plt.title(f"Stereographic Projection (N={N})", fontsize=14)
 
     print("Projection generated. Run plt.show() to view if in an interactive session.")
     # Show everything at the end
-    if plt.get_backend().lower() != 'agg':  # pragma: no cover
+    if plt.get_backend().lower() != "agg":  # pragma: no cover
         plt.show()
 
-if __name__ == "__main__": # pragma: no cover
+
+if __name__ == "__main__":  # pragma: no cover
     import doctest
+
     doctest.testmod()
     main()

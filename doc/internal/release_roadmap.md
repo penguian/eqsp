@@ -20,7 +20,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 - **Bibliographic Audit**: All citations upgraded to finalized peer-reviewed publications in **0.99.4**.
 
 ### Quality Safeguards & Linting — ✅ Done
-- **Automated Drift Prevention**: `doc/scripts/check_links.py` and `doc/scripts/quality_check.py` introduced in **0.99.4**.
+- **Automated Drift Prevention**: `doc/maint/check_links.py` and `doc/maint/quality_check.py` introduced in **0.99.4**.
 - **Linting**: 10.00/10 Pylint and zero-Ruff compliance enforced project-wide.
 - **Coverage**: 100% test coverage achieved in **0.99.4**.
 
@@ -38,7 +38,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 - [ ] **`scripts/pypi_readme_fix.py`**: Convert relative Markdown links in `README.md` to absolute GitHub URLs for the PyPI distribution.
 - [ ] **`scripts/build_dist.py`**: Automate the clean-build-check cycle (`pypi_readme_fix.py` → `python -m build` → `twine check`).
 - [ ] **`scripts/upload_release.py`**: Automate TestPyPI and PyPI uploads with credential checking and structured failure diagnostics.
-- [ ] **`doc/scripts/upload_sourceforge.py`**: Automate the SourceForge documentation upload workflow.
+- [ ] **`doc/maint/upload_sourceforge.py`**: Automate the SourceForge documentation upload workflow.
 
 ### Verification Runner Enhancements
 - [ ] Extend Ruff/Pylint scans to include the new `scripts/` directory.
@@ -66,7 +66,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 **Goal**: Lock the API surface, expand CI coverage, and execute the production deployment.
 
 ### API Freeze & CI
-- [ ] **API Freeze**: Final audit of the public API surface; document the frozen API in the Maintenance Guide.
+- [ ] **API Freeze**: Document the completed API freeze (signatures frozen at 0.99.0, exports at 0.99.4) in the Maintenance Guide; no new code change required.
 - [ ] **CI Matrix Expansion**: Expand GitHub Actions to test Python 3.11, 3.12, and 3.13 with Ruff and Pylint as a fast pre-merge gate.
 
 ### Production Deployment

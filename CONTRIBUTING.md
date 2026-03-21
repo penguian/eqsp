@@ -66,5 +66,9 @@ git fetch upstream
 git merge upstream/main
 ```
 
+### Advanced Maintenance
+
+For advanced topics regarding releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/documentation_maintenance.md).
+
 ## Community Standards
 Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.

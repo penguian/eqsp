@@ -37,7 +37,7 @@ This chapter lists all scientific works cited throughout the **User Guide (Volum
 (moz15)=
 - **[Moz15]** Mozdzynski, G., Hamrud, M., and Wedi, N. (2015). *"A partitioned global address space implementation of the European Centre for Medium Range Weather Forecasts Integrated Forecasting System"*, Int. J. High Perform. Comput. Appl., 29(3), 261-273.
 (pfa20)=
-- **[Pfa20]** Pfaff, F., et al. (2020). *"Orientation estimation using hyperhemispherical grid filters"*, Robotics/Information Fusion.
+- **[Pfa20]** Pfaff, F., Li, K., and Hanebeck, U. D. (2020). *"A Hyperhemispherical Grid Filter for Orientation Estimation"*, Proc. 23rd Int. Conf. Information Fusion. DOI: 10.23919/FUSION45008.2020.9190611.
 (rak94)=
 - **[Rak94]** Rakhmanov, E. A., Saff, E. B., and Zhou, Y. M. (1994). *"Minimal discrete energy on the sphere"*, Mathematics Research Letters, 1, pp. 647--662.
 (saf97)=

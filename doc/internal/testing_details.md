@@ -107,7 +107,7 @@ These tests ensure that internal mathematics optimizations (such as vectorized c
 
 ### Diagnostic Tool Validation
 
-To maintain the quality of the project's prevention mechanisms, the scripts in `doc/scripts/` are verified via:
+To maintain the quality of the project's prevention mechanisms, the scripts in `doc/maint/` are verified via:
 - **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
 - **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose.
 - **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that verifies the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
@@ -163,5 +163,5 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
-pylint eqsp benchmarks examples tests doc/scripts verify_all.py  # Project-wide scan
+pylint eqsp benchmarks examples tests doc/maint verify_all.py  # Project-wide scan
 ```

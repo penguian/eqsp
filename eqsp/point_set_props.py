@@ -275,8 +275,11 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False, even_collars=
     3.4641
     """
     dist = eq_min_dist(
-        dim, N, extra_offset=extra_offset, show_progress=show_progress,
-        even_collars=even_collars
+        dim,
+        N,
+        extra_offset=extra_offset,
+        show_progress=show_progress,
+        even_collars=even_collars,
     )
     coeff = dist * np.power(N, 1 / dim)
     return coeff

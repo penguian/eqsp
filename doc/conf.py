@@ -27,10 +27,21 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.mathjax",
+    "sphinx.ext.doctest",
     "myst_parser",
     "sphinx_rtd_theme",
     "sphinxcontrib.mermaid",
 ]
+
+doctest_global_setup = """
+import numpy as np
+from math import pi
+from eqsp.utilities import *
+from eqsp.partitions import *
+from eqsp.point_set_props import *
+from eqsp.region_props import *
+from eqsp.histograms import *
+"""
 
 myst_enable_extensions = [
     "dollarmath",

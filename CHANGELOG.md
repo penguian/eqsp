@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Standards & Compatibility**: Standardized on canonical Sphinx `{ref}` labels and "flattened" linter configurations for better platform resilience.
 - **Verification**: Achieved 100% project-wide coverage and aligned test baselines with the removal of legacy illustration stubs.
 
+### Removed
+- **Illustration Stubs**: Removed four `eqsp.illustrations` migration stubs (`show_s2_sphere`, `show_r3_point_set`, `show_s2_region`, `show_s2_partition`) that previously raised `NotImplementedError`.
+
 ### Fixed
 - **Robust Visualization**: Applied robust case-insensitive guards (`.lower() != 'agg'`) to all Matplotlib backend checks project-wide, ensuring warning-free operation in both interactive and headless environments.
 - **PR #17 Resolution**: Addressed 11 technical and documentation issues, including toctree indentation, array shape descriptions, quoted `pip install` extras, and MyST configuration types.

@@ -1,12 +1,13 @@
 """
 Unit tests for documentation diagnostic scripts.
 """
+
 # pylint: disable=redefined-outer-name, unused-argument
 import sys
 
 import pytest
 
-from doc.scripts import check_links, quality_check
+from doc.maint import check_links, quality_check
 
 
 @pytest.fixture
@@ -18,8 +19,7 @@ def mock_repo(tmp_path, monkeypatch):
 
     # Create conf.py with a set instead of list (to trigger error)
     (doc_dir / "conf.py").write_text(
-        "extensions = []\nmyst_enable_extensions = {'dollarmath'}\n",
-        encoding="utf-8"
+        "extensions = []\nmyst_enable_extensions = {'dollarmath'}\n", encoding="utf-8"
     )
 
     # Create some markdown files
@@ -66,6 +66,7 @@ def mock_repo(tmp_path, monkeypatch):
 
     return tmp_path
 
+
 def test_check_links_functional(mock_repo):
     """Test check_links.py on a mock filesystem."""
     md_files = check_links.get_all_md_files()
@@ -104,15 +105,18 @@ def test_check_links_functional(mock_repo):
     assert any(b[0] == "ref:dead-ref" for b in broken)
     assert any("exists in another file" in str(b[1]) for b in broken)
 
+
 def test_quality_check_matplotlib(mock_repo):
     """Test matplotlib initialization check."""
     errors = quality_check.check_matplotlib_init()
     assert any("bad_init.py" in err for err in errors)
 
+
 def test_quality_check_conf_types(mock_repo):
     """Test check_conf_types."""
     errors = quality_check.check_conf_types()
     assert any("conf.py" in err for err in errors)
+
 
 def test_quality_check_doc_functions(mock_repo):
     """Test check_doc_functions."""
@@ -124,6 +128,7 @@ def test_quality_check_doc_functions(mock_repo):
     # Re-verify eq_regions exists (so no error for it)
     assert not any("eq_regions" in err for err in errors)
 
+
 def test_quality_check_doc_shapes(mock_repo):
     """Test check_doc_shapes."""
     (mock_repo / "doc" / "bad_shape.md").write_text(
@@ -132,13 +137,13 @@ def test_quality_check_doc_shapes(mock_repo):
     errors = quality_check.check_doc_shapes()
     assert any("bad_shape.md" in err for err in errors)
 
+
 def test_quality_check_headings(mock_repo):
     """Test check_headings."""
-    (mock_repo / "doc" / "bad_head.md").write_text(
-        "# Head # Double", encoding="utf-8"
-    )
+    (mock_repo / "doc" / "bad_head.md").write_text("# Head # Double", encoding="utf-8")
     errors = quality_check.check_headings()
     assert any("bad_head.md" in err for err in errors)
+
 
 def test_quality_check_typos(mock_repo):
     """Test check_typos."""
@@ -147,6 +152,7 @@ def test_quality_check_typos(mock_repo):
     )
     errors = quality_check.check_typos()
     assert any("typo.md" in err for err in errors)
+
 
 def test_quality_check_docstring_links(mock_repo):
     """Test check_docstring_links."""
