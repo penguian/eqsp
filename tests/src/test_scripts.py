@@ -17,10 +17,7 @@ from scripts import pypi_readme_fix as readme_fix
 def test_pypi_readme_fix(tmp_path, monkeypatch):
     """Test generating a README with absolute PyPI links."""
     # Mock files
-    pyproject_toml = tmp_path / "pyproject.toml"
     readme_md = tmp_path / "README.md"
-
-    pyproject_toml.write_text('[project]\nversion = "1.2.3"\n', encoding="utf-8")
 
     readme_md.write_text(
         "Here is a [link](some/file.md) and another [dir](some/dir/).\n"
@@ -40,11 +37,11 @@ def test_pypi_readme_fix(tmp_path, monkeypatch):
     content = readme_dist.read_text(encoding="utf-8")
 
     assert (
-        "[link](https://github.com/penguian/pyeqsp/blob/release_1_2_3/some/file.md)"
+        "[link](https://github.com/penguian/pyeqsp/blob/main/some/file.md)"
         in content
     )
     assert (
-        "[dir](https://github.com/penguian/pyeqsp/tree/release_1_2_3/some/dir/)"
+        "[dir](https://github.com/penguian/pyeqsp/tree/main/some/dir/)"
         in content
     )
     assert "[ext](https://example.com/file)" in content
@@ -57,6 +54,8 @@ def test_build_dist(mock_rmtree, mock_run, tmp_path, monkeypatch):
     # pylint: disable=unused-argument
     # Setup dummy project root setup
     (tmp_path / "pyproject.toml").touch()
+    (tmp_path / "README.md").touch()
+    (tmp_path / "README_dist.md").touch()
     dist_dir = tmp_path / "dist"
     dist_dir.mkdir()
     (dist_dir / "dummy.whl").touch()

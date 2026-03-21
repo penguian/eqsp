@@ -14,39 +14,16 @@ Usage:
 import os
 import re
 import sys
-import tomllib
 
 
 def main():
-    pyproject_path = "pyproject.toml"
     readme_in = "README.md"
     readme_out = "README_dist.md"
     github_base = "https://github.com/penguian/pyeqsp"
 
-    if not os.path.exists(pyproject_path):
-        print(f"ERROR: {pyproject_path} not found.", file=sys.stderr)
-        sys.exit(1)
-
-    with open(pyproject_path, "rb") as f:
-        try:
-            config = tomllib.load(f)
-        except tomllib.TOMLDecodeError as e:
-            print(f"ERROR: Malformed {pyproject_path}: {e}", file=sys.stderr)
-            sys.exit(1)
-
-    try:
-        version = config["project"]["version"]
-    except KeyError:
-        print(
-            f"ERROR: 'project.version' key not found in {pyproject_path}",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
-    # Convert PyPI version (0.99.5) to tag format (release_0_99_5)
-    # Note: Beta versions (0.99.5b1) become release_0_99_5b1
-    tag_version = version.replace(".", "_")
-    release_tag = f"release_{tag_version}"
+    # We use 'main' for documentation links on PyPI so that they resolve
+    # immediately and point to the most recent stable documentation state.
+    target_ref = "main"
 
     if not os.path.exists(readme_in):
         print(f"ERROR: {readme_in} not found.", file=sys.stderr)
@@ -65,7 +42,7 @@ def main():
 
         # GitHub uses 'tree' for directories and 'blob' for files
         mode = "tree" if url.endswith("/") else "blob"
-        absolute_url = f"{github_base}/{mode}/{release_tag}/{url}"
+        absolute_url = f"{github_base}/{mode}/{target_ref}/{url}"
         return f"[{text}]({absolute_url})"
 
     new_content = re.sub(pattern, replace_link, content)
@@ -75,7 +52,7 @@ def main():
 
     print(
         f"Successfully generated {readme_out} "
-        f"with absolute links for tag {release_tag}."
+        f"with absolute links pointing to {target_ref}."
     )
 
 

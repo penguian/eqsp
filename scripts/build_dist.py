@@ -68,7 +68,24 @@ def main():
     clean_build_artifacts()
 
     # 3. Build distribution (sdist and wheel)
-    run_command([sys.executable, "-m", "build"], "Building distribution")
+    # We swap README.md with README_dist.md temporarily so that the build
+    # system picks up the absolute links for the long_description.
+    print("=== Swapping README for build ===")
+    readme_orig = "README.md"
+    readme_dist = "README_dist.md"
+    readme_temp = "README_backup_orig.md"
+
+    if os.path.exists(readme_orig):
+        shutil.move(readme_orig, readme_temp)
+    shutil.copy(readme_dist, readme_orig)
+
+    try:
+        run_command([sys.executable, "-m", "build"], "Building distribution")
+    finally:
+        print("=== Restoring original README ===")
+        if os.path.exists(readme_temp):
+            shutil.move(readme_temp, readme_orig)
+        # We keep README_dist.md for manual inspection
 
     # 4. Check distribution with twine
     dist_files = [str(p) for p in Path("dist").glob("*")]
