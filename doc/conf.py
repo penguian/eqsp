@@ -3,6 +3,20 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
+from unittest.mock import MagicMock
+
+# Mock optional dependencies for headless doctest environments
+try:
+    import mayavi
+    import PyQt5
+except ImportError:
+    mock_mayavi = MagicMock()
+    sys.modules["mayavi"] = mock_mayavi
+    sys.modules["mayavi.mlab"] = mock_mayavi
+    sys.modules["PyQt5"] = MagicMock()
+    sys.modules["PyQt5.QtWidgets"] = MagicMock()
+    sys.modules["PyQt5.QtCore"] = MagicMock()
+
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
