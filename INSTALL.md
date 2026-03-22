@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.7** (2026-03-21): Copyright 2026 Paul Leopardi
+**Release 0.99.7** (2026-03-22): Copyright 2026 Paul Leopardi
 
 # Installation
 
@@ -25,7 +25,7 @@ Installing **PyEQSP** via `pip` automatically installs these dependencies.
 
 We recommend installing and using **PyEQSP** within a Python
 virtual environment. A virtual environment isolates project
-dependencies from your system Python, preventing version conflicts
+dependencies from your system Python, preventing version conflicts.
 You can locate the environment anywhere accessible in the
 file system; it doesn't need to be in the project directory.
 
