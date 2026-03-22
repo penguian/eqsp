@@ -2,6 +2,7 @@
 Unified verification script.
 """
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -14,7 +15,14 @@ def run_step(command, name):
     print("========================================")
     print(f"Running {name}...")
     print("========================================")
-    result = subprocess.run(command, check=False, cwd=REPO_ROOT)
+
+    # Ensure the virtual environment's bin/ directory is in the PATH
+    # so that 'make' can find 'python3' and 'sphinx-build' correctly.
+    env = os.environ.copy()
+    py_bin = str(Path(sys.executable).parent)
+    env["PATH"] = os.pathsep.join([py_bin, env.get("PATH", "")])
+
+    result = subprocess.run(command, check=False, cwd=REPO_ROOT, env=env)
     if result.returncode != 0:
         print(f"\n[FAILED] {name}\n")
         sys.exit(result.returncode)
@@ -71,7 +79,10 @@ def main():
             ["make", "-C", "doc", "html", 'SPHINXOPTS="-W"'],
             "Sphinx HTML Build (Zero Warning Policy)",
         ),
-        ([py, "tests/run_coverage.py", "--include-private"], "Test Suite & Coverage"),
+        (
+            [py, "tests/run_coverage.py", "--include-private"],
+            "Test Suite & Coverage",
+        ),
     ]
 
     if "--pre-release" in sys.argv:
