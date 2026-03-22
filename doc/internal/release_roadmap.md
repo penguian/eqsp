@@ -1,111 +1,45 @@
-# Release Roadmap: PyEQSP
+# PyEQSP Release Roadmap
 
-This document outlines the technical path from the current **0.99.4** state to a production **1.00** release on PyPI. Beta testers and contributors can use this to understand the remaining milestones and stability goals.
+This roadmap outlines the development phases from the initial beta through the 1.0 general release.
 
-## Current Status: 0.99.7 (Infrastructure Hardened)
-The codebase has been successfully migrated from Matlab to a vectorized Python implementation. Core features, high-fidelity thesis reproduction scripts, and $O(\mathcal{N}^{0.6})$ scaling have been verified. Release 0.99.7 introduced strict automated quality guardrails and CI hardening.
+## Phase 1: Symmetric Partitioning & Sphinx — [COMPLETED] (2026-03-08)
+**Goal**: Implement `even_collars` and establish professional documentation.
 
----
+- [x] **Symmetric Logic**: Enable equatorial hyperplane alignment for S² and S³.
+- [x] **Sphinx Framework**: Initialize multi-format documentation with MyST-Parser.
 
-## Phase 1: 0.99 Beta (Functional & Quality Parity) - [COMPLETED]
-**Goal**: Final feature inclusion (`even_collars` symmetry), resolution of phase-one code review defects, then feature freeze, CI stabilization, and release candidate verification.
+## Phase 2: Documentation Audit & Quality Hardening — [COMPLETED] (2026-03-17)
+**Goal**: Finalize NumPy docstrings and establish bibliographic consistency.
 
-### API Stabilisation & Cleanup — ✅ Done
-- **Symmetric Partitions** (`even_collars`): Shipped in **0.99.0**. The `even_collars` parameter in `eq_caps`, `eq_regions`, and `eq_point_set` ensures the equatorial hyperplane aligns with a cap boundary, enabling S² hemisphere splitting and S³ → SO(3) quaternion sampling.
-- **API Visibility**: Point-set property functions formally exported at the `eqsp` package level in **0.99.4**.
-- **Docstrings**: Comprehensive NumPy-format docstring audit completed in **0.99.0**.
+- [x] **Docstring Audit**: Standardize NumPy Google-style docstrings across all modules.
+- [x] **Bibliographic Parity**: Align bibliography with finalized PhD thesis [Leo07].
 
-### Documentation — ✅ Done
-- **Multi-Volume Documentation**: User Guide (Volume 1) and Maintenance Guide (Volume 2) established in **0.99.4**, with consolidated bibliographies, Mermaid diagrams, and interactive citations.
-- **Bibliographic Audit**: All citations upgraded to finalized peer-reviewed publications in **0.99.4**.
+### 0.99.4 Beta: Maintenance Consolidation
+**Released: 2026-03-17** | **Git Tag: release_0_99_4** | **Distribution: PyPI**
 
-### Quality Safeguards & Linting — ✅ Done
-- **Automated Drift Prevention**: `doc/maint/check_links.py` and `doc/maint/quality_check.py` introduced in **0.99.4**.
-- **Linting**: 10.00/10 Pylint and zero-Ruff compliance enforced project-wide.
-- **Coverage**: 100% test coverage achieved in **0.99.4**.
-
-### Build & TestPyPI — ✅ Done
-- **Distribution Verification**: `.tar.gz` and `.whl` builds verified using the `build` module.
-- **TestPyPI**: Successful internal distribution testing on TestPyPI across 0.99.x releases.
-- **Known Issue**: Relative links in `README.md` render incorrectly on PyPI (addressed in 0.99.5).
-
----
-
-## Phase 2: 0.99.6 Maintenance — [COMPLETED] (2026-03-21)
-**Goal**: Automate the distribution pipeline, resolve PyPI link rendering, and formalise project governance.
-
-### Automated Distribution Pipeline
-- [x] **`scripts/pypi_readme_fix.py`**: Convert relative Markdown links in `README.md` to absolute GitHub URLs for the PyPI distribution.
-- [x] **`scripts/build_dist.py`**: Automate the clean-build-check cycle with a "swap-and-restore" mechanism to ensure absolute links are used in the distribution. [VERIFIED in METADATA]
-- [x] **`scripts/upload_release.py`**: Automate TestPyPI and PyPI uploads.
-- [x] **`doc/maint/upload_sourceforge.py`**: Automate the SourceForge documentation upload workflow.
-
-### Verification Runner Enhancements
-- [x] Extend Ruff/Pylint scans to include the new `scripts/` directory.
-- [x] Integrate `make doctest` into `verify_all.py`.
-- [x] Add `--pre-release` flag to `verify_all.py` (runs `build_dist.py` without uploading).
-
-### Project Governance
-- [x] **Role Matrix**: Define Owner, Administrator, Maintainer, and Contributor roles in the Maintenance Guide.
-- [x] **Security Audit**: Document credential management for PyPI tokens, CI secrets, and ReadTheDocs webhooks.
-
-### Testing
-- [x] Mock-based tests for all new distribution scripts in `scripts/`.
-
----
+- [x] **Porting Guide**: Document changes from MATLAB to Python.
+- [x] **Quality Checks**: Automated Aussie -ize orthography enforcement.
 
 ## Phase 2b: 0.99.7 Infrastructure Hardening — [COMPLETED] (2026-03-22)
 **Goal**: Harden CI infrastructure, implement automated quality guardrails, and address legacy environment compatibility.
 
-### CI & Environment
-- [x] **CI Hardening**: Resolve missing documentation dependencies and ensure 100% pass rate in headless environments via `unittest.mock`.
-- [x] **Ruff Compatibility**: Enforce flat-format `ruff.toml` for legacy environment compatibility.
+### 0.99.7 Beta: Quality Hardening
+**Released: 2026-03-22** | **Git Tag: release_0_99_7** | **Distribution: PyPI**
+
+- [x] **Pre-commit Layer**: Formalized the first tier of "Defense in Depth" (Item 1-2).
 - [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `verify_all.py` to prevent documentation drift.
+- [x] **Environment Isolation**: Improved `verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
 
-### Automated Quality Guardrails (`quality_check.py`)
-- [x] **Positional-Only Violation Check**: Automatically prevent `N=100` keyword usage in docs for positional-only arguments.
-- [x] **Terminology Enforcement**: Automated checks for malformed ordinals (e.g. `2`-`rd`, `3`-`th`) and manifold naming ("N-sphere").
-- [x] **Pragma Verification**: Automated audit for orphaned or ineffective `# pragma: no cover` placements.
+### 0.99.8 Beta: Infrastructure Hardening
+Scheduled for **2026-03-31** | **Git Tag: Planned** | **Distribution: Planned**
 
-### Manual Verification
-- [x] **`doc/internal/pr_checklist.md`**: Establish a definitive manual checklist for all future maintainer Pull Requests.
+- [ ] **Automation Coverage Plan**: Achieve 100% coverage on the script automation hub (`scripts/`, `doc/maint/`) using modular refactoring, interactive doctests, and mocks.
+- [ ] **Verified Deployment**: Confirm stability of the `build_dist.py` atomic backup and robust `doc/conf.py` mocking across all CI runners.
+- [ ] **Technical Symmetry Audit**: Review historical and modern Sphinx configurations for project-wide consistency.
 
----
+### 1.0 General Release: Research Reliability Foundation
+**Scheduled for 2026-04-15**
 
-## Phase 2c: 0.99.x — Optional Quality Polish (Deferred)
-
-- [ ] **Vale Prose Linting**: Configure `vale` with the Google style base and custom rules for Australian English. Integrate as a warning-only step in `verify_all.py`.
-- [ ] **Sphinx Inventory Validation**: Upgrade `check_links.py` to check intersphinx targets via `objects.inv`. Prerequisite: adopt `intersphinx_mapping` in `doc/conf.py` for NumPy/SciPy.
-
----
-
-## Phase 3: 1.00 Release (API Freeze & Public Deployment)
-**Goal**: Lock the API surface, expand CI coverage, and execute the production deployment.
-
-### API Freeze & CI
-- [ ] **API Freeze**: Document the completed API freeze (signatures frozen at 0.99.0, exports at 0.99.4) in the Maintenance Guide; no new code change required.
-- [ ] **CI Matrix Expansion**: Expand GitHub Actions to test Python 3.11, 3.12, and 3.13 with Ruff and Pylint as a fast pre-merge gate.
-
-### Production Deployment
-- [ ] Bump version to `1.0.0` in `pyproject.toml`.
-- [ ] Update `CHANGELOG.md` with the 1.00 entry.
-- [ ] Run `scripts/upload_release.py --testpypi` and perform a visual audit.
-- [ ] Create signed tag: `git tag -s v1.0.0 -m "PyEQSP 1.0.0"` and push.
-- [ ] Run `scripts/upload_release.py --pypi` for production upload.
-- [ ] Update ReadTheDocs, SourceForge website, and SourceForge code repository.
-
-### Final Verification
-- [ ] **Clean-room Validation**: Install from PyPI in a fresh venv; confirm all PhD thesis reproduction scripts pass.
-- [ ] **Documentation Release**: Review Volume 1 and Volume 2 as official public-facing books. Confirm all developer-only artifacts are excluded from the public release branch.
-
----
-
-## Future Growth (Post-1.0)
-These items represent the long-term vision for the library:
-
-| Item | Description |
-|---|---|
-| **Compiled Kernels** | Port recursive collar loops to Cython or Numba for near-native C/LLVM speed. |
-| **Persistent Caching** | Disk-based or memory-resident caches for regional properties across sequential research runs. |
-| **Advanced Vectorization** | Research `awkward-array` ragged structures to remove loops over varying partition sizes $N$. |
-| **Intersphinx Integration** | Link PyEQSP docs to NumPy/SciPy API references; prerequisite for Phase 2b Sphinx Inventory Validation. |
+- [ ] **Release Verification**: Verified 1.0 release artifacts and distribution.
+- [ ] **User Feedback Audit**: Address final community feedback from the beta cycle.
+- [ ] **Final 1.0 Tag**: Canonical production release tag.

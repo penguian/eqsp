@@ -5,7 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.8] - Planned
+**Git Tag**: `Planned` | **Distribution**: `Planned`
+
+### Added
+- **Automation Coverage Plan**: Scheduled 100% coverage implementation for the `scripts/` and `doc/maint/` automation hub.
+
 ## [0.99.7] - 2026-03-22
+**Git Tag**: `release_0_99_7` | **Distribution**: `PyPI`
 
 ### Added
 - **Pre-commit Layer**: Formalized the first tier of "Defense in Depth" by integrating pre-commit hooks for project-wide documentation quality, link validation, and Python linting.
@@ -13,13 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **CI & Local Hardening**: Resolved "module not found" errors in both GHA and local virtual environments by ensuring all documentation dependencies (Sphinx, MyST) are correctly synchronized.
 - **Environment Isolation**: Enhanced `verify_all.py` to manage the system `PATH` dynamically, ensuring that subprocesses always use the tools from the active virtual environment and resolving path-shadowing failures.
-- **Headless Doctests**: Implemented `mayavi` and `PyQt5` mocking in `doc/conf.py` to allow 3D visualization doctests to pass in headless CI environments.
+- **Headless Doctests**: Mocks `mayavi` and `PyQt5` in `doc/conf.py` to allow 3D visualization doctests to pass in headless CI environments.
 - **Environment Compatibility**: Reverted `ruff.toml` to the legacy-compatible flat configuration format to support restricted environments (e.g., `.venv_sys`).
 - **Credential Validation**: Refined `upload_release.py` to correctly validate `TWINE_PASSWORD` (and handle tokens) without misidentifying `TWINE_TOKEN` as a standard variable.
 - **Coverage Transparency**: Expanded `tests/run_coverage.py` to include the `scripts/` directory in formal quality and coverage reports.
 - **Documentation Refinement**: Resolved `toc.not_included` warnings by properly indexing all historical release notes and formalizing the "Defense in Depth" strategy in the Maintenance Guide.
 
 ## [0.99.6] - 2026-03-21
+**Git Tag**: `release_0_99_6` (retroactive) | **Distribution**: `PyPI`
 
 ### Added
 - **Release Automation**: Introduced `scripts/` to automate build orchestration and PyPI deployment.
@@ -39,9 +47,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Migration Guide**: Corrected several porting attributions and coordinate convention notes to match the original Matlab toolbox logic.
 
 ## [0.99.5] - Skipped
+**Git Tag**: None | **Distribution**: Skipped (TestPyPI iteration only)
+
 - Version 0.99.5 was bypassed in favour of 0.99.6 to resolve TestPyPI immutability conflicts during distribution testing.
 
 ## [0.99.4] - 2026-03-17
+**Git Tag**: `release_0_99_4` | **Distribution**: `PyPI`
 
 ### Added
 - **Multi-Volume Documentation**: Established a comprehensive User Guide (Volume 1) and Maintenance Guide (Volume 2) with consolidated bibliographies, Mermaid diagrams, and interactive citations.
@@ -65,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Build Integrity**: Resolved all "ghost" function references and build warnings to achieve a 100% warning-free Sphinx build.
 
 ## [0.99.3] - 2026-03-14
+**Git Tag**: `release_0_99_3` (retroactive) | **Distribution**: `PyPI`
 
 ### Added
 - **Internal Maintenance**: Started tracking internal documentation for release procedures (`upload_guide.md`) and version stability.
@@ -78,12 +90,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Mathematics Notation**: Converted inline LaTeX to Unicode (e.g., S², S³, O(N)) in all top-level Markdown files.
 
 ## [0.99.2] - 2026-03-10
+**Git Tag**: `release_0_99_2` | **Distribution**: `PyPI`
 
 ### Changed
 - **Branding**: Rebranded the project as **PyEQSP** in documentation and narrative contexts to clarify the distinction between the project name and the `eqsp` package name.
 - **Metadata**: Updated the distribution name to `pyeqsp` in `pyproject.toml` to align with the repository name.
 
 ## [0.99.1] - 2026-03-09
+**Git Tag**: `release_0_99_1` | **Distribution**: `PyPI`
 
 ### Fixed
 - **Beta Documentation**: Resolved an issue where LaTeX equations failed to render on Read the Docs by enabling MyST `dollarmath` and `amsmath` extensions.
@@ -94,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Documentation Standardization**: Removed all hardcoded numbering from Markdown headers in favor of Sphinx's automatic `:numbered:` directive.
 
 ## [0.99.0] - 2026-03-08
+**Git Tag**: `release_0_99_0` | **Distribution**: `PyPI`
 
 ### Added
 - **Beta Release**: Initial beta release for public testing.
@@ -102,12 +117,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Robustness**: Enhanced GitHub Actions and verification scripts (`verify_all.py`) to be more resilient across different Python environments.
 
 ## [0.98.1] - 2026-03-03
+**Git Tag**: `release_0_98_1` | **Distribution**: `PyPI`
 
 ### Fixed
 - **Pull Request Reviews**: Addressed code review comments from PR #8 and #9, focusing on robustness, error handling (e.g., `PackageNotFoundError`), and consistency.
 - **Linter Robustness**: Improved `ruff` and `pylint` configurations for more consistent development environment checks.
 
 ## [0.98.0] - 2026-03-01
+**Git Tag**: `release_0_98_0` | **Distribution**: `PyPI`
 
 ### Added
 - **Alpha Release**: First functional alpha release of the PyEQSP Python port.
@@ -116,4 +133,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Thesis Reproductions**: Included scripts and results to reproduce figures and benchmarks from the original PhD thesis [Leo07].
 - **Optional Visualizations**: Logic for 2D Matplotlib projections and 3D Mayavi/PyQt interactive renderings.
 - **Documentation**: Initialized Sphinx documentation with Markdown support, including guides for installation and testing.
-- **Test Suite**: Comprehensive testing framework with a strict 100% code coverage policy.
+- **Test suite**: Comprehensive testing framework with a strict 100% code coverage policy.
