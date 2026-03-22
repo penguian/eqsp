@@ -19,6 +19,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -70,12 +71,17 @@ def main():
     # 3. Build distribution (sdist and wheel)
     # We swap README.md with README_dist.md temporarily so that the build
     # system picks up the absolute links for the long_description.
+    # We use a unique temporary file to ensure the move is atomic and safe.
     print("=== Swapping README for build ===")
-    readme_orig = "README.md"
-    readme_dist = "README_dist.md"
-    readme_temp = "README_backup_orig.md"
+    readme_orig = Path("README.md")
+    readme_dist = Path("README_dist.md")
 
-    if os.path.exists(readme_orig):
+    # Generate a unique temporary path in the current directory
+    fd, temp_path_str = tempfile.mkstemp(dir=".", prefix="README_orig_", suffix=".md")
+    os.close(fd)
+    readme_temp = Path(temp_path_str)
+
+    if readme_orig.exists():
         shutil.move(readme_orig, readme_temp)
     shutil.copy(readme_dist, readme_orig)
 
@@ -83,9 +89,10 @@ def main():
         run_command([sys.executable, "-m", "build"], "Building distribution")
     finally:
         print("=== Restoring original README ===")
-        if os.path.exists(readme_temp):
+        if readme_temp.exists():
             shutil.move(readme_temp, readme_orig)
-        # We keep README_dist.md for manual inspection
+        if readme_dist.exists():
+            readme_dist.unlink()
 
     # 4. Check distribution with twine
     dist_files = [str(p) for p in Path("dist").glob("*")]
