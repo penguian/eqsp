@@ -36,7 +36,7 @@ Once the TestPyPI rendering is confirmed, commit the changes and trigger a final
    ```
 
 2. **Create Pull Request**:
-   Create a PR from your release branch to `main`. 
+   Create a PR from your release branch to `main`.
 
 3. **Verify CI**:
    Ensure that the GitHub Actions "CI" and "Verify Distribution Build" workflows pass 100%. This serves as the final gatekeeper before the production upload.

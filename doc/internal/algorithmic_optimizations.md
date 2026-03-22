@@ -21,7 +21,7 @@ This document provides a technical summary of the key algorithmic optimizations 
 **Status:** Memory-efficient $O(N^2)$ with Symmetry Exploitation ($0.5 \times$ work).
 
 - **Previous Bottleneck:** Creating a full $N \times N$ distance matrix to sum $d_{ij}^{-s}$ lead to $O(N^2)$ memory exhaustion (e.g., 3.2 GB for $N=20,000$).
-- **Approach:** 
+- **Approach:**
     - **Block-based Summation (Tiling):** Calculations are performed in blocks of size $M \times M$, keeping the peak memory footprint at $O(N \times M)$ instead of $O(N^2)$.
     - **Symmetry Exploitation:** Since $d_{ij} = d_{ji}$, we only compute the upper triangle of the interaction matrix, effectively doubling the performance.
 - **Result:** $N=20,000$ energy calculations complete in 5–10 minutes on standard hardware.

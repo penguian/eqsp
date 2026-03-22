@@ -62,14 +62,14 @@ main library (not thesis-specific), see the [Visualization & Illustration Guide]
 
   `eqsp.visualizations.show_s2_partition` (Mayavi), which produces a
   comparable 3D rendering.
-  
+
   > [!IMPORTANT]
   > 3D plots generated via Mayavi/VTK may not always be exactly bitwise reproducible. Minor variances (e.g., 1-byte file size differences or ~2 pixel Absolute Error) can occur due to non-deterministic GPU hardware rasterization and anti-aliasing, even when the underlying data is identical.
 - **Fig 4.10 (3D Voronoi)**: Computed using `scipy.spatial.SphericalVoronoi`.
   Edges are rendered as true great circle arcs on the sphere using SLERP
   (Spherical Linear Interpolation). This ensures geometric accuracy that
   matches the blue region boundaries.
-- **Figs 5.1–5.5 (Energy/Distance)**: 
+- **Figs 5.1–5.5 (Energy/Distance)**:
   - **Min-distance** calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
   - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory). For $N=20,000$, these typically complete in 5–10 minutes.
   - **Sampling Strategy**: Most Chapter 4 and 5 plots use a hybrid sampling strategy (N=1..100 linear, then 900 logarithmically spaced points up to 20,000) for high resolution across both small and large N.

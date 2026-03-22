@@ -7,8 +7,8 @@ from unittest.mock import MagicMock
 
 # Mock optional dependencies for headless doctest environments
 try:
-    import mayavi
-    import PyQt5
+    import mayavi  # noqa: F401
+    import PyQt5  # noqa: F401
 except ImportError:
     mock_mayavi = MagicMock()
     sys.modules["mayavi"] = mock_mayavi

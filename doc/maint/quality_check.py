@@ -397,7 +397,7 @@ def check_standalone_pragmas():
             if standalone_re.match(line):
                 f_rel = f.relative_to(REPO_ROOT)
                 errors.append(
-                    f"{f_rel}:{i+1}: Standalone '# pragma: no cover' is ineffective. "
+                    f"{f_rel}:{i + 1}: Standalone '# pragma: no cover' is ineffective. "
                     "Attach to the statement."
                 )
     return errors

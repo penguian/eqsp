@@ -44,7 +44,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
 5. **Coding & Documentation Standards**:
    To maintain high code quality, we require:
    - **Linting**: Code must meet `ruff` and `pylint` (10.00/10).
-   - **Linguistic Standard**: Adopt **Australian -ize English** (Oxford spelling). Use `-re` and `-our` (e.g., *centre*, *colour*) and `-ize`/`-yze` suffixes (e.g., *organized*, *analyze*). 
+   - **Linguistic Standard**: Adopt **Australian -ize English** (Oxford spelling). Use `-re` and `-our` (e.g., *centre*, *colour*) and `-ize`/`-yze` suffixes (e.g., *organized*, *analyze*).
    - **Docstrings**: Use the [NumPy docstring format](https://numpydoc.readthedocs.io/en/latest/format.html).
    - **Code Coverage**: We maintain a strict **100% test coverage** policy.
        - All new features must include comprehensive tests.

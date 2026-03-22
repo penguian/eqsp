@@ -24,7 +24,7 @@ To build and preview the documentation locally:
 
 ## Docstring Standards
 
-To ensure automated API extraction works correctly, follow the **Google Style Python Docstrings**. 
+To ensure automated API extraction works correctly, follow the **Google Style Python Docstrings**.
 - Always document parameters, return values, and types.
 - Include a "Notes" section for mathematical formulas ($S^2$, $O(N)$).
 

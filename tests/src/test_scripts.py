@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, patch
 # Update sys.path to import from the root module without installing
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import build_dist, upload_release
-from scripts import pypi_readme_fix as readme_fix
+from scripts import build_dist, upload_release  # noqa: E402
+from scripts import pypi_readme_fix as readme_fix  # noqa: E402
 
 
 def test_pypi_readme_fix(tmp_path, monkeypatch):
@@ -37,13 +37,9 @@ def test_pypi_readme_fix(tmp_path, monkeypatch):
     content = readme_dist.read_text(encoding="utf-8")
 
     assert (
-        "[link](https://github.com/penguian/pyeqsp/blob/main/some/file.md)"
-        in content
+        "[link](https://github.com/penguian/pyeqsp/blob/main/some/file.md)" in content
     )
-    assert (
-        "[dir](https://github.com/penguian/pyeqsp/tree/main/some/dir/)"
-        in content
-    )
+    assert "[dir](https://github.com/penguian/pyeqsp/tree/main/some/dir/)" in content
     assert "[ext](https://example.com/file)" in content
 
 

@@ -86,7 +86,7 @@ For a detailed analysis of known bottlenecks and optimization opportunities, see
 ## Future Optimization Opportunities
 
 ### Persistent Caching
-The current implementation of `eq_regions` use a **local, ephemeral cache** to exploit hemispherical symmetry within a single function call. 
+The current implementation of `eq_regions` use a **local, ephemeral cache** to exploit hemispherical symmetry within a single function call.
 
 An opportunity exists to add a **persistent caching layer** (e.g., using `functools.lru_cache` or a disk-backed cache) for common partition sizes ($N$). This would provide significant speedups for analyses that repeatedly iterate through ranges of $N$, common in property convergence studies.
 

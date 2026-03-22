@@ -60,4 +60,3 @@ Mayavi not found — skipping eqsp/visualizations.py doctests and coverage.
 Running coverage excluding private tests...
 
 Coverage Report:
-

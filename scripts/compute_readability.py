@@ -52,9 +52,11 @@ def calculate_scores(metrics_data):
         return {}
 
     # Flesch-Kincaid Grade Level
-    fkgl = (0.39 * (words_count / sentences_count)) + (
-        11.8 * (syllables_count / words_count)
-    ) - 15.59
+    fkgl = (
+        (0.39 * (words_count / sentences_count))
+        + (11.8 * (syllables_count / words_count))
+        - 15.59
+    )
 
     # Flesch Reading Ease
     fre = (

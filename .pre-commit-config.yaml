@@ -1,6 +1,14 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.4
+    rev: v0.9.9
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -14,3 +22,17 @@ repos:
         language: system
         types: [python]
         require_serial: true
+
+      - id: documentation-quality
+        name: Documentation Quality Check
+        entry: python3 doc/maint/quality_check.py
+        language: system
+        files: \.(md|rst|py)$
+        pass_filenames: false
+
+      - id: documentation-links
+        name: Documentation Link Check
+        entry: python3 doc/maint/check_links.py
+        language: system
+        files: \.(md|rst)$
+        pass_filenames: false

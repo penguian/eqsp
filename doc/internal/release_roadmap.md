@@ -64,7 +64,7 @@ The codebase has been successfully migrated from Matlab to a vectorized Python i
 
 ### Automated Quality Guardrails (`quality_check.py`)
 - [x] **Positional-Only Violation Check**: Automatically prevent `N=100` keyword usage in docs for positional-only arguments.
-- [x] **Terminology Enforcement**: Automated checks for ordinals ("2rd", "3th") and manifold naming ("N-sphere").
+- [x] **Terminology Enforcement**: Automated checks for malformed ordinals (e.g. `2`-`rd`, `3`-`th`) and manifold naming ("N-sphere").
 - [x] **Pragma Verification**: Automated audit for orphaned or ineffective `# pragma: no cover` placements.
 
 ### Manual Verification

@@ -44,11 +44,11 @@ The `visualizations` module acts as a bridge, choosing the best backend for the 
 ```{mermaid}
 graph LR
     User([User Call]) --> V[visualizations.py]
-    
+
     V -->|Manifold = S^2, 2D| MAT[Matplotlib]
     V -->|Manifold = S^2, 3D| MAY[Mayavi/VTK]
     V -->|Manifold = S^3| MAY
-    
+
     subgraph Backends ["Plotting Engines"]
         MAT
         MAY
