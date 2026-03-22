@@ -1,5 +1,5 @@
 /* Force remove bullets from the table of contents to standardize on numbers */
-.rst-content .toctree-wrapper ul, 
+.rst-content .toctree-wrapper ul,
 .rst-content .toctree-wrapper ul li {
     list-style: none !important;
     list-style-type: none !important;

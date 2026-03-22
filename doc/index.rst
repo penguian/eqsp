@@ -42,7 +42,11 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
    Technical Testing & Verification <internal/testing_details.md>
    Documentation Maintenance <documentation_maintenance.md>
    Upload & Release Guide <internal/upload_guide.md>
-   Latest Release Notes <internal/release_notes_0_99_4.md>
+   Pull Request Checklist <internal/pr_checklist.md>
+   Release Notes 0.99.7 <internal/release_notes_0_99_7.md>
+   Release Notes 0.99.6 <internal/release_notes_0_99_6.md>
+   Release Notes 0.99.4 <internal/release_notes_0_99_4.md>
+   Release Notes 0.99.3 <internal/release_notes_0_99_3.md>
    Release Roadmap <internal/release_roadmap.md>
 
 .. toctree::

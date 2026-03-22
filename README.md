@@ -1,47 +1,18 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.4** (2026-03-17): Copyright 2026 Paul Leopardi
+**Release 0.99.7** (2026-03-22): Copyright 2026 Paul Leopardi
 
-PyEQSP is a Python library that implements the **Recursive Zonal
-Equal Area (EQ) Sphere Partitioning** algorithm, originally
-implemented as a Matlab toolbox by Paul Leopardi.
+PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
-An EQ partition is a partition of Sᵈ (the unit sphere in
-the (d+1)-dimensional Euclidean space ℝᵈ⁺¹) into
-a finite number of regions of equal area. The area of each region
-is defined using the Lebesgue measure inherited from
-ℝᵈ⁺¹.
+An **EQ partition** divides Sᵈ (the unit sphere in ℝᵈ⁺¹) into a finite number of regions of equal area. Area measurement uses the Lebesgue measure inherited from the surrounding space.
 
-> [!IMPORTANT]
-> **Naming Distinction**: The project and GitHub repository are named **PyEQSP** (or **pyeqsp** on PyPI), but the Python package is imported as **eqsp**.
->
-> | **Repository / PyPI** | **Package Import** |
-> | :--- | :--- |
-> | `pyeqsp` | `import eqsp` |
+> **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
 
-## What is an EQ partition?
-
-An **EQ partition** is a partition of Sᵈ (the unit sphere in
-the (d+1)-dimensional Euclidean space ℝᵈ⁺¹) into
-a finite number of regions of equal area. The area of each region
-is defined using the Lebesgue measure inherited from
-ℝᵈ⁺¹.
-
-The **diameter** of a region is the supremum of the Euclidean
-distance between any two points of the region. The regions of an
-EQ partition have been proven to have small diameter, in the
-sense that there exists a constant C(d) such that the maximum
-diameter of the regions of an N-region EQ partition of Sᵈ is
-bounded above by C(d)·N⁻¹/ᵈ.
+The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N⁻¹/ᵈ.
 
 ## What is an EQ point set?
 
-An **EQ point set** is the set of centre points of the regions
-of an EQ partition. Each region is defined as a product of
-intervals in spherical polar coordinates. The centre point of a
-region is defined via the centre points of each interval, with
-the exception of spherical caps and their descendants, where the
-centre point is defined using the centre of the spherical cap.
+An **EQ point set** consists of the centre points of the regions of an EQ partition. The algorithm defines each region as a product of intervals in spherical polar coordinates. The centre point of a region corresponds to the centre of each interval, except for spherical caps and their descendants, where the centre of the cap itself defines the point.
 
 ## Applications
 
@@ -55,19 +26,20 @@ including:
 - Monte Carlo sampling on spherical domains
 - Computer graphics and rendering
 
-## Installation
+## Documentation
 
-Requires **Python 3.11+**. It is recommended that you install
-**PyEQSP** within a Python virtual environment. See
-[INSTALL.md](INSTALL.md) for full instructions, including
-environment setup and optional dependencies.
+For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/core_concepts.md).
+
+## Installation & Beta Status
+
+PyEQSP is currently in **Beta testing**. We welcome your feedback!
+
+Requires **Python 3.11+**. We recommend installing **PyEQSP** within a virtual environment. See [INSTALL.md](INSTALL.md) for full instructions, including environment setup and optional dependencies.
 
 ## Quick Start
 
-### 1. Create EQ partitions
-
-Create an array in Cartesian coordinates representing the
-centre points of an EQ partition of Sᵈ into N regions:
+### Step 1: Create EQ Partitions
+Generate the centre points of an EQ partition of Sᵈ into N regions. These are returned as an array in Cartesian coordinates:
 
 ```python
 import eqsp
@@ -93,38 +65,23 @@ regions = eqsp.eq_regions(dim, N)
 # regions.shape is (dim, 2, N)
 ```
 
-### 2. Find properties of EQ partitions
-
-Find the (per-partition) maximum diameter bound of the EQ
-partition of $S^d$ into $N$ regions:
+### Step 2: Calculate Properties
+Find the (per-partition) boundary on the diameter of the EQ partition and calculate the r⁻ˢ (Riesz) energy or min-distance:
 
 ```python
 from eqsp.region_props import eq_diam_bound
-
-diam_bound = eq_diam_bound(dim, N)
-```
-
-### 3. Find properties of EQ point sets
-
-Find the r⁻ˢ energy and min distance of the EQ centre
-point sets of Sᵈ for N points:
-
-```python
 from eqsp.point_set_props import eq_energy_dist
 
+# Find diameter boundary
+diam_bound = eq_diam_bound(dim, N)
+
+# Find energy and distance
 s = dim - 1  # Standard Riesz energy kernel power
 energy, min_dist = eq_energy_dist(dim, N, s)
 ```
 
-### 4. Produce illustrations
-
-The **PyEQSP** package provides two kinds of plot:
-
-- **2D illustrations** (`eqsp.illustrations`): projections
-  rendered with Matplotlib. No extra dependencies required.
-- **3D visualizations** (`eqsp.visualizations`): interactive
-  plots rendered with Mayavi. Requires the optional `mayavi`
-  and `PyQt5` packages.
+### Step 3: Produce Illustrations
+PyEQSP provides both Matplotlib-based 2D projections and interactive 3D renderings via Mayavi:
 
 #### 2D Illustrations (Matplotlib)
 
@@ -193,7 +150,7 @@ core partitioning and mathematical operations. See
 
 ## Frequently Asked Questions
 
-### Is PyEQSP for S² and S³ only? What is the maximum dimension?
+### Is PyEQSP for S² and S³ only? What is the max dimension?
 
 In principle, any function which has `dim` as a parameter will
 work for any integer dim ≥ 1 (where S¹ is the circle). In
@@ -205,7 +162,7 @@ sizes.
 
 In principle, any function which takes `N` as an argument will
 work with any positive integer value of `N`. In practice, for
-very large `N`, the functions may be slow or memory-intensive.
+large `N`, the functions may be slow or memory-intensive.
 
 ### Visualization options
 
@@ -236,13 +193,7 @@ See the docstrings for more details (e.g.
 
 ## Reporting Bugs & Contributing
 
-This project is currently in **Beta testing**. We welcome
-your feedback!
-
-- Found a bug? Please
-  [open an issue](https://github.com/penguian/pyeqsp/issues/new/choose).
-- Want to contribute? See
-  [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+Found a bug? Please [open an issue](https://github.com/penguian/pyeqsp/issues/new/choose). If you would like to contribute code or documentation improvements, please see [CONTRIBUTING.md](CONTRIBUTING.md) for our technical standards and workflow.
 
 ## Citation
 

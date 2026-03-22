@@ -636,9 +636,7 @@ def sradius_of_cap(dim, area):
     if np.any(area < 0):
         raise ValueError("Area must be non-negative.")
     if np.any(area > sphere_area * (1 + 1e-10)):
-        raise ValueError(
-            f"Area {np.max(area)} exceeds area of sphere {sphere_area}."
-        )
+        raise ValueError(f"Area {np.max(area)} exceeds area of sphere {sphere_area}.")
 
     if dim == 1:
         s_cap = np.clip(area / 2, 0, pi)
@@ -805,7 +803,7 @@ def x2eqarea(x):
     return result
 
 
-if __name__ == "__main__":
-    import doctest  # pragma: no cover
-  # pragma: no cover
-    doctest.testmod()  # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
+    import doctest
+
+    doctest.testmod()

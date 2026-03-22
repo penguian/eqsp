@@ -47,7 +47,7 @@ def run(save=False):
         plt.close()
         print(f"  Saved to {path}")
     else:
-        if plt.get_backend().lower() != "agg": # pragma: no cover
+        if plt.get_backend().lower() != "agg":  # pragma: no cover
             plt.show()
 
     # --- project_s2_partition ---
@@ -62,7 +62,7 @@ def run(save=False):
         plt.close(fig)
         print(f"  Saved to {path}")
     else:
-        if plt.get_backend().lower() != "agg": # pragma: no cover
+        if plt.get_backend().lower() != "agg":  # pragma: no cover
             plt.show()
 
     # --- project_point_set ---
@@ -76,7 +76,7 @@ def run(save=False):
         plt.close(fig)
         print(f"  Saved to {path}")
     else:
-        if plt.get_backend().lower() != "agg": # pragma: no cover
+        if plt.get_backend().lower() != "agg":  # pragma: no cover
             plt.show()
 
     print("2D Illustrations inspection complete.")

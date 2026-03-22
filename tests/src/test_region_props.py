@@ -3,6 +3,7 @@ PyEQSP Tests: Region properties
 
 Copyright Paul Leopardi 2026
 """
+
 import doctest
 
 import numpy as np

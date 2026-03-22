@@ -32,10 +32,19 @@ pip install pytest coverage
 ## Running Tests
 
 ### Project-Wide Run
-To run the entire suite (recommended):
-```bash
-pytest
-```
+
+We use a two-tier automated verification system:
+
+1.  **Pre-commit Hooks (Local)**: Automated checks run on every `git commit` to catch linting errors, documentation typos, and broken links before they leave your machine.
+    ```bash
+    pre-commit install  # Run once to set up
+    pre-commit run --all-files  # Run manually to verify everything
+    ```
+2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in the root) is the definitive project-wide entry point.
+    *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest).
+    *   **CI Pipeline**: GitHub Actions runs `verify_all.py` across Python 3.11–3.13.
+
+The orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
 
 ### Granular Control
 You can run tests at three levels of granularity:
@@ -107,12 +116,15 @@ These tests ensure that internal mathematics optimizations (such as vectorized c
 
 ### Diagnostic Tool Validation
 
-To maintain the quality of the project's prevention mechanisms, the scripts in `doc/scripts/` are verified via:
+To maintain the quality of the project's prevention mechanisms, the scripts in `doc/maint/` are verified via:
 - **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
-- **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose.
-- **Unit Tests (`tests/src/test_doc_scripts.py`)**: A dedicated suite that verifies the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
+- **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose. It also enforces canonical terminology (e.g., ensuring "N-sphere" rather than "Nrd-sphere") and catches positional-only argument violations in doc examples.
+- **Structural Integrity**: The suite verifies that `ruff.toml` maintains its flat-format compatibility and ensures that all `# pragma: no cover` exclusions are effectively attached to statements.
+- **Unit Tests (`tests/src/test_maintenance_scripts.py`)**: A dedicated suite that checks the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
 
-All diagnostic scripts utilize **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
+All diagnostic scripts use **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
+
+**Environment Isolation**: The `verify_all.py` script prepends the current Python executable's directory to the system `PATH`. This ensures that subprocesses (like `make` and `sphinx-build`) use the tools and packages from the active virtual environment, preventing conflicts with system-wide Python installations.
 
 ## Performance Benchmarking
 
@@ -157,11 +169,15 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 - **Modern Ruff** (0.15.x+) in the main `.venv`.
 - **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
 
-> [!NOTE]
+> [!IMPORTANT]
 > Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
 
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
-pylint eqsp benchmarks examples tests doc/scripts verify_all.py  # Project-wide scan
+pylint eqsp benchmarks examples tests doc/maint verify_all.py  # Project-wide scan
 ```
+
+### Vale (Optional Prose Linting)
+
+The project includes a `.vale.ini` configuration for optional prose linting. Unlike `ruff` and `pylint`, `vale` is **not** part of the mandatory `verify_all.py` suite and is not required for standard verification. It is intended for manual documentation audits.

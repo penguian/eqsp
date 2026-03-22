@@ -21,9 +21,47 @@ PyEQSP leverages NumPy for vectorization and spatial indexing to achieve $O(N \l
 
 ## Quality Assurance & Verification
 
-We maintain a strict quality policy to ensure the reliability of the research outputs:
-- **Linting**: 10.00/10 Pylint and zero-Ruff compliance is required. The `ruff.toml` uses a [flat compatibility format](internal/testing_details.md#configuration-compatibility) to support both legacy and modern environments.
-- **Testing**: See [Technical Testing & Verification](internal/testing_details.md) for details on the `pytest` suite and coverage analysis.
+We maintain a strict quality policy to ensure the reliability of the research outputs.
+
+### Automated Verification
+
+To prevent regressions, **pre-commit hooks** are used to validate every commit locally. Run once to set up:
+```bash
+pre-commit install
+```
+The hooks encompass formatting, linting, documentation quality checks, and link validation.
+
+The primary project-wide entry point for global quality control is `verify_all.py` (located in the root).
+- **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](internal/pr_checklist.md) for a manual pre-submission guide.
+- **Maintenance & Infrastructure**: When modifying repository tools, scripts, or core documentation, follow the internal [Maintenance Implementation Checklist](internal/maintenance_implementation_checklist.md) to ensure tonal and technical consistency.
+- **Pre-release**: Use `python3 verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
+
+### Verification Strategy: Defense in Depth
+
+PyEQSP employs a three-tier **"Defense in Depth"** strategy to ensure project-wide reliability:
+
+-   **Layer 1: Pre-commit Hooks (Local)**: Provides rapid feedback for formatting, linting, and documentation errors before you commit code.
+-   **Layer 2: Unified Verification Script (Local/Orchestration)**: A high-fidelity "dry run" that synchronizes the execution environment to verify 100% test coverage and build stability before you open a Pull Request.
+-   **Layer 3: Continuous Integration (CI/Autoritative)**: Verifies the codebase in a clean-room environment across multiple Python versions (3.11–3.13) to catch platform regressions.
+
+This layered approach is complemented by **Project-Specific Guardrails** that enforce research integrity (e.g., bibliographic consistency, manifold naming, and positional-only argument audits).
+
+### Maintenance Scripts Inventory
+
+| Script | Location | Purpose |
+|---|---|---|
+| **Verification** | `verify_all.py` | Orchestrates Ruff, Pylint, and Pytest with coverage. |
+| **Readability** | `scripts/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
+| **Link Check** | `doc/maint/check_links.py` | Validates internal and external documentation URLs. |
+| **Quality Audit** | `doc/maint/quality_check.py` | Enforces bibliography/citation consistency. |
+| **Packaging** | `scripts/build_dist.py` | Orchestrates link sanitisation and distribution build. |
+| **Link Fix** | `scripts/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
+| **Upload** | `scripts/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
+| **SourceForge** | `doc/maint/upload_sourceforge.py` | Generates the SCP command for website hosting. |
+| **PR Checklist** | `doc/internal/pr_checklist.md` | General technical verification for code contributions. |
+| **Maint Checklist** | `doc/internal/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
+
+For technical details on the testing infrastructure, see [Technical Testing & Verification](internal/testing_details.md).
 
 ## Documentation Management
 
@@ -35,17 +73,48 @@ Documentation is managed using Sphinx and MyST-Parser.
   - Use `-re` and `-our` (e.g., *centre*, *colour*).
   - Prefer `-ize` and `-yze` suffixes (e.g., *organized*, *analyze*).
 
-For standard operating procedures regarding building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
+For standard operating procedures about building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
+
+## Project Governance
+
+### Roles and Responsibilities
+
+| Role | Scope | Production Credential Access |
+|---|---|---|
+| **Owner** | Full admin of GitHub, SourceForge, PyPI | Yes (all) |
+| **Administrator** | CI secrets, API tokens, ReadTheDocs | Yes (scoped) |
+| **Maintainer** | PR review, merges into `main`, release tags | No |
+| **Contributor** | Forked PRs, bug reports, documentation | No |
+
+### Security & Credential Management
+
+Release operations to PyPI and SourceForge require owner or administrator credentials.
+- **PyPI**: Use API tokens rather than account passwords. Store tokens in `~/.pypirc` or provide them via the `TWINE_PASSWORD` environment variable (the standard for both tokens and passwords).
+- **SourceForge**: Managed via SSH keys. The `upload_sourceforge.py` script generates an `scp` command but does not execute it, allowing the maintainer to review and authenticate manually.
+
+Non-owners should never have access to production secrets. All automation is designed to be run from developers' local machines using their own credentials.
 
 ## Release & Lifecycle
 
 ### Release Procedures
-For detailed instructions on uploading to TestPyPI and SourceForge, see the internal [Upload Guide](internal/upload_guide.md).
+
+Release 0.99.7 introduced a suite of automated scripts and strict quality guardrails to ensure consistency:
+
+1. **Build and Check**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
+2. **TestPyPI Upload**: Use `scripts/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
+3. **GitHub Synchronisation & CI**: Commit changes to a release branch, push to GitHub, and create a Pull Request to trigger the final CI verification suite.
+4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `scripts/upload_release.py --pypi` for the final deployment.
+5. **SourceForge Upload**: Use `doc/maint/upload_sourceforge.py` to host the Sphinx HTML documentation.
+
+For detailed instructions on these scripts, see the internal [Upload Guide](internal/upload_guide.md).
 
 ### Latest Release Notes
 Historical and current release details are tracked in the `doc/internal/` directory:
+- [Release Notes 0.99.7](internal/release_notes_0_99_7.md)
+- [Release Notes 0.99.6](internal/release_notes_0_99_6.md)
 - [Release Notes 0.99.4](internal/release_notes_0_99_4.md)
 - [Release Roadmap](internal/release_roadmap.md)
+- [Maintenance Checklist](internal/maintenance_implementation_checklist.md)
 
 ### Troubleshooting Release Issues
 

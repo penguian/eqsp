@@ -4,11 +4,11 @@ Based on: *"The applicability of equal area partitions of the unit sphere"*, {re
 
 ## History: From Toolbox to Library
 
-The journey of Equal Area Sphere Partitioning (EQ) code began with the 2005 **Recursive Zonal Equal Area Sphere Partitioning Toolbox** for MATLAB. Over nearly two decades, the toolbox supported numerous research projects. **PyEQSP** is the modern Python-based successor, designed for high performance and integration with the scientific Python ecosystem (NumPy, SciPy, Matplotlib).
+The journey of Equal Area Sphere Partitioning (EQ) code began with the 2005 **Recursive Zonal Equal Area Sphere Partitioning Toolbox** for MATLAB. Over nearly two decades, the toolbox supported many research projects. **PyEQSP** is the modern Python-based successor, designed for high performance and integration with the scientific Python ecosystem (NumPy, SciPy, Matplotlib).
 
 ## Cross-Disciplinary Applications
 
-The EQ algorithm provides a robust way to partition the unit sphere $\mathbb{S}^d$ into regions of equal area and small diameter. This property is critical in several scientific domains.
+The EQ algorithm provides a robust way to partition the unit sphere $\mathbb{S}^d$ into regions of equal area and small diameter. This property is critical in many scientific domains.
 
 ### Biology and Bioinformatics
 *   **Sampling Rotations ({ref}`Chu et al., 2009 <chu09>`)**: EQSP partitions were used to sample rotations of protein domains ($S^3$). This allowed for an efficient and unbiased exploration of the conformational space to simulate electrostatic interactions and protein flexibility.
@@ -38,4 +38,4 @@ The EQ algorithm provides a robust way to partition the unit sphere $\mathbb{S}^
 
 ## Evaluating Performance
 
-In comparative studies, PyEQSP's recursive zonal partitioning has shown distinct advantages over other methods like $k$-means clustering, spiral points, and icosahedral partitions, particularly in terms of area consistency and bounded-diameter regions for large $N$.
+In comparative studies, PyEQSP's recursive zonal partitioning has shown distinct advantages over other methods like $k$-means clustering, spiral points, and icosahedral partitions, particularly for area consistency and bounded-diameter regions for large $N$.

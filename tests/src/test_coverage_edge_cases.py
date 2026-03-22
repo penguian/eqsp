@@ -33,13 +33,13 @@ def test_rot3_coverage():
     """Verify all axes of rot3 rotation matrix helper."""
     # Already imported from _private._partitions
     # Axis 1
-    r1 = rot3(1, np.pi/2)
+    r1 = rot3(1, np.pi / 2)
     assert np.allclose(r1, np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]]))
     # Axis 2
-    r2 = rot3(2, np.pi/2)
+    r2 = rot3(2, np.pi / 2)
     assert np.allclose(r2, np.array([[0, 0, -1], [0, 1, 0], [1, 0, 0]]))
     # Axis 3
-    r3 = rot3(3, np.pi/2)
+    r3 = rot3(3, np.pi / 2)
     assert np.allclose(r3, np.array([[0, -1, 0], [1, 0, 0], [0, 0, 1]]))
     # Invalid axis
     with pytest.raises(ValueError, match="axis must be 1, 2, or 3"):
@@ -316,6 +316,7 @@ def test_asfloat_various():
     assert isinstance(res, np.ndarray)
     assert res.shape == (2,)
 
+
 def test_eq_regions_pragmas():
     """Verify code paths that were previously hit by pragmas."""
     # dim=0
@@ -337,6 +338,7 @@ def test_eq_regions_pragmas():
     regs, rots = eq_regions(3, 20, extra_offset=True)
     assert len(rots) == 20
 
+
 def test_histogram_edge_cases():
     """Trigger wrapping regions and single-region collars in S^2 histograms."""
     # Imports are already at top level
@@ -346,7 +348,7 @@ def test_histogram_edge_cases():
     s_cap, n_std = eq_caps(2, N)
     c_regs = np.cumsum(n_std)
     # Point in the middle collar
-    pts = np.array([[1.0], [np.pi/2]])
+    pts = np.array([[1.0], [np.pi / 2]])
     idx = lookup_s2_region(pts, s_regs, s_cap, c_regs)
     assert idx[0] == 2
 
@@ -361,6 +363,6 @@ def test_histogram_edge_cases():
     s_cap, n_std = eq_caps(2, N)
     c_regs = np.cumsum(n_std)
     # Point in the "last" (wrapped) region of a collar
-    pts = np.array([[0.01], [np.pi/2]])
+    pts = np.array([[0.01], [np.pi / 2]])
     idx = lookup_s2_region(pts, s_regs, s_cap, c_regs)
     assert idx[0] > 0

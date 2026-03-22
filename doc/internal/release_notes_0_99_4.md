@@ -16,7 +16,7 @@ This document summarizes the changes and verification steps completed for the **
 ### Build Improvements
 - **Makefile**: Fixed `doc/Makefile` to explicitly use `python3`.
 - **Ruff Configuration**: Transitioned `ruff.toml` to a flat format for cross-environment compatibility (maintains IDE support in restricted legacy environments).
-- **Diagnostic Tool Infrastructure**: Enhanced `doc/scripts/` with `sys.path` isolation and headless Matplotlib defaults to ensure verification stability.
+- **Diagnostic Tool Infrastructure**: Enhanced `doc/maint/` with `sys.path` isolation and headless Matplotlib defaults to ensure verification stability.
 - **Warning Mitigation**: Resolved Matplotlib `FigureCanvasAgg` warnings by guarding `plt.show()` calls in example and test scripts.
 
 ### Code Cleanup
@@ -35,6 +35,6 @@ This document summarizes the changes and verification steps completed for the **
 - **Tag Convention**: `release_0_99_4`
 
 ## Remaining Steps
-- [x] Finalize documentation content for all hub sections.
+- [x] Update `CHANGELOG.md` with the finalized 0.99.4 entry.
 - [x] Perform TestPyPI verification.
 - [x] Merge to `main`.

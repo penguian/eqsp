@@ -35,7 +35,7 @@ def main():
 
     # 2. Generate point set (centre points of regions)
     points = eqsp.eq_point_set(dim=dim, N=N)
-    print(f"Point set shape: {points.shape}") # Should be (dim+1, N)
+    print(f"Point set shape: {points.shape}")  # Should be (dim+1, N)
 
     # 3. Analyze separation quality
     print("\n--- Analyzing geometric properties ---")
@@ -48,7 +48,9 @@ def main():
     energy, _ = eqsp.point_set_energy_dist(points, s=2)
     print(f"Riesz s-energy (s=2): {energy:.4f}")
 
-if __name__ == "__main__": # pragma: no cover
+
+if __name__ == "__main__":  # pragma: no cover
     import doctest
+
     doctest.testmod()
     main()

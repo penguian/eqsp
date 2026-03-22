@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.4** (2026-03-17): Copyright 2026 Paul Leopardi
+**Release 0.99.7** (2026-03-22): Copyright 2026 Paul Leopardi
 
 # Installation
 
@@ -19,16 +19,15 @@ The package depends on:
 -   `mayavi` (optional)
 -   `PyQt5` (optional)
 
-These dependencies will be installed automatically when installing
-via `pip`.
+Installing **PyEQSP** via `pip` automatically installs these dependencies.
 
 ### Python Virtual Environments
 
-It is recommended that you install and use **PyEQSP** within a Python
+We recommend installing and using **PyEQSP** within a Python
 virtual environment. A virtual environment isolates project
-dependencies from your system Python, preventing version conflicts
-between projects. It can be located anywhere accessible in the
-file system; it does not need to be in the project directory.
+dependencies from your system Python, preventing version conflicts.
+You can locate the environment anywhere accessible in the
+file system; it doesn't need to be in the project directory.
 
 To create and activate a virtual environment:
 
@@ -51,7 +50,7 @@ or the [System-Integrated Setup (venv_sys)](doc/internal/venv_sys_setup.md).
 
 ## 1. Installation from Source (Git Clone)
 
-If you want to use the latest development version or modify the
+If you want to use the latest development version or change the
 code, install from the source repository.
 
 ### Step 1: Clone the repository
@@ -61,12 +60,11 @@ git clone https://github.com/penguian/pyeqsp.git
 cd pyeqsp
 ```
 
-> [!IMPORTANT]
-> **Naming Distinction**: The project is named **PyEQSP** and is installed via `pip install pyeqsp`, but the Python package is imported as **eqsp**.
+> **Naming Distinction**: While the project name is **PyEQSP** and you install it via `pip install pyeqsp`, you import the package as **eqsp**.
 
 ### Step 2: Install the package
 
-Ensure your virtual environment is activated before running
+Activate your virtual environment before running
 these commands.
 
 To install the package:
@@ -82,7 +80,7 @@ pip install ".[mayavi]"
 
 ### Step 3: Install in Editable Mode (For Developers)
 
-If you intend to modify the code and want changes to be reflected
+If you intend to change the code and want changes to take effect
 immediately without reinstalling:
 
 ```bash
@@ -94,6 +92,7 @@ To also install development tools (`ruff`, `pylint`, `pytest`,
 
 ```bash
 pip install -e ".[dev]"
+pre-commit install
 ```
 
 ## 2. Installation via Pip
@@ -105,9 +104,9 @@ can install it directly:
 pip install pyeqsp
 ```
 
-> **Note:** The `eqsp` package is currently in Beta and primarily distributed 
-> via source. Version 1.0.0 will be the first stable release on PyPI. 
-> Internal testing is currently ongoing on TestPyPI.
+> **Note:** The `eqsp` package is currently in Beta and we primarily distribute
+> it via source. Version 1.0.0 will be the first stable release on PyPI.
+> We are currently testing it internally on TestPyPI.
 
 To upgrade an existing installation:
 

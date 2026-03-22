@@ -53,8 +53,7 @@ def main():
     omit_opts = []
     if importlib.util.find_spec("mayavi") is None:
         print(
-            "Mayavi not found — skipping eqsp/visualizations.py "
-            "doctests and coverage."
+            "Mayavi not found — skipping eqsp/visualizations.py doctests and coverage."
         )
         pytest_opts.append("--ignore=eqsp/visualizations.py")
         omit_opts.append("--omit=eqsp/visualizations.py")
@@ -75,20 +74,26 @@ def main():
     # Construct the coverage run command
     # -m coverage run --source=eqsp: measure coverage for the eqsp package
     # -m pytest eqsp tests/src: run tests in both the package and tests/src
-    coverage_run = [
-        sys.executable,
-        "-m",
-        "coverage",
-        "run",
-        "--source=eqsp,examples/user-guide/src,doc/scripts",
-    ] + omit_opts + [
-        "-m",
-        "pytest",
-        "eqsp",
-        "tests/src",
-        "examples/user-guide/src",
-        "doc/scripts",
-    ] + pytest_opts
+    coverage_run = (
+        [
+            sys.executable,
+            "-m",
+            "coverage",
+            "run",
+            "--source=eqsp,examples/user-guide/src,doc/maint,scripts",
+        ]
+        + omit_opts
+        + [
+            "-m",
+            "pytest",
+            "eqsp",
+            "tests/src",
+            "examples/user-guide/src",
+            "doc/maint",
+            "scripts",
+        ]
+        + pytest_opts
+    )
 
     # Run the coverage measurement
     run_command(coverage_run, env=env, cwd=repo_root)

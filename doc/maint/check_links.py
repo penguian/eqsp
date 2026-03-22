@@ -2,6 +2,7 @@
 """
 Check for broken internal and cross-file links in Markdown documentation.
 """
+
 import re
 import sys
 from pathlib import Path
@@ -23,6 +24,7 @@ LINK_RE = re.compile(r"\[(?P<text>[^\]]+)\]\((?P<link>[^\)]+)\)")
 # Must be exactly {ref}`...` and not preceded by a backtick
 REF_RE = re.compile(r"(?<!`)\{ref\}`(?:[^<`\n]+<)?(?P<target>[^>`\n]+)>?`")
 
+
 def get_all_md_files():
     """Return a list of all .md files in the repository."""
     md_files = list(DOC_DIR.rglob("*.md"))
@@ -30,6 +32,7 @@ def get_all_md_files():
     md_files.append(REPO_ROOT / "CONTRIBUTING.md")
     md_files.append(REPO_ROOT / "INSTALL.md")
     return [f for f in md_files if f.exists()]
+
 
 def parse_content(content):
     r"""
@@ -65,6 +68,7 @@ def parse_content(content):
 
     return targets, links
 
+
 def parse_file(file_path):
     """Extract targets and links from a file."""
     content = file_path.read_text(encoding="utf-8")
@@ -72,6 +76,7 @@ def parse_file(file_path):
     # Re-wrap links with the file path
     links = [(link_data[0], file_path) for link_data in links]
     return targets, links
+
 
 def is_link_broken(link, source_file, file_targets):
     # pylint: disable=too-many-return-statements
@@ -134,8 +139,7 @@ def is_link_broken(link, source_file, file_targets):
                 # Anchor exists but not here! This is likely a broken local link
                 # that should be a {ref}.
                 return (
-                    f"Anchor '#{anchor}' exists in another file. "
-                    "Use {ref} instead."
+                    f"Anchor '#{anchor}' exists in another file. Use {{ref}} instead."
                 )
             return True  # pragma: no cover
     return False
@@ -166,6 +170,7 @@ def main():  # pragma: no cover
         sys.exit(1)
 
     print("No broken links found!")
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()

@@ -31,6 +31,9 @@ If you would like to contribute code fixes or improvements, please follow the fo
 
    # Install in "editable" mode with development tools
    pip install -e ".[dev]"
+
+   # Install the git hooks
+   pre-commit install
    ```
    > **What is "editable" mode (`-e`)?** This creates a link between your local code and your Python environment. Any changes you make to the code in this folder will take effect immediately without needing to reinstall. The `[dev]` extra installs linting and testing tools (`ruff`, `pylint`, `pytest`, `coverage`).
 
@@ -41,17 +44,17 @@ If you would like to contribute code fixes or improvements, please follow the fo
    - If you are still stuck, [open an issue](https://github.com/penguian/pyeqsp/issues/new) and we will help you!
 
 4. **Draft your Changes**: We recommend creating a new branch for your fix or feature.
-5. **Coding Standards**:
+5. **Coding & Documentation Standards**:
    To maintain high code quality, we require:
-   - **Linting**: Code must satisfy `ruff` and `pylint`.
+   - **Linting**: Code must meet `ruff` and `pylint` (10.00/10).
+   - **Linguistic Standard**: Adopt **Australian -ize English** (Oxford spelling). Use `-re` and `-our` (e.g., *centre*, *colour*) and `-ize`/`-yze` suffixes (e.g., *organized*, *analyze*).
    - **Docstrings**: Use the [NumPy docstring format](https://numpydoc.readthedocs.io/en/latest/format.html).
    - **Code Coverage**: We maintain a strict **100% test coverage** policy.
        - All new features must include comprehensive tests.
-       - `# pragma: no cover` should be used sparingly and only for truly unreachable code, platform-specific blocks, or debugging branches.
-       - Every pragma usage must be justified and reviewed.
+       - `# pragma: no cover` should be used sparingly and only for truly unreachable code.
    - **Minimalism**: Keep changes focused and brief.
 
-6. **Run Tests & Linters**: Ensure that your changes satisfy all quality checks and do not break existing functionality. We provide a single verification script that runs Ruff, Pylint, and Pytest with coverage:
+6. **Run Tests & Linters**: Ensure that your changes meet all quality checks and do not break existing functionality. While the **pre-commit hooks** automatically check your work each time you `git commit`, you can also manually run the full verification script:
    ```bash
    python3 verify_all.py
    ```
@@ -65,6 +68,10 @@ If the main repository has been updated, you can sync your fork using:
 git fetch upstream
 git merge upstream/main
 ```
+
+### Advanced Maintenance
+
+For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/documentation_maintenance.md).
 
 ## Community Standards
 Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.

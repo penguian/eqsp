@@ -3,6 +3,22 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
+from unittest.mock import MagicMock
+
+# Mock optional dependencies for headless doctest environments.
+# We catch all exceptions because some libraries (like mayavi/vtk) may be
+# installed but fail to initialize in headless CI runners.
+try:
+    import mayavi  # noqa: F401
+    import PyQt5  # noqa: F401
+except Exception:
+    mock_mayavi = MagicMock()
+    sys.modules["mayavi"] = mock_mayavi
+    sys.modules["mayavi.mlab"] = mock_mayavi
+    sys.modules["PyQt5"] = MagicMock()
+    sys.modules["PyQt5.QtWidgets"] = MagicMock()
+    sys.modules["PyQt5.QtCore"] = MagicMock()
+
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
 
@@ -27,10 +43,21 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.mathjax",
+    "sphinx.ext.doctest",
     "myst_parser",
     "sphinx_rtd_theme",
     "sphinxcontrib.mermaid",
 ]
+
+doctest_global_setup = """
+import numpy as np
+from math import pi
+from eqsp.utilities import *
+from eqsp.partitions import *
+from eqsp.point_set_props import *
+from eqsp.region_props import *
+from eqsp.histograms import *
+"""
 
 myst_enable_extensions = [
     "dollarmath",

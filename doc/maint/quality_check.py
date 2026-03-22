@@ -2,6 +2,7 @@
 """
 Performance quality checks for configuration, initialization order, and docstrings.
 """
+
 import ast
 import re
 import sys
@@ -9,6 +10,7 @@ from pathlib import Path
 
 # Add REPO_ROOT to sys.path to allow importing eqsp from source
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+
 
 def setup_environment():
     """Set up the environment for quality checks."""
@@ -18,11 +20,14 @@ def setup_environment():
     # Force headless Matplotlib for diagnostic scripts
     try:
         import matplotlib  # pylint: disable=import-outside-toplevel
+
         matplotlib.use("Agg")
     except ImportError:  # pragma: no cover
         pass
 
+
 setup_environment()
+
 
 def check_matplotlib_init():
     """Ensure matplotlib.use('Agg') comes before pyplot import in examples."""
@@ -50,13 +55,11 @@ def check_matplotlib_init():
 
         if pyplot_idx != -1 and agg_idx != -1 and agg_idx > pyplot_idx:
             n_rel = f.relative_to(REPO_ROOT)
-            msg = (
-                f"{n_rel}: matplotlib.use('Agg') "
-                "must come before pyplot import."
-            )
+            msg = f"{n_rel}: matplotlib.use('Agg') must come before pyplot import."
             errors.append(msg)
 
     return errors
+
 
 def check_conf_types():
     """Ensure Sphinx conf.py variables have correct types."""
@@ -85,6 +88,7 @@ def check_conf_types():
 
     return errors
 
+
 def check_docstring_links():
     """Ensure docstrings use reStructuredText syntax, not Markdown links."""
     errors = []
@@ -111,9 +115,11 @@ def check_docstring_links():
 
     return errors
 
+
 def check_doc_functions():
     """Ensure all eqsp.function calls in docs exist in the package."""
     import eqsp  # pylint: disable=import-outside-toplevel
+
     exported = set(dir(eqsp))
     errors = []
 
@@ -128,9 +134,16 @@ def check_doc_functions():
     func_re = re.compile(func_pattern)
 
     ignore_funcs = {
-        "visualizations", "illustrations", "histograms", "partitions",
-        "point_set_props", "region_props", "utilities", "sourceforge",
-        "region\\_props", "point\\_set\\_props"
+        "visualizations",
+        "illustrations",
+        "histograms",
+        "partitions",
+        "point_set_props",
+        "region_props",
+        "utilities",
+        "sourceforge",
+        "region\\_props",
+        "point\\_set\\_props",
     }
 
     for f in docs_to_check:
@@ -146,6 +159,7 @@ def check_doc_functions():
                 errors.append(f"{f_rel}: Referenced non-existent function `eqsp.{m}`")
 
     return errors
+
 
 def check_doc_shapes():
     r"""
@@ -184,6 +198,7 @@ def check_doc_shapes():
 
     return errors
 
+
 def check_headings():
     r"""
     Scan for malformed headers (e.g. # Header # SubHeader).
@@ -213,6 +228,7 @@ def check_headings():
 
     return errors
 
+
 def check_typos():
     """Scan for common or previously identified typos."""
     errors = []
@@ -220,6 +236,12 @@ def check_typos():
     typo_map = {
         "excitiation": "excitation",
         "Scanning foundational results": "proper metadata entry",
+        "2rd": "2nd",
+        "3th": "3rd",
+        "4th-sphere": "4-sphere",
+        "3rd-sphere": "3-sphere",
+        "2nd-sphere": "2-sphere",
+        "show_s2_partition(N=": "show_s2_partition(100, (N is positional-only)",
     }
 
     files_to_check = list(REPO_ROOT.rglob("*.md"))
@@ -227,7 +249,9 @@ def check_typos():
     files_to_check.extend((REPO_ROOT / "eqsp").rglob("*.py"))
 
     for f in files_to_check:
-        if not f.exists() or ".build" in str(f) or "results.0" in str(f):
+        ignore_names = [".build", "results.0", "pr_checklist.md"]
+        ignore = any(name in str(f) for name in ignore_names)
+        if not f.exists() or ignore:
             continue  # pragma: no cover
         content = f.read_text(encoding="utf-8")
         for typo, correction in typo_map.items():
@@ -237,6 +261,7 @@ def check_typos():
                 errors.append(msg)
 
     return errors
+
 
 def check_orthography():
     """Ensure Australian -ize English (Oxford spelling) project-wide."""
@@ -270,6 +295,114 @@ def check_orthography():
 
     return errors
 
+
+def get_all_refs(repo_root):
+    """
+    Parse reference keys and metadata from vol1, vol2, and AUTHORS.md.
+    Returns {filename: {key: metadata}}.
+    """
+    refs = {}
+    ref_re = re.compile(r"-\s+\*\*\[([^\]]+)\]\*\*\s+(.*)")
+
+    # Check doc/references_vol*.md
+    for fname in ["references_vol1.md", "references_vol2.md"]:
+        fpath = repo_root / "doc" / fname
+        if fpath.exists():
+            for line in fpath.read_text(encoding="utf-8").splitlines():
+                m = ref_re.match(line.strip())
+                if m:
+                    refs.setdefault(fname, {})[m.group(1)] = m.group(2)
+
+    # Check AUTHORS.md
+    auth_path = repo_root / "AUTHORS.md"
+    if auth_path.exists():
+        for line in auth_path.read_text(encoding="utf-8").splitlines():
+            m = ref_re.match(line.strip())
+            if m:
+                refs.setdefault("AUTHORS.md", {})[m.group(1)] = m.group(2)
+    return refs
+
+
+def check_reference_consistency(repo_root=REPO_ROOT):
+    r"""
+    Enforce consistency across vol1, vol2, and AUTHORS.md.
+    Flag any shared key whose metadata disagrees between files.
+
+    >>> import tempfile
+    >>> from pathlib import Path
+    >>> with tempfile.TemporaryDirectory() as d:
+    ...     root = Path(d)
+    ...     doc = root / "doc"
+    ...     doc.mkdir()
+    ...     _ = (doc / "references_vol1.md").write_text(
+    ...         "- **[A1]** Author 1\n", encoding="utf-8"
+    ...     )
+    ...     _ = (root / "AUTHORS.md").write_text(
+    ...         "- **[A1]** Author 2\n", encoding="utf-8"
+    ...     )
+    ...     errors = check_reference_consistency(repo_root=root)
+    ...     "Reference mismatch for [A1]" in errors[0]
+    True
+    """
+    errors = []
+    all_refs = get_all_refs(repo_root)
+    filenames = list(all_refs.keys())
+
+    for i, f1 in enumerate(filenames):
+        for f2 in filenames[i + 1 :]:
+            refs1, refs2 = all_refs[f1], all_refs[f2]
+            for key, meta1 in refs1.items():
+                if key in refs2:
+                    meta2 = refs2[key]
+                    if meta1 != meta2:
+                        errors.append(
+                            f"Reference mismatch for [{key}] between {f1} and {f2}."
+                        )
+
+    return errors
+
+
+def check_ruff_config_format():
+    """Ensure ruff.toml uses the legacy-compatible flat format (no [lint])."""
+    ruff_toml = REPO_ROOT / "ruff.toml"
+    if not ruff_toml.exists():
+        return []  # pragma: no cover
+
+    content = ruff_toml.read_text(encoding="utf-8")
+    if "[lint]" in content or "[lint." in content:
+        return [
+            "ruff.toml: uses modern [lint] section. "
+            "Revert to flat format for legacy compatibility."
+        ]
+    return []
+
+
+def check_standalone_pragmas():
+    """Ensure '# pragma: no cover' is attached to a statement, not on its own line."""
+    errors = []
+    # Check package and scripts but skip third-party/venv
+    python_files = list((REPO_ROOT / "eqsp").rglob("*.py"))
+    python_files.extend((REPO_ROOT / "scripts").glob("*.py"))
+    python_files.extend((REPO_ROOT / "tests").rglob("*.py"))
+    python_files.extend((REPO_ROOT / "doc" / "maint").glob("*.py"))
+
+    # Standalone pragma: line consists only of whitespace and the pragma
+    standalone_re = re.compile(r"^\s*#\s*pragma:\s*no\s*cover\s*$")
+
+    for f in python_files:
+        if not f.exists():
+            continue  # pragma: no cover
+        content = f.read_text(encoding="utf-8")
+        for i, line in enumerate(content.splitlines()):
+            if standalone_re.match(line):
+                f_rel = f.relative_to(REPO_ROOT)
+                errors.append(
+                    f"{f_rel}:{i + 1}: Standalone '# pragma: no cover' is ineffective. "
+                    "Attach to the statement."
+                )
+    return errors
+
+
 def main():  # pragma: no cover
     """Run all quality checks."""
     all_errors = []
@@ -281,6 +414,9 @@ def main():  # pragma: no cover
     all_errors.extend(check_headings())
     all_errors.extend(check_typos())
     all_errors.extend(check_orthography())
+    all_errors.extend(check_reference_consistency())
+    all_errors.extend(check_ruff_config_format())
+    all_errors.extend(check_standalone_pragmas())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")
@@ -289,6 +425,7 @@ def main():  # pragma: no cover
         sys.exit(1)
 
     print("Quality checks passed!")
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()

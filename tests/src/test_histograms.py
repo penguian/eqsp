@@ -160,10 +160,43 @@ def test_exact_boundaries_s2_region():
     # Since it perfectly matches the start longitude, it should be mapped
     # according to side='left' indexing.
     # Note: Longitude jumps are bounded by the internal modulo tracking mappings.
-    expected_long_regions = np.array([
-        1, 2, 2, 3, 4, 5, 6, 8, 8, 9, 10, 11, 12, 13, 14, 15, 17, 17, 18, 19,
-        20, 21, 22, 23, 24, 25, 27, 27, 28, 29, 30, 31, 33
-    ])
+    expected_long_regions = np.array(
+        [
+            1,
+            2,
+            2,
+            3,
+            4,
+            5,
+            6,
+            8,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            27,
+            27,
+            28,
+            29,
+            30,
+            31,
+            33,
+        ]
+    )
 
     r_idx_longs = histograms.eq_find_s2_region(long_points, N)
     assert_array_equal(r_idx_longs, expected_long_regions)

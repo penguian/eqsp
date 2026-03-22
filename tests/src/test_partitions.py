@@ -184,13 +184,16 @@ def test_private_helpers():
     center_south = centres_of_regions(reg_south)
     assert_allclose(center_south[1, 0], pi)
 
+
 def test_centres_of_regions_no_mutation():
     """Verify centres_of_regions does not modify its input."""
     from eqsp._private._partitions import centres_of_regions
+
     reg = np.array([[0, 2 * pi], [0, 0.5]])[:, :, np.newaxis]
     reg_copy = reg.copy()
     centres_of_regions(reg)
     assert_allclose(reg, reg_copy)
+
 
 def test_eq_caps_even_collars():
     """Test even_collars=True forces even collar count."""
@@ -212,7 +215,7 @@ def test_eq_caps_even_collars():
     # Forced even_collars should result in 2 or 4 collars.
     _, n_even = eq_caps(2, 18, even_collars=True)
     assert len(n_even) % 2 == 0  # Total regions (collars+poles) is even
-    assert len(n_even) in [4, 6]      # 2 or 4 collars + 2 poles
+    assert len(n_even) in [4, 6]  # 2 or 4 collars + 2 poles
 
     # even_collars with odd N should raise ValueError
     with pytest.raises(ValueError):

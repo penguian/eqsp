@@ -4,10 +4,10 @@ PyEQSP provides powerful tools for visualizing partitions and point sets in both
 
 ## Simple 2D Illustrations
 
-For quick analysis, 2D projections of the EQ algorithm are highly effective. The standard illustration shows how the sphere is partitioned into collars and regions.
+For quick analysis, 2D projections of the EQ algorithm are effective. The standard illustration shows how the sphere is partitioned into collars and regions.
 
 ### Standard 2D Projection
-The `eqsp.illustrations` module provides functions to visualize the resulting partitions in common projections.
+The `eqsp.illustrations` module provides functions to visualize resulting partitions in common projections.
 
 ```python
 import matplotlib.pyplot as plt
@@ -45,7 +45,7 @@ visualizations.show_s2_partition(100, show_points=True)
 
 ## Advanced Projections
 
-For specific research or mapping needs, the library also supports more advanced projections via `eqsp.illustrations.project_s2_partition`.
+For specific research or mapping needs, the library also supports advanced projections via `eqsp.illustrations.project_s2_partition`.
 
 *   **Mollweide**: Equal-area projection of the entire sphere.
 *   **Lambert**: Azimuthal equal-area projection.
