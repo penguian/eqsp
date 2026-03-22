@@ -25,9 +25,26 @@ We maintain a strict quality policy to ensure the reliability of the research ou
 
 ### Automated Verification
 
-The primary entry point for quality control is `verify_all.py` (located in the root).
-- **Pull Requests**: Every PR must pass `python3 verify_all.py` (Ruff, Pylint, Pytest). See the internal [Pull Request Checklist](internal/pr_checklist.md) for a manual pre-submission guide.
+To prevent regressions, **pre-commit hooks** are used to validate every commit locally. Run once to set up:
+```bash
+pre-commit install
+```
+The hooks encompass formatting, linting, documentation quality checks, and link validation.
+
+The primary project-wide entry point for global quality control is `verify_all.py` (located in the root).
+- **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](internal/pr_checklist.md) for a manual pre-submission guide.
+- **Maintenance & Infrastructure**: When modifying repository tools, scripts, or core documentation, follow the internal [Maintenance Implementation Checklist](internal/maintenance_implementation_checklist.md) to ensure tonal and technical consistency.
 - **Pre-release**: Use `python3 verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
+
+### Verification Strategy: Defense in Depth
+
+PyEQSP employs a three-tier **"Defense in Depth"** strategy to ensure project-wide reliability:
+
+-   **Layer 1: Pre-commit Hooks (Local)**: Provides rapid feedback for formatting, linting, and documentation errors before you commit code.
+-   **Layer 2: Unified Verification Script (Local/Orchestration)**: A high-fidelity "dry run" that synchronizes the execution environment to verify 100% test coverage and build stability before you open a Pull Request.
+-   **Layer 3: Continuous Integration (CI/Autoritative)**: Verifies the codebase in a clean-room environment across multiple Python versions (3.11–3.13) to catch platform regressions.
+
+This layered approach is complemented by **Project-Specific Guardrails** that enforce research integrity (e.g., bibliographic consistency, manifold naming, and positional-only argument audits).
 
 ### Maintenance Scripts Inventory
 
@@ -41,6 +58,8 @@ The primary entry point for quality control is `verify_all.py` (located in the r
 | **Link Fix** | `scripts/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
 | **Upload** | `scripts/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
 | **SourceForge** | `doc/maint/upload_sourceforge.py` | Generates the SCP command for website hosting. |
+| **PR Checklist** | `doc/internal/pr_checklist.md` | General technical verification for code contributions. |
+| **Maint Checklist** | `doc/internal/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
 
 For technical details on the testing infrastructure, see [Technical Testing & Verification](internal/testing_details.md).
 
@@ -95,6 +114,7 @@ Historical and current release details are tracked in the `doc/internal/` direct
 - [Release Notes 0.99.6](internal/release_notes_0_99_6.md)
 - [Release Notes 0.99.4](internal/release_notes_0_99_4.md)
 - [Release Roadmap](internal/release_roadmap.md)
+- [Maintenance Checklist](internal/maintenance_implementation_checklist.md)
 
 ### Troubleshooting Release Issues
 

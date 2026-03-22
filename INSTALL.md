@@ -92,6 +92,7 @@ To also install development tools (`ruff`, `pylint`, `pytest`,
 
 ```bash
 pip install -e ".[dev]"
+pre-commit install
 ```
 
 ## 2. Installation via Pip

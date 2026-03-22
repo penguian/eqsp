@@ -31,6 +31,9 @@ If you would like to contribute code fixes or improvements, please follow the fo
 
    # Install in "editable" mode with development tools
    pip install -e ".[dev]"
+
+   # Install the git hooks
+   pre-commit install
    ```
    > **What is "editable" mode (`-e`)?** This creates a link between your local code and your Python environment. Any changes you make to the code in this folder will take effect immediately without needing to reinstall. The `[dev]` extra installs linting and testing tools (`ruff`, `pylint`, `pytest`, `coverage`).
 
@@ -51,7 +54,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
        - `# pragma: no cover` should be used sparingly and only for truly unreachable code.
    - **Minimalism**: Keep changes focused and brief.
 
-6. **Run Tests & Linters**: Ensure that your changes meet all quality checks and do not break existing functionality. We provide a single verification script that runs Ruff, Pylint, and Pytest with coverage:
+6. **Run Tests & Linters**: Ensure that your changes meet all quality checks and do not break existing functionality. While the **pre-commit hooks** automatically check your work each time you `git commit`, you can also manually run the full verification script:
    ```bash
    python3 verify_all.py
    ```

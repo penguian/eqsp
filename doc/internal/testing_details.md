@@ -32,12 +32,19 @@ pip install pytest coverage
 ## Running Tests
 
 ### Project-Wide Run
-To run the entire suite, including linting, link checks, and documentation verification (recommended):
-```bash
-python3 verify_all.py
-```
 
-This orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
+We use a two-tier automated verification system:
+
+1.  **Pre-commit Hooks (Local)**: Automated checks run on every `git commit` to catch linting errors, documentation typos, and broken links before they leave your machine.
+    ```bash
+    pre-commit install  # Run once to set up
+    pre-commit run --all-files  # Run manually to verify everything
+    ```
+2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in the root) is the definitive project-wide entry point.
+    *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest).
+    *   **CI Pipeline**: GitHub Actions runs `verify_all.py` across Python 3.11–3.13.
+
+The orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
 
 ### Granular Control
 You can run tests at three levels of granularity:
@@ -116,6 +123,8 @@ To maintain the quality of the project's prevention mechanisms, the scripts in `
 - **Unit Tests (`tests/src/test_maintenance_scripts.py`)**: A dedicated suite that checks the functional I/O behaviour by mocking the repository filesystem. This ensures that tools like `check_links.py` and `quality_check.py` accurately identify and report errors in real-world scenarios.
 
 All diagnostic scripts use **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
+
+**Environment Isolation**: The `verify_all.py` script prepends the current Python executable's directory to the system `PATH`. This ensures that subprocesses (like `make` and `sphinx-build`) use the tools and packages from the active virtual environment, preventing conflicts with system-wide Python installations.
 
 ## Performance Benchmarking
 

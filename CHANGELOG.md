@@ -5,15 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.7] - 2026-03-21
+## [0.99.7] - 2026-03-22
+
+### Added
+- **Pre-commit Layer**: Formalized the first tier of "Defense in Depth" by integrating pre-commit hooks for project-wide documentation quality, link validation, and Python linting.
 
 ### Fixed
-- **CI Hardening**: Resolved "module not found" errors in GitHub Actions by adding missing Sphinx and documentation dependencies to the CI runner.
+- **CI & Local Hardening**: Resolved "module not found" errors in both GHA and local virtual environments by ensuring all documentation dependencies (Sphinx, MyST) are correctly synchronized.
+- **Environment Isolation**: Enhanced `verify_all.py` to manage the system `PATH` dynamically, ensuring that subprocesses always use the tools from the active virtual environment and resolving path-shadowing failures.
 - **Headless Doctests**: Implemented `mayavi` and `PyQt5` mocking in `doc/conf.py` to allow 3D visualization doctests to pass in headless CI environments.
 - **Environment Compatibility**: Reverted `ruff.toml` to the legacy-compatible flat configuration format to support restricted environments (e.g., `.venv_sys`).
 - **Credential Validation**: Refined `upload_release.py` to correctly validate `TWINE_PASSWORD` (and handle tokens) without misidentifying `TWINE_TOKEN` as a standard variable.
 - **Coverage Transparency**: Expanded `tests/run_coverage.py` to include the `scripts/` directory in formal quality and coverage reports.
-- **Documentation Refinement**: Resolved `toc.not_included` warnings by properly indexing all historical release notes in the master documentation.
+- **Documentation Refinement**: Resolved `toc.not_included` warnings by properly indexing all historical release notes and formalizing the "Defense in Depth" strategy in the Maintenance Guide.
 
 ## [0.99.6] - 2026-03-21
 
