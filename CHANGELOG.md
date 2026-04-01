@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Git Tag**: `Planned` | **Distribution**: `Planned`
 
 ### Added
-- **Automation Coverage Plan**: Scheduled 100% coverage implementation for the `scripts/` and `doc/maint/` automation hub.
+- **Automation Coverage Plan**: Scheduled 100% coverage implementation for the `scripts/` and `doc/ci_scripts/` automation hub.
 
 ## [0.99.7] - 2026-03-22
 **Git Tag**: `release_0_99_7` | **Distribution**: `PyPI`

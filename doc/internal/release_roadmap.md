@@ -33,9 +33,12 @@ This roadmap outlines the development phases from the initial beta through the 1
 ### 0.99.8 Beta: Infrastructure Hardening
 Scheduled for **2026-03-31** | **Git Tag: Planned** | **Distribution: Planned**
 
-- [ ] **Automation Coverage Plan**: Achieve 100% coverage on the script automation hub (`scripts/`, `doc/maint/`) using modular refactoring, interactive doctests, and mocks.
+- [ ] **JOSS Submission**: Initiate the peer-review process by submitting the `paper.md` and `paper.bib` artifacts to the Journal of Open Source Software.
+- [ ] **Automation Coverage Plan**: Achieve 100% coverage on the script automation hub (`scripts/`, `doc/ci_scripts/`) using modular refactoring, interactive doctests, and mocks.
 - [ ] **Verified Deployment**: Confirm stability of the `build_dist.py` atomic backup and robust `doc/conf.py` mocking across all CI runners.
 - [ ] **Technical Symmetry Audit**: Review historical and modern Sphinx configurations for project-wide consistency.
+- [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE` via `git mv`; updated prose references in `README.md` and `AUTHORS.md`; replaced the deprecated `license = { file = "COPYING" }` table form in `pyproject.toml` with `license = "MIT"` (SPDX expression), added `license-files = ["LICENSE"]`, and removed the deprecated `License :: OSI Approved :: MIT License` Trove classifier.
+- [ ] **Rename `doc/internal/` to `doc/maintainer/`**: Replace the misleading directory name with one that accurately reflects these files as public maintainer-facing documentation. Update all references in `doc/index.rst`, `doc/maintenance_guide.md`, and seven other files that link into the directory.
 
 ### 1.0 General Release: Research Reliability Foundation
 **Scheduled for 2026-04-15**

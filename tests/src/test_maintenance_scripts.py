@@ -7,7 +7,7 @@ import sys
 
 import pytest
 
-from doc.maint import check_links, quality_check
+from doc.ci_scripts import check_links, quality_check
 
 
 @pytest.fixture

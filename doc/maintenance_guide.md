@@ -52,12 +52,12 @@ This layered approach is complemented by **Project-Specific Guardrails** that en
 |---|---|---|
 | **Verification** | `verify_all.py` | Orchestrates Ruff, Pylint, and Pytest with coverage. |
 | **Readability** | `scripts/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
-| **Link Check** | `doc/maint/check_links.py` | Validates internal and external documentation URLs. |
-| **Quality Audit** | `doc/maint/quality_check.py` | Enforces bibliography/citation consistency. |
+| **Link Check** | `doc/ci_scripts/check_links.py` | Validates internal and external documentation URLs. |
+| **Quality Audit** | `doc/ci_scripts/quality_check.py` | Enforces bibliography/citation consistency. |
 | **Packaging** | `scripts/build_dist.py` | Orchestrates link sanitisation and distribution build. |
 | **Link Fix** | `scripts/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
 | **Upload** | `scripts/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
-| **SourceForge** | `doc/maint/upload_sourceforge.py` | Generates the SCP command for website hosting. |
+| **SourceForge** | `doc/ci_scripts/upload_sourceforge.py` | Generates the SCP command for website hosting. |
 | **PR Checklist** | `doc/internal/pr_checklist.md` | General technical verification for code contributions. |
 | **Maint Checklist** | `doc/internal/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
 
@@ -104,7 +104,7 @@ Release 0.99.7 introduced a suite of automated scripts and strict quality guardr
 2. **TestPyPI Upload**: Use `scripts/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
 3. **GitHub Synchronisation & CI**: Commit changes to a release branch, push to GitHub, and create a Pull Request to trigger the final CI verification suite.
 4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `scripts/upload_release.py --pypi` for the final deployment.
-5. **SourceForge Upload**: Use `doc/maint/upload_sourceforge.py` to host the Sphinx HTML documentation.
+5. **SourceForge Upload**: Use `doc/ci_scripts/upload_sourceforge.py` to host the Sphinx HTML documentation.
 
 For detailed instructions on these scripts, see the internal [Upload Guide](internal/upload_guide.md).
 

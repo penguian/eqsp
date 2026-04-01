@@ -111,3 +111,4 @@ cython_debug/
 README_dist.md
 doc/*.log
 verify_output.txt
+doc/internal/porting_guide.md

@@ -52,10 +52,10 @@ python3 scripts/upload_release.py --pypi
 To update the project website at `http://eqsp.sourceforge.net`:
 
 ### 1. Generate & Upload
-The documentation upload is semi-automated via the `doc/maint/upload_sourceforge.py` script.
+The documentation upload is semi-automated via the `doc/ci_scripts/upload_sourceforge.py` script.
 ```bash
 # This script builds the docs and generates the scp command
-python3 doc/maint/upload_sourceforge.py
+python3 doc/ci_scripts/upload_sourceforge.py
 ```
 After reviewing the generated command, execute it to upload the `doc/_build/html` contents to your SourceForge `htdocs` directory.
 
