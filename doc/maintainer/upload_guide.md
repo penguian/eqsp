@@ -27,10 +27,10 @@ Once the TestPyPI rendering is confirmed, commit the changes and trigger a final
 
 1. **Commit and Push**:
    ```bash
-   git checkout -b release_v0.99.7
+   git checkout -b release_v0.99.8
    git add .
-   git commit -m "Release 0.99.7: CI hardening and quality guardrails"
-   git push -u origin release_v0.99.7
+   git commit -m "Release 0.99.8: Infrastructure hardening and JOSS submission finalization"
+   git push -u origin release_v0.99.8
    ```
 
 2. **Create Pull Request**:
