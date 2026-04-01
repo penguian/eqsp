@@ -8,7 +8,7 @@ This section summarizes the completion of the infrastructure and automation hard
 
 ### Summary: Infrastructure Semantic Hardening
 
-Release **0.99.8** provides the definitive architectural layout for the PyEQSP maintenance ecosystem. By partitioning tools into `release/` and `validation/` and achieving 100% automation coverage, we have reached the highest state of quality and documentation visibility to date.
+Release **0.99.8** provides the definitive architectural layout for the PyEQSP maintenance ecosystem. By partitioning tools into `release/` and `validation/` and achieving 100% automation coverage, we have reached the highest state of quality and documentation visibility to date. This release also marks the finalization of the JOSS submission draft (`paper.md` and `paper.bib`), harmonized with the project's long-term academic heritage.
 
 ### Changes Overview
 
@@ -25,6 +25,12 @@ Release **0.99.8** provides the definitive architectural layout for the PyEQSP m
 #### 3. Quality Gate Stability
 - **Implicit Path Resilience**: Enhanced internal validation scripts with explicit `sys.path` root injection, ensuring they operate flawlessly across local, CI, and pre-commit environments.
 - **Hook Integration**: Updated `.pre-commit-config.yaml` to leverage the new semantic paths and project-wide linting.
+
+#### 4. JOSS Submission & Scholar Identity
+- **Voice-Modeled Paper**: Rewrote `paper.md` in a professional academic voice, modeling your established prose style from the 2024 JAS paper (@Leo24).
+- **Academic Citation Alignment**: Implemented a dual-citation strategy for the MATLAB EQ toolbox, correctly crediting the 2007 PhD thesis (@Leo07) for its origins and the 2024 JAS paper (@Leo24) for the definitive toolbox reference.
+- **Bibliography Synchronization**: Hardened `paper.bib` by synchronizing its keys with the project's **User Guide** (Volume 1) and **Maintenance Guide** (Volume 2), ensuring a unified scholarly identity across the documentation and the submission.
+- **Hemisphere Refinement**: Explicitly documented the `even_collars` implementation decision to ensurepartitions align with the equatorial hyperplane, essential for $S^3$ to $\text{SO}(3)$ sampling applications.
 
 ### Verification Results
 

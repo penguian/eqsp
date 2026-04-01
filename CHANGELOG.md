@@ -11,10 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **100% Automation Coverage**: Achieved full unit test coverage for the entire project maintenance ecosystem (Release & Validation tools) via `tests/src/test_ci_scripts.py`.
 - **Infrastructure Semantic Reorganization**: Refactored the internal workspace to partition scripts into `release/` (packaging and hosting) and `validation/` (quality gates and metrics).
+- **JOSS Submission Finalization**: Prepared the `paper.md` and `paper.bib` artifacts for the Journal of Open Source Software, incorporating a professional academic voice modeled after the 2024 JAS paper (@Leo24).
 
 ### Changed
 - **Hardened Validation**: Updated `quality_check.py` and `check_links.py` with robust repository root pathing and standard `main()` entry points to ensure stability in pre-commit and CI environments.
 - **Unified Documentation Alignment**: Synchronized all internal guides, checklists, and the `Maintenance Guide` with the new semantic directory layout.
+- **Academic Lineage Alignment**: Established a dual-citation strategy, referencing the 2007 PhD thesis (@Leo07) for the algorithm's foundation and the 2024 JAS paper (@Leo24) for the definitive toolbox reference.
+- **Hemisphere Partitioning Refinement**: Updated the `paper.md` narrative to highlight the library's support for equatorial alignment via the `even_collars` implementation decision, essential for $S^3$ to $\text{SO}(3)$ quaternion sampling.
 - **Pre-commit Layer**: Hardened the pre-commit environment with updated hook definitions and expanded project-wide linting coverage.
 
 ## [0.99.7] - 2026-03-22

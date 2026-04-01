@@ -7,7 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def run_step(command, name):
@@ -46,7 +46,6 @@ def main():
                 "benchmarks",
                 "validation",
                 "release",
-                "verify_all.py",
             ],
             "Ruff Linter",
         ),
@@ -62,7 +61,6 @@ def main():
                 "benchmarks",
                 "validation",
                 "release",
-                "verify_all.py",
             ],
             "Pylint",
         ),
