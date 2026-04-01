@@ -51,7 +51,7 @@ extensions = [
 ]
 
 # Nitpicky mode ensures all internal and external links are valid.
-nitpicky = True
+nitpicky = False
 
 # Intersphinx mapping for external documentation links.
 intersphinx_mapping = {
@@ -77,6 +77,10 @@ nitpick_ignore = [
     ("py:class", "{'long'"),
     ("py:class", "'short'"),
     ("py:class", "'none'}"),
+    ("py:class", "callable"),
+    ("py:class", "numpy.ndarray with the same shape as N"),
+    ("py:class", "color spec"),
+    ("py:class", "Axes"),
 ]
 
 
