@@ -4,11 +4,11 @@
 
 PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
-An **EQ partition** divides Sᵈ (the unit sphere in ℝᵈ⁺¹) into a finite number of regions of equal area. Area measurement uses the Lebesgue measure inherited from the surrounding space.
+An **EQ partition** divides Sᵈ (the unit sphere in ℝ<sup>d+1</sup>) into a finite number of regions of equal area. Area measurement uses the Lebesgue measure inherited from the surrounding space.
 
 > **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
 
-The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N⁻¹/ᵈ.
+The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N<sup>-1/d</sup>.
 
 ## What is an EQ point set?
 
@@ -66,7 +66,7 @@ regions = eqsp.eq_regions(dim, N)
 ```
 
 ### Step 2: Calculate Properties
-Find the (per-partition) boundary on the diameter of the EQ partition and calculate the r⁻ˢ (Riesz) energy or min-distance:
+Find the (per-partition) boundary on the diameter of the EQ partition and calculate the r<sup>-s</sup> (Riesz) energy or min-distance:
 
 ```python
 from eqsp.region_props import eq_diam_bound
