@@ -35,9 +35,9 @@ def eq_area_error(dim, N, show_progress=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        Dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like of int
-        Number of regions to partition.
+        The number of regions in the partition.
     show_progress : bool, optional
         Show progress messages. Default False.
     even_collars : bool, optional
@@ -189,9 +189,9 @@ def eq_diam_bound(dim, N, show_progress=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        Dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of regions in the partition.
     show_progress : bool, optional
         Show progress messages. Default False.
     even_collars : bool, optional
@@ -232,9 +232,9 @@ def eq_diam_coeff(dim, N, show_progress=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        Dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of regions in the partition.
     show_progress : bool, optional
         Show progress messages. Default False.
     even_collars : bool, optional
@@ -309,9 +309,9 @@ def eq_regions_property(fhandle, dim, N, show_progress=False, even_collars=False
     fhandle : callable
         Function handle to apply to regions.
     dim : int
-        Dimension of sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like of int
-        Number of regions.
+        The number of regions in the partition.
     show_progress : bool, optional
         Show progress messages. Default False.
     even_collars : bool, optional
@@ -362,9 +362,9 @@ def eq_vertex_diam_coeff(dim, N, show_progress=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        Dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of regions in the partition.
     show_progress : bool, optional
         Show progress messages. Default False.
     even_collars : bool, optional
@@ -400,9 +400,9 @@ def eq_vertex_diam(dim, N, show_progress=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        Dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of regions in the partition.
     show_progress : bool, optional
         Show progress messages. Default False.
     even_collars : bool, optional

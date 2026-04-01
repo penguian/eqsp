@@ -16,9 +16,7 @@ _TOLERANCE = float(np.finfo(np.float32).eps)
 
 def asfloat(x):
     """
-    a = asfloat(x)
-
-    Convert from a Numpy array to a float when this makes sense.
+    Convert from a numpy array to a float when this makes sense.
 
     It checks if the input is a 0-dimensional array (scalar) or a 1-element array,
     and if so, converts it to a standard Python `float`. Otherwise, it returns
@@ -71,14 +69,12 @@ def asfloat(x):
 
 def cart2polar2(x):
     """
-    s = cart2polar2(x)
-
-    Convert from Cartesian to spherical coordinates on sphere S^2.
+    Convert from Cartesian to spherical coordinates on the manifold S^2 in R^3.
 
     Parameters
     ----------
     x : ndarray
-        An array of real numbers of shape (3, N), where N is any positive integer.
+        An array of real numbers of shape (3, N).
         Each column represents a point in 3D Cartesian coordinates.
 
     Returns
@@ -145,19 +141,17 @@ def cart2polar2(x):
 
 def polar2cart(s):
     """
-    x = polar2cart(s)
-
     Convert spherical polar to Cartesian coordinates.
 
     Parameters
     ----------
-    s : numpy.ndarray
-        Array of real numbers of shape (dim, N) representing N points of S^dim
-        in spherical polar coordinates, where dim and N are positive integers.
+    s : array_like
+        Array of real numbers of shape (dim, N) representing N points of the
+        sphere as a manifold: S^dim in R^(dim+1).
 
     Returns
     -------
-    x : numpy.ndarray
+    x : ndarray
         Array of shape (dim+1, N) containing the Cartesian coordinates of the
         points represented by the spherical polar coordinates s.
 
@@ -199,8 +193,6 @@ def polar2cart(s):
 
 def euc2sph_dist(e):
     """
-    s = euc2sph_dist(e)
-
     Convert Euclidean to spherical distance.
 
     Parameters
@@ -235,8 +227,6 @@ def euc2sph_dist(e):
 
 def sph2euc_dist(s):
     """
-    e = sph2euc_dist(s)
-
     Convert spherical distance to Euclidean distance on the unit sphere.
 
     Parameters
@@ -270,17 +260,15 @@ def sph2euc_dist(s):
 
 def euclidean_dist(x, y):
     """
-    d = euclidean_dist(x, y)
-
     Euclidean distance between two points in Cartesian coordinates.
 
     Parameters
     ----------
     x : array_like, shape (M, N)
-        Array of shape (M, N), where each column is a Cartesian vector.
+        Array of shape (M, N), where M = dim+1, and dim is the dimension of the
+        sphere as a manifold: S^dim in R^(dim+1).
     y : array_like, shape (M, N)
-        Array of shape (M, N), where each column is a Cartesian vector.
-        The shapes of x and y must be identical.
+        Array of shape (M, N). The shapes of x and y must be identical.
 
     Returns
     -------
@@ -319,17 +307,15 @@ def euclidean_dist(x, y):
 
 def spherical_dist(x, y):
     """
-    d = spherical_dist(x, y)
-
-    Returns the spherical distance between two arrays of points x and y.
+    Spherical distance between two points in Cartesian coordinates.
 
     Parameters
     ----------
-    x : array_like
-        Array of shape (M, N), where each column is a Cartesian vector.
-    y : array_like
-        Array of shape (M, N), where each column is a Cartesian vector.
-        The shapes of x and y must be identical.
+    x : array_like, shape (M, N)
+        Array of shape (M, N), where M = dim+1, and dim is the dimension of the
+        sphere as a manifold: S^dim in R^(dim+1).
+    y : array_like, shape (M, N)
+        Array of shape (M, N). The shapes of x and y must be identical.
 
     Returns
     -------
@@ -368,14 +354,12 @@ def spherical_dist(x, y):
 
 def area_of_sphere(dim):
     """
-    a = area_of_sphere(dim)
-
-    Returns the area of the unit sphere S^dim.
+    Returns the area of the unit sphere as a manifold: S^dim in R^(dim+1).
 
     Parameters
     ----------
     dim : int or array-like of int
-        Dimension(s) of the sphere(s). Must be positive integer(s).
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
 
     Returns
     -------
@@ -412,14 +396,12 @@ def area_of_sphere(dim):
 
 def volume_of_ball(dim):
     """
-    v = volume_of_ball(dim)
-
     Volume of the unit ball B^dim in R^dim.
 
     Parameters
     ----------
     dim : int or array-like
-        Dimension(s) of the ball(s). Must be positive integer(s).
+        The dimension of the ball B^dim in R^dim.
 
     Returns
     -------
@@ -450,19 +432,14 @@ def volume_of_ball(dim):
 
 def area_of_ideal_region(dim, N):
     """
-    a = area_of_ideal_region(dim, N)
-
     Area of one region of an EQ partition.
-
-    This function returns the area of one of N equal-area regions of
-    a unit sphere S^dim, i.e., 1/N times area_of_sphere(dim).
 
     Parameters
     ----------
     dim : int
-        Dimension of the sphere (must be positive).
-    N : int or array-like of int
-        Number(s) of regions (must be positive).
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
+    N : int or array-like
+        The number of regions in the partition.
 
     Returns
     -------
@@ -489,9 +466,9 @@ def ideal_collar_angle(dim, N):
     Parameters
     ----------
     dim : int
-        Dimension of sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of regions in the partition.
 
     Returns
     -------
@@ -519,14 +496,12 @@ def ideal_collar_angle(dim, N):
 
 def area_of_cap(dim, s_cap):
     """
-    a = area_of_cap(dim, s_cap)
-
-    Area of spherical cap on S^dim of spherical radius s_cap.
+    Area of spherical cap on the manifold S^dim in R^(dim+1).
 
     Parameters
     ----------
     dim : int
-        Positive integer, the dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     s_cap : float or array_like
         Spherical radius/radii of the cap(s), in [0, pi].
 
@@ -592,14 +567,12 @@ def area_of_cap(dim, s_cap):
 
 def sradius_of_cap(dim, area):
     """
-    s_cap = sradius_of_cap(dim, area)
-
-    Spherical radius of a spherical cap of given area on S^dim.
+    Spherical radius of a spherical cap of given area.
 
     Parameters
     ----------
     dim : int
-        Dimension of the sphere (must be >= 1).
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     area : float or array-like
         Area(s) of the cap(s).
 
@@ -695,14 +668,12 @@ def sradius_of_cap(dim, area):
 
 def area_of_collar(dim, a_top, a_bot):
     """
-    a = area_of_collar(dim, a_top, a_bot)
-
     Area of a spherical collar.
 
     Parameters
     ----------
     dim : int
-        Positive integer, the dimension of the sphere.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     a_top : float or array-like
         Top (smaller) spherical radius/radii, in [0, pi].
     a_bot : float or array-like
@@ -746,7 +717,7 @@ def x2stereo(x):
     Parameters
     ----------
     x : ndarray
-        Points in R^{dim+1}, shape (dim+1, N).
+        Points in R^(dim+1), shape (dim+1, N).
 
     Returns
     -------
@@ -776,7 +747,7 @@ def x2eqarea(x):
     Parameters
     ----------
     x : ndarray
-        Points in R^{dim+1}, shape (dim+1, N).
+        Points in R^(dim+1), shape (dim+1, N).
 
     Returns
     -------

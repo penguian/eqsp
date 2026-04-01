@@ -34,14 +34,15 @@ TAU = 2.0 * pi
 
 def eq_caps(dim, N, even_collars=False):
     """
-    Partition a sphere into two nested spherical caps.
+    Colatitudes of nested spherical caps and the number of regions in
+    the polar caps and each collar of an EQ partition.
 
     Parameters
     ----------
     dim : int
-        The number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int
-        The number of regions.
+        The number of regions in the partition.
     even_collars : bool, optional
         If True, force an even number of collars so the equatorial
         hyperplane falls exactly on a cap boundary. This enables
@@ -52,11 +53,10 @@ def eq_caps(dim, N, even_collars=False):
     Returns
     -------
     s_cap : ndarray
-        1D array containing increasing colatitudes of caps. Size is
-        (n_collars+2,).
+        Colatitudes of spherical caps, in [0, pi].
     n_regions : ndarray
-        1D array containing the integer number of regions in each zone.
-        Size is (n_collars+2,).
+        Integers represented as floating point numbers that sum to N. Size is
+        (n_collars+2,).
 
     Raises
     ------
@@ -146,9 +146,9 @@ def eq_point_set(dim, N, extra_offset=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        The number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int
-        The number of regions.
+        The number of points.
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
         a feature from the original MATLAB toolbox and is no longer planned
@@ -201,7 +201,9 @@ def eq_point_set_polar(dim, N, extra_offset=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        The spatial dimension of the sphere (S^dim in R^{dim+1}).
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
+    N : int
+        The number of points.
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
         a feature from the original MATLAB toolbox and is no longer planned
@@ -346,7 +348,9 @@ def eq_regions(dim, N, extra_offset=False, even_collars=False):
     Parameters
     ----------
     dim : int
-        The spatial dimension of the sphere (S^dim).
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
+    N : int
+        The number of regions in the partition.
     extra_offset : bool, optional
         If True, enables experimental extra offsets for dim 2 and 3. This is
         a feature from the original MATLAB toolbox and is no longer planned
