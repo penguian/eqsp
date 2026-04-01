@@ -44,8 +44,8 @@ def main():
                 "examples/phd-thesis",
                 "examples/user-guide/src",
                 "benchmarks",
-                "doc/ci_scripts",
-                "scripts",
+                "validation",
+                "release",
                 "verify_all.py",
             ],
             "Ruff Linter",
@@ -60,18 +60,18 @@ def main():
                 "examples/phd-thesis",
                 "examples/user-guide/src",
                 "benchmarks",
-                "doc/ci_scripts",
-                "scripts",
+                "validation",
+                "release",
                 "verify_all.py",
             ],
             "Pylint",
         ),
         (
-            [py, "doc/ci_scripts/check_links.py"],
+            [py, "validation/check_links.py"],
             "Documentation Link Check",
         ),
         (
-            [py, "doc/ci_scripts/quality_check.py"],
+            [py, "validation/quality_check.py"],
             "Performance Quality Check",
         ),
         (["make", "-C", "doc", "doctest"], "Sphinx Doctest"),
@@ -87,7 +87,7 @@ def main():
 
     if "--pre-release" in sys.argv:
         steps.append(
-            ([py, "scripts/build_dist.py"], "Pre-release Package Build & Check")
+            ([py, "release/build_dist.py"], "Pre-release Package Build & Check")
         )
 
     for cmd, name in steps:

@@ -34,7 +34,7 @@ This roadmap outlines the development phases from the initial beta through the 1
 Scheduled for **2026-03-31** | **Git Tag: Planned** | **Distribution: Planned**
 
 - [ ] **JOSS Submission**: Initiate the peer-review process by submitting the `paper.md` and `paper.bib` artifacts to the Journal of Open Source Software.
-- [ ] **Automation Coverage Plan**: Achieve 100% coverage on the script automation hub (`scripts/`, `doc/ci_scripts/`) using modular refactoring, interactive doctests, and mocks.
+- [ ] **Automation Coverage Plan**: Achieve 100% coverage on the script automation hub (`release/`, `validation/`) using modular refactoring, interactive doctests, and mocks.
 - [ ] **Verified Deployment**: Confirm stability of the `build_dist.py` atomic backup and robust `doc/conf.py` mocking across all CI runners.
 - [ ] **Technical Symmetry Audit**: Review historical and modern Sphinx configurations for project-wide consistency.
 - [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE` via `git mv`; updated prose references in `README.md` and `AUTHORS.md`; replaced the deprecated `license = { file = "COPYING" }` table form in `pyproject.toml` with `license = "MIT"` (SPDX expression), added `license-files = ["LICENSE"]`, and removed the deprecated `License :: OSI Approved :: MIT License` Trove classifier.

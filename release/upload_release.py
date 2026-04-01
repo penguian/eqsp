@@ -83,7 +83,7 @@ def main():
 
     # 2. Run clean/build/check
     print("=== Running Pre-Upload Build Cycle ===")
-    result = subprocess.run([sys.executable, "scripts/build_dist.py"])
+    result = subprocess.run([sys.executable, "release/build_dist.py"])
     if result.returncode != 0:
         print(
             "ERROR: Pre-upload build cycle failed. Aborting upload.",

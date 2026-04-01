@@ -38,13 +38,13 @@ The project is configured with GitHub webhooks.
 
 To prevent documentation drift and common technical errors, PyEQSP includes a suite of automated checks integrated into `verify_all.py`:
 
-*   **Link & Citation Check** (`doc/ci_scripts/check_links.py`): Validates all internal anchors, cross-file `{ref}` targets, and citation links.
-*   **Function Existence Check** (`doc/ci_scripts/quality_check.py`): Scans all guides and `README.md` to ensure any code snippet referencing `eqsp.<func>` actually exists in the current package version. This prevents "ghost" references like the legacy `plot_regions_2d`.
+*   **Link & Citation Check** (`validation/check_links.py`): Validates all internal anchors, cross-file `{ref}` targets, and citation links.
+*   **Function Existence Check** (`validation/quality_check.py`): Scans all guides and `README.md` to ensure any code snippet referencing `eqsp.<func>` actually exists in the current package version. This prevents "ghost" references like the legacy `plot_regions_2d`.
 *   **Coordinate Convention Check**: Validates that array shape descriptions in documentation follow the **column-major (dim+1, N)** convention rather than the common Row-major error.
 *   **Matplotlib Initialization Check**: Enforces that `matplotlib.use('Agg')` is called before any `pyplot` imports in examples to ensure headless environment compatibility.
 *   **Configuration Type Check**: Validates that `doc/conf.py` variables use the correct data types expected by Sphinx extensions.
-*   **Orthography Check** (`doc/ci_scripts/quality_check.py`): Enforces the project's linguistic standard (**Australian -ize English**), flagging non-compliant spellings (e.g., "-ise" suffixes) to ensure global academic consistency.
-*   **Readability Check** (`scripts/compute_readability.py`): Calculates Flesch-Kincaid and Gunning-Fog scores to monitor prose complexity and prevent academic drift.
+*   **Orthography Check** (`validation/quality_check.py`): Enforces the project's linguistic standard (**Australian -ize English**), flagging non-compliant spellings (e.g., "-ise" suffixes) to ensure global academic consistency.
+*   **Readability Check** (`validation/compute_readability.py`): Calculates Flesch-Kincaid and Gunning-Fog scores to monitor prose complexity and prevent academic drift.
 
 ## Optional Linting: Vale
 

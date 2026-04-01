@@ -116,7 +116,7 @@ These tests ensure that internal mathematics optimizations (such as vectorized c
 
 ### Diagnostic Tool Validation
 
-To maintain the quality of the project's prevention mechanisms, the scripts in `doc/ci_scripts/` are verified via:
+To maintain the quality of the project's prevention mechanisms, the scripts in `validation/` are verified via:
 - **Doctests**: Every diagnostic script includes embedded examples covering its core parsing and regex logic.
 - **Orthography Scanning**: `quality_check.py` includes a specialized module to enforce the **Australian -ize English** standard, ensuring consistent Oxford spelling across all public prose. It also enforces canonical terminology (e.g., ensuring "N-sphere" rather than "Nrd-sphere") and catches positional-only argument violations in doc examples.
 - **Structural Integrity**: The suite verifies that `ruff.toml` maintains its flat-format compatibility and ensures that all `# pragma: no cover` exclusions are effectively attached to statements.

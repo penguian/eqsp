@@ -25,7 +25,7 @@ Release **0.99.7** is a critical synchronization release. It incorporates automa
 - **Secure Uploads**: Updated `upload_release.py` to correctly validate standard `TWINE_PASSWORD` environment variables and tokens, removing non-standard variable checks that could lead to authentication false positives.
 
 #### 4. Quality Reporting Transparency
-- **Expanded Coverage**: Included the `scripts/` directory in formal coverage reports to ensure that all new automation tools meet the project's strict reliability standards.
+- **Expanded Coverage**: Included the `release/` directory in formal coverage reports to ensure that all new automation tools meet the project's strict reliability standards.
 
 ### Verification Results
 
@@ -56,7 +56,7 @@ Release **0.99.6** is a high-fidelity documentation and distribution audit. It e
 ### Changes Overview
 
 #### 1. Release Automation & Distribution
-- **New `scripts/` Suite**: Introduced `build_dist.py`, `pypi_readme_fix.py`, and `upload_release.py` to automate the clean-build-check-upload cycle.
+- **New `release/` Suite**: Introduced `build_dist.py`, `pypi_readme_fix.py`, and `upload_release.py` to automate the clean-build-check-upload cycle.
 - **PyPI-Ready Documentation**: Automated the conversion of relative GitHub links in `README.md` to absolute URLs to ensure correct rendering on PyPI/TestPyPI.
 - **Enhanced Verification**: Integrated `cd doc && make doctest` into `verify_all.py` to ensure all documentation code samples remain valid and synchronized with the API.
 
@@ -109,7 +109,7 @@ This section summarizes the changes and verification steps completed for the **0
 #### Build Improvements
 - **Makefile**: Fixed `doc/Makefile` to explicitly use `python3`.
 - **Ruff Configuration**: Transitioned `ruff.toml` to a flat format for cross-environment compatibility (maintains IDE support in restricted legacy environments).
-- **Diagnostic Tool Infrastructure**: Enhanced `doc/ci_scripts/` with `sys.path` isolation and headless Matplotlib defaults to ensure verification stability.
+- **Diagnostic Tool Infrastructure**: Enhanced `validation/` with `sys.path` isolation and headless Matplotlib defaults to ensure verification stability.
 - **Warning Mitigation**: Resolved Matplotlib `FigureCanvasAgg` warnings by guarding `plt.show()` calls in example and test scripts.
 
 #### Code Cleanup

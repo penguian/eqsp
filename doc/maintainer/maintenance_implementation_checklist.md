@@ -4,7 +4,7 @@ This checklist provides the canonical project-wide quality gates to be consulted
 
 ## 1. Local Verification (Defense Layer 1)
 - [ ] **Pre-commit Synchronization**: Run `pre-commit install` and `pre-commit run --all-files`.
-- [ ] **Typo Monitoring**: Run `doc/ci_scripts/quality_check.py` to ensure roadmap and documentation prose do not trigger literal typo matches (e.g., use `2`-`rd`, `3`-`th`).
+- [ ] **Typo Monitoring**: Run `validation/quality_check.py` to ensure roadmap and documentation prose do not trigger literal typo matches (e.g., use `2`-`rd`, `3`-`th`).
 - [ ] **Environment Parity**: Confirm that tools work in both the standard `.venv` and the system-integrated `.venv_sys`.
 
 ## 2. Infrastructure & Orchestration (Defense Layer 2)

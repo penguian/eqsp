@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, patch
 # Update sys.path to import from the root module without installing
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from scripts import build_dist, upload_release  # noqa: E402
-from scripts import pypi_readme_fix as readme_fix  # noqa: E402
+from release import build_dist, upload_release  # noqa: E402
+from release import pypi_readme_fix as readme_fix  # noqa: E402
 
 
 def test_pypi_readme_fix(tmp_path, monkeypatch):
@@ -43,8 +43,8 @@ def test_pypi_readme_fix(tmp_path, monkeypatch):
     assert "[ext](https://example.com/file)" in content
 
 
-@patch("scripts.build_dist.subprocess.run")
-@patch("scripts.build_dist.shutil.rmtree")
+@patch("release.build_dist.subprocess.run")
+@patch("release.build_dist.shutil.rmtree")
 def test_build_dist(mock_rmtree, mock_run, tmp_path, monkeypatch):
     """Test orchestration of the packaging build cycle."""
     # pylint: disable=unused-argument
@@ -61,7 +61,9 @@ def test_build_dist(mock_rmtree, mock_run, tmp_path, monkeypatch):
     # Needs to return success
     mock_run.return_value = MagicMock(returncode=0)
 
-    build_dist.main()
+    # Mock sys.argv to prevent argparse from seeing pytest args
+    with patch("sys.argv", ["build_dist.py"]):
+        build_dist.main()
 
     # Verify calls
     assert mock_run.call_count == 3
@@ -75,8 +77,8 @@ def test_build_dist(mock_rmtree, mock_run, tmp_path, monkeypatch):
     assert "dist/dummy.whl" in calls[2][0][0]
 
 
-@patch("scripts.upload_release.check_credentials")
-@patch("scripts.upload_release.subprocess.run")
+@patch("release.upload_release.check_credentials")
+@patch("release.upload_release.subprocess.run")
 def test_upload_release(mock_run, mock_check, tmp_path, monkeypatch):
     """Test automated PyPI upload cycle and credential detection."""
     # Setup dummy project root and dist contents
@@ -99,7 +101,7 @@ def test_upload_release(mock_run, mock_check, tmp_path, monkeypatch):
     assert mock_run.call_count == 2
 
     calls = mock_run.call_args_list
-    assert "build_dist.py" in calls[0][0][0][1]
+    assert "release/build_dist.py" in calls[0][0][0][1]
 
     # Twine cmd should reflect --testpypi
     twine_cmd = calls[1][0][0]

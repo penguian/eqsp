@@ -4,25 +4,23 @@ This guide details the procedures for uploading PyEQSP distributions and documen
 
 ## Release Distribution (PyPI / TestPyPI)
 
-To build and upload the package, use the scripts in the `scripts/` directory. These scripts ensure that all documentation links are converted to absolute GitHub URLs for correct rendering on project pages.
+To build and upload the package, use the scripts in the `release/` directory. These scripts ensure that all documentation links are converted to absolute GitHub URLs for correct rendering on project pages.
 
-### 1. Verification & Build
-Before uploading, run the full verification suite with the pre-release build check:
-```bash
-python3 verify_all.py --pre-release
-```
-This command builds the distribution into `dist/` and runs `twine check` automatically.
+1.  **Run Build with verification**:
+    ```bash
+    python3 release/upload_release.py --testpypi
+    ```
+    This script will:
+    *   Initialize the `release/pypi_readme_fix.py` logic to swap relative links.
+    *   Trigger `release/build_dist.py` for a clean `sdist` and `wheel` creation.
+    *   Verify the artifact using `twine check`.
+    *   Attempt an upload to the TestPyPI repository.
+2.  **Confirm and Upload to Production**:
+    ```bash
+    python3 release/upload_release.py --pypi
+    ```
 
-### 2. TestPyPI Upload
-To verify the rendering and installation on TestPyPI:
-```bash
-python3 scripts/upload_release.py --testpypi
-```
-Verify the installation in a clean environment:
-```bash
-python3 -m venv test_env && source test_env/bin/activate
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyeqsp
-```
+Check the TestPyPI/PyPI project pages for the updated distribution.
 
 ### 3. GitHub Synchronisation & CI Verification
 Once the TestPyPI rendering is confirmed, commit the changes and trigger a final CI run on GitHub:
@@ -44,7 +42,7 @@ Once the TestPyPI rendering is confirmed, commit the changes and trigger a final
 ### 4. Production PyPI Upload
 Once the PR is approved and the CI has passed:
 ```bash
-python3 scripts/upload_release.py --pypi
+python3 release/upload_release.py --pypi
 ```
 
 ## SourceForge Documentation Upload
@@ -52,10 +50,10 @@ python3 scripts/upload_release.py --pypi
 To update the project website at `http://eqsp.sourceforge.net`:
 
 ### 1. Generate & Upload
-The documentation upload is semi-automated via the `doc/ci_scripts/upload_sourceforge.py` script.
+The documentation upload is semi-automated via the `release/upload_sourceforge.py` script.
 ```bash
 # This script builds the docs and generates the scp command
-python3 doc/ci_scripts/upload_sourceforge.py
+python3 release/upload_sourceforge.py
 ```
 After reviewing the generated command, execute it to upload the `doc/_build/html` contents to your SourceForge `htdocs` directory.
 

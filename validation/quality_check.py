@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 # Add REPO_ROOT to sys.path to allow importing eqsp from source
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def setup_environment():
@@ -382,9 +382,9 @@ def check_standalone_pragmas():
     errors = []
     # Check package and scripts but skip third-party/venv
     python_files = list((REPO_ROOT / "eqsp").rglob("*.py"))
-    python_files.extend((REPO_ROOT / "scripts").glob("*.py"))
+    python_files.extend((REPO_ROOT / "release").glob("*.py"))
+    python_files.extend((REPO_ROOT / "validation").glob("*.py"))
     python_files.extend((REPO_ROOT / "tests").rglob("*.py"))
-    python_files.extend((REPO_ROOT / "doc" / "maint").glob("*.py"))
 
     # Standalone pragma: line consists only of whitespace and the pragma
     standalone_re = re.compile(r"^\s*#\s*pragma:\s*no\s*cover\s*$")
@@ -403,7 +403,7 @@ def check_standalone_pragmas():
     return errors
 
 
-def main():  # pragma: no cover
+def main():
     """Run all quality checks."""
     all_errors = []
     all_errors.extend(check_matplotlib_init())
@@ -427,5 +427,5 @@ def main():  # pragma: no cover
     print("Quality checks passed!")
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()

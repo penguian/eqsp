@@ -7,7 +7,7 @@ import re
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
 DOC_DIR = REPO_ROOT / "doc"
 
 # Ensure REPO_ROOT is in sys.path for internal lookups if needed
@@ -145,7 +145,7 @@ def is_link_broken(link, source_file, file_targets):
     return False
 
 
-def main():  # pragma: no cover
+def main():
     """Check for broken links in Markdown documentation."""
     md_files = get_all_md_files()
     file_targets = {}
@@ -172,5 +172,5 @@ def main():  # pragma: no cover
     print("No broken links found!")
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()

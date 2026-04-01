@@ -51,13 +51,13 @@ This layered approach is complemented by **Project-Specific Guardrails** that en
 | Script | Location | Purpose |
 |---|---|---|
 | **Verification** | `verify_all.py` | Orchestrates Ruff, Pylint, and Pytest with coverage. |
-| **Readability** | `scripts/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
-| **Link Check** | `doc/ci_scripts/check_links.py` | Validates internal and external documentation URLs. |
-| **Quality Audit** | `doc/ci_scripts/quality_check.py` | Enforces bibliography/citation consistency. |
-| **Packaging** | `scripts/build_dist.py` | Orchestrates link sanitisation and distribution build. |
-| **Link Fix** | `scripts/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
-| **Upload** | `scripts/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
-| **SourceForge** | `doc/ci_scripts/upload_sourceforge.py` | Generates the SCP command for website hosting. |
+| **Readability** | `validation/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
+| **Link Check** | `validation/check_links.py` | Validates internal and external documentation URLs. |
+| **Quality Audit** | `validation/quality_check.py` | Enforces bibliography/citation consistency. |
+| **Packaging** | `release/build_dist.py` | Orchestrates link sanitisation and distribution build. |
+| **Link Fix** | `release/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
+| **Upload** | `release/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
+| **SourceForge** | `release/upload_sourceforge.py` | Generates the SCP command for website hosting. |
 | **PR Checklist** | `doc/maintainer/pr_checklist.md` | General technical verification for code contributions. |
 | **Maint Checklist** | `doc/maintainer/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
 
@@ -100,11 +100,11 @@ Non-owners should never have access to production secrets. All automation is des
 
 Release 0.99.7 introduced a suite of automated scripts and strict quality guardrails to ensure consistency:
 
-1. **Build and Check**: Use `scripts/build_dist.py` to generate the distribution and run `twine check`.
-2. **TestPyPI Upload**: Use `scripts/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
-3. **GitHub Synchronisation & CI**: Commit changes to a release branch, push to GitHub, and create a Pull Request to trigger the final CI verification suite.
-4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `scripts/upload_release.py --pypi` for the final deployment.
-5. **SourceForge Upload**: Use `doc/ci_scripts/upload_sourceforge.py` to host the Sphinx HTML documentation.
+1. **Build and Check**: Use `release/build_dist.py` to generate the distribution and run `twine check`.
+2. **TestPyPI Upload**: Use `release/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
+3. **Internal Review**: Review the PyPI overview and confirm all relative links now point correctly to GitHub.
+4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `release/upload_release.py --pypi` for the final deployment.
+5. **SourceForge Upload**: Use `release/upload_sourceforge.py` to host the Sphinx HTML documentation.
 
 For detailed instructions on these scripts, see the internal [Upload Guide](maintainer/upload_guide.md).
 

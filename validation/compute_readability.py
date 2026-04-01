@@ -85,16 +85,21 @@ def calculate_scores(metrics_data):
     }
 
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for calculating readability metrics."""
     if len(sys.argv) < 2:
         print("Usage: python compute_readability.py <label> <file1> <file2> ...")
         sys.exit(1)
 
-    LABEL = sys.argv[1]
-    FILES = sys.argv[2:]
+    label = sys.argv[1]
+    files = sys.argv[2:]
 
-    METRICS = get_metrics(FILES)
-    SCORES = calculate_scores(METRICS)
+    metrics = get_metrics(files)
+    scores = calculate_scores(metrics)
 
-    print(f"\n### Readability Report: {LABEL}")
-    print(json.dumps(SCORES, indent=4))
+    print(f"\n### Readability Report: {label}")
+    print(json.dumps(scores, indent=4))
+
+
+if __name__ == "__main__":
+    main()

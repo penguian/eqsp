@@ -72,7 +72,7 @@ def main():
 
     # 1. Fix README for PyPI
     run_command(
-        [sys.executable, "scripts/pypi_readme_fix.py"],
+        [sys.executable, "release/pypi_readme_fix.py"],
         "Generating README_dist.md with absolute links",
     )
 
