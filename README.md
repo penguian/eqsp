@@ -216,7 +216,7 @@ constructions, see:
 ## License
 
 This software is released under the **MIT License**. See the
-`COPYING` file for details.
+`LICENSE` file for details.
 
 The original Matlab implementation can be found at:
 http://eqsp.sourceforge.net

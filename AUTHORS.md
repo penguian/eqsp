@@ -4,7 +4,7 @@ Copyright 2026 Paul Leopardi
 
 # Authors and Acknowledgements
 
-For licensing, see `COPYING`.
+For licensing, see `LICENSE`.
 For revision history, see `CHANGELOG.md`.
 
 ## Ancestry
