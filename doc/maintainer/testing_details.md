@@ -81,7 +81,7 @@ python3 fig_3_1_partition_s2_33.py
 
 > **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
 
-See [Thesis Research Reproduction](../phd-thesis-examples.md) for a full mapping of scripts to thesis figures.
+For instructions on running these scripts and a full mapping of scripts to thesis figures, see [Thesis Research Reproduction](../user/phd-thesis-examples.md).
 
 ## Code Coverage
 

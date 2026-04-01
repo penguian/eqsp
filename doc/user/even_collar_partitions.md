@@ -31,4 +31,4 @@ regions = eq_regions(dim=2, N=100, even_collars=True)
 The symmetric modification preserves the **Equal Area** property exactly and maintains the $O(N^{-1/d})$ **Diameter Bound** established in {ref}`Leopardi (2009) <leo09>`.
  While the fitting angle may deviate slightly from the "asymmetric ideal," the difference becomes negligible as $N$ increases.
 
-For details on the underlying mathematics and performance optimizations for symmetric partitions, see the [Technical Symmetry Guide](internal/technical_symmetry.md) in the Maintenance Guide.
+For technical details on the underlying optimizations (KDTrees, Symmetry exploitation, and Process Pools), see the [Algorithmic Optimizations](../maintainer/algorithmic_optimizations.md) guide.

@@ -51,7 +51,7 @@ python fig_3_4_max_diam_s2.py
 
 All 21 scripts follow the `if __name__ == "__main__":` pattern and can be imported as modules without side effects.
 
-For technical instructions on setting up the Mayavi environment (`venv_sys`) and troubleshooting display issues, see the [Reproduction Setup & Troubleshooting](internal/reproduction_setup.md) guide in the Maintenance Guide.
+The reproduction scripts require specific VTK backends. Refer to the [Reproduction Setup](reproduction_setup.md) guide.
 
 ### Visual inspection of eqsp outputs
 

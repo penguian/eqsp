@@ -10,14 +10,14 @@ The `eqsp` package is designed as a vectorized Python port of the original MATLA
 - `eqsp/region_props.py`: Geometric property analysis.
 - `eqsp/utilities.py`: Coordinate transforms and manifold mathematics.
 
-For more details on the internal layout, see the [Design & Architecture](design_and_architecture.md) guide.
-For the transition from MATLAB, see the [User Migration Guide](user_migration_guide.md).
+For more details on the internal layout, see the [Design & Architecture](maintainer/design_and_architecture.md) guide.
+For the transition from MATLAB, see the [User Migration Guide](user/user_migration_guide.md).
 
 ## Algorithmic Optimizations
 
 PyEQSP leverages NumPy for vectorization and spatial indexing to achieve $O(N \log N)$ or $O(N)$ performance for most operations. Technical details can be found in:
-- [Algorithmic Optimizations](internal/algorithmic_optimizations.md)
-- [Performance Benchmarks](benchmarks.md)
+- [Algorithmic Optimizations](maintainer/algorithmic_optimizations.md)
+- [Performance Benchmarks](maintainer/benchmarks.md)
 
 ## Quality Assurance & Verification
 
@@ -32,8 +32,8 @@ pre-commit install
 The hooks encompass formatting, linting, documentation quality checks, and link validation.
 
 The primary project-wide entry point for global quality control is `verify_all.py` (located in the root).
-- **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](internal/pr_checklist.md) for a manual pre-submission guide.
-- **Maintenance & Infrastructure**: When modifying repository tools, scripts, or core documentation, follow the internal [Maintenance Implementation Checklist](internal/maintenance_implementation_checklist.md) to ensure tonal and technical consistency.
+- **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](maintainer/pr_checklist.md) for a manual pre-submission guide.
+- **Maintenance & Infrastructure**: When modifying repository tools, scripts, or core documentation, follow the internal [Maintenance Implementation Checklist](maintainer/maintenance_implementation_checklist.md) to ensure tonal and technical consistency.
 - **Pre-release**: Use `python3 verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
 
 ### Verification Strategy: Defense in Depth
@@ -58,10 +58,10 @@ This layered approach is complemented by **Project-Specific Guardrails** that en
 | **Link Fix** | `scripts/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
 | **Upload** | `scripts/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
 | **SourceForge** | `doc/ci_scripts/upload_sourceforge.py` | Generates the SCP command for website hosting. |
-| **PR Checklist** | `doc/internal/pr_checklist.md` | General technical verification for code contributions. |
-| **Maint Checklist** | `doc/internal/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
+| **PR Checklist** | `doc/maintainer/pr_checklist.md` | General technical verification for code contributions. |
+| **Maint Checklist** | `doc/maintainer/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
 
-For technical details on the testing infrastructure, see [Technical Testing & Verification](internal/testing_details.md).
+For technical details on the testing infrastructure, see [Technical Testing & Verification](maintainer/testing_details.md).
 
 ## Documentation Management
 
@@ -73,7 +73,7 @@ Documentation is managed using Sphinx and MyST-Parser.
   - Use `-re` and `-our` (e.g., *centre*, *colour*).
   - Prefer `-ize` and `-yze` suffixes (e.g., *organized*, *analyze*).
 
-For standard operating procedures about building and hosting, see the [Documentation Maintenance Guide](documentation_maintenance.md).
+For standard operating procedures about building and hosting, see the [Documentation Maintenance Guide](maintainer/documentation_maintenance.md).
 
 ## Project Governance
 
@@ -106,15 +106,13 @@ Release 0.99.7 introduced a suite of automated scripts and strict quality guardr
 4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `scripts/upload_release.py --pypi` for the final deployment.
 5. **SourceForge Upload**: Use `doc/ci_scripts/upload_sourceforge.py` to host the Sphinx HTML documentation.
 
-For detailed instructions on these scripts, see the internal [Upload Guide](internal/upload_guide.md).
+For detailed instructions on these scripts, see the internal [Upload Guide](maintainer/upload_guide.md).
 
-### Latest Release Notes
-Historical and current release details are tracked in the `doc/internal/` directory:
-- [Release Notes 0.99.7](internal/release_notes_0_99_7.md)
-- [Release Notes 0.99.6](internal/release_notes_0_99_6.md)
-- [Release Notes 0.99.4](internal/release_notes_0_99_4.md)
-- [Release Roadmap](internal/release_roadmap.md)
-- [Maintenance Checklist](internal/maintenance_implementation_checklist.md)
+### Historical Release Notes
+Historical and current release details are tracked in the `doc/maintainer/` directory:
+- [Historical Release Notes](maintainer/release_notes.md)
+- [Release Roadmap](maintainer/release_roadmap.md)
+- [Maintenance Checklist](maintainer/maintenance_implementation_checklist.md)
 
 ### Troubleshooting Release Issues
 
@@ -131,4 +129,4 @@ If you install from TestPyPI and see an older version (e.g., seeing 0.99.3 when 
    ```
 3. **Check Propagation**: TestPyPI may take a minute to propagate new uploads. If the mismatch persists, verify the version on the [TestPyPI project page](https://test.pypi.org/project/pyeqsp/).
 
-For the full list of mathematical foundations and technical resources cited in this volume, see the [References](references_vol2.md) chapter.
+For the full list of mathematical foundations and technical resources cited in this volume, see the [References](maintainer/references_vol2.md) chapter.

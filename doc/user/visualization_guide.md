@@ -22,7 +22,7 @@ plt.show()
 > [!TIP]
 > For a clean, executable version of this plot, see [examples/user-guide/src/example_visualize_2d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_2d.py).
 
-![EQ Partition 2D](_static/images/eq_projection_2d.png)
+![EQ Partition 2D](../_static/images/eq_projection_2d.png)
 
 ## Interactive 3D Visualizations
 
@@ -41,7 +41,7 @@ visualizations.show_s2_partition(100, show_points=True)
 > [!TIP]
 > The interactive 3D script, including environment checks for Mayavi, is available at [examples/user-guide/src/example_visualize_3d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_3d.py).
 
-![S2 Partition 3d](_static/images/s2_partition_3d.png)
+![S2 Partition 3d](../_static/images/s2_partition_3d.png)
 
 ## Advanced Projections
 

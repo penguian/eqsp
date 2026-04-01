@@ -4,7 +4,7 @@ This document provides the technical configuration needed to execute the high-fi
 
 ## Environment Requirements
 
-Reproduction scripts for 3D figures (e.g., Fig 3.1, Fig 4.10) require the **Mayavi** engine. We strongly recommend using the **`venv_sys`** environment for this work.
+Reproduction scripts for 3D figures (e.g., Fig 3.1, Fig 4.10) require the **Mayavi** engine. We strongly recommend using the **`venv_sys`** environment for this work. See [venv_sys_setup.md](venv_sys_setup.md) for more.
 
 ### Backend Configuration
 
@@ -36,4 +36,4 @@ python3 fig_3_4_max_diam_s2.py
 
 Numerical scripts (Matplotlib `Agg` backend) will save PNGs directly. 3D scripts (Mayavi) will attempt to use an offscreen buffer if `xvfb` is available.
 
-For the full mapping of scripts to thesis figures, see the [Thesis Research Reproduction](../phd-thesis-examples.md) guide in Volume 1.
+For the full mapping of scripts to thesis figures, see the [Thesis Research Reproduction](phd-thesis-examples.md) guide in Volume 1.

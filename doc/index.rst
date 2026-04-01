@@ -10,22 +10,24 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
    :numbered:
 
    User Guide Overview <user_guide.md>
-   Installation & Requirements <installation.md>
-   Use Cases & Applicability <use_cases.md>
-   Core Concepts & Geometries <core_concepts.md>
-   Practical Usage & Examples <practical_usage.md>
-   Symmetric EQ Partitions <even_collar_partitions.md>
-   Visualization & Illustration <visualization_guide.md>
-   Performance Expectations <performance_expectations.md>
-   Quality & Research Integrity <quality_policy.md>
-   Thesis Research Reproduction <phd-thesis-examples.md>
-   User Migration Guide <user_migration_guide.md>
+   Installation & Requirements <user/installation.md>
+   Use Cases & Applicability <user/use_cases.md>
+   Core Concepts & Geometries <user/core_concepts.md>
+   Practical Usage & Examples <user/practical_usage.md>
+   Symmetric EQ Partitions <user/even_collar_partitions.md>
+   Visualization & Illustration <user/visualization_guide.md>
+   Performance Expectations <user/performance_expectations.md>
+   Quality & Research Integrity <user/quality_policy.md>
+   Thesis Research Reproduction <user/phd-thesis-examples.md>
+   User Migration Guide <user/user_migration_guide.md>
    Appendix A: eqsp package API <api/modules>
+   Appendix B: System-Integrated Setup (venv_sys) <user/venv_sys_setup.md>
+   Appendix C: Reproduction Setup & Troubleshooting <user/reproduction_setup.md>
 
 .. toctree::
    :maxdepth: 1
 
-   References <references_vol1.md>
+    References <user/references_vol1.md>
 
 .. toctree::
    :maxdepth: 2
@@ -33,23 +35,19 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
    :numbered:
 
    Maintenance Guide Overview <maintenance_guide.md>
-   Design & Architecture <design_and_architecture.md>
-   System-Integrated Setup (venv_sys) <internal/venv_sys_setup.md>
-   Algorithmic Optimizations <internal/algorithmic_optimizations.md>
-   Technical Symmetry Details <internal/technical_symmetry.md>
-   Reproduction Setup & Troubleshooting <internal/reproduction_setup.md>
-   Performance Benchmarks <benchmarks.md>
-   Technical Testing & Verification <internal/testing_details.md>
-   Documentation Maintenance <documentation_maintenance.md>
-   Upload & Release Guide <internal/upload_guide.md>
-   Pull Request Checklist <internal/pr_checklist.md>
-   Release Notes 0.99.7 <internal/release_notes_0_99_7.md>
-   Release Notes 0.99.6 <internal/release_notes_0_99_6.md>
-   Release Notes 0.99.4 <internal/release_notes_0_99_4.md>
-   Release Notes 0.99.3 <internal/release_notes_0_99_3.md>
-   Release Roadmap <internal/release_roadmap.md>
+   Design & Architecture <maintainer/design_and_architecture.md>
+   Performance Benchmarks <maintainer/benchmarks.md>
+   Documentation Maintenance <maintainer/documentation_maintenance.md>
+   Appendix A: Technical Testing & Verification <maintainer/testing_details.md>
+   Appendix B: Upload & Release Workflow <maintainer/upload_guide.md>
+   Appendix C: Pull Request Checklist <maintainer/pr_checklist.md>
+   Appendix D: Maintenance Checklist <maintainer/maintenance_implementation_checklist.md>
+   Appendix E: Release Roadmap <maintainer/release_roadmap.md>
+   Appendix F: Historical Release Notes <maintainer/release_notes.md>
+   Appendix G: Algorithmic & Performance Details <maintainer/algorithmic_optimizations.md>
+   Appendix H: Mathematical Symmetry Derivations <maintainer/technical_symmetry.md>
 
 .. toctree::
    :maxdepth: 1
 
-   References <references_vol2.md>
+   References <maintainer/references_vol2.md>

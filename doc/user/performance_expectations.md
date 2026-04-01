@@ -26,4 +26,4 @@ As the dimension increases, the recursive depth of the algorithm grows.
 - **Symmetry Speed-up**: Using `even_collars=True` can speed up calculations on $S^3$ by enabling a 100% cache hit rate for the southern hemisphere.
 - **Parallelization**: Scripts like `fig_3_7_max_diam_multi_dim.py` are already parallelized to handle the increased complexity of higher dimensions (up to $S^8$).
 
-For technical details on the underlying optimizations (KDTrees, Symmetry exploitation, and Process Pools), see the [Algorithmic Optimizations](internal/algorithmic_optimizations.md) guide.
+For technical details on the underlying optimizations (KDTrees, Symmetry exploitation, and Process Pools), see the [Algorithmic Optimizations](../maintainer/algorithmic_optimizations.md) guide.

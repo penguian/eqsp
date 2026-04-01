@@ -58,7 +58,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
    ```bash
    python3 verify_all.py
    ```
-   For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/internal/testing_details.md).
+   For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/maintainer/testing_details.md).
 
 7. **Submit a Pull Request**: Once your changes are ready, submit a Pull Request (PR) from your fork to our `main` branch.
 
@@ -71,7 +71,7 @@ git merge upstream/main
 
 ### Advanced Maintenance
 
-For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/documentation_maintenance.md).
+For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/maintainer/documentation_maintenance.md).
 
 ## Community Standards
 Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.

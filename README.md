@@ -28,7 +28,7 @@ including:
 
 ## Documentation
 
-For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/core_concepts.md).
+For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/user/core_concepts.md).
 
 ## Installation & Beta Status
 
@@ -139,14 +139,12 @@ These examples are fully integrated into the test suite and documentation.
 For users interested in reproducing the results from the
 original PhD thesis, reproduction scripts are available in the
 `examples/phd-thesis/` directory. See
-[doc/phd-thesis-examples.md](doc/phd-thesis-examples.md)
+[doc/user/phd-thesis-examples.md](doc/user/phd-thesis-examples.md)
 for details.
 
 ## Performance & Benchmarking
 
-The package includes benchmarks to measure the efficiency of
-core partitioning and mathematical operations. See
-[doc/benchmarks.md](doc/benchmarks.md) for details.
+The package includes benchmarks to measure the efficiency of core partitioning and mathematical operations. See [doc/maintainer/benchmarks.md](doc/maintainer/benchmarks.md) for details.
 
 ## Frequently Asked Questions
 
