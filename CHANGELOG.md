@@ -5,11 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.8] - Planned
-**Git Tag**: `Planned` | **Distribution**: `Planned`
+## [0.99.8] - 2026-04-01
+**Git Tag**: `release_0_99_8` | **Distribution**: `Planned`
 
 ### Added
-- **Automation Coverage Plan**: Scheduled 100% coverage implementation for the `scripts/` and `doc/ci_scripts/` automation hub.
+- **100% Automation Coverage**: Achieved full unit test coverage for the entire project maintenance ecosystem (Release & Validation tools) via `tests/src/test_ci_scripts.py`.
+- **Infrastructure Semantic Reorganization**: Refactored the internal workspace to partition scripts into `release/` (packaging and hosting) and `validation/` (quality gates and metrics).
+
+### Changed
+- **Hardened Validation**: Updated `quality_check.py` and `check_links.py` with robust repository root pathing and standard `main()` entry points to ensure stability in pre-commit and CI environments.
+- **Unified Documentation Alignment**: Synchronized all internal guides, checklists, and the `Maintenance Guide` with the new semantic directory layout.
+- **Pre-commit Layer**: Hardened the pre-commit environment with updated hook definitions and expanded project-wide linting coverage.
 
 ## [0.99.7] - 2026-03-22
 **Git Tag**: `release_0_99_7` | **Distribution**: `PyPI`

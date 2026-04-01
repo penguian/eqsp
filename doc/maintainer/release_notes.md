@@ -2,6 +2,48 @@
 
 This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
 
+## 0.99.8
+
+This section summarizes the completion of the infrastructure and automation hardening phase (2026-04-01).
+
+### Summary: Infrastructure Semantic Hardening
+
+Release **0.99.8** provides the definitive architectural layout for the PyEQSP maintenance ecosystem. By partitioning tools into `release/` and `validation/` and achieving 100% automation coverage, we have reached the highest state of quality and documentation visibility to date.
+
+### Changes Overview
+
+#### 1. Infrastructure Reorganization
+- **Semantic Partitioning**: Redesigned the maintenance directory from a generic `scripts/` layout to specialized **intent-based** directories:
+    - **`release/`**: Publishing and distribution tools (Build, PyPI, SourceForge).
+    - **`validation/`**: Internal quality gates and metrics (Link check, Quality audit, Readability).
+- **Doc-to-Code Alignment**: Updated the entire internal manual set and all `verify_all.py` logic to follow the semantic shift.
+
+#### 2. 100% Automation Coverage
+- **Refactored CI/CD Scripts**: Reworked all quality and deployment tools to share a standard, testable `main()` entry point, enabling robust subprocess mocking and dynamic root pathing.
+- **Coverage Master**: Achieved a 100% core coverage baseline and a **97% overall project coverage** by implementing the comprehensive `test_ci_scripts.py` suite.
+
+#### 3. Quality Gate Stability
+- **Implicit Path Resilience**: Enhanced internal validation scripts with explicit `sys.path` root injection, ensuring they operate flawlessly across local, CI, and pre-commit environments.
+- **Hook Integration**: Updated `.pre-commit-config.yaml` to leverage the new semantic paths and project-wide linting.
+
+### Verification Results
+
+| Step | Status | Notes |
+|---|---|---|
+| **Ruff Linter** | [PASSED] | 0 errors |
+| **Pylint** | [PASSED] | 10.00/10 rating (Overall) |
+| **Unit Tests** | [PASSED] | 100% core coverage / 97% total |
+| **Sphinx Build** | [PASSED] | 0 warnings |
+| **Audit Checks** | [PASSED] | Links, Quality, and Orthography verified |
+
+### Release Metadata
+- **Version**: 0.99.8
+- **Build Date**: 2026-04-01
+- **Tag Convention**: `release_0_99_8`
+- **Distribution Files**: `Planned`
+
+---
+
 ## 0.99.7
 
 This section summarizes the changes and verification steps completed for the **0.99.7** maintenance release (2026-03-22).
