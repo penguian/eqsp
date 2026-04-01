@@ -8,7 +8,7 @@ This checklist provides the canonical project-wide quality gates to be consulted
 - [ ] **Environment Parity**: Confirm that tools work in both the standard `.venv` and the system-integrated `.venv_sys`.
 
 ## 2. Infrastructure & Orchestration (Defense Layer 2)
-- [ ] **Verification Script**: If `verify_all.py` was modified, ensure it correctly manages the `PATH` environment variable for subprocesses (`os.environ["PATH"]`).
+- [ ] **Verification Script**: If `validation/verify_all.py` was modified, ensure it correctly manages the `PATH` environment variable for subprocesses (`os.environ["PATH"]`).
 - [ ] **Build Integrity**: Confirm that `make -C doc html SPHINXOPTS="-W"` and `make -C doc doctest` pass from BOTH within and outside the documentation root.
 - [ ] **Metadata Propagation**: If changing versions, ensure `pyproject.toml` and `eqsp/__init__.py` remain in lockstep.
 

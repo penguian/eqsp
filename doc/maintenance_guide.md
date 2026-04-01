@@ -31,10 +31,10 @@ pre-commit install
 ```
 The hooks encompass formatting, linting, documentation quality checks, and link validation.
 
-The primary project-wide entry point for global quality control is `verify_all.py` (located in the root).
-- **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](maintainer/pr_checklist.md) for a manual pre-submission guide.
+The primary project-wide entry point for global quality control is `verify_all.py` (located in `validation/`).
+- **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 validation/verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](maintainer/pr_checklist.md) for a manual pre-submission guide.
 - **Maintenance & Infrastructure**: When modifying repository tools, scripts, or core documentation, follow the internal [Maintenance Implementation Checklist](maintainer/maintenance_implementation_checklist.md) to ensure tonal and technical consistency.
-- **Pre-release**: Use `python3 verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
+- **Pre-release**: Use `python3 validation/verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
 
 ### Verification Strategy: Defense in Depth
 
@@ -50,7 +50,7 @@ This layered approach is complemented by **Project-Specific Guardrails** that en
 
 | Script | Location | Purpose |
 |---|---|---|
-| **Verification** | `verify_all.py` | Orchestrates Ruff, Pylint, and Pytest with coverage. |
+| **Verification** | `validation/verify_all.py` | Orchestrates Ruff, Pylint, and Pytest with coverage. |
 | **Readability** | `validation/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
 | **Link Check** | `validation/check_links.py` | Validates internal and external documentation URLs. |
 | **Quality Audit** | `validation/quality_check.py` | Enforces bibliography/citation consistency. |

@@ -40,9 +40,9 @@ We use a two-tier automated verification system:
     pre-commit install  # Run once to set up
     pre-commit run --all-files  # Run manually to verify everything
     ```
-2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in the root) is the definitive project-wide entry point.
-    *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 verify_all.py` (Ruff, Pylint, Pytest).
-    *   **CI Pipeline**: GitHub Actions runs `verify_all.py` across Python 3.11–3.13.
+2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in `validation/`) is the definitive project-wide entry point.
+    *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 validation/verify_all.py` (Ruff, Pylint, Pytest).
+    *   **CI Pipeline**: GitHub Actions runs `validation/verify_all.py` across Python 3.11–3.13.
 
 The orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
 
@@ -124,7 +124,7 @@ To maintain the quality of the project's prevention mechanisms, the scripts in `
 
 All diagnostic scripts use **internal environment isolation** (via `sys.path`) and **headless Matplotlib configuration** to ensure they run consistently across diverse build environments without interfering with global system state or requiring a display.
 
-**Environment Isolation**: The `verify_all.py` script prepends the current Python executable's directory to the system `PATH`. This ensures that subprocesses (like `make` and `sphinx-build`) use the tools and packages from the active virtual environment, preventing conflicts with system-wide Python installations.
+**Environment Isolation**: The `validation/verify_all.py` script prepends the current Python executable's directory to the system `PATH`. This ensures that subprocesses (like `make` and `sphinx-build`) use the tools and packages from the active virtual environment, preventing conflicts with system-wide Python installations.
 
 ## Performance Benchmarking
 
@@ -175,9 +175,9 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
 ```bash
-pylint eqsp benchmarks examples tests doc/ci_scripts verify_all.py  # Project-wide scan
+pylint eqsp benchmarks examples tests validation release  # Project-wide scan
 ```
 
 ### Vale (Optional Prose Linting)
 
-The project includes a `.vale.ini` configuration for optional prose linting. Unlike `ruff` and `pylint`, `vale` is **not** part of the mandatory `verify_all.py` suite and is not required for standard verification. It is intended for manual documentation audits.
+The project includes a `.vale.ini` configuration for optional prose linting. Unlike `ruff` and `pylint`, `vale` is **not** part of the mandatory `validation/verify_all.py` suite and is not required for standard verification. It is intended for manual documentation audits.

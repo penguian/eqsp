@@ -16,7 +16,7 @@ Release **0.99.8** provides the definitive architectural layout for the PyEQSP m
 - **Semantic Partitioning**: Redesigned the maintenance directory from a generic `scripts/` layout to specialized **intent-based** directories:
     - **`release/`**: Publishing and distribution tools (Build, PyPI, SourceForge).
     - **`validation/`**: Internal quality gates and metrics (Link check, Quality audit, Readability).
-- **Doc-to-Code Alignment**: Updated the entire internal manual set and all `verify_all.py` logic to follow the semantic shift.
+- **Doc-to-Code Alignment**: Updated the entire internal manual set and all `validation/verify_all.py` logic to follow the semantic shift.
 
 #### 2. 100% Automation Coverage
 - **Refactored CI/CD Scripts**: Reworked all quality and deployment tools to share a standard, testable `main()` entry point, enabling robust subprocess mocking and dynamic root pathing.

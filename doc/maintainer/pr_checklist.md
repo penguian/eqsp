@@ -3,7 +3,7 @@
 Use this checklist to verify the technical and procedural integrity of a Pull Request before submission. This captures common infrastructure and documentation "gotchas" identified during the 0.99.7 release cycle.
 
 ## 1. Automated Verification
-- [ ] Run `python3 verify_all.py`.
+- [ ] Run `python3 validation/verify_all.py`.
 - [ ] Ensure **0 errors** in Ruff and **10.00/10** in Pylint.
 - [ ] Confirm Sphinx documentation builds with **0 warnings** (`make -C doc html SPHINXOPTS="-W"`).
 - [ ] Confirm all **Doctests** pass (`make -C doc doctest`).
