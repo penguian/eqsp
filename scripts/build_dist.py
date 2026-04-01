@@ -15,6 +15,7 @@ Usage:
 """
 # pylint: disable=line-too-long,missing-function-docstring,subprocess-run-check
 
+import argparse
 import os
 import shutil
 import subprocess
@@ -50,6 +51,16 @@ def clean_build_artifacts():
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Clean, build, and check PyEQSP distribution."
+    )
+    parser.add_argument(
+        "--keep-on-fail",
+        action="store_true",
+        help="Keep stale dist/ and build/ directories on failure",
+    )
+    args = parser.parse_args()
+
     # Ensure we run from the project root
     if not os.path.exists("pyproject.toml"):
         print(
@@ -86,7 +97,17 @@ def main():
     shutil.copy(readme_dist, readme_orig)
 
     try:
-        run_command([sys.executable, "-m", "build"], "Building distribution")
+        try:
+            run_command([sys.executable, "-m", "build"], "Building distribution")
+        except (Exception, SystemExit):
+            if not args.keep_on_fail:
+                print(
+                    "ERROR: Build failed. Cleaning up stale artifacts "
+                    "(use --keep-on-fail to prevent this).",
+                    file=sys.stderr,
+                )
+                clean_build_artifacts()
+            raise
     finally:
         print("=== Restoring original README ===")
         if readme_temp.exists():
