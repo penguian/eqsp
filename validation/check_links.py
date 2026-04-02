@@ -27,11 +27,22 @@ REF_RE = re.compile(r"(?<!`)\{ref\}`(?:[^<`\n]+<)?(?P<target>[^>`\n]+)>?`")
 
 def get_all_md_files():
     """Return a list of all .md files in the repository."""
-    md_files = list(DOC_DIR.rglob("*.md"))
-    md_files.append(REPO_ROOT / "README.md")
-    md_files.append(REPO_ROOT / "CONTRIBUTING.md")
-    md_files.append(REPO_ROOT / "INSTALL.md")
-    return [f for f in md_files if f.exists()]
+    all_md_files = REPO_ROOT.rglob("*.md")
+    exclude_dirs = {
+        ".venvs",
+        "build",
+        "dist",
+        ".pytest_cache",
+        "pyeqsp.egg-info",
+        ".agents",
+    }
+
+    valid_files = []
+    for f in all_md_files:
+        if not any(ex in f.parts for ex in exclude_dirs) and f.exists():
+            valid_files.append(f)
+
+    return valid_files
 
 
 def parse_content(content):
