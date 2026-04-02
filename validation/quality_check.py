@@ -442,6 +442,50 @@ def check_script_paths():
     return errors
 
 
+def _check_usage_tokens(usage_part, f_rel):
+    """Helper to check tokens extracted from a Usage block."""
+    errors = []
+    for token in usage_part.split():
+        clean_token = token.strip("`'\".,;")
+        if clean_token.endswith(".py"):
+            target_path = REPO_ROOT / clean_token
+            if not target_path.exists():
+                errors.append(
+                    f"{f_rel}: 'Usage:' block references "
+                    f"non-existent file `{clean_token}`"
+                )
+    return errors
+
+
+def check_usage_blocks():
+    """Ensure file paths mentioned in 'Usage:' docstring blocks exist."""
+    errors = []
+    python_files = list(REPO_ROOT.rglob("*.py"))
+    exclude_dirs = {".venvs", "build", "dist", "pyeqsp.egg-info"}
+
+    for f in python_files:
+        if any(ex in f.parts for ex in exclude_dirs) or not f.exists():
+            continue
+
+        content = f.read_text(encoding="utf-8")
+        try:
+            tree = ast.parse(content)
+        except SyntaxError:
+            continue  # pragma: no cover
+
+        f_rel = f.relative_to(REPO_ROOT)
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.Module, ast.FunctionDef, ast.ClassDef)):
+                continue
+
+            docstring = ast.get_docstring(node)
+            if docstring and "Usage:" in docstring:
+                usage_part = docstring.split("Usage:")[1]
+                errors.extend(_check_usage_tokens(usage_part, f_rel))
+
+    return errors
+
+
 def check_index_rst_toctree():
     """Ensure toctree entries in index.rst have correct paths and indentation."""
     errors = []
@@ -512,6 +556,7 @@ def main():
     all_errors.extend(check_standalone_pragmas())
     all_errors.extend(check_script_paths())
     all_errors.extend(check_index_rst_toctree())
+    all_errors.extend(check_usage_blocks())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")
