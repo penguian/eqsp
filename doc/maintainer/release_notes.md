@@ -24,6 +24,7 @@ Release **0.99.8** provides the definitive architectural layout for the PyEQSP m
 
 #### 3. Quality Gate Stability
 - **Implicit Path Resilience**: Enhanced internal validation scripts with explicit `sys.path` root injection, ensuring they operate flawlessly across local, CI, and pre-commit environments.
+- **Semantic Path Linking**: Extended `quality_check.py` with full AST parsing to monitor paths inside Python `Usage:` blocks and enforced structural integrity inside `index.rst` toctree branches to avoid silent doc dropping.
 - **Hook Integration**: Updated `.pre-commit-config.yaml` to leverage the new semantic paths and project-wide linting.
 
 #### 4. JOSS Submission & Scholar Identity

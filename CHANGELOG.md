@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Hemisphere Partitioning Refinement**: Updated the `paper.md` narrative to highlight the library's support for equatorial alignment via the `even_collars` implementation decision, essential for $S^3$ to $\text{SO}(3)$ quaternion sampling.
 - **Pre-commit Layer**: Hardened the pre-commit environment with updated hook definitions and expanded project-wide linting coverage.
 
+### Fixed
+- **Sphinx Infrastructure**: Created programmatic checks to enforce uniform indentation on `toctree` blocks in `index.rst`, preventing silent file dropping.
+- **PR #21 Resolution**: Corrected `ruff.toml` include paths to scan `release/` and `validation/`, introduced Python AST parsing to validate `Usage:` docstrings, and corrected the *Journal of Approximation Software* reference.
+
 ## [0.99.7] - 2026-03-22
 **Git Tag**: `release_0_99_7` | **Distribution**: `PyPI`
 
