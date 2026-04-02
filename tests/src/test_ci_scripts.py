@@ -1,5 +1,5 @@
 """
-Unit tests for the CI and maintenance scripts in doc/ci_scripts/ and scripts/.
+Unit tests for the CI and maintenance scripts in validation/ and release/.
 """
 
 import json

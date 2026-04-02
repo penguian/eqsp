@@ -14,7 +14,7 @@ PyEQSP is the Python successor to the original MATLAB Equal Area Sphere Partitio
 - **Bio-Medicine**: RNA folding simulations and MRI sampling.
 - **Physics**: Correlation energy in Fermi gases.
 
-For a comprehensive review of applications, see the [Use Cases Guide](user/use_cases.md) and the *Journal of Applied Statistics* (JAS) 2024 paper: *"The applicability of equal area partitions of the unit sphere"*.
+For a comprehensive review of applications, see the [Use Cases Guide](user/use_cases.md) and the *Journal of Approximation Software* (JAS) 2024 paper: *"The applicability of equal area partitions of the unit sphere"*.
 
 ## Core Concepts & Geometries
 
