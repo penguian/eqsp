@@ -27,7 +27,7 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
 .. toctree::
    :maxdepth: 1
 
-    References <user/references_vol1.md>
+   References <user/references_vol1.md>
 
 .. toctree::
    :maxdepth: 2

@@ -442,6 +442,60 @@ def check_script_paths():
     return errors
 
 
+def check_index_rst_toctree():
+    """Ensure toctree entries in index.rst have correct paths and indentation."""
+    errors = []
+    index_rst = REPO_ROOT / "doc" / "index.rst"
+    if not index_rst.exists():
+        return errors  # pragma: no cover
+
+    content = index_rst.read_text(encoding="utf-8")
+    lines = content.splitlines()
+    in_toctree = False
+
+    for i, line in enumerate(lines):
+        if line.startswith(".. toctree::"):
+            in_toctree = True
+            continue
+
+        if in_toctree:
+            if not line.strip():
+                continue
+
+            if not line.startswith(" "):
+                in_toctree = False
+                continue
+
+            num_spaces = len(line) - len(line.lstrip(" "))
+            if num_spaces != 3:
+                errors.append(
+                    f"doc/index.rst:{i + 1}: toctree entry '{line.strip()}' has "
+                    f"incorrect indentation ({num_spaces}). Must be exactly 3."
+                )
+
+            stripped = line.strip()
+            if not stripped.startswith(":"):
+                path_str = stripped
+                if "<" in stripped and stripped.endswith(">"):
+                    path_str = stripped.split("<")[-1][:-1]
+
+                target = REPO_ROOT / "doc" / path_str
+                if target.suffix == "":
+                    if not (
+                        target.with_suffix(".rst").exists()
+                        or target.with_suffix(".md").exists()
+                        or target.exists()
+                    ):
+                        msg = f"doc/index.rst:{i + 1}: path '{path_str}' not found."
+                        errors.append(msg)
+                else:
+                    if not target.exists():
+                        msg = f"doc/index.rst:{i + 1}: path '{path_str}' not found."
+                        errors.append(msg)
+
+    return errors
+
+
 def main():
     """Run all quality checks."""
     all_errors = []
@@ -457,6 +511,7 @@ def main():
     all_errors.extend(check_ruff_config_format())
     all_errors.extend(check_standalone_pragmas())
     all_errors.extend(check_script_paths())
+    all_errors.extend(check_index_rst_toctree())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")
