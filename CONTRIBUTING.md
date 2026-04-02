@@ -56,7 +56,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
 
 6. **Run Tests & Linters**: Ensure that your changes meet all quality checks and do not break existing functionality. While the **pre-commit hooks** automatically check your work each time you `git commit`, you can also manually run the full verification script:
    ```bash
-   python3 verify_all.py
+   python3 validation/verify_all.py
    ```
    For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/maintainer/testing_details.md).
 

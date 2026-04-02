@@ -403,6 +403,45 @@ def check_standalone_pragmas():
     return errors
 
 
+def check_script_paths():
+    """Ensure scripts referenced in CI and core docs exist in the repository."""
+    errors = []
+    # Files to scan for script references
+    files_to_scan = [
+        REPO_ROOT / ".github" / "workflows" / "ci.yml",
+        REPO_ROOT / "CONTRIBUTING.md",
+    ]
+    # Also scan agent workflows
+    agent_workflows = REPO_ROOT / ".agents" / "workflows"
+    if agent_workflows.exists():
+        files_to_scan.extend(agent_workflows.glob("*.md"))
+
+    # Regex for "python3 path/to/script.py" or "`python3 path/to/script.py`"
+    # Matches both literal and backticked paths, focusing on local scripts
+    script_re = re.compile(r"python3\s+(?P<path>[\w\-\/]+\.py)")
+
+    for f in files_to_scan:
+        if not f.exists():
+            continue
+        content = f.read_text(encoding="utf-8")
+        matches = script_re.findall(content)
+        for rel_path in matches:
+            # Skip standard library modules or installed packages
+            if "/" not in rel_path and rel_path not in [
+                "build_dist.py",
+                "verify_all.py",
+            ]:
+                # If no slash, it's either in the root or a module.
+                # If it's verify_all.py without validation/, it's likely a regression.
+                pass
+
+            script_path = REPO_ROOT / rel_path
+            if not script_path.exists():
+                f_rel = f.relative_to(REPO_ROOT)
+                errors.append(f"{f_rel}: Referenced non-existent script `{rel_path}`")
+    return errors
+
+
 def main():
     """Run all quality checks."""
     all_errors = []
@@ -417,6 +456,7 @@ def main():
     all_errors.extend(check_reference_consistency())
     all_errors.extend(check_ruff_config_format())
     all_errors.extend(check_standalone_pragmas())
+    all_errors.extend(check_script_paths())
 
     if all_errors:
         print(f"Found {len(all_errors)} quality issues:")

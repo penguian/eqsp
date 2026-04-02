@@ -6,7 +6,7 @@ When modifying scripts in `scripts/`, `doc/ci_scripts/`, or project-wide documen
 
 // turbo-all
 1. **Initialize and Verify Local Hooks**: Run `pre-commit install` followed by `pre-commit run --all-files` to catch linting, formatting, and typo regressions.
-2. **Execute Unified Verification**: Run `python3 verify_all.py` (ideally across target virtual environments like `.venv` and `.venv_sys`) to ensure the full test suite and documentation builds pass with a "Zero-Warning Policy."
+2. **Execute Unified Verification**: Run `python3 validation/verify_all.py` (ideally across target virtual environments like `.venv` and `.venv_sys`) to ensure the full test suite and documentation builds pass with a "Zero-Warning Policy."
 3. **Tone and Directness Audit**: Review all NEW or MODIFIED documentation for:
     - **Passive Voice**: (e.g., "is caught" \u2192 "hooks catch").
     - **Wordiness**: (e.g., "resolving ... errors that previously caused" \u2192 "resolving ... build errors").
