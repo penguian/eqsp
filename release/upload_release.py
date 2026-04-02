@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-scripts/upload_release.py
+release/upload_release.py
 
 Automates TestPyPI and PyPI uploads.
 Checks for credentials upfront to prevent late failures.
 Runs the clean-build-check cycle (via build_dist.py) before uploading.
 
 Usage:
-    python scripts/upload_release.py --testpypi
-    python scripts/upload_release.py --pypi
+    python release/upload_release.py --testpypi
+    python release/upload_release.py --pypi
 """
 # pylint: disable=line-too-long,missing-function-docstring,subprocess-run-check
 

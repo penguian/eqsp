@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-doc/ci_scripts/upload_sourceforge.py
+release/upload_sourceforge.py
 
 Automates the SourceForge documentation hosting step:
 1. Runs `make html` inside doc/.
@@ -8,7 +8,7 @@ Automates the SourceForge documentation hosting step:
 3. Prints the full `scp` command to push doc/_build/html/ to SourceForge.
 
 Usage:
-    python doc/ci_scripts/upload_sourceforge.py
+    python release/upload_sourceforge.py
 """
 # pylint: disable=line-too-long,missing-function-docstring,subprocess-run-check
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/build_dist.py
+release/build_dist.py
 
 Orchestrates the clean-build-check cycle for PyEQSP distribution.
 1. Calls pypi_readme_fix.py to produce README_dist.md
@@ -11,7 +11,7 @@ Orchestrates the clean-build-check cycle for PyEQSP distribution.
 Exits non-zero if any step fails.
 
 Usage:
-    python scripts/build_dist.py
+    python release/build_dist.py
 """
 # pylint: disable=line-too-long,missing-function-docstring,subprocess-run-check
 

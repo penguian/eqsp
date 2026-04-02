@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-scripts/pypi_readme_fix.py
+release/pypi_readme_fix.py
 
 Converts relative links in README.md to absolute GitHub URLs, producing a
 README_dist.md for PyPI. This fixes the broken-links issue on PyPI where
 relative paths do not resolve outside the GitHub repository.
 
 Usage:
-    python scripts/pypi_readme_fix.py
+    python release/pypi_readme_fix.py
 """
 # pylint: disable=line-too-long,missing-function-docstring,subprocess-run-check
 
