@@ -50,7 +50,9 @@ extensions = [
     "sphinxcontrib.mermaid",
 ]
 
-# Nitpicky mode ensures all internal and external links are valid.
+# When nitpicky mode is enabled it helps ensure that all internal
+# and external links are valid. It is currently disabled.
+# Set nitpicky = True to enable strict reference checking.
 nitpicky = False
 
 # Intersphinx mapping for external documentation links.
