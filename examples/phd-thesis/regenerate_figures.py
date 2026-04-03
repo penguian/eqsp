@@ -7,7 +7,7 @@ to produce PNG files in the 'results' directory. It automatically handles
 the environment requirements for 3D Mayavi plots.
 
 Usage:
-    python3 regenerate_figures.py [--two-d-only] [--force]
+    python3 examples/phd-thesis/regenerate_figures.py [--two-d-only] [--force]
                                 [--figure FIG_NAME] [--show-progress]
 """
 

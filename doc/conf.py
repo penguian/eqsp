@@ -44,10 +44,47 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.mathjax",
     "sphinx.ext.doctest",
+    "sphinx.ext.intersphinx",
     "myst_parser",
     "sphinx_rtd_theme",
     "sphinxcontrib.mermaid",
 ]
+
+# When nitpicky mode is enabled it helps ensure that all internal
+# and external links are valid. It is currently disabled.
+# Set nitpicky = True to enable strict reference checking.
+nitpicky = False
+
+# Intersphinx mapping for external documentation links.
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy", None),
+    "matplotlib": ("https://matplotlib.org/stable", None),
+}
+
+# Nitpick ignore patterns for common scientific docstring labels
+# that aren't real classes.
+nitpick_ignore = [
+    ("py:class", "M"),
+    ("py:class", "N"),
+    ("py:class", "array_like"),
+    ("py:class", "array-like"),
+    ("py:class", "ndarray"),
+    ("py:class", "np.ndarray"),
+    ("py:class", "optional"),
+    ("py:class", "shape"),
+    ("py:class", "{'stereo'"),
+    ("py:class", "'eqarea'}"),
+    ("py:class", "{'long'"),
+    ("py:class", "'short'"),
+    ("py:class", "'none'}"),
+    ("py:class", "callable"),
+    ("py:class", "numpy.ndarray with the same shape as N"),
+    ("py:class", "color spec"),
+    ("py:class", "Axes"),
+]
+
 
 doctest_global_setup = """
 import numpy as np

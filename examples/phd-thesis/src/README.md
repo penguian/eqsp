@@ -6,4 +6,4 @@ This directory contains Python scripts that reproduce the computationally genera
 
 Detailed documentation for these scripts, including usage instructions and mapping to thesis figures, can be found in the main documentation:
 
-[**Thesis Example Reproductions**](../../../doc/phd-thesis-examples.md)
+[**Thesis Example Reproductions**](../../../doc/user/phd-thesis-examples.md)

@@ -41,9 +41,9 @@ def calc_dist_coeff(dim, N, min_euclidean_dist):
     Parameters
     ----------
     dim : int
-        Number of dimensions, must be positive integer.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions, must be positive integer(s).
+        The number of points.
     min_euclidean_dist : array-like
         Minimum Euclidean distance(s), same shape as N.
 
@@ -82,9 +82,9 @@ def calc_energy_coeff(dim, N, s, energy):
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     s : float
         Exponent parameter.
     energy : array-like
@@ -163,7 +163,7 @@ def sphere_int_energy(dim, s):
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     s : float
         Exponent parameter.
 
@@ -204,9 +204,9 @@ def calc_packing_density(dim, N, min_euclidean_dist):
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     min_euclidean_dist : array-like
         Minimum Euclidean distance(s), same shape as N.
 
@@ -250,9 +250,9 @@ def eq_dist_coeff(dim, N, extra_offset=False, show_progress=False, even_collars=
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     extra_offset : bool, optional
         Use extra offsets (experimental feature from the original MATLAB
         toolbox for dim 2-3).
@@ -294,9 +294,9 @@ def eq_energy_coeff(
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     s : float, optional
         Exponent parameter. Defaults to dim-1.
     extra_offset : bool, optional
@@ -353,9 +353,9 @@ def eq_energy_dist(
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     s : float, optional
         Exponent parameter. Defaults to dim-1.
     extra_offset : bool, optional
@@ -412,9 +412,9 @@ def eq_min_dist(dim, N, extra_offset=False, show_progress=False, even_collars=Fa
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of regions in the partition.
     extra_offset : bool, optional
         Use extra offsets (experimental feature from the original MATLAB
         toolbox for dim 2-3).
@@ -506,9 +506,9 @@ def eq_packing_density(
     Parameters
     ----------
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     extra_offset : bool, optional
         Use extra offsets (experimental feature from the original MATLAB
         toolbox for dim 2-3).
@@ -550,9 +550,9 @@ def eq_point_set_property(fhandle, dim, N, extra_offset=False, show_progress=Fal
     fhandle : callable
         Function expecting an array (dim+1 x N), returns property value.
     dim : int
-        Number of dimensions.
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int or array-like
-        Number of regions.
+        The number of points.
     extra_offset : bool, optional
         Use extra offsets (experimental feature from the original MATLAB
         toolbox for dim 2-3).
@@ -594,7 +594,7 @@ def point_set_dist_coeff(points):
     Parameters
     ----------
     points : array-like
-        Array of shape (dim+1, N), columns are points in R^{dim+1}.
+        Array of shape (dim+1, N), columns are points in R^(dim+1).
 
     Returns
     -------
@@ -629,7 +629,7 @@ def point_set_energy_coeff(points, s=None):
     Parameters
     ----------
     points : array-like
-        Array of shape (dim+1, N), columns are points in R^{dim+1}.
+        Array of shape (dim+1, N), columns are points in R^(dim+1).
     s : float, optional
         Exponent parameter. Defaults to dim-1.
 

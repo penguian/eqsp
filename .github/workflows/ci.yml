@@ -26,7 +26,7 @@ jobs:
     - name: Run Tests
       run: |
         export PYTHONPATH=$PYTHONPATH:.:benchmarks/src
-        python3 verify_all.py
+        python3 validation/verify_all.py
 
   build-dist:
     runs-on: ubuntu-latest

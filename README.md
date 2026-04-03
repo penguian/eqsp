@@ -1,14 +1,14 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.7** (2026-03-22): Copyright 2026 Paul Leopardi
+**Release 0.99.8** (2026-04-01): Copyright 2026 Paul Leopardi
 
 PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
-An **EQ partition** divides Sᵈ (the unit sphere in ℝᵈ⁺¹) into a finite number of regions of equal area. Area measurement uses the Lebesgue measure inherited from the surrounding space.
+An **EQ partition** divides Sᵈ (the unit sphere in ℝ<sup>d+1</sup>) into a finite number of regions of equal area. Area measurement uses the Lebesgue measure inherited from the surrounding space.
 
 > **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
 
-The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N⁻¹/ᵈ.
+The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N<sup>-1/d</sup>.
 
 ## What is an EQ point set?
 
@@ -28,7 +28,7 @@ including:
 
 ## Documentation
 
-For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/core_concepts.md).
+For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/user/core_concepts.md).
 
 ## Installation & Beta Status
 
@@ -66,7 +66,7 @@ regions = eqsp.eq_regions(dim, N)
 ```
 
 ### Step 2: Calculate Properties
-Find the (per-partition) boundary on the diameter of the EQ partition and calculate the r⁻ˢ (Riesz) energy or min-distance:
+Find the (per-partition) boundary on the diameter of the EQ partition and calculate the r<sup>-s</sup> (Riesz) energy or min-distance:
 
 ```python
 from eqsp.region_props import eq_diam_bound
@@ -139,14 +139,12 @@ These examples are fully integrated into the test suite and documentation.
 For users interested in reproducing the results from the
 original PhD thesis, reproduction scripts are available in the
 `examples/phd-thesis/` directory. See
-[doc/phd-thesis-examples.md](doc/phd-thesis-examples.md)
+[doc/user/phd-thesis-examples.md](doc/user/phd-thesis-examples.md)
 for details.
 
 ## Performance & Benchmarking
 
-The package includes benchmarks to measure the efficiency of
-core partitioning and mathematical operations. See
-[doc/benchmarks.md](doc/benchmarks.md) for details.
+The package includes benchmarks to measure the efficiency of core partitioning and mathematical operations. See [doc/maintainer/benchmarks.md](doc/maintainer/benchmarks.md) for details.
 
 ## Frequently Asked Questions
 
@@ -216,7 +214,7 @@ constructions, see:
 ## License
 
 This software is released under the **MIT License**. See the
-`COPYING` file for details.
+`LICENSE` file for details.
 
 The original Matlab implementation can be found at:
 http://eqsp.sourceforge.net

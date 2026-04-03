@@ -122,7 +122,7 @@ def project_s2_partition(
     Parameters
     ----------
     N : int
-        Number of regions.
+        The number of regions in the partition.
     extra_offset : bool, optional
         Use extra offsets. Default False.
     fontsize : int, optional
@@ -250,7 +250,7 @@ def illustrate_eq_algorithm(
     Parameters
     ----------
     dim : int
-        Dimension of the sphere S^dim (unit sphere in R^{dim+1}).
+        The dimension of the sphere as a manifold: S^dim in R^(dim+1).
     N : int
         Number of equal-area regions to partition the sphere into.
     extra_offset : bool, optional
@@ -261,6 +261,8 @@ def illustrate_eq_algorithm(
         Show title. Default True.
     _long_title : bool, optional
         Use long title variant. Default False.
+    show_points : bool, optional
+        Show center points of regions. Default True.
     proj : str, optional
         Projection type ('stereo' or 'eqarea'). Default 'eqarea'.
     show : bool, optional

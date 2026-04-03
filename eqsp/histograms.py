@@ -21,7 +21,7 @@ def eq_count_points_by_s2_region(s_point, N):
         polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
         colatitude 0 <= s[1, p_idx] <= pi.
     N : int
-        Required number of regions, a positive integer.
+        The number of regions in the partition.
 
     Returns
     -------
@@ -64,7 +64,7 @@ def eq_find_s2_region(s_point, N):
         polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
         colatitude 0 <= s[1, p_idx] <= pi.
     N : int
-        Required number of regions, a positive integer.
+        The number of regions in the partition.
 
     Returns
     -------

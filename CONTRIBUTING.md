@@ -13,6 +13,9 @@ If you find a bug, please [open a new issue](https://github.com/penguian/pyeqsp/
 ### Suggesting Enhancements
 We welcome ideas for new features or improvements to the partitioning algorithms or visualizations. Please use the **Feature Request** template when [opening an issue](https://github.com/penguian/pyeqsp/issues/new/choose).
 
+### Project Roadmap & Future Work
+To see the current development priorities and items currently under consideration for future releases, please consult the [Release Roadmap](doc/maintainer/release_roadmap.md).
+
 ## Technical Contributions
 
 If you would like to contribute code fixes or improvements, please follow the forking workflow:
@@ -56,9 +59,9 @@ If you would like to contribute code fixes or improvements, please follow the fo
 
 6. **Run Tests & Linters**: Ensure that your changes meet all quality checks and do not break existing functionality. While the **pre-commit hooks** automatically check your work each time you `git commit`, you can also manually run the full verification script:
    ```bash
-   python3 verify_all.py
+   python3 validation/verify_all.py
    ```
-   For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/internal/testing_details.md).
+   For more details on the relationship between `doctests` and `pytest`, see the [Testing Guide](doc/maintainer/testing_details.md).
 
 7. **Submit a Pull Request**: Once your changes are ready, submit a Pull Request (PR) from your fork to our `main` branch.
 
@@ -71,7 +74,7 @@ git merge upstream/main
 
 ### Advanced Maintenance
 
-For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/documentation_maintenance.md).
+For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/maintainer/documentation_maintenance.md).
 
 ## Community Standards
 Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.

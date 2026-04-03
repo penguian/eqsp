@@ -18,21 +18,21 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: bash -c 'export PYTHONPATH=$PYTHONPATH:.:benchmarks/src && pylint eqsp benchmarks tests/src examples/phd-thesis'
+        entry: bash -c 'export PYTHONPATH=$PYTHONPATH:.:benchmarks/src && pylint eqsp benchmarks tests/src examples/phd-thesis validation release'
         language: system
         types: [python]
         require_serial: true
 
       - id: documentation-quality
         name: Documentation Quality Check
-        entry: python3 doc/maint/quality_check.py
+        entry: python3 validation/quality_check.py
         language: system
         files: \.(md|rst|py)$
         pass_filenames: false
 
       - id: documentation-links
         name: Documentation Link Check
-        entry: python3 doc/maint/check_links.py
+        entry: python3 validation/check_links.py
         language: system
         files: \.(md|rst)$
         pass_filenames: false

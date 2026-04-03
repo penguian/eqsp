@@ -1,0 +1,98 @@
+"""
+Unified verification script.
+"""
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def run_step(command, name):
+    """Run a single verification step and exit on failure."""
+    print("========================================")
+    print(f"Running {name}...")
+    print("========================================")
+
+    # Ensure the virtual environment's bin/ directory is in the PATH
+    # so that 'make' can find 'python3' and 'sphinx-build' correctly.
+    env = os.environ.copy()
+    py_bin = str(Path(sys.executable).parent)
+    env["PATH"] = os.pathsep.join([py_bin, env.get("PATH", "")])
+
+    result = subprocess.run(command, check=False, cwd=REPO_ROOT, env=env)
+    if result.returncode != 0:
+        print(f"\n[FAILED] {name}\n")
+        sys.exit(result.returncode)
+    print(f"[PASSED] {name}\n")
+
+
+def main():
+    """Execute all verification steps."""
+    py = sys.executable
+    steps = [
+        (
+            [
+                py,
+                "-m",
+                "ruff",
+                "check",
+                "eqsp",
+                "tests",
+                "examples/phd-thesis",
+                "examples/user-guide/src",
+                "benchmarks",
+                "validation",
+                "release",
+            ],
+            "Ruff Linter",
+        ),
+        (
+            [
+                py,
+                "-m",
+                "pylint",
+                "eqsp",
+                "tests",
+                "examples/phd-thesis",
+                "examples/user-guide/src",
+                "benchmarks",
+                "validation",
+                "release",
+            ],
+            "Pylint",
+        ),
+        (
+            [py, "validation/check_links.py"],
+            "Documentation Link Check",
+        ),
+        (
+            [py, "validation/quality_check.py"],
+            "Performance Quality Check",
+        ),
+        (["make", "-C", "doc", "doctest"], "Sphinx Doctest"),
+        (
+            ["make", "-C", "doc", "html", "SPHINXOPTS=-W"],
+            "Sphinx HTML Build (Zero Warning Policy)",
+        ),
+        (
+            [py, "tests/run_coverage.py", "--include-private"],
+            "Test Suite & Coverage",
+        ),
+    ]
+
+    if "--pre-release" in sys.argv:
+        steps.append(
+            ([py, "release/build_dist.py"], "Pre-release Package Build & Check")
+        )
+
+    for cmd, name in steps:
+        run_step(cmd, name)
+
+    print("All verification steps passed successfully!")
+
+
+if __name__ == "__main__":
+    main()

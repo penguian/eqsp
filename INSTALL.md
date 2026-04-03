@@ -45,8 +45,8 @@ source .venvs/.venv_sys/bin/activate
 ```
 
 configuring Qt environment variables, and using virtual
-environments with Jupyter, see the [Installation Guide](doc/installation.md)
-or the [System-Integrated Setup (venv_sys)](doc/internal/venv_sys_setup.md).
+environments with Jupyter, see the [Installation Guide](doc/user/installation.md)
+or the [System-Integrated Setup (venv_sys)](doc/user/venv_sys_setup.md).
 
 ## 1. Installation from Source (Git Clone)
 
