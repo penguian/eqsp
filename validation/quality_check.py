@@ -304,9 +304,14 @@ def get_all_refs(repo_root):
     refs = {}
     ref_re = re.compile(r"-\s+\*\*\[([^\]]+)\]\*\*\s+(.*)")
 
-    # Check doc/references_vol*.md
-    for fname in ["references_vol1.md", "references_vol2.md"]:
-        fpath = repo_root / "doc" / fname
+    # Check reference volumes in their respective directories
+    ref_targets = [
+        ("user/references_vol1.md", "references_vol1.md"),
+        ("maintainer/references_vol2.md", "references_vol2.md"),
+    ]
+
+    for rel_path, fname in ref_targets:
+        fpath = repo_root / "doc" / rel_path
         if fpath.exists():
             for line in fpath.read_text(encoding="utf-8").splitlines():
                 m = ref_re.match(line.strip())
@@ -332,9 +337,10 @@ def check_reference_consistency(repo_root=REPO_ROOT):
     >>> from pathlib import Path
     >>> with tempfile.TemporaryDirectory() as d:
     ...     root = Path(d)
-    ...     doc = root / "doc"
-    ...     doc.mkdir()
-    ...     _ = (doc / "references_vol1.md").write_text(
+    ...     # Create new structure: doc/user/
+    ...     user_dir = root / "doc" / "user"
+    ...     user_dir.mkdir(parents=True)
+    ...     _ = (user_dir / "references_vol1.md").write_text(
     ...         "- **[A1]** Author 1\n", encoding="utf-8"
     ...     )
     ...     _ = (root / "AUTHORS.md").write_text(

@@ -74,7 +74,7 @@ def main():
         ),
         (["make", "-C", "doc", "doctest"], "Sphinx Doctest"),
         (
-            ["make", "-C", "doc", "html", 'SPHINXOPTS="-W"'],
+            ["make", "-C", "doc", "html", "SPHINXOPTS=-W"],
             "Sphinx HTML Build (Zero Warning Policy)",
         ),
         (
