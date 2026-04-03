@@ -30,7 +30,8 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `verify_all.py` to prevent documentation drift.
 - [x] **Environment Isolation**: Improved `verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
 
-### 0.99.8 Beta: Infrastructure Hardening — [COMPLETED] (2026-04-01)
+### 0.99.8 Beta: Infrastructure Hardening — [COMPLETED] (2026-04-03)
+**Released: 2026-04-03** | **Git Tag: release_0_99_8** | **Distribution: PyPI**
 **Goal**: Semantically reorganize the maintenance repository, achieve 100% automation coverage, and finalize the JOSS submission.
 
 - [x] **JOSS Submission**: Initiate the peer-review process by submitting the voice-modeled `paper.md` and `paper.bib` artifacts to the Journal of Open Source Software.

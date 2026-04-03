@@ -4,7 +4,7 @@ This document contains the historical configuration, changes, and checklists for
 
 ## 0.99.8
 
-This section summarizes the completion of the infrastructure and automation hardening phase (2026-04-01).
+This section summarizes the completion of the infrastructure and automation hardening phase (2026-04-03).
 
 ### Summary: Infrastructure Semantic Hardening
 
@@ -45,9 +45,9 @@ Release **0.99.8** provides the definitive architectural layout for the PyEQSP m
 
 ### Release Metadata
 - **Version**: 0.99.8
-- **Build Date**: 2026-04-01
+- **Build Date**: 2026-04-03
 - **Tag Convention**: `release_0_99_8`
-- **Distribution Files**: `Planned`
+- **Distribution Files**: `PyPI`
 
 ---
 

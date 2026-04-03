@@ -5,8 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.8] - 2026-04-01
-**Git Tag**: `release_0_99_8` | **Distribution**: `Planned`
+## [0.99.8] - 2026-04-03
+**Git Tag**: `release_0_99_8` | **Distribution**: `PyPI`
 
 ### Added
 - **100% Automation Coverage**: Achieved full unit test coverage for the entire project maintenance ecosystem (Release & Validation tools) via `tests/src/test_ci_scripts.py`.
