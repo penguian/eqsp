@@ -13,6 +13,9 @@ If you find a bug, please [open a new issue](https://github.com/penguian/pyeqsp/
 ### Suggesting Enhancements
 We welcome ideas for new features or improvements to the partitioning algorithms or visualizations. Please use the **Feature Request** template when [opening an issue](https://github.com/penguian/pyeqsp/issues/new/choose).
 
+### Project Roadmap & Future Work
+To see the current development priorities and items currently under consideration for future releases, please consult the [Release Roadmap](doc/maintainer/release_roadmap.md).
+
 ## Technical Contributions
 
 If you would like to contribute code fixes or improvements, please follow the forking workflow:

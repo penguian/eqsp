@@ -97,3 +97,7 @@ To address the $O(N^2)$ memory bottleneck, `eqsp` uses a **block-based processin
 
 ### Accelerated Loops
 The recursive structure of the partitioning algorithm and the coordinate search logic are prime candidates for acceleration using **Numba** or **Cython** to remove Python interpreter overhead in hot loops.
+
+---
+
+For a comprehensive view of proposed enhancements currently under review, see the [Release Roadmap](release_roadmap.md).

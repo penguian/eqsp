@@ -63,4 +63,6 @@ Common patterns like `np.linalg.norm(a[:, None] - b, axis=2)` were replaced with
 
 ---
 
+For more details on the performance roadmap and items currently under review for future releases, see the [Release Roadmap](release_roadmap.md).
+
 For detailed benchmarks and instructions on running performance tests yourself, see the [Performance Benchmarks](benchmarks.md).
