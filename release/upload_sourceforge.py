@@ -50,7 +50,7 @@ def main():
     print("-" * 70)
     print(
         "scp -r doc/_build/html/* "
-        "USER@web.sourceforge.net:/home/project-web/eqsp/htdocs/"
+        "USER@web.sourceforge.net:/home/project-web/pyeqsp/htdocs/"
     )
     print("-" * 70)
 
