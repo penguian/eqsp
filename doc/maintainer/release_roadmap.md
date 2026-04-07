@@ -44,9 +44,9 @@ This roadmap outlines the development phases from the initial beta through the 1
 ### 0.99.9 Beta: Polishing & Final Verification — [IN-PROGRESS]
 **Goal**: Reconcile performance benchmarks with the MATLAB Toolbox, address final quality issues, and finalize the migration documentation.
 
-- [ ] **Histogram Logic Alignment**: Back-port "Option C: Index Rotation" (longitude lookup fix) into `_private/_histograms.py` and implement high-$N$ wrap-around tests.
-- [ ] **Release Tooling Fix**: Correct the SourceForge project name in `release/upload_sourceforge.py` (change `eqsp` to `pyeqsp`).
-- [ ] **Documentation Hardening**: Consolidate and explicitly document the SourceForge `scp` deployment steps within the Maintenance Guide.
+- [x] **Histogram Logic Alignment**: Back-port "Option C: Index Rotation" (longitude lookup fix) into `_private/_histograms.py` and implement high-$N$ wrap-around tests. Removed the legacy `lookup_table()` utility in favor of direct, domain-translated `np.searchsorted()` for 100% test coverage.
+- [x] **Release Tooling Fix**: Correct the SourceForge project name in `release/upload_sourceforge.py` (change `eqsp` to `pyeqsp`).
+- [x] **Documentation Hardening**: Consolidate and explicitly document the SourceForge `scp` deployment steps within the Maintenance Guide.
 - [ ] **Coverage Deep-Dive**: Exercise `dim=1` scalar paths in `polar_colat` and recursive logic in high-dimensional solvers.
 - [ ] **Benchmark Alignment**: Align Python benchmark logic, warm-up phases, and parameter defaults with the original MATLAB EQSP Toolbox baseline.
 - [ ] **Doc Re-organization**: Refactor guides to use alphabetical appendices (A, B, C) and rename the Migration Guide to "Migration from MATLAB", including the side-by-side performance comparison baseline results.

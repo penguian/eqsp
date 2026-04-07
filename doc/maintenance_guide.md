@@ -11,7 +11,7 @@ The `eqsp` package is designed as a vectorized Python port of the original MATLA
 - `eqsp/utilities.py`: Coordinate transforms and manifold mathematics.
 
 For more details on the internal layout, see the [Design & Architecture](maintainer/design_and_architecture.md) guide.
-For the transition from MATLAB, see the [User Migration Guide](user/user_migration_guide.md).
+For the transition from MATLAB, see the [Migration from MATLAB Toolbox](user/migration_matlab.md).
 
 ## Algorithmic Optimizations
 

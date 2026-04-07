@@ -10,19 +10,19 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
    :numbered:
 
    User Guide Overview <user_guide.md>
-   Installation & Requirements <user/installation.md>
    Use Cases & Applicability <user/use_cases.md>
    Core Concepts & Geometries <user/core_concepts.md>
    Practical Usage & Examples <user/practical_usage.md>
    Symmetric EQ Partitions <user/even_collar_partitions.md>
    Visualization & Illustration <user/visualization_guide.md>
-   Performance Expectations <user/performance_expectations.md>
    Quality & Research Integrity <user/quality_policy.md>
-   Thesis Research Reproduction <user/phd-thesis-examples.md>
-   User Migration Guide <user/user_migration_guide.md>
    Appendix A: eqsp package API <api/modules>
-   Appendix B: System-Integrated Setup (venv_sys) <user/venv_sys_setup.md>
-   Appendix C: Reproduction Setup & Troubleshooting <user/reproduction_setup.md>
+   Appendix B: Migration from MATLAB <user/migration_matlab.md>
+   Appendix C: Installation & Requirements <user/installation.md>
+   Appendix D: Performance Expectations <user/performance_expectations.md>
+   Appendix E: Thesis Research Reproduction <user/phd-thesis-examples.md>
+   Appendix F: System-Integrated Setup (venv_sys) <user/venv_sys_setup.md>
+   Appendix G: Reproduction Setup & Troubleshooting <user/reproduction_setup.md>
 
 .. toctree::
    :maxdepth: 1

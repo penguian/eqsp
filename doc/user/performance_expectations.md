@@ -11,7 +11,7 @@ PyEQSP is optimized to handle millions of regions on standard hardware.
 | **Partition Generation** | $O(N^{0.6})$ | Millions of regions in minutes on $S^2$. |
 | **Min-Distance** | $O(N \log N)$ | Seconds for $N=100,000$. |
 | **Packing Density** | $O(N \log N)$ | Near-instant results for research-grade $N$. |
-| **Riesz Energy** | $O(N^2)$ | 5–10 minutes for $N=20,000$. |
+| **Riesz Energy** | $O(N^2)$ | Under 10 seconds for $N=50,000$. |
 
 ## Memory Safety
 

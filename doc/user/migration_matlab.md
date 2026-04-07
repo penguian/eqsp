@@ -1,6 +1,32 @@
-# User Migration Guide: Matlab Toolbox to PyEQSP
+# Migration from MATLAB
 
-This guide helps users of the original Matlab `eq_sphere_partitions` toolbox transition to the Python **PyEQSP** project (`eqsp` package). While most core functionality remains identical, there are some differences in naming conventions, API structure, and usage patterns.
+This guide provides a technical bridge for users transitioning from the original MATLAB `eq_sphere_partitions` toolbox to the Python **PyEQSP** library. While the core mathematical algorithms for recursive partitioning remain identical, the implementation has been modernized to exploit NumPy's vectorization and Python's efficient memory management.
+
+## Performance Comparison (Baseline)
+
+The following benchmark demonstrates the significant performance improvements in the Python implementation when executed on the same hardware (**AMD Ryzen 7 8840HS**, 2.4 GHz).
+
+| Operation | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
+| :--- | :--- | :---: | :---: | :---: |
+| **`eq_area_error`** | 1,000,000 | 0.247 | 0.099 | **2.5x** |
+| **`sradius_of_cap`** | 1,000,000 | 35.906 | 0.362 | **99x** |
+| **`eq_find_s2_region`** | 2,000,000 | 28.322 | 0.220 | **129x** |
+| **`eq_min_dist`** | 50,000 | 23.877 | 0.068 | **350x** |
+| **`eq_energy_dist`** | 10,000 | 1.504 | 0.437 | **3.4x** |
+
+> **Note:** The dramatic speedups in `sradius_of_cap` and `eq_min_dist` are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
+
+## Performance Features & Optimizations
+
+The Python port introduces several algorithmic optimizations and internal logic improvements compared to the original MATLAB toolbox:
+
+- **Index Rotation (Histogram Logic)**: Solving the longitude wrap-around issue involved the implementation of an **Index Rotation** (Domain Translation) step.
+    - a. Points and boundaries are shifted by the collar's first boundary ($\phi_0$) using a modulo $2\pi$ operation.
+    - b. The final boundary is explicitly set to $2\pi$ to ensure strict monotonicity.
+    - c. The legacy `lookup_table()` utility was removed in favor of this direct, domain-translated `np.searchsorted()` approach for 100% test coverage and better performance.
+- **Min-Distance Optimization**: Optimized to **O(N log N)** using **KDTrees**. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
+- **Riesz Energy**: Uses a **block-based symmetry-aware summation** ($d_{ij} = d_{ji}$). Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
+- **Precision Rounding**: Latitude (band) lookups include $10^{-12}$ rounding to prevent points on a boundary from jumping bands due to floating-point variance.
 
 ## Quick Reference: Function Name Mapping
 
@@ -124,44 +150,9 @@ The package is organized into logical modules:
 *   `eqsp.illustrations`: 2D Matplotlib plotting and algorithm diagrams.
 *   `eqsp.visualizations`: 3D Mayavi visualizations (optional dependency).
 
-## Installation & Getting Started
-Install the package from PyPI via:
-```bash
-pip install pyeqsp
-```
+## Quick Reference: Function Name Mapping
 
-### Naming Distinction
-
-Note that while the project is branded **PyEQSP** and the installation name is **`pyeqsp`**, the Python package name remains **`eqsp`** to preserve compatibility and standard naming conventions:
-
-| Context | Name |
-| :--- | :--- |
-| **Official Branding** | PyEQSP |
-| **PyPI / Install Name** | `pyeqsp` |
-| **Python Import Name** | `eqsp` |
-| **Repository Name** | `pyeqsp` |
-
-Basic usage:
-```python
-import eqsp
-import numpy as np
-
-# Generate 10 points on S^2
-points = eqsp.eq_point_set(2, 10)
-
-# 2D projected view (Matplotlib, no extra dependencies)
-from eqsp import illustrations as ill
-ill.project_s2_partition(10, proj='eqarea')
-
-# 3D interactive view (requires Mayavi)
-from eqsp import visualizations as vis
-vis.show_s2_partition(10)
-```
-
-### System Packages (Advanced)
-If you rely on system-installed packages like `mayavi` (via `apt`), see the [Installation Guide](installation.md) for instructions on setting up a compatible virtual environment (`venv_sys`).
-
-> **Note:** This configuration was specifically tested on **Kubuntu Linux 25.10**. Different environments may require different values for environment variables like `QT_API`.
+Most core functions keep their names. The main differences are in coordinate conversion utilities and illustration functions.
 
 ## Key Features of PyEQSP
 

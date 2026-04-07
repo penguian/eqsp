@@ -42,4 +42,4 @@ While 2D illustrations work with standard Matplotlib, **3D interactive visualiza
 
 ## Migration from MATLAB
 
-If you are a user of the original MATLAB EQ Sphere Partitioning Toolbox, please check the [User Migration Guide](user_migration_guide.md) for function mappings and architectural differences.
+If you are a user of the original MATLAB EQ Sphere Partitioning Toolbox, consult the [Migration from MATLAB](migration_matlab.md) guide for details.
