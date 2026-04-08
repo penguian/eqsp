@@ -2,6 +2,11 @@
 
 This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
 
+## 0.99.9
+**2026-04-07**
+
+Release **0.99.9** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem. It also introduces formalized robustness testing for higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
+
 ## 0.99.8
 
 This section summarizes the completion of the infrastructure and automation hardening phase (2026-04-03).
@@ -44,7 +49,7 @@ Release **0.99.8** provides the definitive architectural layout for the PyEQSP m
 | **Audit Checks** | [PASSED] | Links, Quality, and Orthography verified |
 
 ### Release Metadata
-- **Version**: 0.99.8
+- **Version**: 0.99.9
 - **Build Date**: 2026-04-03
 - **Tag Convention**: `release_0_99_8`
 - **Distribution Files**: `PyPI`

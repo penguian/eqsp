@@ -19,7 +19,7 @@ This checklist provides the canonical project-wide quality gates to be consulted
 
 ## 4. Documentation & Repository Record
 - [ ] **Maintenance Guide (Volume 2)**: Ensure any changes to the "Defense in Depth" strategy are reflected in the guide's conceptual overview.
-- [ ] **Testing Guide**: Ensure `doc/internal/testing_details.md` reflects any changes to the execution environment or linter policy.
+- [ ] **Testing Guide**: Ensure `doc/maintainer/testing_details.md` reflects any changes to the execution environment or linter policy.
 - [ ] **Release Notes & CHANGELOG**:
-    - Update the version-specific `doc/internal/release_notes_*.md`.
+    - Update the version-specific `doc/maintainer/release_notes_*.md`.
     - Ensure `CHANGELOG.md` reflects all notable changes for the target version and current date.

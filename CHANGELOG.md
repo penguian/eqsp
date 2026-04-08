@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.9] - 2026-04-07
+**Git Tag**: `release_0_99_9` | **Distribution**: `PyPI`
+
+### Added
+- **Full Project Coverage**: Reached 100% functional line coverage for the entire PyEQSP repository, including all maintenance, CI, and release infrastructure.
+- **Higher-Dimension Robustness**: Formalized unit tests for recursive partitioning on $S^4$ and $S^5$ (embedded in $\mathbb{R}^5$ and $\mathbb{R}^6$), verifying coordinate bounds and strict unit norm ($\|x\| = 1.0$) properties for $dim \ge 4$.
+- **Deep-Dive Verification**: Implemented resilient mock tests for elusive edge cases, including network timeouts in link checking, missing documentation binaries (`vale`), and filesystem permission errors during build cleanup.
+
+### Changed
+- **Metadata Synchronization**: Unified versioning across `pyproject.toml` and documentation for the final pre-1.0 release candidate.
+- **Maintenance Hardening**: Finalized the "Defense in Depth" strategy with 100% automated verification of all maintenance scripts.
+
 ## [0.99.8] - 2026-04-03
 **Git Tag**: `release_0_99_8` | **Distribution**: `PyPI`
 

@@ -38,18 +38,19 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Automation Coverage Plan**: Achieved 100% coverage on the script automation hub (`release/`, `validation/`) using modular refactoring and the `test_ci_scripts.py` suite.
 - [x] **Verified Deployment**: Confirmed stability of the `build_dist.py` atomic backup and robust `doc/conf.py` mocking across all CI runners.
 - [x] **Technical Symmetry Audit**: Reviewed historical and modern Sphinx configurations for project-wide consistency.
-- [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE` via `git mv`; updated prose references in `README.md` and `AUTHORS.md`; replaced the deprecated `license = { file = "COPYING" }` table form in `pyproject.toml` with `license = "MIT"` (SPDX expression), added `license-files = ["LICENSE"]`, and removed the deprecated `License :: OSI Approved :: MIT License` Trove classifier.
-- [x] **Rename `doc/internal/` to `doc/maintainer/`**: Replaced the misleading directory name with one that accurately reflects these files as public maintainer-facing documentation. Updated all references in `doc/index.rst`, `doc/maintenance_guide.md`, and seven other files that linked into the directory.
+- [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE`; updated `pyproject.toml` with `license = "MIT"` and `license-files = ["LICENSE"]`.
+- [x] **Rename `doc/internal/` to `doc/maintainer/`**: Reflected that these are public maintainer-facing docs. Updated all internal references.
 
-### 0.99.9 Beta: Polishing & Final Verification — [IN-PROGRESS]
-**Goal**: Reconcile performance benchmarks with the MATLAB Toolbox, address final quality issues, and finalize the migration documentation.
+### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness — [COMPLETED] (2026-04-07)
+**Released: 2026-04-07** | **Git Tag: release_0_99_9** | **Distribution: PyPI**
+**Goal**: Reconcile performance benchmarks, achieve 100% project-wide coverage, and verify higher-dimension robustness.
 
-- [x] **Histogram Logic Alignment**: Back-port "Option C: Index Rotation" (longitude lookup fix) into `_private/_histograms.py` and implement high-$N$ wrap-around tests. Removed the legacy `lookup_table()` utility in favor of direct, domain-translated `np.searchsorted()` for 100% test coverage.
-- [x] **Release Tooling Fix**: Correct the SourceForge project name in `release/upload_sourceforge.py` (change `eqsp` to `pyeqsp`).
-- [x] **Documentation Hardening**: Consolidate and explicitly document the SourceForge `scp` deployment steps within the Maintenance Guide.
-- [ ] **Coverage Deep-Dive**: Exercise `dim=1` scalar paths in `polar_colat` and recursive logic in high-dimensional solvers.
-- [ ] **Benchmark Alignment**: Align Python benchmark logic, warm-up phases, and parameter defaults with the original MATLAB EQSP Toolbox baseline.
-- [ ] **Doc Re-organization**: Refactor guides to use alphabetical appendices (A, B, C) and rename the Migration Guide to "Migration from MATLAB", including the side-by-side performance comparison baseline results.
+- [x] **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
+- [x] **Coverage Deep-Dive**: Reached 100% functional coverage in all core maintenance and release scripts (`release/`, `validation/`) and core algorithm edge cases (e.g., $dim=1$ scalar paths).
+- [x] **Higher-Dimension Robustness**: Verified recursive partitioning for $S^4$ and $S^5$, ensuring coordinate bounds and unit-norm properties hold for $dim \ge 4$.
+- [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox (Conversation 86f21121).
+- [x] **Release Tooling Fix**: Corrected the SourceForge project name in `release/upload_sourceforge.py` and verified `scp` deployment steps.
+- [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
 ### 1.0 General Release [PLANNED]
 

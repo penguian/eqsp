@@ -42,6 +42,7 @@ We use a two-tier automated verification system:
     ```
 2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in `validation/`) is the definitive project-wide entry point.
     *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 validation/verify_all.py` (Ruff, Pylint, Pytest).
+    *   **Environment Orchestration**: Use `--venv DIR` to activate a specific environment and `--uninstall` to remove any existing `pyeqsp` package before running the suite. This prevents local source shadowing by stale `site-packages`.
     *   **CI Pipeline**: GitHub Actions runs `validation/verify_all.py` across Python 3.11–3.13.
 
 The orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
