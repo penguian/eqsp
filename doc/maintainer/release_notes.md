@@ -3,9 +3,15 @@
 This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
 
 ## 0.99.9
-**2026-04-07**
+**2026-04-08**
 
-Release **0.99.9** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem. It also introduces formalized robustness testing for higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
+Release **0.99.9** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
+
+### Key Features & Improvements
+- **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API (`eq_regions`, `eq_point_set`, `eq_find_s2_region`, etc.) to force partitions to align perfectly with the equatorial hyperplane.
+- **Symmetric Benchmark Suite**: Added a full suite of even-collar benchmark runners (`run_benchmarks_even.py`) with 1-2-5 logarithmic scaling to verify performance parity between standard and symmetric partitioning.
+- **Robustness Testing**: Extended formalized testing to higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
+- **Verification Infrastructure**: Hardened `validation/verify_all.py` with explicit Pylint `init-hook` support for specialized source roots, ensuring reliable project-wide audits across all environments.
 
 ## 0.99.8
 

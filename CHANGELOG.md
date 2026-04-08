@@ -10,8 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Full Project Coverage**: Reached 100% functional line coverage for the entire PyEQSP repository, including all maintenance, CI, and release infrastructure.
+- **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API and implemented the full `run_benchmarks_even.py` suite for symmetric partition performance analysis.
 - **Higher-Dimension Robustness**: Formalized unit tests for recursive partitioning on $S^4$ and $S^5$ (embedded in $\mathbb{R}^5$ and $\mathbb{R}^6$), verifying coordinate bounds and strict unit norm ($\|x\| = 1.0$) properties for $dim \ge 4$.
 - **Deep-Dive Verification**: Implemented resilient mock tests for elusive edge cases, including network timeouts in link checking, missing documentation binaries (`vale`), and filesystem permission errors during build cleanup.
+
+### Fixed
+- **Pylint Import Resolution**: Hardened `verify_all.py` with an automated `init-hook` to correctly resolve specialized benchmark source roots during project-wide audits.
 
 ### Changed
 - **Metadata Synchronization**: Unified versioning across `pyproject.toml` and documentation for the final pre-1.0 release candidate.

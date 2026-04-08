@@ -23,7 +23,7 @@ This chapter lists all scientific works cited throughout the **User Guide (Volum
 (kui07)=
 - **[Kui07]** Kuijlaars, A. B. J., Saff, E. B., and Sun, X. (2007). *"On separation of minimal Riesz energy points on spheres in Euclidean spaces"*, Journal of Computational and Applied Mathematics, 199(1), 172-180.
 (laz21)=
-- **[Laz21]** Lazarus, C., Weiss, P., El Gueddari, L., et al. (2020). *"3D variable-density SPARKLING trajectories for high-resolution T2*-weighted magnetic resonance imaging"*, NMR in Biomedicine, 33(9), e4349.
+- **[Laz20]** Lazarus, C., Weiss, P., El Gueddari, L., et al. (2020). *"3D variable-density SPARKLING trajectories for high-resolution T2*-weighted magnetic resonance imaging"*, NMR in Biomedicine, 33(9), e4349.
 (leo06)=
 - **[Leo06]** Leopardi, P. (2006). *"A partition of the unit sphere into regions of equal area and small diameter"*, Electronic Transactions on Numerical Analysis, Volume 25, pp. 309-327.
 (leo07)=

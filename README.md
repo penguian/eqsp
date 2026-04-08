@@ -8,6 +8,8 @@ An **EQ partition** divides Sᵈ (the unit sphere in ℝ<sup>d+1</sup>) into a f
 
 > **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
 
+Release **0.99.9** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
+
 The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N<sup>-1/d</sup>.
 
 ## What is an EQ point set?
@@ -48,6 +50,9 @@ dim = 2
 N = 100
 points_x = eqsp.eq_point_set(dim, N)
 # points_x.shape is (dim+1, N)
+
+# Or force a symmetric partition (even number of collars)
+points_sym = eqsp.eq_point_set(dim, N, even_collars=True)
 ```
 
 Create an array in spherical polar coordinates representing
