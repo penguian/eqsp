@@ -157,7 +157,7 @@ def main():
         (
             "sradius_of_cap",
             "benchmark_sradius.py",
-            ["--n-max", str(args.n_max or 10000000), "--dim", str(args.dim + 1)],
+            ["--n-max", str(args.n_max or 10000000), "--dim", str(args.dim)],
         ),
         (
             "eq_min_dist",
