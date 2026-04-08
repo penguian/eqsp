@@ -18,6 +18,7 @@ Release **0.99.9** achieves **100% project-wide coverage** across both the core 
 - **Verification Suite**: Integrated the unified `verify_all.py` script and benchmark suite.
 - **100% Coverage**: Reached 100% functional coverage across all maintenance and release tools.
 - **Release Metadata Sync**: Updated versioning and copyright dates for the 1.0 release.
+- **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
 
 ### Release Metadata
 - **Version**: 0.99.9
