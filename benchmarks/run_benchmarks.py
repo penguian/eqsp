@@ -98,12 +98,6 @@ def main():
         type=str,
         help="Directory to save log files (default: benchmarks/results).",
     )
-    parser.add_argument(
-        "--even-collars",
-        action="store_true",
-        default=False,
-        help="Force even number of collars for equatorial symmetry.",
-    )
 
     args = parser.parse_args()
 
@@ -127,9 +121,9 @@ def main():
     else:
         env["PYTHONPATH"] = root_dir
 
-    # Log suffix for even collars
-    suffix = "_even" if args.even_collars else ""
-    even_args = ["--even-collars"] if args.even_collars else []
+    # Standard run: no even-collar forcing
+    suffix = ""
+    even_args: list[str] = []
 
     # Define benchmarks and their arguments
     benchmarks = [
