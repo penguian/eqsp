@@ -79,12 +79,6 @@ def main():
         help="General n_max to override defaults for all benchmarks.",
     )
     parser.add_argument(
-        "--dim",
-        type=int,
-        default=2,
-        help="Dimension of the sphere S^dim (default: 2, embedded in R^3).",
-    )
-    parser.add_argument(
         "--s", type=float, help="Exponent for energy distance benchmark."
     )
     parser.add_argument(
@@ -133,8 +127,6 @@ def main():
             [
                 "--n-max",
                 str(args.n_max or 100000000),
-                "--dim",
-                str(args.dim),
             ]
             + even_args,
         ),
@@ -144,8 +136,6 @@ def main():
             [
                 "--n-max",
                 str(args.n_max or 100000000),
-                "--dim",
-                str(args.dim),
             ]
             + even_args,
         ),
@@ -157,7 +147,7 @@ def main():
         (
             "sradius_of_cap",
             "benchmark_sradius.py",
-            ["--n-max", str(args.n_max or 10000000), "--dim", str(args.dim)],
+            ["--n-max", str(args.n_max or 10000000)],
         ),
         (
             "eq_min_dist",
@@ -165,8 +155,6 @@ def main():
             [
                 "--n-max",
                 str(args.n_max or 10000000),
-                "--dim",
-                str(args.dim),
             ]
             + even_args,
         ),
@@ -176,8 +164,6 @@ def main():
             [
                 "--n-max",
                 str(args.n_max or 50000),
-                "--dim",
-                str(args.dim),
             ]
             + (["--s", str(args.s)] if args.s else [])
             + even_args,
