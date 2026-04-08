@@ -4,7 +4,7 @@
 import numpy as np
 import pytest
 
-from eqsp._private._histograms import lookup_s2_region, lookup_table
+from eqsp._private._histograms import lookup_s2_region
 from eqsp._private._partitions import (
     circle_offset,
     rot3,
@@ -61,10 +61,6 @@ def test_histogram_errors():
     pts = np.zeros((2, 0))
     res = lookup_s2_region(pts, np.zeros((2, 2, 1)), [1], [1])
     assert res.size == 0
-
-    # lookup_table: Decreasing table
-    with pytest.raises(NotImplementedError):
-        lookup_table([10, 5, 1], 7)
 
 
 def test_partition_errors():

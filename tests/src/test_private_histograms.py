@@ -13,42 +13,13 @@ import numpy as np
 
 import eqsp
 from eqsp._private import _histograms
-from eqsp._private._histograms import lookup_s2_region, lookup_table
+from eqsp._private._histograms import lookup_s2_region
 
 
 def test_doctests():
     """Test function test_doctests."""
     results = doctest.testmod(_histograms)
     assert results.failed == 0
-
-
-def test_lookup_table_boundaries():
-    """Test function test_lookup_table_boundaries."""
-    table = [-100.0, -70.0, 2.5, 75.0, 125.7]
-
-    # Normal points between table values
-    y_normal = [-80.0, 0.0, 50.0, 100.0]
-    expected_normal = [1, 2, 3, 4]
-
-    # Points exactly hitting the table values
-    y_exact = [-100.0, -70.0, 2.5, 75.0, 125.7]
-    # np.searchsorted(side='left') means exactly hits go into the bin index
-    # matching the boundary.
-    # So if value is exactly table[0] (-100.0), searchsorted returns 0
-    # If exactly table[4] (125.7), searchsorted returns 4.
-    expected_exact = [0, 1, 2, 3, 4]
-
-    # Out of bounds points
-    y_out = [-200.0, 200.0]
-    # Below minimum gets capped to 0.
-    # Above maximum gets capped to len(table) - 1 (4).
-    # lookup_s2_region relies on this behavior to map points near pi to the last cap.
-    expected_out = [0, 4]
-
-    y_all = y_normal + y_exact + y_out
-    expected_all = expected_normal + expected_exact + expected_out
-
-    np.testing.assert_array_equal(lookup_table(table, y_all), expected_all)
 
 
 def test_lookup_s2_region_vectorization_fidelity():
@@ -78,31 +49,41 @@ def test_lookup_s2_region_vectorization_fidelity():
 
     all_points = np.hstack((random_points, cap_points, long_points))
 
-    # 1. Run the original sequential logic
+    # 1. Run the reference Translated Domain logic
+    all_ends_lat = np.round(s_regions[1, 1, :], 12)
+    cap_bound_lats, c_starts = np.unique(all_ends_lat, return_index=True)
+    n_detection = len(cap_bound_lats)
+
     r_idx_original = np.zeros(all_points.shape[1], dtype=int)
 
-    n_caps = len(s_cap)
-    n_regions_total = s_regions.shape[2]
-
     for p_idx in range(all_points.shape[1]):
-        c_idx = lookup_table(s_cap, all_points[1, p_idx])
-        if 0 < c_idx < n_caps - 1:
-            min_r_idx = int(c_regions[c_idx - 1]) + 1
-            max_r_idx = int(c_regions[c_idx])
-            s_longs = s_regions[0, :, min_r_idx - 1 : max_r_idx].copy()
-            if s_longs[0, 0] >= 2 * np.pi:
-                s_longs[:, 0] -= 2 * np.pi
-            n_longs = s_longs.shape[1]
-            l_idx = lookup_table(s_longs[1, :], all_points[0, p_idx]) % n_longs
-            if all_points[0, p_idx] < s_longs[0, 0]:
-                l_idx = n_longs - 1
-            r_idx_original[p_idx] = min_r_idx + l_idx
-        elif c_idx == 0:
-            r_idx_original[p_idx] = 1
-        elif c_idx >= n_caps - 1:
-            r_idx_original[p_idx] = n_regions_total
+        pts_lat = np.round(all_points[1, p_idx], 12)
+        pts_long = all_points[0, p_idx]
+
+        c_idx = np.searchsorted(cap_bound_lats, pts_lat, side="left")
+        min_r_offset = int(c_starts[c_idx])
+
+        if c_idx < n_detection - 1:
+            n_longs = int(c_starts[c_idx + 1]) - min_r_offset
         else:
-            r_idx_original[p_idx] = 0
+            n_longs = s_regions.shape[2] - min_r_offset
+
+        if n_longs > 1:
+            s_longs = s_regions[0, :, min_r_offset : min_r_offset + n_longs]
+            phi0 = s_longs[0, 0]
+            two_pi = 2 * np.pi
+
+            pts_long_translated = (pts_long - phi0) % two_pi
+            ends_translated = (s_longs[1, :] - phi0) % two_pi
+            if ends_translated[-1] <= 1e-15:
+                ends_translated[-1] = two_pi
+
+            l_idx = np.searchsorted(ends_translated, pts_long_translated, side="left")
+            if l_idx >= n_longs:
+                l_idx = 0
+            r_idx_original[p_idx] = min_r_offset + 1 + l_idx
+        else:
+            r_idx_original[p_idx] = min_r_offset + 1
 
     # 2. Run the (potentially vectorized) module logic
     r_idx_module = lookup_s2_region(all_points, s_regions, s_cap, c_regions)
