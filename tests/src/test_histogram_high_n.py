@@ -13,11 +13,9 @@ from eqsp._private._histograms import lookup_s2_region
 
 def test_high_n_determinism():
     """
-    Final stress test for Option C: Index Rotation.
+    Stress test for Option C: Index Rotation.
     Uses N=1,000,000 with a jump at index N/2.
     """
-    print("\n--- Running High-N Histogram Wrap-Around Test ---")
-
     N = 1_000_000
     shift = pi  # 180 degree rotation
 
@@ -32,7 +30,6 @@ def test_high_n_determinism():
     s_cap = np.array([0, pi / 2, pi])
 
     # 1. Find the wrapping region
-    # For pi-shift, the region roughly from 2*pi down to ~0.
     jumps = np.where(longs[:-1] > longs[1:])[0]
     jump_idx = jumps[0]
 
@@ -42,27 +39,19 @@ def test_high_n_determinism():
 
     # Expectation: Must fall exactly in the wrapped jump region.
     expected_cusp_idx = jump_idx + 1
-    print(
-        "Cusp point (near 2pi) -> Region "
-        f"{r_idx_cusp[0]} (Expected {expected_cusp_idx})"
+    assert r_idx_cusp[0] == expected_cusp_idx, (
+        f"Expected {expected_cusp_idx}, got {r_idx_cusp[0]}"
     )
-    assert r_idx_cusp[0] == expected_cusp_idx
 
     # 3. Test Point AFTER THE JUMP (Very low end)
-    # The region at longs[jump_idx+1] starts at exactly 0 because of linspace symmetry.
-    # So a point at 1e-12 should fall into Region jump_idx + 2?
-    # No, it should be in the region starting at 0.
     test_low = np.array([[1e-12], [pi / 4]])
     r_idx_low = lookup_s2_region(test_low, s_regions, s_cap, c_regions)
 
-    # expected_low_idx = jump_idx + 2 if 0 is the start of that region.
-    print(f"Low point (near 0) -> Region {r_idx_low[0]}")
-
-    # Standard logic: result should be jump_idx + 2 if it's the first
-    # non-wrap region of the second half.
-    # But for pi shift, long[jump_idx+1] is exactly the 2*pi modulo.
-
-    print("Option C High-N stress test verified.")
+    # Expectation: Should fall in the next region after the jump.
+    expected_low_idx = jump_idx + 2
+    assert r_idx_low[0] == expected_low_idx, (
+        f"Expected {expected_low_idx}, got {r_idx_low[0]}"
+    )
 
 
 if __name__ == "__main__":

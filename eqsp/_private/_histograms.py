@@ -85,6 +85,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
         cap_bound_lats, np.round(s_point[1, :], 12), side="left"
     )
     n_caps_detected = len(cap_bound_lats)
+    active_c_idxs = np.clip(active_c_idxs, 0, n_caps_detected - 1)
 
     for c_idx in np.unique(active_c_idxs):
         mask = active_c_idxs == c_idx

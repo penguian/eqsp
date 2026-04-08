@@ -104,9 +104,9 @@ def test_upload_release_edge_cases(tmp_path, monkeypatch):
     # 1. Test missing credentials
     with patch("os.path.exists", return_value=False):
         with patch("os.environ", {}):
-            with patch("sys.exit") as mock_exit:
+            with pytest.raises(SystemExit) as excinfo:
                 upload_release.check_credentials()
-                mock_exit.assert_called_with(1)
+            assert excinfo.value.code == 1
 
     # 2. Test diagnostic print on failure
     with patch("subprocess.run") as mock_run:
@@ -273,9 +273,9 @@ def test_quality_check_errors(tmp_path, monkeypatch):
 
     # 5. Non-existent repo root check
     with patch("sys.argv", ["quality_check.py"]):
-        with patch("sys.exit") as mock_exit:
+        with pytest.raises(SystemExit) as excinfo:
             quality_check.main()
-            mock_exit.assert_called_with(1)
+        assert excinfo.value.code == 1
 
 
 def test_check_links_failing(tmp_path, monkeypatch):
@@ -293,9 +293,9 @@ def test_check_links_failing(tmp_path, monkeypatch):
     )
 
     with patch("sys.argv", ["check_links.py"]):
-        with patch("sys.exit") as mock_exit:
+        with pytest.raises(SystemExit) as excinfo:
             check_links.main()
-            mock_exit.assert_called_with(1)
+        assert excinfo.value.code == 1
 
 
 def test_check_links_anchor_exists_elsewhere(tmp_path, monkeypatch):
@@ -318,9 +318,8 @@ def test_check_links_anchor_exists_elsewhere(tmp_path, monkeypatch):
     )
 
     with patch("sys.argv", ["check_links.py"]):
-        with patch("sys.exit") as mock_exit:
+        with pytest.raises(SystemExit):
             check_links.main()
-            mock_exit.assert_called()
 
 
 def test_quality_check_ruff_config(tmp_path, monkeypatch):
@@ -394,11 +393,11 @@ def test_verify_all_failure():
     mock_run = MagicMock(returncode=1)
 
     with patch("subprocess.run", return_value=mock_run):
-        with patch("sys.exit") as mock_exit:
-            with patch("sys.argv", ["validation/verify_all.py"]):
-                # Should exit on the first step (Ruff)
+        with patch("sys.argv", ["validation/verify_all.py"]):
+            # Should exit on the first step (Ruff)
+            with pytest.raises(SystemExit) as excinfo:
                 verify_all.main()
-                mock_exit.assert_called_with(1)
+            assert excinfo.value.code == 1
 
 
 def test_quality_check_orthography(tmp_path, monkeypatch):
@@ -510,9 +509,8 @@ def test_build_dist_failure(tmp_path, monkeypatch):
                 with patch("shutil.copy"):
                     with patch("sys.stdin", return_value=MagicMock()):
                         with patch("sys.argv", ["build_dist.py"]):
-                            with patch("sys.exit") as mock_exit:
+                            with pytest.raises(SystemExit):
                                 build_dist.main()
-                                mock_exit.assert_called()
 
 
 def test_build_dist_success(tmp_path, monkeypatch):
@@ -609,10 +607,10 @@ def test_check_links_advanced(tmp_path, monkeypatch):
     (doc_dir / "target.md").write_text("(anchor)=", encoding="utf-8")
 
     with patch("sys.argv", ["check_links.py"]):
-        with patch("sys.exit") as mock_exit:
+        # Should exit because of 'missing' ref
+        with pytest.raises(SystemExit) as excinfo:
             check_links.main()
-            # Should exit because of 'missing' ref
-            mock_exit.assert_called_with(1)
+        assert excinfo.value.code == 1
 
 
 def test_build_dist_io_errors(tmp_path, monkeypatch):
@@ -625,12 +623,10 @@ def test_build_dist_io_errors(tmp_path, monkeypatch):
 
     # Use a side_effect for rmtree to simulate PermissionError
     with patch("shutil.rmtree", side_effect=PermissionError("Mocked Permission Error")):
-        # Mock subprocess.run to avoid running real build
         with patch("subprocess.run", return_value=MagicMock(returncode=0)):
             with patch("sys.argv", ["build_dist.py"]):
-                with patch("sys.exit") as mock_exit:
+                with pytest.raises(SystemExit):
                     build_dist.main()
-                    mock_exit.assert_called()
 
 
 def test_compute_readability_no_vale(tmp_path, monkeypatch):

@@ -81,7 +81,10 @@ def main():
         help="General n_max to override defaults for all benchmarks.",
     )
     parser.add_argument(
-        "--dim", type=int, default=2, help="Sphere dimension (default: 2)."
+        "--dim",
+        type=int,
+        default=2,
+        help="Dimension of the sphere S^dim (default: 2, embedded in R^3).",
     )
     parser.add_argument(
         "--s", type=float, help="Exponent for energy distance benchmark."
@@ -99,12 +102,9 @@ def main():
     )
     parser.add_argument(
         "--even-collars",
-        action="store_false",
-        dest="even_collars",
-        default=True,
-        help=(
-            "Disable forced even number of collars (enabled by default in this script)."
-        ),
+        action="store_true",
+        default=False,
+        help="Force even number of collars for equatorial symmetry.",
     )
 
     args = parser.parse_args()
@@ -125,7 +125,7 @@ def main():
     env = os.environ.copy()
     current_pythonpath = env.get("PYTHONPATH", "")
     if current_pythonpath:
-        env["PYTHONPATH"] = f"{root_dir}:{current_pythonpath}"
+        env["PYTHONPATH"] = os.pathsep.join([root_dir, current_pythonpath])
     else:
         env["PYTHONPATH"] = root_dir
 

@@ -90,7 +90,7 @@ def run_histograms(n_max, n_regions=1000, even_collars=False):
 def run_sradius(n_max, dim=3, _even_collars=False):
     """Runner for sradius_of_cap benchmark (ignores even_collars)."""
     n_values = generate_125_sequence(n_max)
-    max_area = area_of_sphere(dim - 1)
+    max_area = area_of_sphere(dim)
     # Warm-up
     for n_warm in [10, 20, 50]:
         sradius_of_cap(dim, np.linspace(0.1, max_area - 0.1, int(n_warm)))

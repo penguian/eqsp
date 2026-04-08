@@ -100,11 +100,13 @@ def main():
     base_env = os.environ.copy()
     py = sys.executable
 
-    # "Deactivate" current venv if it exists by stripping it from PATH
+    # "Deactivate" current venv if it exists and we are switching to a new one.
+    # This involves stripping the active venv's bin from PATH and cleaning env vars.
     active_venv = base_env.get("VIRTUAL_ENV")
-    if active_venv:
+    if active_venv and args.venv:
         active_bin = str(Path(active_venv) / "bin")
         paths = base_env.get("PATH", "").split(os.pathsep)
+        # Strip the current venv's bin so it doesn't shadow the new one or system tools
         new_paths = [p for p in paths if p != active_bin]
         base_env["PATH"] = os.pathsep.join(new_paths)
         base_env.pop("VIRTUAL_ENV", None)
