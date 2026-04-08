@@ -8,7 +8,7 @@ from benchmark_core import run_sradius
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Benchmark for sradius.")
     parser.add_argument(
-        "--dim", type=int, default=3, help="Manifold dimension d+1 (default: 3)."
+        "--dim", type=int, default=3, help="Dimension of the sphere S^dim (default: 3)."
     )
     parser.add_argument(
         "--n-max",
