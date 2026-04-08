@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Benchmark for eq_area_error (Redundant area calculation)."""
+"""Benchmark for eq_area_error (Symmetric/Even Collars)."""
 
 import argparse
 
 from benchmark_core import run_area_error
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Benchmark for eq_area_error.")
+    parser = argparse.ArgumentParser(
+        description="Benchmark for eq_area_error (Symmetric)."
+    )
     parser.add_argument(
         "--n-max",
         type=int,
@@ -16,11 +18,5 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dim", type=int, default=2, help="Sphere dimension (default: 2)."
     )
-    parser.add_argument(
-        "--even-collars",
-        action="store_true",
-        default=False,
-        help="Use even number of collars for symmetric partitions.",
-    )
     args = parser.parse_args()
-    run_area_error(n_max=args.n_max, dim=args.dim, even_collars=args.even_collars)
+    run_area_error(n_max=args.n_max, dim=args.dim, even_collars=True)

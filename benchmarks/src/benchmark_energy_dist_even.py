@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Benchmark for point_set_energy_dist (Riesz Energy calculation)."""
+"""Benchmark for point_set_energy_dist (Symmetric/Even Collars)."""
 
 import argparse
 
 from benchmark_core import run_energy_dist
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Benchmark for Riesz energy.")
+    parser = argparse.ArgumentParser(
+        description="Benchmark for Riesz energy (Symmetric)."
+    )
     parser.add_argument(
         "--n-max",
         type=int,
@@ -19,13 +21,5 @@ if __name__ == "__main__":
     parser.add_argument(
         "--s", type=float, default=None, help="Riesz exponent s (default: d-1)."
     )
-    parser.add_argument(
-        "--even-collars",
-        action="store_true",
-        default=False,
-        help="Use even number of collars for symmetric partitions.",
-    )
     args = parser.parse_args()
-    run_energy_dist(
-        n_max=args.n_max, dim=args.dim, s=args.s, even_collars=args.even_collars
-    )
+    run_energy_dist(n_max=args.n_max, dim=args.dim, s=args.s, even_collars=True)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Main script to run all performance benchmarks and log results."""
+"""Main script to run symmetric (even-collar) performance benchmarks and log results."""
 
 import argparse
 import os
@@ -72,7 +72,9 @@ def run_benchmark(
 
 def main():
     """Main execution logic for benchmarks."""
-    parser = argparse.ArgumentParser(description="PyEQSP Performance Benchmarks.")
+    parser = argparse.ArgumentParser(
+        description="PyEQSP Symmetric Performance Benchmarks."
+    )
     parser.add_argument(
         "--n-max",
         type=int,
@@ -97,9 +99,12 @@ def main():
     )
     parser.add_argument(
         "--even-collars",
-        action="store_true",
-        default=False,
-        help="Use even number of collars for symmetric partitions.",
+        action="store_false",
+        dest="even_collars",
+        default=True,
+        help=(
+            "Disable forced even number of collars (enabled by default in this script)."
+        ),
     )
 
     args = parser.parse_args()
@@ -155,12 +160,8 @@ def main():
         (
             "eq_find_s2_region",
             "benchmark_histograms.py",
-            ["--n-max", str(args.n_max or 10000000), "--regions", str(args.regions)],
-        ),
-        (
-            "sradius_of_cap",
-            "benchmark_sradius.py",
-            ["--n-max", str(args.n_max or 10000000), "--dim", str(args.dim + 1)],
+            ["--n-max", str(args.n_max or 10000000), "--regions", str(args.regions)]
+            + even_args,
         ),
         (
             "eq_min_dist",
@@ -192,7 +193,7 @@ def main():
 
     with Tee(main_log_file):
         print("=======================================")
-        print("    PyEQSP Performance Benchmarks")
+        print("    PyEQSP Symmetric Benchmarks")
         print("=======================================")
         print("\nHardware: AMD Ryzen 7 8840HS w/ Radeon 780M Graphics (~2.4 GHz)")
         print("OS:       Linux")
