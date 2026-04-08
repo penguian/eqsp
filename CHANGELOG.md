@@ -5,16 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.99.9] - 2026-04-07
+## [0.99.9] - 2026-04-08
 **Git Tag**: `release_0_99_9` | **Distribution**: `PyPI`
 
 ### Added
-- **Full Project Coverage**: Reached 100% functional line coverage for the entire PyEQSP repository, including all maintenance, CI, and release infrastructure.
-- **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API and implemented the full `run_benchmarks_even.py` suite for symmetric partition performance analysis.
-- **Higher-Dimension Robustness**: Formalized unit tests for recursive partitioning on $S^4$ and $S^5$ (embedded in $\mathbb{R}^5$ and $\mathbb{R}^6$), verifying coordinate bounds and strict unit norm ($\|x\| = 1.0$) properties for $dim \ge 4$.
-- **Deep-Dive Verification**: Implemented resilient mock tests for elusive edge cases, including network timeouts in link checking, missing documentation binaries (`vale`), and filesystem permission errors during build cleanup.
+- **Full Project Coverage**: Reached 100% functional line coverage for the entire PyEQSP repository, including core maintenance, CI, and release infrastructure.
+- **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API and implemented the full `run_benchmarks_even.py` suite with 1-2-5 logarithmic scaling.
+- **Higher-Dimension Robustness**: Formalized unit tests for recursive partitioning on $S^4$ and $S^5$, verifying coordinate bounds and strict unit norm properties.
+- **Deep-Dive Verification**: Implemented resilient mock tests for elusive edge cases, including network timeouts and filesystem permission errors in CI.
 
 ### Fixed
+- **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and replaced legacy `lookup_table()` with domain-translated `np.searchsorted()` for stable $O(1)$ binning.
 - **Pylint Import Resolution**: Hardened `verify_all.py` with an automated `init-hook` to correctly resolve specialized benchmark source roots during project-wide audits.
 
 ### Changed

@@ -41,14 +41,16 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE`; updated `pyproject.toml` with `license = "MIT"` and `license-files = ["LICENSE"]`.
 - [x] **Rename `doc/internal/` to `doc/maintainer/`**: Reflected that these are public maintainer-facing docs. Updated all internal references.
 
-### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness — [COMPLETED] (2026-04-07)
-**Released: 2026-04-07** | **Git Tag: release_0_99_9** | **Distribution: PyPI**
+### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness — [COMPLETED] (2026-04-08)
+**Released: 2026-04-08** | **Git Tag: release_0_99_9** | **Distribution: PyPI**
 **Goal**: Reconcile performance benchmarks, achieve 100% project-wide coverage, and verify higher-dimension robustness.
 
 - [x] **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
 - [x] **Coverage Deep-Dive**: Reached 100% functional coverage in all core maintenance and release scripts (`release/`, `validation/`) and core algorithm edge cases (e.g., $dim=1$ scalar paths).
 - [x] **Higher-Dimension Robustness**: Verified recursive partitioning for $S^4$ and $S^5$, ensuring coordinate bounds and unit-norm properties hold for $dim \ge 4$.
-- [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox (Conversation 86f21121).
+- [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox (Conversation 86f21121). Implemented binary scaling (1-2-5) for symmetric benchmarks.
+- [x] **Equatorial Symmetry Expansion**: Formalized `even_collars` support across the entire public API (including `eq_find_s2_region`).
+- [x] **Verification Hardening**: Implemented automated Pylint `init-hook` resolution in `verify_all.py` to ensure reliable auditing of specialized source roots.
 - [x] **Release Tooling Fix**: Corrected the SourceForge project name in `release/upload_sourceforge.py` and verified `scp` deployment steps.
 - [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
