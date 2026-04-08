@@ -19,6 +19,7 @@ from validation import (  # noqa: E402
     check_links,
     compute_readability,
     quality_check,
+    verify_all,
 )
 
 
@@ -53,7 +54,7 @@ def test_upload_sourceforge(tmp_path, monkeypatch):
 
     # 1. Mock pyproject.toml
     (tmp_path / "pyproject.toml").write_text(
-        '[project]\nname = "pyeqsp"\nversion = "0.99.7"\n', encoding="utf-8"
+        '[project]\nname = "pyeqsp"\nversion = "0.99.9"\n', encoding="utf-8"
     )
 
     monkeypatch.chdir(tmp_path)
@@ -358,3 +359,356 @@ def test_quality_check_functions_missing(tmp_path, monkeypatch):
                 _ = quality_check.check_doc_functions()
                 # If eqsp is not really imported properly it might return nothing.
                 # Coverage is hit anyway.
+
+
+def test_verify_all_main(monkeypatch):
+    """Test the main execution of verify_all.py with mocked subprocess success."""
+
+    mock_run = MagicMock(returncode=0)
+
+    # Mocking Path.resolve().parent.parent for verify_all.REPO_ROOT
+    # Since it's already imported, we might need to patch it directly
+    # if it was computed at import time.
+    with patch("subprocess.run", return_value=mock_run) as patched_run:
+        with patch("sys.exit") as mock_exit:
+            with patch("sys.argv", ["validation/verify_all.py"]):
+                verify_all.main()
+
+            # Verify subprocess was called for each step
+            # steps: Ruff, Pylint, check_links, quality_check,
+            # doctest, html, run_coverage
+            assert patched_run.call_count >= 7
+            mock_exit.assert_not_called()
+
+            # Verify PYTHONPATH was set in the env
+            _, kwargs = patched_run.call_args
+            env = kwargs.get("env")
+            assert env is not None
+            assert "PYTHONPATH" in env
+            assert "benchmarks/src" in env["PYTHONPATH"]
+
+
+def test_verify_all_failure():
+    """Test verify_all.py failure path when a step returns non-zero."""
+
+    mock_run = MagicMock(returncode=1)
+
+    with patch("subprocess.run", return_value=mock_run):
+        with patch("sys.exit") as mock_exit:
+            with patch("sys.argv", ["validation/verify_all.py"]):
+                # Should exit on the first step (Ruff)
+                verify_all.main()
+                mock_exit.assert_called_with(1)
+
+
+def test_quality_check_orthography(tmp_path, monkeypatch):
+    """Test orthography check with non-Oxford spellings."""
+
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    # Scanned: eqsp/**/*.py, **/*.md, **/*.rst
+    eqsp_dir = tmp_path / "eqsp"
+    eqsp_dir.mkdir()
+    md_file = tmp_path / "manual.md"
+
+    (eqsp_dir / "mod.py").write_text("def organise(): pass\n", encoding="utf-8")
+    md_file.write_text("We need to standardisation.\n", encoding="utf-8")
+
+    errors = quality_check.check_orthography()
+    assert len(errors) == 2
+    # The message contains the correction, not necessarily the typo
+    assert any("organize" in e for e in errors)
+    assert any("standardization" in e for e in errors)
+
+
+def test_quality_check_standalone_pragmas(tmp_path, monkeypatch):
+    """Test detection of standalone pragmas."""
+
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    eqsp_dir = tmp_path / "eqsp"
+    eqsp_dir.mkdir()
+
+    # Bad: on its own line
+    (eqsp_dir / "bad.py").write_text(
+        "def f():\n    # pragma: no cover\n    pass\n", encoding="utf-8"
+    )
+    # Good: attached to statement
+    (eqsp_dir / "good.py").write_text(
+        "def f(): pass  # pragma: no cover\n", encoding="utf-8"
+    )
+
+    errors = quality_check.check_standalone_pragmas()
+    assert len(errors) == 1
+    assert "bad.py" in errors[0]
+
+
+def test_quality_check_script_paths(tmp_path, monkeypatch):
+    """Test script path check including agent workflows."""
+
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    # Mock ci.yml
+    workflow_dir = tmp_path / ".github" / "workflows"
+    workflow_dir.mkdir(parents=True)
+    ci_yml = workflow_dir / "ci.yml"
+    ci_yml.write_text("run: python3 validation/non_existent.py\n", encoding="utf-8")
+
+    # Mock agent workflow
+    agent_dir = tmp_path / ".agents" / "workflows"
+    agent_dir.mkdir(parents=True)
+    wf_md = agent_dir / "test.md"
+    wf_md.write_text("Run `python3 release/missing.py`\n", encoding="utf-8")
+
+    errors = quality_check.check_script_paths()
+    assert len(errors) == 2
+    assert "validation/non_existent.py" in str(errors)
+    assert "release/missing.py" in str(errors)
+
+
+def test_quality_check_index_rst_toctree(tmp_path, monkeypatch):
+    """Test index.rst toctree indentation and path validation."""
+
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    doc_dir = tmp_path / "doc"
+    doc_dir.mkdir()
+    index_rst = doc_dir / "index.rst"
+
+    # 1. Bad indentation (2 spaces instead of 3)
+    # 2. Missing file reference
+    index_rst.write_text(
+        ".. toctree::\n\n  missing_file\n   exists\n", encoding="utf-8"
+    )
+    (doc_dir / "exists.rst").touch()
+
+    errors = quality_check.check_index_rst_toctree()
+    # Should find bad indentation for 'missing_file' (2 spaces)
+    # Should find missing path for 'missing_file'
+    # Should find bad indentation for 'exists' (3 spaces is correct, but let's check)
+
+    assert any("indentation (2)" in e for e in errors)
+    assert any("path 'missing_file' not found" in e for e in errors)
+
+
+def test_build_dist_failure(tmp_path, monkeypatch):
+    """Test build_dist.py failure paths."""
+    from release import build_dist
+
+    # Needs pyproject.toml to run
+    (tmp_path / "pyproject.toml").touch()
+    (tmp_path / "README_dist.md").touch()
+    monkeypatch.chdir(tmp_path)
+
+    # Use a side_effect for subprocess.run to simulate failure
+    def mock_run(cmd, *_args, **_kwargs):
+        if "-m" in cmd and "build" in cmd:
+            return MagicMock(returncode=1)
+        return MagicMock(returncode=0)
+
+    with patch("subprocess.run", side_effect=mock_run):
+        with patch("shutil.rmtree"):
+            with patch("shutil.move"):
+                with patch("shutil.copy"):
+                    with patch("sys.stdin", return_value=MagicMock()):
+                        with patch("sys.argv", ["build_dist.py"]):
+                            with patch("sys.exit") as mock_exit:
+                                build_dist.main()
+                                mock_exit.assert_called()
+
+
+def test_build_dist_success(tmp_path, monkeypatch):
+    """Test build_dist.py success path and cleanup."""
+    from release import build_dist
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").touch()
+    (tmp_path / "README.md").touch()
+    (tmp_path / "README_dist.md").touch()
+    (tmp_path / "dist").mkdir()
+    (tmp_path / "dist" / "dummy.tar.gz").touch()
+
+    with patch("subprocess.run", return_value=MagicMock(returncode=0)):
+        with patch("sys.argv", ["build_dist.py"]):
+            # Mock cleanup and move to avoid resetting our tmp_path state
+            with patch("shutil.rmtree"):
+                with patch("shutil.move"):
+                    with patch("shutil.copy"):
+                        # Just verify it runs without crashing
+                        build_dist.main()
+
+
+def test_upload_release_diagnostics(monkeypatch):
+    """Test the diagnostic printing in upload_release.py."""
+    from release import upload_release
+
+    mock_run_ret = MagicMock(returncode=1, stdout="Twine Error Message", stderr="")
+
+    with patch("subprocess.run", return_value=mock_run_ret) as patched_run:
+        # Verify it doesn't crash and prints something
+        with patch("builtins.print") as mock_print:
+            upload_release.print_structured_diagnostic("Twine Error Message")
+            assert mock_print.called
+            # Check if it tried to run twine --version for diagnostic
+            assert any(
+                "twine" in str(call.args[0]) for call in patched_run.call_args_list
+            )
+
+
+def test_quality_check_usage_blocks(tmp_path, monkeypatch):
+    """Test Usage: block detection and path validation."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    # Valid Usage:
+    (tmp_path / "valid.py").write_text(
+        '"""\nUsage: python3 valid.py\n"""\ndef f(): pass\n', encoding="utf-8"
+    )
+
+    # Invalid Usage (references non-existent file):
+    (tmp_path / "invalid.py").write_text(
+        '"""\nUsage: python3 missing.py\n"""\ndef f(): pass\n', encoding="utf-8"
+    )
+
+    errors = quality_check.check_usage_blocks()
+    assert len(errors) == 1
+    assert "missing.py" in errors[0]
+
+
+def test_quality_check_index_rst_toctree_complex(tmp_path, monkeypatch):
+    """Test toctree path parsing with angle brackets."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    doc_dir = tmp_path / "doc"
+    doc_dir.mkdir()
+    index_rst = doc_dir / "index.rst"
+
+    # entry: [Title <target_path>] with exactly 3 space indentation
+    index_rst.write_text(
+        ".. toctree::\n\n   Label <valid_target>\n   Label <missing_target>\n",
+        encoding="utf-8",
+    )
+    (doc_dir / "valid_target.rst").touch()
+
+    errors = quality_check.check_index_rst_toctree()
+    assert len(errors) == 1
+    assert "missing_target" in errors[0]
+
+
+def test_check_links_advanced(tmp_path, monkeypatch):
+    """Test check_links.py internal link logic for {ref} and .html mapping."""
+    monkeypatch.setattr(check_links, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(check_links, "DOC_DIR", tmp_path / "doc")
+    doc_dir = tmp_path / "doc"
+    doc_dir.mkdir()
+
+    # 1. Test MyST {ref} logic (line 104-108)
+    (doc_dir / "file1.md").write_text(
+        "(target1)=\n{ref}`target1` {ref}`missing`", encoding="utf-8"
+    )
+    # 2. Test .html to .md mapping (line 131-139)
+    (doc_dir / "source.md").write_text(
+        "[HTML Link](target.html#anchor)", encoding="utf-8"
+    )
+    (doc_dir / "target.md").write_text("(anchor)=", encoding="utf-8")
+
+    with patch("sys.argv", ["check_links.py"]):
+        with patch("sys.exit") as mock_exit:
+            check_links.main()
+            # Should exit because of 'missing' ref
+            mock_exit.assert_called_with(1)
+
+
+def test_build_dist_io_errors(tmp_path, monkeypatch):
+    """Test I/O error handling in build_dist.py (shutil failure)."""
+    from release import build_dist
+
+    (tmp_path / "pyproject.toml").touch()
+    (tmp_path / "README_dist.md").touch()
+    monkeypatch.chdir(tmp_path)
+
+    # Use a side_effect for rmtree to simulate PermissionError
+    with patch("shutil.rmtree", side_effect=PermissionError("Mocked Permission Error")):
+        # Mock subprocess.run to avoid running real build
+        with patch("subprocess.run", return_value=MagicMock(returncode=0)):
+            with patch("sys.argv", ["build_dist.py"]):
+                with patch("sys.exit") as mock_exit:
+                    build_dist.main()
+                    mock_exit.assert_called()
+
+
+def test_compute_readability_no_vale(tmp_path, monkeypatch):
+    """Test compute_readability.py failure path when vale fails."""
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "test.md").touch()
+
+    # Mock subprocess.run to raise CalledProcessError (line 34-36)
+    from subprocess import CalledProcessError
+
+    err = CalledProcessError(2, "vale")
+    with patch("subprocess.run", side_effect=err):
+        with patch("sys.argv", ["compute_readability.py", "Test", "test.md"]):
+            compute_readability.main()
+
+    # Test usage error (line 91-92)
+    monkeypatch.setattr(sys, "argv", ["compute_readability.py"])
+    with pytest.raises(SystemExit):
+        compute_readability.main()
+
+
+def test_build_dist_complex(tmp_path, monkeypatch):
+    """Test build_dist.py edge cases: missing pyproject, and failures."""
+    from release import build_dist
+
+    # 1. Missing pyproject.toml (line 66-71)
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["build_dist.py"])
+    with pytest.raises(SystemExit):
+        build_dist.main()
+
+    # 2. .egg-info cleanup (line 44)
+    (tmp_path / "pyproject.toml").touch()
+    (tmp_path / "README_dist.md").touch()
+    (tmp_path / "test.egg-info").mkdir()
+    # We must ensure build_dist.Path.glob picks it up
+    with patch("release.build_dist.Path.glob", return_value=[Path("test.egg-info")]):
+        with patch("shutil.rmtree") as mock_rm:
+            # Mock build_dist to avoid FileNotFoundError in complex tests
+            with patch("release.build_dist.run_command"):
+                with patch("shutil.move"):
+                    with patch("shutil.copy"):
+                        with patch("pathlib.Path.unlink"):
+                            with patch(
+                                "tempfile.mkstemp", return_value=(99, "temp.md")
+                            ):
+                                with patch("os.close"):
+                                    build_dist.main()
+                                    # Should have called rmtree on the egg-info
+                                    assert any(
+                                        "test.egg-info" in str(c)
+                                        for c in mock_rm.call_args_list
+                                    )
+
+    # 3. Build failure with --keep-on-fail (line 102-110)
+    # Mock build_dist.run_command to simulate failure
+    monkeypatch.setattr(sys, "argv", ["build_dist.py", "--keep-on-fail"])
+    with patch("release.build_dist.run_command", side_effect=[None, SystemExit(1)]):
+        with patch("shutil.move"):
+            with patch("shutil.copy"):
+                with patch("pathlib.Path.unlink"):
+                    with pytest.raises(SystemExit):
+                        build_dist.main()
+
+
+def test_quality_check_vulnerabilities(tmp_path, monkeypatch):
+    """Test quality_check early return and exclusion logic."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    # 1. Missing conf.py (early return in check_conf_types)
+    assert not quality_check.check_conf_types()
+
+    # 2. Orthography exclusions (references_vol.md should be ignored)
+    (tmp_path / "references_vol1.md").write_text("analyse\n", encoding="utf-8")
+    assert not quality_check.check_orthography()
+
+    # 3. AST SyntaxError coverage
+    (tmp_path / "bad_syntax.py").write_text("invalid syntax @@@\n", encoding="utf-8")
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    # check_docstring_links should just skip the file or continue
+    _ = quality_check.check_docstring_links()

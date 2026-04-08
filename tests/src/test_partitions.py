@@ -220,3 +220,32 @@ def test_eq_caps_even_collars():
     # even_collars with odd N should raise ValueError
     with pytest.raises(ValueError):
         eq_caps(2, 9, even_collars=True)
+
+
+def test_high_dim_partitions():
+    """Verify that recursive partitioning works for Higher Dimensions (S^4, S^5)."""
+    # S^4 (dim=4, R^5)
+    dim = 4
+    N = 10
+    points_x = partitions.eq_point_set(dim, N)
+    assert points_x.shape == (dim + 1, N)
+    assert_allclose(np.linalg.norm(points_x, axis=0), 1.0, atol=1e-10)
+
+    # S^5 (dim=5, R^6)
+    dim = 5
+    N = 12
+    points_x = partitions.eq_point_set(dim, N)
+    assert points_x.shape == (dim + 1, N)
+    assert_allclose(np.linalg.norm(points_x, axis=0), 1.0, atol=1e-10)
+
+
+def test_high_dim_regions():
+    """Verify that regions are correctly bounded for Higher Dimensions (S^4)."""
+    dim = 4
+    N = 6
+    regions = partitions.eq_regions(dim, N)
+    # Shape: (dim, 2, N)
+    assert regions.shape == (dim, 2, N)
+    # Co-latitudes (last row) must be in [0, pi]
+    assert np.all(regions[-1, 0, :] >= 0)
+    assert np.all(regions[-1, 1, :] <= pi + 1e-10)

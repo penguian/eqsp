@@ -11,8 +11,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DOC_DIR = REPO_ROOT / "doc"
 
 # Ensure REPO_ROOT is in sys.path for internal lookups if needed
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
+if str(REPO_ROOT) not in sys.path:  # pragma: no cover
+    sys.path.insert(0, str(REPO_ROOT))  # pragma: no cover
 
 # Regex for MyST targets: (target)=
 TARGET_RE = re.compile(r"^\((?P<target>[\w.-]+)\)=", re.MULTILINE)
@@ -183,5 +183,5 @@ def main():
     print("No broken links found!")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

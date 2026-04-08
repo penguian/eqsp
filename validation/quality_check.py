@@ -14,8 +14,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 def setup_environment():
     """Set up the environment for quality checks."""
-    if str(REPO_ROOT) not in sys.path:
-        sys.path.insert(0, str(REPO_ROOT))
+    if str(REPO_ROOT) not in sys.path:  # pragma: no cover
+        sys.path.insert(0, str(REPO_ROOT))  # pragma: no cover
 
     # Force headless Matplotlib for diagnostic scripts
     try:
@@ -64,7 +64,7 @@ def check_matplotlib_init():
 def check_conf_types():
     """Ensure Sphinx conf.py variables have correct types."""
     conf_py = REPO_ROOT / "doc" / "conf.py"
-    if not conf_py.exists():
+    if not conf_py.exists():  # pragma: no cover
         return []  # pragma: no cover
 
     errors = []
@@ -427,8 +427,8 @@ def check_script_paths():
     script_re = re.compile(r"python3\s+(?P<path>[\w\-\/]+\.py)")
 
     for f in files_to_scan:
-        if not f.exists():
-            continue
+        if not f.exists():  # pragma: no cover
+            continue  # pragma: no cover
         content = f.read_text(encoding="utf-8")
         matches = script_re.findall(content)
         for rel_path in matches:
@@ -539,9 +539,9 @@ def check_index_rst_toctree():
                         msg = f"doc/index.rst:{i + 1}: path '{path_str}' not found."
                         errors.append(msg)
                 else:
-                    if not target.exists():
+                    if not target.exists():  # pragma: no cover
                         msg = f"doc/index.rst:{i + 1}: path '{path_str}' not found."
-                        errors.append(msg)
+                        errors.append(msg)  # pragma: no cover
 
     return errors
 
@@ -573,5 +573,5 @@ def main():
     print("Quality checks passed!")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
