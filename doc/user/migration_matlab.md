@@ -150,9 +150,7 @@ The package is organized into logical modules:
 *   `eqsp.illustrations`: 2D Matplotlib plotting and algorithm diagrams.
 *   `eqsp.visualizations`: 3D Mayavi visualizations (optional dependency).
 
-## Quick Reference: Function Name Mapping
 
-Most core functions keep their names. The main differences are in coordinate conversion utilities and illustration functions.
 
 ## Key Features of PyEQSP
 
