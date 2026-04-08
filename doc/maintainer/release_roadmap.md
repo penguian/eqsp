@@ -50,8 +50,9 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Higher-Dimension Robustness**: Verified recursive partitioning for $S^4$ and $S^5$, ensuring coordinate bounds and unit-norm properties hold for $dim \ge 4$.
 - [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox (Conversation 86f21121). Implemented binary scaling (1-2-5) for symmetric benchmarks.
 - [x] **Equatorial Symmetry Expansion**: Formalized `even_collars` support across the entire public API (including `eq_find_s2_region`).
-- [x] **Verification Hardening**: Implemented automated Pylint `init-hook` resolution in `verify_all.py` to ensure reliable auditing of specialized source roots.
-- [x] **Release Tooling Fix**: Corrected the SourceForge project name in `release/upload_sourceforge.py` and verified `scp` deployment steps.
+- [x] **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
+- [x] **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
+- [x] **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in and added `os.pathsep` portability.
 - [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
 ### 1.0 General Release [PLANNED]

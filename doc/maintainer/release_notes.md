@@ -12,7 +12,12 @@ Release **0.99.9** achieves **100% project-wide coverage** across both the core 
 - **Symmetric Benchmark Suite**: Added a full suite of even-collar benchmark runners (`run_benchmarks_even.py`) with 1-2-5 logarithmic scaling to verify performance parity.
 - **Robustness Testing**: Extended formalized testing to higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
 - **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
-- **Verification Infrastructure**: Hardened `validation/verify_all.py` with explicit Pylint `init-hook` support for specialized source roots, ensuring reliable project-wide audits.
+- **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
+- **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
+- **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in.
+- **Verification Suite**: Integrated the unified `verify_all.py` script and benchmark suite.
+- **100% Coverage**: Reached 100% functional coverage across all maintenance and release tools.
+- **Release Metadata Sync**: Updated versioning and copyright dates for the 1.0 release.
 
 ### Release Metadata
 - **Version**: 0.99.9
