@@ -16,4 +16,4 @@ You MUST NEVER execute `git commit` or `git push` on behalf of the user. Version
 - Providing specific `git commit` commands in your response for the user to execute manually.
 
 ## Mandatory Check
-Before performing any technical task, you MUST check the `.antigravityrules` file in the root directory for any task-specific or project-wide constraints.
+Before performing any technical task, you MUST check if an `.antigravityrules` file exists in the root directory. If it does, follow any task-specific or project-wide constraints defined within it.
