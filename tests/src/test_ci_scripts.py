@@ -551,6 +551,64 @@ def test_upload_release_diagnostics(monkeypatch):
             )
 
 
+def test_upload_release_full_failure(tmp_path, monkeypatch):
+    """Test the main() failure path specifically to remove pragma: no cover."""
+    from release import upload_release
+
+    # Setup environment
+    (tmp_path / "pyproject.toml").touch()
+    (tmp_path / "dist").mkdir()
+    (tmp_path / "dist" / "pkg-0.1.tar.gz").touch()
+    monkeypatch.chdir(tmp_path)
+
+    # 1. Mock credentials (pretend we have them)
+    with patch("release.upload_release.check_credentials"):
+        # 2. Mock build cycle success
+        with patch("subprocess.run") as mock_run:
+
+            def side_effect(cmd, **kwargs):
+                if "build_dist.py" in str(cmd):
+                    return MagicMock(returncode=0)
+                # Fail on twine upload
+                if "twine" in str(cmd) and "upload" in str(cmd):
+                    return MagicMock(returncode=1, stderr="Authentication Failure")
+                return MagicMock(returncode=0)
+
+            mock_run.side_effect = side_effect
+
+            with patch("sys.argv", ["upload_release.py", "--testpypi"]):
+                with patch("sys.exit") as mock_exit:
+                    upload_release.main()
+                    # Should call sys.exit with the returncode 1
+                    mock_exit.assert_called_with(1)
+
+
+def test_upload_release_internal_failures(tmp_path, monkeypatch):
+    """Test build failure and missing dist files in upload_release.py."""
+    from release import upload_release
+
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "pyproject.toml").touch()
+
+    # 1. Test build failure (lines 88-92)
+    with patch("release.upload_release.check_credentials"):
+        with patch("subprocess.run", return_value=MagicMock(returncode=1)):
+            with patch("sys.argv", ["upload_release.py", "--pypi"]):
+                with patch("sys.exit") as mock_exit:
+                    upload_release.main()
+                    mock_exit.assert_called_with(1)
+
+    # 2. Test missing dist files (lines 99-100)
+    with patch("release.upload_release.check_credentials"):
+        with patch("subprocess.run", return_value=MagicMock(returncode=0)):
+            # Ensure dist/ is empty
+            with patch("pathlib.Path.glob", return_value=[]):
+                with patch("sys.argv", ["upload_release.py", "--testpypi"]):
+                    with patch("sys.exit") as mock_exit:
+                        upload_release.main()
+                        mock_exit.assert_called_with(1)
+
+
 def test_quality_check_usage_blocks(tmp_path, monkeypatch):
     """Test Usage: block detection and path validation."""
     monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)

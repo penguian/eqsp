@@ -111,7 +111,7 @@ def main():
     if upload_process.returncode == 0:
         print(upload_process.stdout)
         print("✓ Upload successful!")
-    else:  # pragma: no cover
+    else:
         print_structured_diagnostic(upload_process.stderr)
         sys.exit(upload_process.returncode)
 
