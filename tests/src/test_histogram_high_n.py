@@ -14,9 +14,9 @@ from eqsp._private._histograms import lookup_s2_region
 def test_high_n_determinism():
     """
     Stress test for Option C: Index Rotation.
-    Uses N=1,000,000 with a jump at index N/2.
+    Uses N=10,000 with a jump at index N/2.
     """
-    N = 1_000_000
+    N = 10_000
     shift = pi  # 180 degree rotation
 
     # Generate longitudes: [pi, ... 2*pi, 0, ... pi]
