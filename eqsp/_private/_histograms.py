@@ -31,7 +31,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
 
     See Also
     --------
-    eq_regions, eq_caps, numpy.cumsum, lookup_table
+    eq_regions, eq_caps, numpy.cumsum, numpy.searchsorted
 
     Notes
     -----
