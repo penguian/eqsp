@@ -127,6 +127,7 @@ def check_doc_functions():
     docs_to_check = list((REPO_ROOT / "doc").rglob("*.md"))
     docs_to_check.extend((REPO_ROOT / "doc").rglob("*.rst"))
     docs_to_check.append(REPO_ROOT / "README.md")
+    docs_to_check.append(REPO_ROOT / "paper.md")
 
     # Regex for eqsp.function_name
     # Handle optional RST backslash escape for underscores: eqsp.region\_props
@@ -174,6 +175,8 @@ def check_doc_shapes():
     """
     errors = []
     docs_to_check = list((REPO_ROOT / "doc").rglob("*.md"))
+    docs_to_check.append(REPO_ROOT / "README.md")
+    docs_to_check.append(REPO_ROOT / "paper.md")
 
     # Regex for (1000, 3) or (N, 3) which is usually an error in PyEQSP
     wrong_shape_re = re.compile(r"\(N,\s*[234]\)|\(\d+,\s*[234]\)")
