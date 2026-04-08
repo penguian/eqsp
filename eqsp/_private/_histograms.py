@@ -73,8 +73,8 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
         )
 
     # cap_bound_lats: the end colatitude of each cap band
-    all_ends_lat = np.round(s_regions[1, 1, :], 12)
-    cap_bound_lats, c_start_indices = np.unique(all_ends_lat, return_index=True)
+    cap_bound_lats = np.round(s_cap, 12)
+    c_start_indices = np.concatenate(([0], c_regions[:-1]))
 
     n_points = s_point.shape[1]
     r_idx = np.zeros(n_points, dtype=int)
