@@ -24,40 +24,41 @@ The Python benchmark suite now matches the MATLAB EQSP Toolbox by using **1-2-5 
 Additionally, each script now performs a **Scaling Analysis** by calculating the best-fitting power $x$ in $O(N^x)$ using a log-log regression. This automatically verifies that the implementation follows its theoretical complexity (e.g., $O(N \log N)$ for spatial lookups).
 
 ### Configurable Runs
-Both runners share the same set of flags to configure the benchmark run:
 
-```bash
-# Quick sanity check with small problem size
-python3 benchmarks/run_benchmarks.py --n-max 500
-
-# High-dimensional benchmark
-python3 benchmarks/run_benchmarks.py --dim 4
-
-# Specific partition size for histogram lookups
-python3 benchmarks/run_benchmarks.py --regions 100000
-```
+The top-level runners (`run_benchmarks.py` and `run_benchmarks_even.py`) support a subset of common configuration flags:
 
 | Flag | Description | Default |
 | :--- | :--- | :--- |
 | `--results-dir` | Directory to save log files. | `benchmarks/results` |
 | `--n-max` | Scales the problem size for all benchmarks. | Varied (see below) |
-| `--dim` | Sphere dimension for partitioning and mathematics. | 2 |
 | `--regions` | Number of regions in the partition for histogram lookups. | 1000 |
 | `--s` | Exponent for the Riesz energy calculation. | `dim - 1` |
 
-### Default Scales (`--n-max` overrides)
-- **`eq_area_error`**: `n-max=100,000,000`
-- **`point_set_energy_dist`**: `n-max=50,000`
-- **`sradius_of_cap`**: `n-max=10,000,000` *(standard runner only)*
-- **`eq_regions`**: `n-max=100,000,000`
-- **`eq_min_dist`**: `n-max=10,000,000`
-- **`eq_find_s2_region`**: `n-max=10,000,000`
+**Note:** To run benchmarks for specific dimensions or other advanced parameters, use the individual scripts in `benchmarks/src/` directly.
+
+```bash
+# Example: High-dimensional benchmark for recursive partitioning
+python3 benchmarks/src/benchmark_eq_regions.py --dim 4 --n-max 1000000
+
+# Example: Symmetric min-distance benchmark on S^2
+python3 benchmarks/src/benchmark_mindist.py --dim 2 --even-collars
+```
+
+### Default Scales and Dimensions (`--n-max` overrides)
+The benchmark suite uses different default dimensions and problem sizes depending on the mathematical property being tested:
+
+- **`eq_area_error`**: `n-max=100,000,000`, **dim=2** ($S^2$)
+- **`point_set_energy_dist`**: `n-max=50,000`, **dim=2** ($S^2$)
+- **`sradius_of_cap`**: `n-max=10,000,000`, **dim=3** ($S^3$) *(standard runner only)*
+- **`eq_regions`**: `n-max=100,000,000`, **dim=2** ($S^2$)
+- **`eq_min_dist`**: `n-max=10,000,000`, **dim=2** ($S^2$)
+- **`eq_find_s2_region`**: `n-max=10,000,000`, **dim=2** ($S^2$)
 
 ## Benchmark Categories
 
 1.  **`eq_area_error`**: Measures the time to calculate area errors for a range of partition sizes. This captures $O(N)$ recurrence overhead.
 2.  **`point_set_energy_dist`**: Measures energy and distance calculations. This captures the optimized block-based summation performance.
-3.  **`sradius_of_cap`** *(standard runner only)*: Benchmarks the root-finding logic used for spherical cap calculations.
+3.  **`sradius_of_cap`** *(standard runner only)*: Benchmarks the root-finding logic used for spherical cap calculations. Defaults to **$S^3$** to exercise higher-dimensional root finding.
 4.  **`eq_regions`**: Measures the overhead of the Python loop used in recursive partitioning.
 5.  **`eq_min_dist`**: Measures the performance of the structure-aware min-distance calculation.
 6.  **`eq_find_s2_region`**: Measures the performance of the vectorized histogram-based region lookup on $S^2$.

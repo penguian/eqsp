@@ -6,15 +6,15 @@ This guide provides a technical bridge for users transitioning from the original
 
 The following benchmark demonstrates the significant performance improvements in the Python implementation when executed on the same hardware (**AMD Ryzen 7 8840HS**, 2.4 GHz).
 
-| Operation | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
-| :--- | :--- | :---: | :---: | :---: |
-| **`eq_area_error`** | 1,000,000 | 0.247 | 0.099 | **2.5x** |
-| **`sradius_of_cap`** | 1,000,000 | 35.906 | 0.362 | **99x** |
-| **`eq_find_s2_region`** | 2,000,000 | 28.322 | 0.220 | **129x** |
-| **`eq_min_dist`** | 50,000 | 23.877 | 0.068 | **350x** |
-| **`eq_energy_dist`** | 10,000 | 1.504 | 0.437 | **3.4x** |
+| Operation | Dimension | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
+| :--- | :---: | :--- | :---: | :---: | :---: |
+| **`eq_area_error`** | $S^2$ | 1,000,000 | 0.247 | 0.099 | **2.5x** |
+| **`sradius_of_cap`** | $S^3$ | 1,000,000 | 35.906 | 0.362 | **99x** |
+| **`eq_find_s2_region`** | $S^2$ | 2,000,000 | 28.322 | 0.220 | **129x** |
+| **`eq_min_dist`** | $S^2$ | 50,000 | 23.877 | 0.068 | **350x** |
+| **`eq_energy_dist`** | $S^2$ | 10,000 | 1.504 | 0.437 | **3.4x** |
 
-> **Note:** The dramatic speedups in `sradius_of_cap` and `eq_min_dist` are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
+> **Note:** The dramatic speedups in `sradius_of_cap` (benchmarked on $S^3$) and `eq_min_dist` (benchmarked on $S^2$) are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
 
 ## Performance Features & Optimizations
 
