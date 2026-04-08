@@ -50,8 +50,8 @@ def test_lookup_s2_region_vectorization_fidelity():
     all_points = np.hstack((random_points, cap_points, long_points))
 
     # 1. Run the reference Translated Domain logic
-    all_ends_lat = np.round(s_regions[1, 1, :], 12)
-    cap_bound_lats, c_starts = np.unique(all_ends_lat, return_index=True)
+    cap_bound_lats = np.round(s_cap, 12)
+    c_starts = np.concatenate(([0], c_regions[:-1]))
     n_detection = len(cap_bound_lats)
 
     r_idx_original = np.zeros(all_points.shape[1], dtype=int)

@@ -54,6 +54,8 @@ def perform_benchmark(label, timing_func, n_values, description="N"):
 def run_area_error(n_max, dim=2, even_collars=False):
     """Runner for eq_area_error benchmark."""
     n_values = generate_125_sequence(n_max)
+    if len(n_values) == 0:
+        return
     # Warm-up
     for n_warm in [10, 20, 50]:
         eq_area_error(dim, [n_warm], even_collars=even_collars)
@@ -66,6 +68,8 @@ def run_area_error(n_max, dim=2, even_collars=False):
 def run_eq_regions(n_max, dim=2, even_collars=False):
     """Runner for eq_regions benchmark."""
     n_values = generate_125_sequence(n_max)
+    if len(n_values) == 0:
+        return
     # Warm-up
     for n_warm in [10, 20, 50]:
         eq_regions(dim, int(n_warm), even_collars=even_collars)
@@ -78,6 +82,8 @@ def run_eq_regions(n_max, dim=2, even_collars=False):
 def run_histograms(n_max, n_regions=1000, even_collars=False):
     """Runner for eq_find_s2_region benchmark."""
     n_values = generate_125_sequence(n_max)
+    if len(n_values) == 0:
+        return
     # Warm-up
     for n_warm in [10, 20, 50]:
         test_points = eq_point_set_polar(2, int(n_warm))
@@ -95,6 +101,8 @@ def run_histograms(n_max, n_regions=1000, even_collars=False):
 def run_sradius(n_max, dim=3, _even_collars=False):
     """Runner for sradius_of_cap benchmark (ignores even_collars)."""
     n_values = generate_125_sequence(n_max)
+    if len(n_values) == 0:
+        return
     max_area = area_of_sphere(dim)
     # Warm-up
     for n_warm in [10, 20, 50]:
@@ -110,6 +118,8 @@ def run_sradius(n_max, dim=3, _even_collars=False):
 def run_mindist(n_max, dim=2, even_collars=False):
     """Runner for eq_min_dist benchmark."""
     n_values = generate_125_sequence(n_max)
+    if len(n_values) == 0:
+        return
     # Warm-up
     for n_warm in [10, 20, 50]:
         eq_min_dist(dim, int(n_warm), even_collars=even_collars)
@@ -122,6 +132,8 @@ def run_mindist(n_max, dim=2, even_collars=False):
 def run_energy_dist(n_max, dim=2, s=None, even_collars=False):
     """Runner for point_set_energy_dist benchmark."""
     n_values = generate_125_sequence(n_max)
+    if len(n_values) == 0:
+        return
     # Warm-up
     for n_warm in [10, 20, 50]:
         eq_energy_dist(dim, int(n_warm), s=s, even_collars=even_collars)
