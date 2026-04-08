@@ -14,6 +14,8 @@ from eqsp.utilities import area_of_sphere, sradius_of_cap
 
 def generate_125_sequence(n_max):
     """Generate 1-2-5 logarithmic sequence: 10, 20, 50, 100..."""
+    if n_max < 10:
+        return np.array([max(1, int(n_max))])
     v = np.array([1, 2, 5])
     p = np.arange(0, int(np.ceil(np.log10(n_max))) + 1)
     vals = (v[:, None] * (10**p)).flatten()
@@ -23,6 +25,9 @@ def generate_125_sequence(n_max):
 
 def perform_benchmark(label, timing_func, n_values, description="N"):
     """Standardized performance benchmark loop with scaling analysis."""
+    if len(n_values) == 0:
+        print(f"{label:<15} | No values to benchmark")
+        return
     print(f"{label:<15} | {'Time (s)':>10}")
     print("-" * 28)
 
