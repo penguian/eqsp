@@ -134,16 +134,19 @@ The `benchmarks/` directory contains scripts to verify the algorithmic complexit
 ### Running the Suite
 To run all system benchmarks and generate a summary report:
 ```bash
+# Standard partitions
 python3 benchmarks/run_benchmarks.py
 
-# Benchmark symmetric partitions
-python3 benchmarks/run_benchmarks.py --even-collars
+# Symmetric (even-collar) partitions
+python3 benchmarks/run_benchmarks_even.py
 ```
 
 ### Results and Logging
 The runner saves individual results for each benchmark in a standardized format:
-- **Main Summary**: `benchmarks/results/run_benchmarks.log`
-- **Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
+- **Standard Summary**: `benchmarks/results/run_benchmarks.log`
+- **Symmetric Summary**: `benchmarks/results/run_benchmarks_even.log`
+- **Standard Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
+- **Symmetric Individual Logs**: `benchmarks/results/benchmark_*_even.log` (e.g., `benchmark_eq_regions_even.log`)
 
 ### Thesis Benchmark (Section 3.10.2)
 The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behaviour.

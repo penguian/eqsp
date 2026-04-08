@@ -24,7 +24,7 @@ The Python benchmark suite now matches the MATLAB EQSP Toolbox by using **1-2-5 
 Additionally, each script now performs a **Scaling Analysis** by calculating the best-fitting power $x$ in $O(N^x)$ using a log-log regression. This automatically verifies that the implementation follows its theoretical complexity (e.g., $O(N \log N)$ for spatial lookups).
 
 ### Configurable Runs
-The runner supports many flags to configure the benchmark run:
+Both runners share the same set of flags to configure the benchmark run:
 
 ```bash
 # Quick sanity check with small problem size
@@ -35,9 +35,6 @@ python3 benchmarks/run_benchmarks.py --dim 4
 
 # Specific partition size for histogram lookups
 python3 benchmarks/run_benchmarks.py --regions 100000
-
-# Benchmark symmetric partitions (forces even number of collars)
-python3 benchmarks/run_benchmarks.py --even-collars
 ```
 
 | Flag | Description | Default |
@@ -47,12 +44,11 @@ python3 benchmarks/run_benchmarks.py --even-collars
 | `--dim` | Sphere dimension for partitioning and mathematics. | 2 |
 | `--regions` | Number of regions in the partition for histogram lookups. | 1000 |
 | `--s` | Exponent for the Riesz energy calculation. | `dim - 1` |
-| `--even-collars` | Force an even number of collars (symmetric partitions). | `False` |
 
 ### Default Scales (`--n-max` overrides)
 - **`eq_area_error`**: `n-max=100,000,000`
 - **`point_set_energy_dist`**: `n-max=50,000`
-- **`sradius_of_cap`**: `n-max=10,000,000`
+- **`sradius_of_cap`**: `n-max=10,000,000` *(standard runner only)*
 - **`eq_regions`**: `n-max=100,000,000`
 - **`eq_min_dist`**: `n-max=10,000,000`
 - **`eq_find_s2_region`**: `n-max=10,000,000`
@@ -61,7 +57,7 @@ python3 benchmarks/run_benchmarks.py --even-collars
 
 1.  **`eq_area_error`**: Measures the time to calculate area errors for a range of partition sizes. This captures $O(N)$ recurrence overhead.
 2.  **`point_set_energy_dist`**: Measures energy and distance calculations. This captures the optimized block-based summation performance.
-3.  **`sradius_of_cap`**: Benchmarks the root-finding logic used for spherical cap calculations.
+3.  **`sradius_of_cap`** *(standard runner only)*: Benchmarks the root-finding logic used for spherical cap calculations.
 4.  **`eq_regions`**: Measures the overhead of the Python loop used in recursive partitioning.
 5.  **`eq_min_dist`**: Measures the performance of the structure-aware min-distance calculation.
 6.  **`eq_find_s2_region`**: Measures the performance of the vectorized histogram-based region lookup on $S^2$.
@@ -85,8 +81,8 @@ This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.
 Benchmarks are printed to the console and also saved as individual log files in `benchmarks/results/`.
 
 ### Log Naming Convention
-- **Standard Runs**: Logs are saved as `benchmark_[name].log`.
-- **Symmetric Runs (`--even-collars`)**: Logs are saved with an `_even` suffix (e.g., `benchmark_eq_regions_even.log`).
+- **Standard Runs** (`run_benchmarks.py`): Individual logs are saved as `benchmark_[name].log`; the summary log is `run_benchmarks.log`.
+- **Symmetric Runs** (`run_benchmarks_even.py`): Individual logs are saved with an `_even` suffix (e.g., `benchmark_eq_regions_even.log`); the summary log is `run_benchmarks_even.log`.
 
 ### Warm-up Phases
 To minimize variability from JIT/caching effects, each benchmark task includes an initial un-timed **warm-up call**. This ensures that subsequent measurements represent steady-state performance.
