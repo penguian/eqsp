@@ -161,6 +161,7 @@ def main():
                 py,
                 "-m",
                 "pylint",
+                "--init-hook=import sys; sys.path.extend(['.', 'benchmarks/src'])",
                 "eqsp",
                 "tests",
                 "examples/phd-thesis",
