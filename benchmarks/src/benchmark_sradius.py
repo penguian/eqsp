@@ -8,19 +8,16 @@ from benchmark_core import run_sradius
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Benchmark for sradius.")
     parser.add_argument(
-        "--dim", type=int, default=3, help="Dimension of the sphere S^dim (default: 3)."
+        "--dim",
+        type=int,
+        default=3,
+        help="Sphere manifold dimension d (e.g., S^d) (default: 3).",
     )
     parser.add_argument(
         "--n-max",
         type=int,
         default=10000000,
-        help="Total points to evaluate (default: 10,000,000).",
-    )
-    parser.add_argument(
-        "--even-collars",
-        action="store_true",
-        default=False,
-        help="Use even number of collars for symmetric partitions.",
+        help="Maximum value for N (default: 10^7).",
     )
     args = parser.parse_args()
-    run_sradius(dim=args.dim, n_max=args.n_max, _even_collars=args.even_collars)
+    run_sradius(args.n_max, dim=args.dim)

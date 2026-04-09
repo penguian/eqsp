@@ -67,7 +67,7 @@ def run_benchmark(
     except subprocess.CalledProcessError as e:
         print(f"Error: Benchmark {name} failed with exit code {e.returncode}")
         print(e.stderr)
-        return 0
+        raise
 
 
 def main():
@@ -92,6 +92,11 @@ def main():
         type=str,
         help="Directory to save log files (default: benchmarks/results).",
     )
+    parser.add_argument(
+        "--even-collars",
+        action="store_true",
+        help="Force symmetric partitions with an even number of collars.",
+    )
 
     args = parser.parse_args()
 
@@ -115,9 +120,9 @@ def main():
     else:
         env["PYTHONPATH"] = root_dir
 
-    # Standard run: no even-collar forcing
-    suffix = ""
-    even_args: list[str] = []
+    # Standard vs Symmetric run
+    suffix = "_even" if args.even_collars else ""
+    even_args: list[str] = ["--even-collars"] if args.even_collars else []
 
     # Define benchmarks and their arguments
     benchmarks = [
@@ -170,6 +175,15 @@ def main():
         ),
     ]
 
+    # Histogram benchmark DOES support --even-collars in some versions,
+    # let's add it if requested.
+    if args.even_collars and benchmarks[2][0] == "eq_find_s2_region":
+        benchmarks[2][2].append("--even-collars")
+
+    if args.even_collars:
+        # sradius_of_cap benchmark does not use an --even-collars argument
+        benchmarks = [b for b in benchmarks if b[0] != "sradius_of_cap"]
+
     # Main log file for the run
     main_log_file = os.path.join(results_dir, f"run_benchmarks{suffix}.log")
 
@@ -182,22 +196,31 @@ def main():
         print(f"Software: Python {sys.version.split()[0]}\n")
 
         t_start = time.perf_counter()
+        failed_benchmarks = []
 
         for name, script, extra_args in benchmarks:
-            run_benchmark(
-                name,
-                script,
-                extra_args=extra_args,
-                env=env,
-                results_dir=results_dir,
-                base_dir=base_dir,
-                log_suffix=suffix,
-            )
+            try:
+                run_benchmark(
+                    name,
+                    script,
+                    extra_args=extra_args,
+                    env=env,
+                    results_dir=results_dir,
+                    base_dir=base_dir,
+                    log_suffix=suffix,
+                )
+            except subprocess.CalledProcessError:
+                failed_benchmarks.append(name)
 
         t_end = time.perf_counter()
         print("\n=======================================")
         print(f"Total benchmark time: {t_end - t_start:.2f} seconds")
+        if failed_benchmarks:
+            print(f"FAILED: {', '.join(failed_benchmarks)}")
         print("=======================================")
+
+    if failed_benchmarks:
+        sys.exit(1)
 
     print(f"\nResults saved to {main_log_file}")
 

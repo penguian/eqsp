@@ -15,7 +15,7 @@ python3 benchmarks/run_benchmarks.py
 To run the benchmark suite specifically for symmetric partitions (forcing an even number of collars):
 
 ```bash
-python3 benchmarks/run_benchmarks_even.py
+python3 benchmarks/run_benchmarks.py --even-collars
 ```
 
 ### Logarithmic Sampling & Scaling
@@ -25,7 +25,7 @@ Additionally, each script now performs a **Scaling Analysis** by calculating the
 
 ### Configurable Runs
 
-The top-level runners (`run_benchmarks.py` and `run_benchmarks_even.py`) support a subset of common configuration flags:
+The top-level runner (`run_benchmarks.py`) supports a subset of common configuration flags:
 
 | Flag | Description | Default |
 | :--- | :--- | :--- |
@@ -82,8 +82,8 @@ This script generates high-fidelity timing data to verify the $O(\mathcal{N}^{0.
 Benchmarks are printed to the console and also saved as individual log files in `benchmarks/results/`.
 
 ### Log Naming Convention
-- **Standard Runs** (`run_benchmarks.py`): Individual logs are saved as `benchmark_[name].log`; the summary log is `run_benchmarks.log`.
-- **Symmetric Runs** (`run_benchmarks_even.py`): Individual logs are saved with an `_even` suffix (e.g., `benchmark_eq_regions_even.log`); the summary log is `run_benchmarks_even.log`.
+- **Standard Runs** (`run_benchmarks.py` without flags): Individual logs are saved as `benchmark_[name].log`; the summary log is `run_benchmarks.log`.
+- **Symmetric Runs** (`run_benchmarks.py --even-collars`): Individual logs are saved with an `_even` suffix (e.g., `benchmark_eq_regions_even.log`); the summary log is `run_benchmarks_even.log`.
 
 ### Warm-up Phases
 To minimize variability from JIT/caching effects, each benchmark task includes an initial un-timed **warm-up call**. This ensures that subsequent measurements represent steady-state performance.
