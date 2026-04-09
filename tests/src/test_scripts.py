@@ -7,6 +7,8 @@ import os
 import sys
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 # Update sys.path to import from the root module without installing
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
@@ -16,6 +18,13 @@ from release import pypi_readme_fix as readme_fix  # noqa: E402
 
 def test_pypi_readme_fix(tmp_path, monkeypatch):
     """Test generating a README with absolute PyPI links."""
+    monkeypatch.chdir(tmp_path)
+
+    # Test missing file error path
+    with pytest.raises(SystemExit) as excinfo:
+        readme_fix.main()
+    assert excinfo.value.code == 1
+
     # Mock files
     readme_md = tmp_path / "README.md"
 

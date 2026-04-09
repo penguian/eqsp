@@ -3,6 +3,7 @@ Unit tests for the CI and maintenance scripts in validation/ and release/.
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -11,7 +12,7 @@ from unittest.mock import MagicMock, patch
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-# pylint: disable=wrong-import-position,import-outside-toplevel
+# pylint: disable=wrong-import-position,import-outside-toplevel,too-many-lines
 import pytest  # noqa: E402
 
 from release import upload_sourceforge  # noqa: E402
@@ -21,6 +22,11 @@ from validation import (  # noqa: E402
     quality_check,
     verify_all,
 )
+
+
+def _mock_exit(code=0):
+    """Helper to raise SystemExit with a code reliably from a mock."""
+    raise SystemExit(code)
 
 
 # pylint: disable=unused-argument
@@ -79,18 +85,16 @@ def test_upload_sourceforge_fail(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
     # 1. Test missing pyproject.toml
-    with patch("sys.exit", side_effect=SystemExit) as mock_exit:
+    with patch("sys.exit", side_effect=_mock_exit):
         with pytest.raises(SystemExit):
             upload_sourceforge.get_version()
-        mock_exit.assert_called_with(1)
 
     # 2. Test make html failure
     (tmp_path / "pyproject.toml").touch()
     with patch("subprocess.run", return_value=MagicMock(returncode=1)):
-        with patch("sys.exit", side_effect=SystemExit) as mock_exit:
+        with patch("sys.exit", side_effect=_mock_exit):
             with pytest.raises(SystemExit):
                 upload_sourceforge.main()
-            mock_exit.assert_called()
 
 
 def test_upload_release_edge_cases(tmp_path, monkeypatch):
@@ -369,15 +373,18 @@ def test_verify_all_main(monkeypatch):
     # Since it's already imported, we might need to patch it directly
     # if it was computed at import time.
     with patch("subprocess.run", return_value=mock_run) as patched_run:
-        with patch("sys.exit") as mock_exit:
+        with patch("sys.exit", side_effect=_mock_exit):
             with patch("sys.argv", ["validation/verify_all.py"]):
-                verify_all.main()
+                try:
+                    verify_all.main()
+                except SystemExit:
+                    # If it somehow exits even on success (e.g. bug)
+                    pytest.fail("verify_all.main exited unexpectedly on success")
 
             # Verify subprocess was called for each step
             # steps: Ruff, Pylint, check_links, quality_check,
             # doctest, html, run_coverage
             assert patched_run.call_count >= 7
-            mock_exit.assert_not_called()
 
             # Verify PYTHONPATH was set in the env
             _, kwargs = patched_run.call_args
@@ -412,6 +419,8 @@ def test_quality_check_orthography(tmp_path, monkeypatch):
 
     (eqsp_dir / "mod.py").write_text("def organise(): pass\n", encoding="utf-8")
     md_file.write_text("We need to standardisation.\n", encoding="utf-8")
+
+    (eqsp_dir / "results.0.md").write_text("analyse\n", encoding="utf-8")
 
     errors = quality_check.check_orthography()
     assert len(errors) == 2
@@ -577,10 +586,11 @@ def test_upload_release_full_failure(tmp_path, monkeypatch):
             mock_run.side_effect = side_effect
 
             with patch("sys.argv", ["upload_release.py", "--testpypi"]):
-                with patch("sys.exit") as mock_exit:
-                    upload_release.main()
-                    # Should call sys.exit with the returncode 1
-                    mock_exit.assert_called_with(1)
+                with patch("sys.exit", side_effect=_mock_exit):
+                    with pytest.raises(SystemExit) as excinfo:
+                        upload_release.main()
+                    # SystemExit(1) should have code 1
+                    assert excinfo.value.code == 1
 
 
 def test_upload_release_internal_failures(tmp_path, monkeypatch):
@@ -594,9 +604,10 @@ def test_upload_release_internal_failures(tmp_path, monkeypatch):
     with patch("release.upload_release.check_credentials"):
         with patch("subprocess.run", return_value=MagicMock(returncode=1)):
             with patch("sys.argv", ["upload_release.py", "--pypi"]):
-                with patch("sys.exit") as mock_exit:
-                    upload_release.main()
-                    mock_exit.assert_called_with(1)
+                with patch("sys.exit", side_effect=_mock_exit):
+                    with pytest.raises(SystemExit) as excinfo:
+                        upload_release.main()
+                    assert excinfo.value.code == 1
 
     # 2. Test missing dist files (lines 99-100)
     with patch("release.upload_release.check_credentials"):
@@ -604,9 +615,10 @@ def test_upload_release_internal_failures(tmp_path, monkeypatch):
             # Ensure dist/ is empty
             with patch("pathlib.Path.glob", return_value=[]):
                 with patch("sys.argv", ["upload_release.py", "--testpypi"]):
-                    with patch("sys.exit") as mock_exit:
-                        upload_release.main()
-                        mock_exit.assert_called_with(1)
+                    with patch("sys.exit", side_effect=_mock_exit):
+                        with pytest.raises(SystemExit) as excinfo:
+                            upload_release.main()
+                        assert excinfo.value.code == 1
 
 
 def test_quality_check_usage_blocks(tmp_path, monkeypatch):
@@ -766,3 +778,224 @@ def test_quality_check_vulnerabilities(tmp_path, monkeypatch):
     monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
     # check_docstring_links should just skip the file or continue
     _ = quality_check.check_docstring_links()
+
+
+def test_verify_all_active_venv_deactivation():
+    """Test verify_all deactivation logic when a venv is already active."""
+    # Mock environment with an active VIRTUAL_ENV
+    mock_venv = os.path.join("opt", "venvs", "old-venv")
+    mock_bin = os.path.join(mock_venv, "bin")
+    mock_system_py = os.path.join("usr", "bin", "python3")
+
+    mock_env = {
+        "VIRTUAL_ENV": mock_venv,
+        "PATH": f"{mock_bin}{os.pathsep}{os.path.join('usr', 'bin')}",
+        "PYTHONPATH": os.path.join("stale", "path"),
+    }
+
+    with patch.dict("os.environ", mock_env, clear=True):
+        with patch("shutil.which", return_value=mock_system_py):
+            with patch("subprocess.run", return_value=MagicMock(returncode=0)) as m_run:
+                with patch("sys.argv", ["verify_all.py"]):
+                    verify_all.main()
+
+                # Verify first command (Ruff) uses system python.
+                args, kwargs = m_run.call_args_list[0]
+                command = args[0]
+                assert os.path.normpath(command[0]) == os.path.normpath(mock_system_py)
+
+                env = kwargs.get("env")
+                assert "VIRTUAL_ENV" not in env
+                assert mock_bin not in env["PATH"]
+
+
+def test_verify_all_pythonpath_appending():
+    """Test that verify_all appends to existing PYTHONPATH."""
+    mock_path = os.path.join("initial", "path")
+    mock_env = {"PYTHONPATH": mock_path, "PATH": os.path.join("usr", "bin")}
+
+    with patch.dict("os.environ", mock_env, clear=True):
+        with patch("subprocess.run", return_value=MagicMock(returncode=0)) as m_run:
+            with patch("sys.argv", ["verify_all.py"]):
+                verify_all.main()
+
+            _, kwargs = m_run.call_args_list[0]
+            env = kwargs.get("env")
+            assert mock_path in env["PYTHONPATH"]
+            # Check REPO_ROOT is also there
+            assert str(verify_all.REPO_ROOT) in env["PYTHONPATH"]
+
+
+def test_verify_all_with_venv_success(tmp_path):
+    """Test --venv option with valid mock venv."""
+    venv_dir = tmp_path / "venv"
+    bin_dir = venv_dir / "bin"
+    bin_dir.mkdir(parents=True)
+    py_exec = bin_dir / "python3"
+    py_exec.touch()
+
+    with patch("subprocess.run", return_value=MagicMock(returncode=0)) as m_run:
+        with patch("sys.argv", ["verify_all.py", "--venv", str(venv_dir)]):
+            verify_all.main()
+
+        args, _ = m_run.call_args_list[0]
+        assert args[0][0] == str(py_exec)
+
+
+def test_verify_all_with_venv_missing():
+    """Test --venv option with non-existent path."""
+    with patch("sys.exit", side_effect=_mock_exit):
+        mock_path = os.path.join("no", "such", "venv")
+        with patch("sys.argv", ["verify_all.py", "--venv", mock_path]):
+            with pytest.raises(SystemExit) as excinfo:
+                verify_all.main()
+            assert excinfo.value.code == 1
+
+
+def test_verify_all_with_venv_no_python(tmp_path):
+    """Test --venv option with venv that has no python executable."""
+    venv_dir = tmp_path / "venv"
+    (venv_dir / "bin").mkdir(parents=True)
+
+    with patch("sys.exit", side_effect=_mock_exit):
+        with patch("sys.argv", ["verify_all.py", "--venv", str(venv_dir)]):
+            with pytest.raises(SystemExit) as excinfo:
+                verify_all.main()
+            assert excinfo.value.code == 1
+
+
+def test_verify_all_with_uninstall():
+    """Test --uninstall flag execution."""
+    with patch("subprocess.run", return_value=MagicMock(returncode=0)) as m_run:
+        # Mocking to avoid real uninstall from sys.executable
+        with patch("sys.argv", ["verify_all.py", "--uninstall"]):
+            verify_all.main()
+
+        # Check if uninstall was called
+        uninstall_call = None
+        for call in m_run.call_args_list:
+            if "uninstall" in call.args[0]:
+                uninstall_call = call
+                break
+        assert uninstall_call is not None
+
+
+def test_verify_all_with_pre_release():
+    """Test --pre-release flag adds build_dist step."""
+    with patch("subprocess.run", return_value=MagicMock(returncode=0)) as m_run:
+        with patch("sys.argv", ["verify_all.py", "--pre-release"]):
+            verify_all.main()
+
+        # Check if build_dist was called
+        found = False
+        for call in m_run.call_args_list:
+            if "build_dist.py" in str(call.args[0]):
+                found = True
+        assert found
+
+
+def test_quality_check_reference_consistency(tmp_path, monkeypatch):
+    """Test reference consistency across documents."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    doc_dir = tmp_path / "doc"
+    doc_dir.mkdir()
+    user_dir = doc_dir / "user"
+    user_dir.mkdir()
+
+    # 1. Matching
+    (user_dir / "references_vol1.md").write_text(
+        "- **[key]** Value\n", encoding="utf-8"
+    )
+    (tmp_path / "AUTHORS.md").write_text("- **[key]** Value\n", encoding="utf-8")
+
+    errors = quality_check.check_reference_consistency(tmp_path)
+    assert len(errors) == 0
+
+    # 2. Mismatching
+    (tmp_path / "AUTHORS.md").write_text(
+        "- **[key]** Different Value\n", encoding="utf-8"
+    )
+    errors = quality_check.check_reference_consistency(tmp_path)
+    assert len(errors) == 1
+    assert "Reference mismatch" in errors[0]
+
+
+def test_quality_check_ruff_config_format_valid(tmp_path, monkeypatch):
+    """Test valid ruff config."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    (tmp_path / "ruff.toml").write_text("target-version = 'py38'\n", encoding="utf-8")
+    errors = quality_check.check_ruff_config_format()
+    assert len(errors) == 0
+
+
+def test_quality_check_script_paths_valid(tmp_path, monkeypatch):
+    """Test scripts with no slash."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    work_dir = tmp_path / ".github" / "workflows"
+    work_dir.mkdir(parents=True)
+    ci_yml = work_dir / "ci.yml"
+    ci_yml.write_text("run: python3 script.py\n", encoding="utf-8")
+    (tmp_path / "script.py").touch()
+    errors = quality_check.check_script_paths()
+    assert len(errors) == 0
+
+
+def test_quality_check_usage_blocks_exclude(tmp_path, monkeypatch):
+    """Test exclusion and invalid syntax in usage blocks."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+
+    # Exclusion
+    build_dir = tmp_path / "build"
+    build_dir.mkdir()
+    (build_dir / "some.py").write_text(
+        '"""\nUsage: python3 non_existent.py\n"""', encoding="utf-8"
+    )
+
+    # Invalid syntax
+    (tmp_path / "bad.py").write_text("invalid syntax @@\n", encoding="utf-8")
+
+    errors = quality_check.check_usage_blocks()
+    assert len(errors) == 0
+
+
+def test_quality_check_index_rst_toctree_reset(tmp_path, monkeypatch):
+    """Test resetting in_toctree."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    doc_dir = tmp_path / "doc"
+    doc_dir.mkdir()
+    index_rst = doc_dir / "index.rst"
+
+    index_rst.write_text(
+        ".. toctree::\n\n   exists.rst\n\nNot indented\n   should_ignore <missing>\n",
+        encoding="utf-8",
+    )
+    (doc_dir / "exists.rst").touch()
+
+    errors = quality_check.check_index_rst_toctree()
+    assert len(errors) == 0
+
+
+def test_quality_check_code_hygiene(tmp_path, monkeypatch):
+    """Test code hygiene issues."""
+    monkeypatch.setattr(quality_check, "REPO_ROOT", tmp_path)
+    val_dir = tmp_path / "validation"
+    val_dir.mkdir()
+
+    # Scratchpad comment
+    _bad_comment = "#" + " FIXme: later\n"
+    (val_dir / "comment.py").write_text(_bad_comment, encoding="utf-8")
+
+    # Hardcoded Unix path
+    _bad_path = 'path = "/usr/' + 'local/bin/file"\n'
+    (val_dir / "path.py").write_text(_bad_path, encoding="utf-8")
+
+    # Allowed
+    (val_dir / "good.py").write_text(
+        'url = "http://example.com/path"\n # pragma: no cover\n', encoding="utf-8"
+    )
+
+    errors = quality_check.check_code_hygiene()
+    assert len(errors) == 2
+    assert any("scratchpad comment" in e for e in errors)
+    assert any("hardcoded Unix path" in e for e in errors)

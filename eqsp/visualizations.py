@@ -11,6 +11,7 @@ import numpy as np
 
 from .partitions import eq_point_set, eq_regions
 from .utilities import (
+    TAU,
     polar2cart,
     x2eqarea,
     x2stereo,
@@ -30,7 +31,7 @@ def show_s2_sphere(opacity=0.95, color=(0, 1, 0)):
     """
     Illustrate the unit sphere S^2.
     """
-    u, v = np.mgrid[0 : 2 * np.pi : 50j, 0 : np.pi : 50j]
+    u, v = np.mgrid[0:TAU:50j, 0 : np.pi : 50j]
     x = np.cos(u) * np.sin(v)
     y = np.sin(u) * np.sin(v)
     z = np.cos(v)
@@ -76,8 +77,8 @@ def show_s2_region(region, N, fidelity=32):
     b = region[:, 1]
 
     if abs(b[0]) < tol:
-        b[0] = 2 * np.pi  # pragma: no cover
-    pseudo = abs(t[0]) < tol and abs(b[0] - 2 * np.pi) < tol
+        b[0] = TAU  # pragma: no cover
+    pseudo = abs(t[0]) < tol and abs(b[0] - TAU) < tol
 
     h = np.linspace(0, 1, fidelity)
     r = np.sqrt(1.0 / N) / 12.0
@@ -349,8 +350,8 @@ def project_s3_partition(
             t = region[:, 0]
             b = region[:, 1]
             if abs(b[0]) < 1e-10:
-                b[0] = 2 * np.pi  # pragma: no cover
-            pseudo = abs(t[0]) < 1e-10 and abs(b[0] - 2 * np.pi) < 1e-10
+                b[0] = TAU  # pragma: no cover
+            pseudo = abs(t[0]) < 1e-10 and abs(b[0] - TAU) < 1e-10
 
             for k in range(dim_reg):
                 if pseudo and k >= 2:

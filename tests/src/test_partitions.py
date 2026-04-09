@@ -14,6 +14,8 @@ from numpy.testing import assert_allclose
 
 from eqsp import partitions
 
+TAU = 2 * pi
+
 
 def test_doctests():
     """Test function test_doctests."""
@@ -47,8 +49,8 @@ def test_eq_caps():
     s_cap, n_regions = partitions.eq_caps(1, N)
     # n_regions should be all 1s
     assert_allclose(n_regions, np.ones(N))
-    # s_cap should be 2pi/N * sector
-    expected_s_cap = np.arange(1, N + 1) * 2 * pi / N
+    # s_cap should be TAU/N * sector
+    expected_s_cap = np.arange(1, N + 1) * TAU / N
     assert_allclose(s_cap, expected_s_cap)
 
     # Test edge case N=1
@@ -104,8 +106,8 @@ def test_eq_regions():
     regions = partitions.eq_regions(dim, 1)
     assert regions.shape == (dim, 2, 1)
     # Should correspond to whole sphere
-    # dim=2: [0, 2pi], [0, pi]
-    assert_allclose(regions[0, :, 0], [0, 2 * pi])
+    # dim=2: [0, TAU], [0, pi]
+    assert_allclose(regions[0, :, 0], [0, TAU])
     assert_allclose(regions[1, :, 0], [0, pi])
 
 
@@ -175,12 +177,12 @@ def test_private_helpers():
     assert_allclose(center[:, 0], [0.3, 1.5])
 
     # Polar cap center (theta=0)
-    reg_polar = np.array([[0, 2 * pi], [0, 0.5]])[:, :, np.newaxis]
+    reg_polar = np.array([[0, TAU], [0, 0.5]])[:, :, np.newaxis]
     center_polar = centres_of_regions(reg_polar)
     assert_allclose(center_polar[1, 0], 0.0)
 
     # South pole cap center (theta=pi)
-    reg_south = np.array([[0, 2 * pi], [pi - 0.5, pi]])[:, :, np.newaxis]
+    reg_south = np.array([[0, TAU], [pi - 0.5, pi]])[:, :, np.newaxis]
     center_south = centres_of_regions(reg_south)
     assert_allclose(center_south[1, 0], pi)
 
@@ -189,7 +191,7 @@ def test_centres_of_regions_no_mutation():
     """Verify centres_of_regions does not modify its input."""
     from eqsp._private._partitions import centres_of_regions
 
-    reg = np.array([[0, 2 * pi], [0, 0.5]])[:, :, np.newaxis]
+    reg = np.array([[0, TAU], [0, 0.5]])[:, :, np.newaxis]
     reg_copy = reg.copy()
     centres_of_regions(reg)
     assert_allclose(reg, reg_copy)

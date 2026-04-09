@@ -12,6 +12,7 @@ from ._private._region_props import (
 )
 from .partitions import eq_regions
 from .utilities import (
+    TAU,
     area_of_collar,
     area_of_ideal_region,
     area_of_sphere,
@@ -153,7 +154,7 @@ def area_of_region(region):
     Examples
     --------
     >>> import numpy as np
-    >>> region = np.array([[0, 2*np.pi], [0, np.pi]])
+    >>> region = np.array([[0, TAU], [0, np.pi]])
     >>> float(area_of_region(region))
     12.566370614359172
     """
@@ -169,15 +170,15 @@ def area_of_region(region):
     else:
         if np.ndim(s_bot) == 0:
             if s_bot == 0:
-                s_bot = 2 * np.pi
+                s_bot = TAU
             if s_top == s_bot:
-                s_bot = s_top + 2 * np.pi
+                s_bot = s_top + TAU
             area = s_bot - s_top
         else:
             s_bot = np.copy(s_bot)
-            s_bot[s_bot == 0] = 2 * np.pi
+            s_bot[s_bot == 0] = TAU
             mask = s_top == s_bot
-            s_bot[mask] = s_top[mask] + 2 * np.pi
+            s_bot[mask] = s_top[mask] + TAU
             area = s_bot - s_top
     return area
 

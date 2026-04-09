@@ -18,6 +18,7 @@ See --help for available environment orchestration options.
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -34,7 +35,11 @@ def run_step(command, name, python_bin_dir, base_env):
     # Ensure the target python's bin/ directory is in the PATH
     # so that 'make' can find 'python3' and 'sphinx-build' correctly.
     env = base_env.copy()
-    env["PATH"] = os.pathsep.join([python_bin_dir, env.get("PATH", "")])
+    path_list = [python_bin_dir]
+    old_path = env.get("PATH", "")
+    if old_path:
+        path_list.append(old_path)
+    env["PATH"] = os.pathsep.join(path_list)
 
     # Set up PYTHONPATH for development environment
     # This ensures that the codebase under test and the benchmark scripts
@@ -100,17 +105,23 @@ def main():
     base_env = os.environ.copy()
     py = sys.executable
 
-    # "Deactivate" current venv if it exists and we are switching to a new one.
+    # "Deactivate" current venv if it exists.
     # This involves stripping the active venv's bin from PATH and cleaning env vars.
     active_venv = base_env.get("VIRTUAL_ENV")
-    if active_venv and args.venv:
+    if active_venv:
         active_bin = str(Path(active_venv) / "bin")
         paths = base_env.get("PATH", "").split(os.pathsep)
-        # Strip the current venv's bin so it doesn't shadow the new one or system tools
+        # Strip the current venv's bin so it doesn't shadow system tools
         new_paths = [p for p in paths if p != active_bin]
         base_env["PATH"] = os.pathsep.join(new_paths)
         base_env.pop("VIRTUAL_ENV", None)
         base_env.pop("PYTHONHOME", None)
+
+        # If we were in a venv, sys.executable is the venv's python.
+        # We find the next python3 in the cleaned PATH to ensure audit safety.
+        base_py = shutil.which("python3", path=base_env["PATH"])
+        if base_py:
+            py = base_py
 
     # Activate requested venv
     if args.venv:
@@ -138,7 +149,12 @@ def main():
         print("========================================")
         print("Uninstalling pyeqsp...")
         print("========================================")
-        subprocess.run([py, "-m", "pip", "uninstall", "-y", "pyeqsp"], check=False)
+        subprocess.run(
+            [py, "-m", "pip", "uninstall", "-y", "pyeqsp"],
+            check=False,
+            env=base_env,
+            cwd=REPO_ROOT,
+        )
         print("[DONE] Uninstallation attempted.\n")
 
     steps = [
@@ -163,7 +179,8 @@ def main():
                 py,
                 "-m",
                 "pylint",
-                "--init-hook=import sys; sys.path.extend(['.', 'benchmarks/src'])",
+                "--init-hook=import os, sys; "
+                "sys.path.extend(['.', os.path.join('benchmarks', 'src')])",
                 "eqsp",
                 "tests",
                 "examples/phd-thesis",
