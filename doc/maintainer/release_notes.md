@@ -3,7 +3,7 @@
 This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
 
 ## 0.99.9
-**2026-04-08**
+**2026-04-09**
 
 Release **0.99.9** achieves **100% project-wide coverage** across both the core library and the entire maintenance ecosystem. It finalizes the dimensional robustness and equatorial symmetry features for the stable 1.0 release.
 

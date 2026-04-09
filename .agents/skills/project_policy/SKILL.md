@@ -14,6 +14,7 @@ You MUST NEVER execute `git commit` or `git push` on behalf of the user. Version
 - `git add`
 - `git diff`
 - Providing specific `git commit` commands in your response for the user to execute manually.
+- **Sphinx Documentation**: When building HTML documentation or running doctests, always use the local virtual environment at `.venvs/.venv_sys` as it contains the necessary system dependencies (Mayavi, VTK). Use the `--venv .venvs/.venv_sys` flag when running `validation/verify_all.py` for doc tasks.
 
 ## Mandatory Check
 Before performing any technical task, you MUST check if an `.antigravityrules` file exists in the root directory. If it does, follow any task-specific or project-wide constraints defined within it.

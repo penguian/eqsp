@@ -76,11 +76,7 @@ cd examples/phd-thesis
 # Run a numerical plot (Agg backend, saves PNG)
 python3 fig_4_2_min_dist_s2.py --upper-bound 5000
 
-# Run a 3D visualization (Mayavi, requires venv_sys)
-python3 fig_3_1_partition_s2_33.py
-```
-
-> **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
+> **Note:** The virtual environment configuration (`VENV`) used for automated and manual testing was specific to a standardized Linux build (e.g. Kubuntu 25.10). For full 3D functionality, ensure that your environment has **Mayavi** and its dependencies installed.
 
 For instructions on running these scripts and a full mapping of scripts to thesis figures, see [Thesis Research Reproduction](../user/phd-thesis-examples.md).
 

@@ -67,7 +67,7 @@ def parse_args():
         epilog="""
 Usage examples:
   python3 validation/verify_all.py
-  python3 validation/verify_all.py --venv .venvs/.venv_sys --uninstall
+  python3 validation/verify_all.py --venv VENV --uninstall
   python3 validation/verify_all.py --pre-release
 
 Notes:

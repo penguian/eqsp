@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.9** (2026-04-08): Copyright 2026 Paul Leopardi
+**Release 0.99.9** (2026-04-09): Copyright 2026 Paul Leopardi
 
 # Installation
 
@@ -32,16 +32,16 @@ file system; it doesn't need to be in the project directory.
 To create and activate a virtual environment:
 
 ```bash
-python3 -m venv .venvs/.venv
-source .venvs/.venv/bin/activate
+python3 -m venv VENV
+source VENV/bin/activate
 ```
 
 If you need to use system-installed packages such as Mayavi, create
 the environment with the `--system-site-packages` flag instead:
 
 ```bash
-python3 -m venv --system-site-packages .venvs/.venv_sys
-source .venvs/.venv_sys/bin/activate
+python3 -m venv --system-site-packages VENV_SYS
+source VENV_SYS/bin/activate
 ```
 
 configuring Qt environment variables, and using virtual

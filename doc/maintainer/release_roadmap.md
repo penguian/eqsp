@@ -41,8 +41,8 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE`; updated `pyproject.toml` with `license = "MIT"` and `license-files = ["LICENSE"]`.
 - [x] **Rename `doc/internal/` to `doc/maintainer/`**: Reflected that these are public maintainer-facing docs. Updated all internal references.
 
-### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness — [COMPLETED] (2026-04-08)
-**Released: 2026-04-08** | **Git Tag: release_0_99_9** | **Distribution: PyPI**
+### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness — [COMPLETED] (2026-04-09)
+**Released: 2026-04-09** | **Git Tag: release_0_99_9** | **Distribution: PyPI**
 **Goal**: Reconcile performance benchmarks, achieve 100% project-wide coverage, and verify higher-dimension robustness.
 
 - [x] **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
