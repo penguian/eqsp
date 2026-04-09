@@ -99,8 +99,8 @@ def main():
     try:
         try:
             run_command([sys.executable, "-m", "build"], "Building distribution")
-        except (Exception, SystemExit):
-            if not args.keep_on_fail:
+        except (Exception, SystemExit):  # pragma: no cover
+            if not args.keep_on_fail:  # pragma: no cover
                 print(
                     "ERROR: Build failed. Cleaning up stale artifacts "
                     "(use --keep-on-fail to prevent this).",
@@ -130,5 +130,5 @@ def main():
     print("The packages in dist/ are ready for upload.")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

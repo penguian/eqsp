@@ -5,11 +5,14 @@ Copyright Paul Leopardi 2026
 """
 
 import doctest
+from math import pi
 
 import numpy as np
 from numpy.testing import assert_allclose
 
 from eqsp import region_props
+
+TAU = 2 * pi
 
 
 def test_doctests():
@@ -94,7 +97,7 @@ def test_eq_regions_property():
 
 def test_area_of_region():
     """Test function test_area_of_region."""
-    region = np.array([[0, 2 * np.pi], [0, np.pi]])
+    region = np.array([[0, TAU], [0, np.pi]])
     area = region_props.area_of_region(region)
-    assert_allclose(area, 4 * np.pi, atol=1e-4)
+    assert_allclose(area, 2 * TAU, atol=1e-4)
     assert_allclose(area, 12.5664, atol=1e-4)

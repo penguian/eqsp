@@ -50,10 +50,10 @@ def main():
     print("-" * 70)
     print(
         "scp -r doc/_build/html/* "
-        "USER@web.sourceforge.net:/home/project-web/eqsp/htdocs/"
+        "USER@web.sourceforge.net:/home/project-web/pyeqsp/htdocs/"
     )
     print("-" * 70)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

@@ -107,6 +107,7 @@ cython_debug/
 .pypirc
 
 # Antigravity
+.agents/
 .antigravityrules
 README_dist.md
 doc/*.log

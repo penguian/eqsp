@@ -42,6 +42,7 @@ We use a two-tier automated verification system:
     ```
 2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in `validation/`) is the definitive project-wide entry point.
     *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 validation/verify_all.py` (Ruff, Pylint, Pytest).
+    *   **Environment Orchestration**: Use `--venv DIR` to activate a specific environment and `--uninstall` to remove any existing `pyeqsp` package before running the suite. This prevents local source shadowing by stale `site-packages`.
     *   **CI Pipeline**: GitHub Actions runs `validation/verify_all.py` across Python 3.11–3.13.
 
 The orchestrated script enforces a **Zero-Warning Policy** for the Sphinx documentation build (`make html SPHINXOPTS="-W"`), ensuring that no orphaned pages or malformed Table of Contents entries reach production.
@@ -75,11 +76,7 @@ cd examples/phd-thesis
 # Run a numerical plot (Agg backend, saves PNG)
 python3 fig_4_2_min_dist_s2.py --upper-bound 5000
 
-# Run a 3D visualization (Mayavi, requires venv_sys)
-python3 fig_3_1_partition_s2_33.py
-```
-
-> **Note:** The `venv_sys` configuration used for automated and manual testing was specific to **Kubuntu Linux 25.10**. Different Linux distributions may require adjustments to environment variables.
+> **Note:** The virtual environment configuration (`VENV`) used for automated and manual testing was specific to a standardized Linux build (e.g. Kubuntu 25.10). For full 3D functionality, ensure that your environment has **Mayavi** and its dependencies installed.
 
 For instructions on running these scripts and a full mapping of scripts to thesis figures, see [Thesis Research Reproduction](../user/phd-thesis-examples.md).
 
@@ -133,16 +130,19 @@ The `benchmarks/` directory contains scripts to verify the algorithmic complexit
 ### Running the Suite
 To run all system benchmarks and generate a summary report:
 ```bash
+# Standard partitions
 python3 benchmarks/run_benchmarks.py
 
-# Benchmark symmetric partitions
-python3 benchmarks/run_benchmarks.py --even-collars
+# Symmetric (even-collar) partitions
+python3 benchmarks/run_benchmarks_even.py
 ```
 
 ### Results and Logging
 The runner saves individual results for each benchmark in a standardized format:
-- **Main Summary**: `benchmarks/results/run_benchmarks.log`
-- **Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
+- **Standard Summary**: `benchmarks/results/run_benchmarks.log`
+- **Symmetric Summary**: `benchmarks/results/run_benchmarks_even.log`
+- **Standard Individual Logs**: `benchmarks/results/benchmark_*.log` (e.g., `benchmark_eq_regions.log`)
+- **Symmetric Individual Logs**: `benchmarks/results/benchmark_*_even.log` (e.g., `benchmark_eq_regions_even.log`)
 
 ### Thesis Benchmark (Section 3.10.2)
 The script `benchmarks/src/benchmark_eq_regions.py` specifically replicates the "Running time" benchmark from Section 3.10.2 of the thesis. It verifies the **$O(N^{0.6})$** scaling behaviour.

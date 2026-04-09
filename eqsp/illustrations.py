@@ -16,6 +16,7 @@ from ._private._partitions import (
 )
 from .partitions import eq_caps, eq_point_set, eq_regions
 from .utilities import (
+    TAU,
     ideal_collar_angle,
     polar2cart,
     x2eqarea,
@@ -187,8 +188,8 @@ def project_s2_partition(
 
         tol = 1e-10
         if abs(b[0]) < tol:
-            b[0] = 2 * np.pi
-        pseudo = abs(t[0]) < tol and abs(b[0] - 2 * np.pi) < tol
+            b[0] = TAU
+        pseudo = abs(t[0]) < tol and abs(b[0] - TAU) < tol
 
         fidelity = 33
         h = np.linspace(0, 1, fidelity)
@@ -345,7 +346,7 @@ def illustrate_steps_1_2(
     Illustrate steps 1 and 2 of the EQ partition.
     """
     h = np.linspace(0.0, 1.0, 91)
-    Phi = h * 2.0 * np.pi
+    Phi = h * TAU
     plt.plot(np.sin(Phi), np.cos(Phi), "k", linewidth=1)
     plt.axis("equal")
     plt.axis("off")
@@ -410,7 +411,7 @@ def illustrate_steps_3_5(
     Illustrate steps 3 to 5 of the EQ partition.
     """
     h = np.linspace(0.0, 1.0, 91)
-    Phi = h * 2.0 * np.pi
+    Phi = h * TAU
     plt.plot(np.sin(Phi), np.cos(Phi), "k", linewidth=1)
     plt.axis("equal")
     plt.axis("off")
@@ -469,7 +470,7 @@ def illustrate_steps_6_7(
     Illustrate steps 6 and 7 of the EQ partition.
     """
     h = np.linspace(0.0, 1.0, 91)
-    Phi = h * 2.0 * np.pi
+    Phi = h * TAU
     plt.plot(np.sin(Phi), np.cos(Phi), "k", linewidth=1)
     plt.axis("equal")
     plt.axis("off")

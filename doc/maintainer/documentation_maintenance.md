@@ -64,3 +64,28 @@ To ensure stability across CI/CD and diverse local environments, these scripts a
 
 - **Volume 1 (User)**: Should be updated whenever a new public feature or visualization method is added.
 - **Volume 2 (Maintenance)**: Should be updated when internal architecture changes (e.g., transitioning from Mayavi to a new 3D engine) or when benchmarks are re-run.
+
+## SourceForge Hosting
+
+While **ReadTheDocs** is our primary documentation host, we maintain a secondary mirror on **SourceForge** to ensure high-availability and persistence for research citations.
+
+### Automated Upload
+The project includes a utility script to automate the Sphinx build and print the exact transfer command:
+```bash
+python release/upload_sourceforge.py
+```
+
+### Manual Deployment
+If you need to manually push a documentation update, follow these steps:
+
+1. **Build HTML locally**:
+   ```bash
+   cd doc && make html
+   ```
+2. **Transfer via SCP**:
+   (Replace `USER` with your SourceForge username)
+   ```bash
+   scp -r doc/_build/html/* USER@web.sourceforge.net:/home/project-web/pyeqsp/htdocs/
+   ```
+
+3. **Verify**: The documentation will be instantly live at `http://pyeqsp.sourceforge.net`.

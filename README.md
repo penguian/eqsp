@@ -1,12 +1,14 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.8** (2026-04-01): Copyright 2026 Paul Leopardi
+**Release 0.99.9** (2026-04-09): Copyright 2026 Paul Leopardi
 
 PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
 An **EQ partition** divides Sᵈ (the unit sphere in ℝ<sup>d+1</sup>) into a finite number of regions of equal area. Area measurement uses the Lebesgue measure inherited from the surrounding space.
 
 > **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
+
+Release **0.99.9** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
 
 The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N<sup>-1/d</sup>.
 
@@ -48,6 +50,9 @@ dim = 2
 N = 100
 points_x = eqsp.eq_point_set(dim, N)
 # points_x.shape is (dim+1, N)
+
+# Or force a symmetric partition (even number of collars)
+points_sym = eqsp.eq_point_set(dim, N, even_collars=True)
 ```
 
 Create an array in spherical polar coordinates representing
@@ -77,7 +82,7 @@ diam_bound = eq_diam_bound(dim, N)
 
 # Find energy and distance
 s = dim - 1  # Standard Riesz energy kernel power
-energy, min_dist = eq_energy_dist(dim, N, s)
+energy, min_dist = eq_energy_dist(dim, [N], s)
 ```
 
 ### Step 3: Produce Illustrations

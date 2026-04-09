@@ -15,7 +15,7 @@ affiliations:
     index: 1
   - name: The Australian National University, Australia
     index: 2
-date: 01 April 2026
+date: 08 April 2026
 bibliography: paper.bib
 ---
 
@@ -29,7 +29,7 @@ PyEQSP is a Python library implementing the Recursive Zonal Equal Area (EQ) part
 
 The problem of partitioning a sphere into regions of equal area and small diameter is a recurrent requirement in many fields of science and engineering. While the problem is easily solved for the circle $S^1$, it becomes significantly more difficult to pose and solve for $d > 1$ [@Saf97]. The EQ algorithm provides a pragmatic construction with proven diameter bounds for $S^d$ [@Leo06; @Leo09], making it a standard choice for applications requiring well-distributed points or balanced partitions on spherical manifolds.
 
-The applicability of the EQ algorithm has been demonstrated in a wide range of disciplines, including climate science [@Wer18; @Fau08], medical imaging [@Laz21], robotics and orientation estimation [@Pfa20], and mathematical physics [@Ben21]. In particular, PyEQSP serves as the functional successor to the original **Recursive Zonal Equal Area Sphere Partitioning Toolbox** for MATLAB [@Leo05; @Leo07; @Leo24], which has been used in academic research for nearly two decades.
+The applicability of the EQ algorithm has been demonstrated in a wide range of disciplines, including climate science [@Wer18; @Fau08], medical imaging [@Laz20], robotics and orientation estimation [@Pfa20], and mathematical physics [@Ben21]. In particular, PyEQSP serves as the functional successor to the original **Recursive Zonal Equal Area Sphere Partitioning Toolbox** for MATLAB [@Leo05; @Leo07; @Leo24], which has been used in academic research for nearly two decades.
 
 By transitioning from a proprietary MATLAB environment to an open-source Python implementation, the library removes significant barriers to entry and integrates directly with the modern scientific Python ecosystem (NumPy, SciPy, Matplotlib). This transition ensures that researchers can continue to use and extend the algorithm in a reproducible, high-performance environment.
 
@@ -40,7 +40,8 @@ The core logic of PyEQSP is based on a recursive zonal partitioning scheme origi
 PyEQSP introduces several technical refinements over its predecessors:
 * **Vectorization**: Leveraging NumPy for efficient coordinate transformations and property analysis, maintaining $O(N \log N)$ or $O(N)$ performance for large-scale simulations.
 * **Hemisphere Partitioning**: Explicit support for the `even_collars` parameter to ensure partitions align with the equatorial hyperplane, which is essential for applications such as $S^3$ hemisphere to $\text{SO}(3)$ quaternion sampling.
-* **Maintenance Infrastructure**: A modern CI/CD suite with comprehensive test coverage and strict linting (Ruff, Pylint) to ensure reliable research reproducibility.
+* **Spherical Spatial Indexing**: Optimized $O(1)$ region lookups for $S^2$ partitions via a robust, histogram-based logic, enabling high-performance spatial binning for large datasets.
+* **Maintenance Infrastructure**: A modern CI/CD suite with 100% test coverage and strict linting (Ruff, Pylint) to ensure reliable research reproducibility.
 
 The library enables the generation of region boundaries (`eq_regions`), centre points in both polar (`eq_point_set_polar`) and Cartesian (`eq_point_set`) coordinates, and the calculation of spherical metrics such as the minimum distance and Riesz energy of point sets.
 

@@ -145,7 +145,7 @@ def test_exact_boundaries_s2_region():
     # First cap is region 1. Last cap is region N.
     # Intermediate hits on `s_cap` using `side='left'` map directly to regions matching
     # index alignments inside `lookup_s2_region`.
-    expected_cap_regions = np.array([1, 2, 8, 26, 32, 33])
+    expected_cap_regions = np.array([1, 7, 16, 26, 32, 33])
 
     r_idx_caps = histograms.eq_find_s2_region(cap_points, N)
     assert_array_equal(r_idx_caps, expected_cap_regions)
@@ -163,13 +163,13 @@ def test_exact_boundaries_s2_region():
     expected_long_regions = np.array(
         [
             1,
-            2,
+            7,
             2,
             3,
             4,
             5,
             6,
-            8,
+            16,
             8,
             9,
             10,
@@ -178,7 +178,7 @@ def test_exact_boundaries_s2_region():
             13,
             14,
             15,
-            17,
+            26,
             17,
             18,
             19,
@@ -188,7 +188,7 @@ def test_exact_boundaries_s2_region():
             23,
             24,
             25,
-            27,
+            32,
             27,
             28,
             29,

@@ -1,10 +1,12 @@
 # pylint: disable=missing-module-docstring,missing-function-docstring
 # pylint: disable=import-outside-toplevel
 
+from math import pi
+
 import numpy as np
 import pytest
 
-from eqsp._private._histograms import lookup_s2_region, lookup_table
+from eqsp._private._histograms import lookup_s2_region
 from eqsp._private._partitions import (
     circle_offset,
     rot3,
@@ -27,6 +29,8 @@ from eqsp.utilities import (
     polar2cart,
     sradius_of_cap,
 )
+
+TAU = 2 * pi
 
 
 def test_rot3_coverage():
@@ -61,10 +65,6 @@ def test_histogram_errors():
     pts = np.zeros((2, 0))
     res = lookup_s2_region(pts, np.zeros((2, 2, 1)), [1], [1])
     assert res.size == 0
-
-    # lookup_table: Decreasing table
-    with pytest.raises(NotImplementedError):
-        lookup_table([10, 5, 1], 7)
 
 
 def test_partition_errors():
@@ -116,11 +116,11 @@ def test_s1_logic():
     reg = np.array([[0, 1.0]])
     assert np.isclose(area_of_region(reg), 1.0)
     # wraps
-    reg_wrap = np.array([[0, 0]])  # s_bot=0 -> 2*pi
-    assert np.isclose(area_of_region(reg_wrap), 2 * np.pi)
+    reg_wrap = np.array([[0, 0]])  # s_bot=0 -> TAU
+    assert np.isclose(area_of_region(reg_wrap), TAU)
     # top == bot != 0
     reg_zero = np.array([[1.0, 1.0]])
-    assert np.isclose(area_of_region(reg_zero), 2 * np.pi)
+    assert np.isclose(area_of_region(reg_zero), TAU)
 
 
 def test_high_dim_and_n1():
@@ -298,9 +298,9 @@ def test_eq_regions_s1():
     regs = eq_regions(1, N)
     # Should be (1, 2, 6)
     assert regs.shape == (1, 2, N)
-    # Total length should be 2*pi
+    # Total length should be TAU
     total_len = np.sum(regs[0, 1, :] - regs[0, 0, :])
-    assert np.isclose(total_len, 2 * np.pi)
+    assert np.isclose(total_len, TAU)
 
 
 def test_asfloat_various():

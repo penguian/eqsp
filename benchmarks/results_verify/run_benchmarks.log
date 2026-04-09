@@ -1,0 +1,48 @@
+=======================================
+    PyEQSP Performance Benchmarks
+=======================================
+
+Hardware: AMD Ryzen 7 8840HS w/ Radeon 780M Graphics (~2.4 GHz)
+OS:       Linux
+Software: Python 3.13.7
+
+
+Running benchmark: eq_area_error
+N               |   Time (s)
+----------------------------
+100             |     0.0005
+
+
+Running benchmark: eq_regions
+N               |   Time (s)
+----------------------------
+100             |     0.0004
+
+
+Running benchmark: eq_find_s2_region
+Points          |   Time (s)
+----------------------------
+100             |     0.0023
+
+
+Running benchmark: sradius_of_cap
+Size            |   Time (s)
+----------------------------
+100             |     0.0003
+
+
+Running benchmark: eq_min_dist
+N               |   Time (s)
+----------------------------
+100             |     0.0013
+
+
+Running benchmark: point_set_energy_dist
+N               |   Time (s)
+----------------------------
+100             |     0.0006
+
+
+=======================================
+Total benchmark time: 1.79 seconds
+=======================================

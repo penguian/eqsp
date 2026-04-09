@@ -44,7 +44,7 @@ def run_benchmark(
         results_dir, script_name.replace(".py", f"{log_suffix}.log")
     )
 
-    print(f"Running benchmark: {name}")
+    print(f"\nRunning benchmark: {name}")
 
     cmd = [sys.executable, script_path] + extra_args
 
@@ -67,7 +67,7 @@ def run_benchmark(
     except subprocess.CalledProcessError as e:
         print(f"Error: Benchmark {name} failed with exit code {e.returncode}")
         print(e.stderr)
-        return 0
+        raise
 
 
 def main():
@@ -77,9 +77,6 @@ def main():
         "--n-max",
         type=int,
         help="General n_max to override defaults for all benchmarks.",
-    )
-    parser.add_argument(
-        "--dim", type=int, default=2, help="Sphere dimension (default: 2)."
     )
     parser.add_argument(
         "--s", type=float, help="Exponent for energy distance benchmark."
@@ -98,8 +95,7 @@ def main():
     parser.add_argument(
         "--even-collars",
         action="store_true",
-        default=False,
-        help="Use even number of collars for symmetric partitions.",
+        help="Force symmetric partitions with an even number of collars.",
     )
 
     args = parser.parse_args()
@@ -116,89 +112,117 @@ def main():
         os.makedirs(results_dir)
 
     # Set up environment: ensure root directory is in PYTHONPATH
-    # Since we are in benchmarks/, the root is one level up
     root_dir = os.path.abspath(os.path.join(base_dir, ".."))
     env = os.environ.copy()
     current_pythonpath = env.get("PYTHONPATH", "")
     if current_pythonpath:
-        env["PYTHONPATH"] = f"{root_dir}:{current_pythonpath}"
+        env["PYTHONPATH"] = os.pathsep.join([root_dir, current_pythonpath])
     else:
         env["PYTHONPATH"] = root_dir
 
-    # Log suffix for even collars
+    # Standard vs Symmetric run
     suffix = "_even" if args.even_collars else ""
-    even_args = ["--even-collars"] if args.even_collars else []
+    even_args: list[str] = ["--even-collars"] if args.even_collars else []
 
     # Define benchmarks and their arguments
-    # Note: we use script arguments now instead of function kwargs
     benchmarks = [
         (
-            "eq_area_error (Redundant area calculation)",
+            "eq_area_error",
             "benchmark_area_error.py",
-            ["--n-max", str(args.n_max or 15000), "--dim", str(args.dim)] + even_args,
-        ),
-        (
-            "point_set_energy_dist (O(N^2) memory & broadcasting)",
-            "benchmark_energy_dist.py",
-            ["--n-max", str(args.n_max or 2400), "--dim", str(args.dim)]
-            + (["--s", str(args.s)] if args.s else [])
-            + even_args,
-        ),
-        (
-            "eq_regions (Python loop overhead)",
-            "benchmark_eq_regions.py",
             [
-                "--max-k",
-                str(int(os.getenv("MAX_K", "22"))),
-                "--max-d",
-                str(args.dim),
-                "--iterations",
-                "1",
+                "--n-max",
+                str(args.n_max or 100000000),
             ]
             + even_args,
         ),
         (
-            "eq_min_dist (Efficient distance calculation)",
-            "benchmark_mindist.py",
-            ["--n-max", str(args.n_max or 6400), "--dim", str(args.dim)] + even_args,
+            "eq_regions",
+            "benchmark_eq_regions.py",
+            [
+                "--n-max",
+                str(args.n_max or 100000000),
+            ]
+            + even_args,
         ),
         (
-            "eq_find_s2_region (Vectorized histogram lookup)",
+            "eq_find_s2_region",
             "benchmark_histograms.py",
-            ["--n-max", str(args.n_max or 200000000), "--regions", str(args.regions)],
+            ["--n-max", str(args.n_max or 10000000), "--regions", str(args.regions)],
         ),
         (
-            "sradius_of_cap (Root finding loop bottleneck)",
+            "sradius_of_cap",
             "benchmark_sradius.py",
-            ["--n-max", str(args.n_max or 100000000), "--dim", str(args.dim + 1)],
+            ["--n-max", str(args.n_max or 10000000)],
+        ),
+        (
+            "eq_min_dist",
+            "benchmark_mindist.py",
+            [
+                "--n-max",
+                str(args.n_max or 10000000),
+            ]
+            + even_args,
+        ),
+        (
+            "point_set_energy_dist",
+            "benchmark_energy_dist.py",
+            [
+                "--n-max",
+                str(args.n_max or 50000),
+            ]
+            + (["--s", str(args.s)] if args.s else [])
+            + even_args,
         ),
     ]
+
+    # Histogram benchmark DOES support --even-collars in some versions,
+    # let's add it if requested.
+    if args.even_collars and benchmarks[2][0] == "eq_find_s2_region":
+        benchmarks[2][2].append("--even-collars")
+
+    if args.even_collars:
+        # sradius_of_cap benchmark does not use an --even-collars argument
+        benchmarks = [b for b in benchmarks if b[0] != "sradius_of_cap"]
 
     # Main log file for the run
     main_log_file = os.path.join(results_dir, f"run_benchmarks{suffix}.log")
 
     with Tee(main_log_file):
         print("=======================================")
-        print("     PyEQSP Performance Benchmarks     ")
-        print("=======================================\n")
+        print("    PyEQSP Performance Benchmarks")
+        print("=======================================")
+        print("\nHardware: AMD Ryzen 7 8840HS w/ Radeon 780M Graphics (~2.4 GHz)")
+        print("OS:       Linux")
+        print(f"Software: Python {sys.version.split()[0]}\n")
 
         t_start = time.perf_counter()
+        failed_benchmarks = []
 
         for name, script, extra_args in benchmarks:
-            run_benchmark(
-                name,
-                script,
-                extra_args=extra_args,
-                env=env,
-                results_dir=results_dir,
-                base_dir=base_dir,
-                log_suffix=suffix,
-            )
+            try:
+                run_benchmark(
+                    name,
+                    script,
+                    extra_args=extra_args,
+                    env=env,
+                    results_dir=results_dir,
+                    base_dir=base_dir,
+                    log_suffix=suffix,
+                )
+            except subprocess.CalledProcessError:
+                failed_benchmarks.append(name)
 
         t_end = time.perf_counter()
-        print("=======================================")
+        print("\n=======================================")
         print(f"Total benchmark time: {t_end - t_start:.2f} seconds")
+        if failed_benchmarks:
+            print(f"FAILED: {', '.join(failed_benchmarks)}")
         print("=======================================")
+
+    if failed_benchmarks:
+        sys.exit(1)
+
+    print(f"\nResults saved to {main_log_file}")
 
 
 if __name__ == "__main__":

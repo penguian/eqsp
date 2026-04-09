@@ -11,7 +11,7 @@ The `eqsp` package is designed as a vectorized Python port of the original MATLA
 - `eqsp/utilities.py`: Coordinate transforms and manifold mathematics.
 
 For more details on the internal layout, see the [Design & Architecture](maintainer/design_and_architecture.md) guide.
-For the transition from MATLAB, see the [User Migration Guide](user/user_migration_guide.md).
+For the transition from MATLAB, see the [Migration from MATLAB Toolbox](user/migration_matlab.md).
 
 ## Algorithmic Optimizations
 
@@ -33,6 +33,8 @@ The hooks encompass formatting, linting, documentation quality checks, and link 
 
 The primary project-wide entry point for global quality control is `verify_all.py` (located in `validation/`).
 - **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 validation/verify_all.py` (Ruff, Pylint, Pytest, Doctest). See the internal [Pull Request Checklist](maintainer/pr_checklist.md) for a manual pre-submission guide.
+- **Environment Isolation**: Use `python3 validation/verify_all.py --venv DIR` to run the suite in a specific virtual environment. This automatically "deactivates" any currently active environment to ensure the audit runs against the intended site-packages.
+- **Clean Verification**: Use `python3 validation/verify_all.py --uninstall` to remove any existing `pyeqsp` installation from the target environment. This is recommended to ensure that stale package data in `site-packages` does not shadow the local code being verified.
 - **Maintenance & Infrastructure**: When modifying repository tools, scripts, or core documentation, follow the internal [Maintenance Implementation Checklist](maintainer/maintenance_implementation_checklist.md) to ensure tonal and technical consistency.
 - **Pre-release**: Use `python3 validation/verify_all.py --pre-release` to build the distribution and verify metadata before any upload.
 

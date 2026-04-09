@@ -39,7 +39,7 @@ PyEQSP's recursive partitioning uses a `_private` cache for $S^{d-1}$ partitions
 To maintain polymorphic compatibility, all property functions must accept `even_collars`, even if the property (like total area error) is parity-invariant. This ensures call-site stability for users while allowing internal mathematics to exploit symmetry when available.
 For foundational citations, see the Volume 2 [References](references_vol2.md).
 
-## Audit Summary (PyEQSP 0.99.8 Beta)
+## Audit Summary (PyEQSP 0.99.9 Beta)
 
 - **Derivation Alignment**: The `even_collars` algebraic derivation structurally mirrors the runtime calculation in `eq_caps()` (`eqsp/partitions.py`).
 - **Cache Integrity**: The $n_{\text{collars}}/2$ cache boundary correctly mirrors collar $k$ to $n_{\text{collars}} - k + 1$ ensuring 100% cache utilization for $S^3$ southern hemisphere regions.

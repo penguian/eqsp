@@ -13,42 +13,13 @@ import numpy as np
 
 import eqsp
 from eqsp._private import _histograms
-from eqsp._private._histograms import lookup_s2_region, lookup_table
+from eqsp._private._histograms import lookup_s2_region
 
 
 def test_doctests():
     """Test function test_doctests."""
     results = doctest.testmod(_histograms)
     assert results.failed == 0
-
-
-def test_lookup_table_boundaries():
-    """Test function test_lookup_table_boundaries."""
-    table = [-100.0, -70.0, 2.5, 75.0, 125.7]
-
-    # Normal points between table values
-    y_normal = [-80.0, 0.0, 50.0, 100.0]
-    expected_normal = [1, 2, 3, 4]
-
-    # Points exactly hitting the table values
-    y_exact = [-100.0, -70.0, 2.5, 75.0, 125.7]
-    # np.searchsorted(side='left') means exactly hits go into the bin index
-    # matching the boundary.
-    # So if value is exactly table[0] (-100.0), searchsorted returns 0
-    # If exactly table[4] (125.7), searchsorted returns 4.
-    expected_exact = [0, 1, 2, 3, 4]
-
-    # Out of bounds points
-    y_out = [-200.0, 200.0]
-    # Below minimum gets capped to 0.
-    # Above maximum gets capped to len(table) - 1 (4).
-    # lookup_s2_region relies on this behavior to map points near pi to the last cap.
-    expected_out = [0, 4]
-
-    y_all = y_normal + y_exact + y_out
-    expected_all = expected_normal + expected_exact + expected_out
-
-    np.testing.assert_array_equal(lookup_table(table, y_all), expected_all)
 
 
 def test_lookup_s2_region_vectorization_fidelity():
@@ -78,33 +49,20 @@ def test_lookup_s2_region_vectorization_fidelity():
 
     all_points = np.hstack((random_points, cap_points, long_points))
 
-    # 1. Run the original sequential logic
-    r_idx_original = np.zeros(all_points.shape[1], dtype=int)
-
-    n_caps = len(s_cap)
-    n_regions_total = s_regions.shape[2]
+    # 1. Run the reference Brute Force logic
+    # (Checking every point against every region for membership)
+    r_idx_brute = np.zeros(all_points.shape[1], dtype=int)
+    all_regions = eqsp.eq_regions(dim, N)
 
     for p_idx in range(all_points.shape[1]):
-        c_idx = lookup_table(s_cap, all_points[1, p_idx])
-        if 0 < c_idx < n_caps - 1:
-            min_r_idx = int(c_regions[c_idx - 1]) + 1
-            max_r_idx = int(c_regions[c_idx])
-            s_longs = s_regions[0, :, min_r_idx - 1 : max_r_idx].copy()
-            if s_longs[0, 0] >= 2 * np.pi:
-                s_longs[:, 0] -= 2 * np.pi
-            n_longs = s_longs.shape[1]
-            l_idx = lookup_table(s_longs[1, :], all_points[0, p_idx]) % n_longs
-            if all_points[0, p_idx] < s_longs[0, 0]:
-                l_idx = n_longs - 1
-            r_idx_original[p_idx] = min_r_idx + l_idx
-        elif c_idx == 0:
-            r_idx_original[p_idx] = 1
-        elif c_idx >= n_caps - 1:
-            r_idx_original[p_idx] = n_regions_total
-        else:
-            r_idx_original[p_idx] = 0
+        point = all_points[:, p_idx : p_idx + 1]
+        for r_num in range(N):
+            region = all_regions[:, :, r_num]
+            if eqsp.histograms.in_s2_region(point, region)[0]:
+                r_idx_brute[p_idx] = r_num + 1
+                break
 
     # 2. Run the (potentially vectorized) module logic
     r_idx_module = lookup_s2_region(all_points, s_regions, s_cap, c_regions)
 
-    np.testing.assert_array_equal(r_idx_original, r_idx_module)
+    np.testing.assert_array_equal(r_idx_brute, r_idx_module)

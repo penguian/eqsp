@@ -8,9 +8,10 @@ import numpy as np
 
 from ._private._histograms import lookup_s2_region
 from .partitions import eq_caps, eq_regions
+from .utilities import TAU
 
 
-def eq_count_points_by_s2_region(s_point, N):
+def eq_count_points_by_s2_region(s_point, N, even_collars=False):
     """
     Count points in each of N regions of S^2.
 
@@ -18,10 +19,14 @@ def eq_count_points_by_s2_region(s_point, N):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical
-        polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
+        polar coordinates, with longitude 0 <= s[0, p_idx] <= TAU,
         colatitude 0 <= s[1, p_idx] <= pi.
     N : int
         The number of regions in the partition.
+    even_collars : bool, optional
+        If True, force an even number of collars for symmetric partitions.
+        Default is False.
+
 
     Returns
     -------
@@ -48,12 +53,12 @@ def eq_count_points_by_s2_region(s_point, N):
     >>> eq_count_points_by_s2_region(points_s, 5)
     array([19, 29, 32, 29, 19])
     """
-    r_idx = eq_find_s2_region(s_point, N)
+    r_idx = eq_find_s2_region(s_point, N, even_collars=even_collars)
     count_v = np.histogram(r_idx, bins=np.arange(1, N + 2))[0]
     return count_v
 
 
-def eq_find_s2_region(s_point, N):
+def eq_find_s2_region(s_point, N, even_collars=False):
     """
     Partition S^2 into N regions and find the index for each point.
 
@@ -61,10 +66,14 @@ def eq_find_s2_region(s_point, N):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical
-        polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
+        polar coordinates, with longitude 0 <= s[0, p_idx] <= TAU,
         colatitude 0 <= s[1, p_idx] <= pi.
     N : int
         The number of regions in the partition.
+    even_collars : bool, optional
+        If True, force an even number of collars for symmetric partitions.
+        Default is False.
+
 
     Returns
     -------
@@ -80,21 +89,18 @@ def eq_find_s2_region(s_point, N):
     Examples
     --------
     >>> from eqsp.partitions import eq_point_set_polar
-    >>> points_s = eq_point_set_polar(2, 8)
-    >>> eq_find_s2_region(points_s, 8)
+    >>> pts = eq_point_set_polar(2, 8)
+    >>> eq_find_s2_region(pts, 8)
     array([1, 2, 3, 4, 5, 6, 7, 8])
-    >>> eq_find_s2_region(points_s, 5)
+    >>> eq_find_s2_region(pts, 5)
     array([1, 2, 2, 3, 3, 4, 4, 5])
-    >>> # Testing an exact colatitude boundary (side='left' logic)
-    >>> import numpy as np
-    >>> from eqsp.partitions import eq_caps
-    >>> cap_boundary = eq_caps(2, 5)[0][0]
-    >>> points_on_boundary = np.array([[0.0, np.pi], [cap_boundary, cap_boundary]])
-    >>> eq_find_s2_region(points_on_boundary, 5)
-    array([1, 1])
+    >>> # Testing even_collars support
+    >>> pts_even = eq_point_set_polar(2, 8, even_collars=True)
+    >>> eq_find_s2_region(pts_even, 8, even_collars=True)
+    array([1, 2, 3, 4, 5, 6, 7, 8])
     """
-    s_regions = eq_regions(2, N)
-    s_cap, n_regions = eq_caps(2, N)
+    s_regions = eq_regions(2, N, even_collars=even_collars)
+    s_cap, n_regions = eq_caps(2, N, even_collars=even_collars)
     c_regions = np.cumsum(n_regions)
     r_idx = lookup_s2_region(s_point, s_regions, s_cap, c_regions)
     return r_idx
@@ -108,7 +114,7 @@ def in_s2_region(s_point, region):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical
-        polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
+        polar coordinates, with longitude 0 <= s[0, p_idx] <= TAU,
         colatitude 0 <= s[1, p_idx] <= pi.
     region : ndarray
         One region of S^2 as returned by eq_regions(2, N).
@@ -143,7 +149,7 @@ def in_s2_region(s_point, region):
         max_long = region[0, 1]
         in_long = min_long < longitude <= max_long
         if not in_long:
-            longitude = longitude + 2 * np.pi
+            longitude = longitude + TAU
             in_long = min_long < longitude <= max_long
         colatitude = s_point[1, p_idx]
         min_colat = region[1, 0]

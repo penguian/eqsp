@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.99.9] - 2026-04-09
+**Git Tag**: `release_0_99_9` | **Distribution**: `PyPI`
+
+### Added
+- **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
+- **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
+- **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in.
+- **Full Project Coverage**: Reached 100% functional line coverage for the entire PyEQSP repository, including core maintenance, CI, and release infrastructure.
+- **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API and implemented the full `run_benchmarks_even.py` suite with 1-2-5 logarithmic scaling.
+- **Higher-Dimension Robustness**: Formalized unit tests for recursive partitioning on $S^4$ and $S^5$, verifying coordinate bounds and strict unit norm properties.
+- **Deep-Dive Verification**: Implemented resilient mock tests for elusive edge cases, including network timeouts and filesystem permission errors in CI.
+- **Benchmark Documentation Parity**: Audited all project documentation to ensure default benchmark dimensions ($S^2$ vs $S^3$) are explicitly described, matching both Python and MATLAB source baselines.
+
+- **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented polar index clamping in `eqsp/_private/_histograms.py` to prevent `IndexError` at extreme boundaries.
+- **Pylint Import Resolution**: Hardened `verify_all.py` with an automated `init-hook` to correctly resolve specialized benchmark source roots during project-wide audits.
+- **Benchmark Core Correctness**: Fixed dimension parameters in `sradius` benchmarks to ensure area calculations consistently use the correct embedding space dimensionality.
+- **Local Configuration isolation**: Untracked assistant skills and standardized documentation with generic placeholders (`VENV`) for improved privacy and portability.
+- **Infrastructure Isolation**: Redesigned virtual environment deactivation in `verify_all.py` to ensure robust subprocess isolation and portable `PYTHONPATH` handling via `os.pathsep`.
+
+### Changed
+- **Metadata Synchronization**: Unified versioning across `pyproject.toml` and documentation for the final pre-1.0 release candidate.
+- **Maintenance Hardening**: Finalized the "Defense in Depth" strategy with 100% automated verification of all maintenance scripts.
+
 ## [0.99.8] - 2026-04-03
 **Git Tag**: `release_0_99_8` | **Distribution**: `PyPI`
 

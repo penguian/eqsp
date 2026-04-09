@@ -23,13 +23,12 @@ from ._private._partitions import (
     top_cap_region,
 )
 from .utilities import (
+    TAU,
     asfloat,
     cart2polar2,
     ideal_collar_angle,
     polar2cart,
 )
-
-TAU = 2.0 * pi
 
 
 def eq_caps(dim, N, even_collars=False):

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyeqsp"
-version = "0.99.8"
+version = "0.99.9"
 description = "Python Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
@@ -59,6 +59,9 @@ filterwarnings = [
     "ignore:module 'sre_parse' is deprecated:DeprecationWarning",
     "ignore:module 'sre_constants' is deprecated:DeprecationWarning",
     "ignore:.*__array_wrap__ must accept context.*:DeprecationWarning",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
 addopts = "--doctest-modules"
 

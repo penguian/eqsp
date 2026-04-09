@@ -52,8 +52,15 @@ Standalone Python scripts demonstrating these concepts are available in the [exa
 - `example_visualize_2d.py` & `example_visualize_3d.py`: Plotting and interactive rendering.
 - `example_symmetric_partitions.py`: Using the `even_collars` parameter.
 
-## Migration from MATLAB
+## Appendices
 
-If you are transitioning from the original MATLAB toolbox, please refer to the [User Migration Guide](user/user_migration_guide.md) for a mapping of functions and major architectural changes.
+Technical reference material, setup details, and the migration bridge are available in the appendices:
+- **Appendix A**: [eqsp package API](api/modules.rst)
+- **Appendix B**: [Migration from MATLAB](user/migration_matlab.md)
+- **Appendix C**: [Installation & Requirements](user/installation.md)
+- **Appendix D**: [Performance Expectations](user/performance_expectations.md)
+- **Appendix E**: [Thesis Research Reproduction](user/phd-thesis-examples.md)
+- **Appendix F**: [System-Integrated Setup (venv_sys)](user/venv_sys_setup.md)
+- **Appendix G**: [Reproduction Setup & Troubleshooting](user/reproduction_setup.md)
 
 For the full list of scientific works cited in this volume, see the [References](user/references_vol1.md) chapter.

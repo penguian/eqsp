@@ -3,6 +3,7 @@ from math import cos, gcd, pi, sin
 import numpy as np
 
 from ..utilities import (
+    TAU,
     area_of_collar,
     area_of_ideal_region,
     sradius_of_cap,
@@ -53,7 +54,7 @@ def bot_cap_region(dim, a_cap):
            [2.618 , 3.1416]])
     """
     if dim == 1:
-        return np.array([[2 * pi - a_cap, 2 * pi]])
+        return np.array([[TAU - a_cap, TAU]])
     sphere_region_1 = sphere_region(dim - 1)
     first_col = np.append(sphere_region_1[:, 0], pi - a_cap)
     second_col = np.append(sphere_region_1[:, 1], pi)
@@ -141,7 +142,7 @@ def centres_of_regions(regions):
 
     Notes
     -----
-    Uses floating point tolerance for equality. Azimuth mod 2*pi, others mod pi.
+    Uses floating point tolerance for equality. Azimuth mod TAU, others mod pi.
 
     Examples
     --------
@@ -161,15 +162,13 @@ def centres_of_regions(regions):
     top = regions[:, 0, :]
     bot = regions[:, 1, :]
     zero_bot = np.abs(bot[0, :]) < tol
-    bot[0, zero_bot] = 2 * pi
+    bot[0, zero_bot] = TAU
     equal_bot = np.abs(bot[0, :] - top[0, :]) < tol
-    bot[0, equal_bot] = top[0, equal_bot] + 2 * pi
-    twopi_bot = np.abs(bot[0, :] - top[0, :] - 2 * pi) < tol
-    points[0, twopi_bot] = 0.0
-    mask_other = ~twopi_bot
-    points[0, mask_other] = np.mod(
-        (bot[0, mask_other] + top[0, mask_other]) / 2.0, 2 * pi
-    )
+    bot[0, equal_bot] = top[0, equal_bot] + TAU
+    tau_bot = np.abs(bot[0, :] - top[0, :] - TAU) < tol
+    points[0, tau_bot] = 0.0
+    mask_other = ~tau_bot
+    points[0, mask_other] = np.mod((bot[0, mask_other] + top[0, mask_other]) / 2.0, TAU)
     for k in range(1, dim):
         pi_bot = np.abs(bot[k, :] - pi) < tol
         points[k, pi_bot] = pi
@@ -542,7 +541,7 @@ def sphere_region(dim):
            [0.    , 3.1416]])
     """
     if dim == 1:
-        return np.array([[0.0, 2.0 * pi]])
+        return np.array([[0.0, TAU]])
     sphere_region_1 = sphere_region(dim - 1)
     first_col = np.append(sphere_region_1[:, 0], 0.0)
     second_col = np.append(sphere_region_1[:, 1], pi)

@@ -15,7 +15,7 @@ The EQ algorithm provides a robust way to partition the unit sphere $\mathbb{S}^
 *   **Species Diversity Visualization ({ref}`Arrigo et al., 2012 <arr12>`)**: The R2G2 package incorporates EQSP partitions to provide global grids for 3D histograms in Google Earth, enabling quantitative visualization of species richness across equal-area regions.
 
 ### Medicine and MRI
-*   **SPARKLING MRI Trajectories ({ref}`Lazarus et al., 2021 <laz21>`)**: EQSP partitioning was used to sample k-space trajectories on a sphere, ensuring trajectories are distributed according to a target density while maintaining globally uniform sampling.
+*   **SPARKLING MRI Trajectories ({ref}`Lazarus et al., 2020 <laz20>`)**: EQSP partitioning was used to sample k-space trajectories on a sphere, ensuring trajectories are distributed according to a target density while maintaining globally uniform sampling.
 *   **Automated Brain Parcellation ({ref}`Das and Maharatna, 2020 <das20>`)**: EQ partitions were used to create a non-anatomical, equal-area "igloo" grid of the brain, facilitating the analysis of structural and functional connectivity.
 
 ### Climate and Geoscience
