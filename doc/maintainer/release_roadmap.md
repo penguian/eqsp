@@ -60,6 +60,7 @@ This roadmap outlines the development phases from the initial beta through the 1
 ### 1.0 General Release [PLANNED]
 
 - [ ] **User Feedback Audit**: Address final community feedback from the beta cycle.
+- [x] **Master ToC Refinement (index.rst)**: Redesigned the master Table of Contents to resolve appendix numbering conflicts and correctly sequence volume references.
 - [ ] **4-Tier Verification Structure**: Implement the structural separation of logic (Tier 1) and reproduction (Tier 3/4) to ensure CI agility.
 - [ ] **Visual Audit**: Final side-by-side verification of example figures vs. PhD Thesis PDF.
 - [ ] **Release Verification**: Verified 1.0 release artifacts and distribution.

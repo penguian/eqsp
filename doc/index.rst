@@ -16,6 +16,10 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
    Symmetric EQ Partitions <user/even_collar_partitions.md>
    Visualization & Illustration <user/visualization_guide.md>
    Quality & Research Integrity <user/quality_policy.md>
+
+.. toctree::
+   :maxdepth: 2
+
    Appendix A: eqsp package API <api/modules>
    Appendix B: Migration from MATLAB <user/migration_matlab.md>
    Appendix C: Installation & Requirements <user/installation.md>
@@ -38,6 +42,10 @@ PyEQSP: Python Equal Area Sphere Partitioning Library
    Design & Architecture <maintainer/design_and_architecture.md>
    Performance Benchmarks <maintainer/benchmarks.md>
    Documentation Maintenance <maintainer/documentation_maintenance.md>
+
+.. toctree::
+   :maxdepth: 2
+
    Appendix A: Technical Testing & Verification <maintainer/testing_details.md>
    Appendix B: Upload & Release Workflow <maintainer/upload_guide.md>
    Appendix C: Pull Request Checklist <maintainer/pr_checklist.md>
