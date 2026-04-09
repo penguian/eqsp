@@ -7,10 +7,12 @@ Copyright Paul Leopardi 2026
 from math import pi
 
 import numpy as np
+import pytest
 
 from eqsp._private._histograms import lookup_s2_region
 
 
+@pytest.mark.slow
 def test_high_n_determinism():
     """
     Stress test for Option C: Index Rotation.
@@ -52,7 +54,3 @@ def test_high_n_determinism():
     assert r_idx_low[0] == expected_low_idx, (
         f"Expected {expected_low_idx}, got {r_idx_low[0]}"
     )
-
-
-if __name__ == "__main__":
-    test_high_n_determinism()

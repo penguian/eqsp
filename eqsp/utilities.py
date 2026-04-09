@@ -10,6 +10,8 @@ import numpy as np
 from scipy.optimize import newton
 from scipy.special import betainc, gamma  # pylint: disable=no-name-in-module
 
+TAU = 2.0 * pi
+
 # Tolerance for comparisons close to zero.
 _TOLERANCE = float(np.finfo(np.float32).eps)
 
@@ -81,7 +83,7 @@ def cart2polar2(x):
     -------
     s : ndarray
         An array of shape (2, N), where for each point:
-        - s[0, :] is the longitude phi in [0, 2*pi),
+        - s[0, :] is the longitude phi in [0, TAU),
         - s[1, :] is the colatitude theta in [0, pi].
 
     See Also
@@ -132,7 +134,7 @@ def cart2polar2(x):
     x_proj = x / norms
 
     # Spherical coordinates: phi = atan2(y, x), theta = arccos(z)
-    phi = np.arctan2(x_proj[1, :], x_proj[0, :]) % (2 * np.pi)
+    phi = np.arctan2(x_proj[1, :], x_proj[0, :]) % TAU
     theta = np.arccos(x_proj[2, :])
 
     s = np.vstack((phi, theta))

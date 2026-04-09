@@ -8,6 +8,7 @@ import numpy as np
 
 from ._private._histograms import lookup_s2_region
 from .partitions import eq_caps, eq_regions
+from .utilities import TAU
 
 
 def eq_count_points_by_s2_region(s_point, N, even_collars=False):
@@ -18,7 +19,7 @@ def eq_count_points_by_s2_region(s_point, N, even_collars=False):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical
-        polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
+        polar coordinates, with longitude 0 <= s[0, p_idx] <= TAU,
         colatitude 0 <= s[1, p_idx] <= pi.
     N : int
         The number of regions in the partition.
@@ -65,7 +66,7 @@ def eq_find_s2_region(s_point, N, even_collars=False):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical
-        polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
+        polar coordinates, with longitude 0 <= s[0, p_idx] <= TAU,
         colatitude 0 <= s[1, p_idx] <= pi.
     N : int
         The number of regions in the partition.
@@ -113,7 +114,7 @@ def in_s2_region(s_point, region):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical
-        polar coordinates, with longitude 0 <= s[0, p_idx] <= 2*pi,
+        polar coordinates, with longitude 0 <= s[0, p_idx] <= TAU,
         colatitude 0 <= s[1, p_idx] <= pi.
     region : ndarray
         One region of S^2 as returned by eq_regions(2, N).
@@ -148,7 +149,7 @@ def in_s2_region(s_point, region):
         max_long = region[0, 1]
         in_long = min_long < longitude <= max_long
         if not in_long:
-            longitude = longitude + 2 * np.pi
+            longitude = longitude + TAU
             in_long = min_long < longitude <= max_long
         colatitude = s_point[1, p_idx]
         min_colat = region[1, 0]

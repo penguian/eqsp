@@ -1,3 +1,6 @@
+from eqsp.utilities import TAU
+
+
 def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     """
     For S^2, given sequences of points, regions, and cap colatitudes, find the
@@ -7,7 +10,7 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
     ----------
     s_point : ndarray
         Sequence of points on S^2, as a 2 x n_points array in spherical polar
-        coordinates, with longitude 0 <= s[0, p_idx] <= 2 * pi, colatitude
+        coordinates, with longitude 0 <= s[0, p_idx] <= TAU, colatitude
         0 <= s[1, p_idx] <= pi.
     s_regions : ndarray
         Sequence of regions of S^2 as per eq_regions(2, N) where N ==
@@ -89,7 +92,6 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
 
     for c_idx in np.unique(active_c_idxs):
         mask = active_c_idxs == c_idx
-        pts_long = s_point[0, mask]
         pts_idx = np.where(mask)[0]
 
         min_r_idx = int(c_start_indices[c_idx]) + 1
@@ -105,23 +107,22 @@ def lookup_s2_region(s_point, s_regions, s_cap, c_regions):
             start_off = min_r_idx - 1
             s_longs = s_regions[0, :, start_off : start_off + n_longs]
             ends = s_longs[1, :]
-            starts = s_longs[0, :]
+            phi0 = s_longs[0, 0]
 
-            # Map everything into the range [0, 2*pi)
-            phi0 = starts[0]
-            two_pi = 2 * np.pi
+            # Translate point longitudes to [0, TAU)
+            pts_long_translated = (s_point[0, mask] - phi0) % TAU
+            # Boundary policy: (min, max]. Longitude 0 is treated as TAU
+            # to fall into the last region of the collar.
+            pts_long_translated[pts_long_translated <= 1e-15] = TAU
 
-            # Translate point longitudes to [0, 2*pi)
-            pts_long_translated = (pts_long - phi0) % two_pi
+            # Translate boundaries (ends) to [0, TAU)
+            ends_translated = (ends - phi0) % TAU
 
-            # Translate boundaries (ends) to [0, 2*pi)
-            ends_translated = (ends - phi0) % two_pi
-
-            # The ends are monotonically increasing in [0, 2*pi) EXCEPT for the last one
-            # which wraps around to exactly 0 (since it's phi0 + 2*pi).
-            # We set it to 2*pi to maintain monotonicity for searchsorted.
+            # The ends are monotonically increasing in [0, TAU) EXCEPT for the last one
+            # which wraps around to exactly 0 (since it's phi0 + TAU).
+            # We set it to TAU to maintain monotonicity for searchsorted.
             if ends_translated[-1] <= 1e-15:
-                ends_translated[-1] = two_pi
+                ends_translated[-1] = TAU
 
             # Direct searchsorted on the monotonic translated table
             l_idx = np.atleast_1d(

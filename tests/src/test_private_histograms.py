@@ -49,43 +49,20 @@ def test_lookup_s2_region_vectorization_fidelity():
 
     all_points = np.hstack((random_points, cap_points, long_points))
 
-    # 1. Run the reference Translated Domain logic
-    cap_bound_lats = np.round(s_cap, 12)
-    c_starts = np.concatenate(([0], c_regions[:-1]))
-    n_detection = len(cap_bound_lats)
-
-    r_idx_original = np.zeros(all_points.shape[1], dtype=int)
+    # 1. Run the reference Brute Force logic
+    # (Checking every point against every region for membership)
+    r_idx_brute = np.zeros(all_points.shape[1], dtype=int)
+    all_regions = eqsp.eq_regions(dim, N)
 
     for p_idx in range(all_points.shape[1]):
-        pts_lat = np.round(all_points[1, p_idx], 12)
-        pts_long = all_points[0, p_idx]
-
-        c_idx = np.searchsorted(cap_bound_lats, pts_lat, side="left")
-        min_r_offset = int(c_starts[c_idx])
-
-        if c_idx < n_detection - 1:
-            n_longs = int(c_starts[c_idx + 1]) - min_r_offset
-        else:
-            n_longs = s_regions.shape[2] - min_r_offset
-
-        if n_longs > 1:
-            s_longs = s_regions[0, :, min_r_offset : min_r_offset + n_longs]
-            phi0 = s_longs[0, 0]
-            two_pi = 2 * np.pi
-
-            pts_long_translated = (pts_long - phi0) % two_pi
-            ends_translated = (s_longs[1, :] - phi0) % two_pi
-            if ends_translated[-1] <= 1e-15:
-                ends_translated[-1] = two_pi
-
-            l_idx = np.searchsorted(ends_translated, pts_long_translated, side="left")
-            if l_idx >= n_longs:
-                l_idx = 0
-            r_idx_original[p_idx] = min_r_offset + 1 + l_idx
-        else:
-            r_idx_original[p_idx] = min_r_offset + 1
+        point = all_points[:, p_idx : p_idx + 1]
+        for r_num in range(N):
+            region = all_regions[:, :, r_num]
+            if eqsp.histograms.in_s2_region(point, region)[0]:
+                r_idx_brute[p_idx] = r_num + 1
+                break
 
     # 2. Run the (potentially vectorized) module logic
     r_idx_module = lookup_s2_region(all_points, s_regions, s_cap, c_regions)
 
-    np.testing.assert_array_equal(r_idx_original, r_idx_module)
+    np.testing.assert_array_equal(r_idx_brute, r_idx_module)
