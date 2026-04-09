@@ -53,6 +53,8 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
 - [x] **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
 - [x] **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in and added `os.pathsep` portability.
+- [x] **Local Config & Environment Standardization**: Isolated AI assistant skills and standardized documentation with generic placeholders (`VENV`) for improved portability and privacy.
+- [x] **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
 - [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
 ### 1.0 General Release [PLANNED]

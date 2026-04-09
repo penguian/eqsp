@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented polar index clamping in `eqsp/_private/_histograms.py` to prevent `IndexError` at extreme boundaries.
 - **Pylint Import Resolution**: Hardened `verify_all.py` with an automated `init-hook` to correctly resolve specialized benchmark source roots during project-wide audits.
 - **Benchmark Core Correctness**: Fixed dimension parameters in `sradius` benchmarks to ensure area calculations consistently use the correct embedding space dimensionality.
+- **Local Configuration isolation**: Untracked assistant skills and standardized documentation with generic placeholders (`VENV`) for improved privacy and portability.
 - **Infrastructure Isolation**: Redesigned virtual environment deactivation in `verify_all.py` to ensure robust subprocess isolation and portable `PYTHONPATH` handling via `os.pathsep`.
 
 ### Changed

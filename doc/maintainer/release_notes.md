@@ -19,6 +19,8 @@ Release **0.99.9** achieves **100% project-wide coverage** across both the core 
 - **100% Coverage**: Reached 100% functional coverage across all maintenance and release tools.
 - **Release Metadata Sync**: Updated versioning and copyright dates for the 1.0 release.
 - **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
+- **Local Config Isolation**: Isolated AI assistant skills and standardized virtual environment documentation with generic placeholders (`VENV`) for improved portability and privacy.
+- **Environment Support**: Formalized the requirement for Mayavi-enabled environments for 3D visualization documentation builds.
 
 ### Release Metadata
 - **Version**: 0.99.9
