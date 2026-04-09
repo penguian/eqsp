@@ -2,7 +2,7 @@
 PyEQSP Visualizations module.
 3D visualizations using Mayavi.
 
-Copyright 2025 Paul Leopardi.
+Copyright 2026 Paul Leopardi.
 For licensing, see COPYING.
 """
 
