@@ -1,4 +1,4 @@
-# Performance Expectations
+# Appendix D: Performance Expectations
 
 This guide helps researchers and scientists understand the computational resources required when working with large-scale PyEQSP partitions.
 

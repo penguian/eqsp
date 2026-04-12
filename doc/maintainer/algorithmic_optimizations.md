@@ -1,4 +1,4 @@
-# Performance Highlights & Algorithmic Optimizations
+# Appendix F: Algorithmic & Performance Details
 
 This document provides a technical summary of the key algorithmic optimizations implemented in the **PyEQSP** Python package to ensure scalability and efficiency for large-scale sphere partitioning analysis.
 

@@ -1,4 +1,4 @@
-# Maintenance & Infrastructure Checklist: PyEQSP Quality Assurance
+# Appendix B: Maintenance Checklist: PyEQSP Quality Assurance
 
 This checklist provides the canonical project-wide quality gates to be consulted when modifying maintenance code, infrastructure scripts, or the core maintenance documentation.
 

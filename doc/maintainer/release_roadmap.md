@@ -1,18 +1,29 @@
-# PyEQSP Release Roadmap
+# Appendix H: Release Roadmap
 
 This roadmap outlines the development phases from the initial beta through the 1.0 general release.
 
-## Phase 1: Symmetric Partitioning & Sphinx — [COMPLETED] (2026-03-08)
+## Phase 1: Symmetric Partitioning & Sphinx
 **Goal**: Implement `even_collars` and establish professional documentation.
+
+### 0.99.0 Beta: Symmetric Logic and Documentation
+**Released: 2026-03-08** | **Git Tag: release_0_99_0** | **Distribution: PyPI**
 
 - [x] **Symmetric Logic**: Enable equatorial hyperplane alignment for S² and S³.
 - [x] **Sphinx Framework**: Initialize multi-format documentation with MyST-Parser.
 
-## Phase 2: Documentation Audit & Quality Hardening — [COMPLETED] (2026-03-17)
+### 0.99.3 Beta: Branding & Notation
+**Released: 2026-03-14** | **Git Tag: release_0_99_3** | **Distribution: PyPI**
+
+- [x] **PyPI Branding**: Standardized project identity and mathematical notation for web rendering.
+- [x] **Scaling Parity**: Verified $O(N^{0.6})$ scaling parity with original MATLAB research.
+
+
+## Phase 2: Documentation Audit & Quality Hardening
 **Goal**: Finalize NumPy docstrings and establish bibliographic consistency.
 
 - [x] **Docstring Audit**: Standardize NumPy Google-style docstrings across all modules.
-- [x] **Bibliographic Parity**: Align bibliography with finalized PhD thesis [Leo07].
+- [x] **Bibliographic Parity**: Align bibliography with canonical PhD thesis keys [Leo07].
+
 
 ### 0.99.4 Beta: Maintenance Consolidation
 **Released: 2026-03-17** | **Git Tag: release_0_99_4** | **Distribution: PyPI**
@@ -20,8 +31,16 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Porting Guide**: Document changes from MATLAB to Python.
 - [x] **Quality Checks**: Automated Aussie -ize orthography enforcement.
 
-## Phase 2b: 0.99.7 Infrastructure Hardening — [COMPLETED] (2026-03-22)
-**Goal**: Harden CI infrastructure, implement automated quality guardrails, and address legacy environment compatibility.
+### 0.99.6 Beta: Release Automation & Governance
+**Released: 2026-03-21** | **Git Tag: release_0_99_6** | **Distribution: PyPI**
+
+- [x] **Release Automation**: Introduced `release/` suite to automate build-upload cycles.
+- [x] **Governance**: Added Roles & Responsibilities matrix to the Maintenance Guide.
+- [x] **Bibliography Consistency**: Manual audit to align all internal citation keys.
+
+
+## Phase 3: Infrastructure Hardening & Full Coverage
+**Goal**: Harden CI infrastructure, implement automated quality guardrails, achieve 100% project-wide coverage, and verify dimensional robustness.
 
 ### 0.99.7 Beta: Quality Hardening
 **Released: 2026-03-22** | **Git Tag: release_0_99_7** | **Distribution: PyPI**
@@ -30,9 +49,8 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `verify_all.py` to prevent documentation drift.
 - [x] **Environment Isolation**: Improved `verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
 
-### 0.99.8 Beta: Infrastructure Hardening — [COMPLETED] (2026-04-03)
+### 0.99.8 Beta: Infrastructure Hardening
 **Released: 2026-04-03** | **Git Tag: release_0_99_8** | **Distribution: PyPI**
-**Goal**: Semantically reorganize the maintenance repository, achieve 100% automation coverage, and finalize the JOSS submission.
 
 - [x] **JOSS Submission**: Initiate the peer-review process by submitting the voice-modeled `paper.md` and `paper.bib` artifacts to the Journal of Open Source Software.
 - [x] **Automation Coverage Plan**: Achieved 100% coverage on the script automation hub (`release/`, `validation/`) using modular refactoring and the `test_ci_scripts.py` suite.
@@ -41,9 +59,8 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Rename COPYING to LICENSE and adopt PEP 639**: Renamed `COPYING` → `LICENSE`; updated `pyproject.toml` with `license = "MIT"` and `license-files = ["LICENSE"]`.
 - [x] **Rename `doc/internal/` to `doc/maintainer/`**: Reflected that these are public maintainer-facing docs. Updated all internal references.
 
-### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness — [COMPLETED] (2026-04-09)
+### 0.99.9 Beta: Full Project Coverage & Dimensional Robustness
 **Released: 2026-04-09** | **Git Tag: release_0_99_9** | **Distribution: PyPI**
-**Goal**: Reconcile performance benchmarks, achieve 100% project-wide coverage, and verify higher-dimension robustness.
 
 - [x] **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
 - [x] **Coverage Deep-Dive**: Reached 100% functional coverage in all core maintenance and release scripts (`release/`, `validation/`) and core algorithm edge cases (e.g., $dim=1$ scalar paths).
@@ -57,16 +74,20 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
 - [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
+## Phase 4: 1.0 Release & Beyond
+**Goal**: Finalize production-ready artifacts, incorporate community feedback, and establish a long-term strategic evolution.
+
 ### 1.0 General Release [PLANNED]
 
 - [ ] **User Feedback Audit**: Address final community feedback from the beta cycle.
+- [x] **Master ToC Refinement (index.rst)**: Redesigned the master Table of Contents to resolve appendix numbering conflicts and correctly sequence volume references.
 - [ ] **4-Tier Verification Structure**: Implement the structural separation of logic (Tier 1) and reproduction (Tier 3/4) to ensure CI agility.
 - [ ] **Visual Audit**: Final side-by-side verification of example figures vs. PhD Thesis PDF.
 - [ ] **Release Verification**: Verified 1.0 release artifacts and distribution.
 - [ ] **Final 1.0 Tag**: Canonical production release tag.
 
-### Post -1.0 [UNDER CONSIDERATION]
-**Goal**: Strategic enhancements for extreme performance, automation, and developer experience.
+### Post-1.0 [UNDER CONSIDERATION]
+
 
 #### Quality & Type Safety
 - [ ] **Gradual Typing**: Implement PEP 484 type hints for core package parameters (`dim`, `N`, `s`).

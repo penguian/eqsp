@@ -1,15 +1,12 @@
-# PhD Thesis Examples
+# Appendix E: Thesis Research Reproduction & Setup
 
-This directory contains Python scripts that reproduce the computationally
-generated figures from the PhD thesis:
+Each script uses the **PyEQSP** Python library (this repository) to reproduce results originally computed in MATLAB using the EQ Sphere Partitioning Toolbox.
 
-> Paul Leopardi, *"Distributing points on the sphere: Partitions, separation,
-> quadrature and energy"*, UNSW, 2007.
+> Paul Leopardi, *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*, UNSW, 2007.
 
-Each script uses the **PyEQSP** Python library (this repository) to reproduce
-results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
+## Script Inventory
 
-## Scripts
+The following table maps the scripts in `examples/phd-thesis/src/` to the original thesis figures.
 
 | Script | Thesis Figure | Backend | Description |
 |:-------|:-------------|:--------|:------------|
@@ -35,65 +32,54 @@ results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
 | `fig_5_4_energy_coeff_s3.py` | Fig 5.4 | Matplotlib (Agg) | Energy coefficient of EQP(3, N), N=2..20,000 |
 | `fig_5_5_energy_coeff_s4.py` | Fig 5.5 | Matplotlib (Agg) | Energy coefficient of EQP(4, N), N=2..20,000 |
 
-All scripts save a PNG output file to the current directory and print a
-confirmation message on completion.
+All scripts save a PNG output file to the current directory and print a confirmation message on completion.
 
-## Usage
+## Reproduction Notes
 
-### Matplotlib (Agg) scripts — no display required
-
-These scripts run headlessly and require only the standard `venv`:
-```bash
-cd examples/phd-thesis
-source ../../.venvs/.venv/bin/activate
-python fig_3_4_max_diam_s2.py
-```
-
-All 21 scripts follow the `if __name__ == "__main__":` pattern and can be imported as modules without side effects.
-
-The reproduction scripts require specific VTK backends. Refer to the [Reproduction Setup](reproduction_setup.md) guide.
-
-### Visual inspection of eqsp outputs
-
-To interactively inspect 2D illustrations and 3D visualizations from the
-main library (not thesis-specific), see the [Visualization & Illustration Guide](visualization_guide.md).
-
-## Notes on differences from the original figures
-
-  `eqsp.visualizations.show_s2_partition` (Mayavi), which produces a
-  comparable 3D rendering.
-
-  > [!IMPORTANT]
-  > 3D plots generated via Mayavi/VTK may not always be exactly bitwise reproducible. Minor variances (e.g., 1-byte file size differences or ~2 pixel Absolute Error) can occur due to non-deterministic GPU hardware rasterization and anti-aliasing, even when the underlying data is identical.
-- **Fig 4.10 (3D Voronoi)**: Computed using `scipy.spatial.SphericalVoronoi`.
-  Edges are rendered as true great circle arcs on the sphere using SLERP
-  (Spherical Linear Interpolation). This ensures geometric accuracy that
-  matches the blue region boundaries.
-- **Figs 5.1–5.5 (Energy/Distance)**:
-  - **Min-distance** calculations are optimized ($O(N \log N)$) and finish in seconds even for $N=20,000$.
-  - Exact Riesz energy calculations ($s > 0$) use a memory-efficient block-based summation ($O(N)$ peak memory). For $N=20,000$, these typically complete in 5–10 minutes.
-  - **Sampling Strategy**: Most Chapter 4 and 5 plots use a hybrid sampling strategy (N=1..100 linear, then 900 logarithmically spaced points up to 20,000) for high resolution across both small and large N.
-  - **Energy Coefficient mapping**: Figures 5.3–5.5 plot the specific "energy coefficient" $ec_d(\mathcal{N})$ defined in Section 5.7 of the thesis, which relates to the library output $C$ as $ec_d(\mathcal{N}) = -2 \times C$.
-
-## Not Reproduced
-
-The following figures are excluded as they are theoretical diagrams, not
-Excluded figures are theoretical diagrams, not computational outputs:
-- **Figs 3.8–3.12**: Steps of the Feige-Schechtman construction (proof diagrams).
-- **Fig 3.2**: Pseudocode description of the partition algorithm (text figure).
-- **Tables 3.1–3.3**: Constants from theorem proofs (analytically derived).
-- **Table 4.1**: Hamkins-Zeger vs EQP comparison (partially tabulated data).
+- **3D Figures**: Visualizations using `Mayavi` are not always bitwise identical across hardware due to non-deterministic GPU rasterization, even when the underlying mesh is identical.
+- **Min-distance**: Unified search using KDTrees ensures $O(N \log N)$ scaling, allowing $N=20,000$ to complete in seconds.
+- **Riesz Energy**: Exact summations for $s > 0$ use memory-efficient block-tiling to ensure $O(N)$ peak RAM.
 
 ## Running Time Benchmark (Section 3.10.2)
 
-Beyond figure reproduction, the project includes a formal replication of the performance benchmark described in **Section 3.10.2: Running time**.
+Beyond figure reproduction, the project includes a formal replication of the performance benchmark described in **Section 3.10.2: Running time**. It verifies that the recursive zonal partitioning algorithm scales as $O(N^{0.6})$.
 
-- **Purpose**: Verifies that the recursive zonal partitioning algorithm scales as $O(N^{0.6})$.
-- **Script**: `benchmarks/src/benchmark_eq_regions.py`
-- **Verification**: The Python implementation achieves empirical scaling coefficients identifying with the original thesis baseline (~0.60) across dimensions $d=1 \dots 11$ and partitions up to $N=2^{22}$ (4.2 million regions).
-
-To execute this benchmark:
+To execute:
 ```bash
 python3 benchmarks/src/benchmark_eq_regions.py --max-d 11 --max-k 22
 ```
-Detailed results are saved in `benchmarks/results/benchmark_eq_regions.log`.
+
+## Technical Setup & Troubleshooting
+<a id="thesis-setup"></a>
+
+Reproduction scripts for 3D figures require the **Mayavi** engine. We strongly recommend using the **`venv_sys`** environment for this work. See the {ref}`venv-sys-setup` section in **Appendix B** for more.
+
+### Backend Configuration
+
+Rendering 3D Great Circle arcs and Voronoi cells on the sphere requires specific VTK/Mayavi backends. On Linux systems, calibrate your environment as follows:
+
+```bash
+export QT_API="pyqt5"
+export QT_QPA_PLATFORM="xcb"
+```
+
+> [!WARNING]
+> Without these exports, Mayavi may fail to initialize a window or crash with a `Segmentation Fault` when attempting to rasterize GREAT CIRCLE edges.
+
+### Bitwise Reproducibility
+
+PyEQSP aims for identical numerical results to the original thesis. But users should be aware of two potential sources of variance:
+
+1.  **Hardware Rasterization**: 3D plots generated via Mayavi/VTK use GPU hardware. Minor variances (e.g., ~2 pixel differences) can occur between different GPUs or drivers due to non-deterministic anti-aliasing.
+2.  **Floating-Point Drift**: While we use `numpy.longdouble` for critical recursions, extreme depths in high dimensions ($d > 8$) may show sub-microscopic differences across different CPU architectures.
+
+### Headless Execution
+
+To run reproduction scripts on a server or in CI without a display:
+
+```bash
+export HEADLESS=1
+python3 examples/phd-thesis/src/fig_3_4_max_diam_s2.py
+```
+
+Numerical scripts (Matplotlib `Agg` backend) will save PNGs directly. 3D scripts (Mayavi) will attempt to use an offscreen buffer if `xvfb` is available.

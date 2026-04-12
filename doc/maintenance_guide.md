@@ -63,7 +63,7 @@ This layered approach is complemented by **Project-Specific Guardrails** that en
 | **PR Checklist** | `doc/maintainer/pr_checklist.md` | General technical verification for code contributions. |
 | **Maint Checklist** | `doc/maintainer/maintenance_implementation_checklist.md` | Audit for infrastructure and documentation hardening. |
 
-For technical details on the testing infrastructure, see [Technical Testing & Verification](maintainer/testing_details.md).
+For technical details on the testing infrastructure, see **Appendix A**: [Technical Testing & Verification](maintainer/testing_details.md).
 
 ## Documentation Management
 
@@ -108,13 +108,26 @@ Release 0.99.7 introduced a suite of automated scripts and strict quality guardr
 4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `release/upload_release.py --pypi` for the final deployment.
 5. **SourceForge Upload**: Use `release/upload_sourceforge.py` to host the Sphinx HTML documentation.
 
-For detailed instructions on these scripts, see the internal [Upload Guide](maintainer/upload_guide.md).
+For detailed instructions on these scripts, see **Appendix D**: [Upload Guide](maintainer/upload_guide.md).
 
 ### Historical Release Notes
 Historical and current release details are tracked in the `doc/maintainer/` directory:
 - [Historical Release Notes](maintainer/release_notes.md)
 - [Release Roadmap](maintainer/release_roadmap.md)
 - [Maintenance Checklist](maintainer/maintenance_implementation_checklist.md)
+
+## Appendices
+
+The following appendices provide detailed technical checklists, mathematical derivations, and historical data for project maintenance:
+
+- **Appendix A**: [Technical Testing & Verification](maintainer/testing_details.md)
+- **Appendix B**: [Maintenance Checklist](maintainer/maintenance_implementation_checklist.md)
+- **Appendix C**: [Pull Request Checklist](maintainer/pr_checklist.md)
+- **Appendix D**: [Upload Guide](maintainer/upload_guide.md)
+- **Appendix E**: [Mathematical Symmetry Derivations](maintainer/technical_symmetry.md)
+- **Appendix F**: [Algorithmic & Performance Details](maintainer/algorithmic_optimizations.md)
+- **Appendix G**: [Historical Release Notes](maintainer/release_notes.md)
+- **Appendix H**: [Release Roadmap](maintainer/release_roadmap.md)
 
 ### Troubleshooting Release Issues
 

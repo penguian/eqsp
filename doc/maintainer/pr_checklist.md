@@ -1,4 +1,4 @@
-# Pull Request Checklist: PyEQSP Quality Assurance
+# Appendix C: Pull Request Checklist: PyEQSP Quality Assurance
 
 Use this checklist to verify the technical and procedural integrity of a Pull Request before submission. This captures common infrastructure and documentation "gotchas" identified during the 0.99.7 release cycle.
 

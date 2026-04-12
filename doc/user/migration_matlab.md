@@ -1,38 +1,18 @@
-# Migration from MATLAB
+# Appendix C: Migration from MATLAB
 
 This guide provides a technical bridge for users transitioning from the original MATLAB `eq_sphere_partitions` toolbox to the Python **PyEQSP** library. While the core mathematical algorithms for recursive partitioning remain identical, the implementation has been modernized to exploit NumPy's vectorization and Python's efficient memory management.
 
-## Performance Comparison (Baseline)
 
-The following benchmark demonstrates the significant performance improvements in the Python implementation when executed on the same hardware (**AMD Ryzen 7 8840HS**, 2.4 GHz).
 
-| Operation | Dimension | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
-| :--- | :---: | :--- | :---: | :---: | :---: |
-| **`eq_area_error`** | $S^2$ | 1,000,000 | 0.247 | 0.099 | **2.5x** |
-| **`sradius_of_cap`** | $S^3$ | 1,000,000 | 35.906 | 0.362 | **99x** |
-| **`eq_find_s2_region`** | $S^2$ | 2,000,000 | 28.322 | 0.220 | **129x** |
-| **`eq_min_dist`** | $S^2$ | 50,000 | 23.877 | 0.068 | **350x** |
-| **`eq_energy_dist`** | $S^2$ | 10,000 | 1.504 | 0.437 | **3.4x** |
 
-> **Note:** The dramatic speedups in `sradius_of_cap` (benchmarked on $S^3$) and `eq_min_dist` (benchmarked on $S^2$) are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
 
-## Performance Features & Optimizations
 
-The Python port introduces several algorithmic optimizations and internal logic improvements compared to the original MATLAB toolbox:
-
-- **Index Rotation (Histogram Logic)**: Solving the longitude wrap-around issue involved the implementation of an **Index Rotation** (Domain Translation) step.
-    - a. Points and boundaries are shifted by the collar's first boundary ($\phi_0$) using a modulo $2\pi$ operation.
-    - b. The final boundary is explicitly set to $2\pi$ to ensure strict monotonicity.
-    - c. The legacy `lookup_table()` utility was removed in favor of this direct, domain-translated `np.searchsorted()` approach for 100% test coverage and better performance.
-- **Min-Distance Optimization**: Optimized to **O(N log N)** using **KDTrees**. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
-- **Riesz Energy**: Uses a **block-based symmetry-aware summation** ($d_{ij} = d_{ji}$). Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
-- **Precision Rounding**: Latitude (band) lookups include $10^{-12}$ rounding to prevent points on a boundary from jumping bands due to floating-point variance.
 
 ## Quick Reference: Function Name Mapping
 
 Most core functions keep their names. The main differences are in coordinate conversion utilities and illustration functions.
 
-| Matlab Function | Python Function (`eqsp`) | Notes |
+| MATLAB Function | Python Function (`eqsp`) | Notes |
 | :--- | :--- | :--- |
 | **Partitions** | | |
 | `eq_point_set` | `eq_point_set` | Identical usage. |
@@ -47,7 +27,7 @@ Most core functions keep their names. The main differences are in coordinate con
 | `point_set_packing_density`| `point_set_props.point_set_packing_density` | Direct port. |
 | **Utilities** | | |
 | `pol2cart` | `utilities.polar2cart` | Renamed for clarity. |
-| `cart2pol` | `utilities.cart2polar2` | Same name. NumPy vectorization replaces the loop-based Matlab implementation. |
+| `cart2pol` | `utilities.cart2polar2` | Same name. NumPy vectorization replaces the loop-based MATLAB implementation. |
 | `area_of_sphere` | `utilities.area_of_sphere` | Direct port. |
 | `area_of_cap` | `utilities.area_of_cap` | Direct port. |
 | `area_of_collar` | `utilities.area_of_collar` | Direct port. |
@@ -68,14 +48,14 @@ Most core functions keep their names. The main differences are in coordinate con
 | `plot_s2_partition` | `visualizations.show_s2_partition` | Mayavi (optional). |
 | `project_s3_partition` | `visualizations.project_s3_partition` | Mayavi (optional). |
 
-> **Note:** Internal-only utilities from the original Matlab code (like `fatcurve`) are not exposed in the public Python API.
+> **Note:** Internal-only utilities from the original MATLAB code (like `fatcurve`) are not exposed in the public Python API.
 
 ## API & Usage Differences
 
 ### Keyword Arguments
-Matlab functions often used "Name, Value" pairs for options. Python uses standard keyword arguments.
+MATLAB functions often used "Name, Value" pairs for options. Python uses standard keyword arguments.
 
-**Matlab:**
+**MATLAB:**
 ```matlab
 eq_point_set(2, 10, 'offset', 'extra')
 ```
@@ -85,11 +65,11 @@ eq_point_set(2, 10, 'offset', 'extra')
 eq_point_set(2, 10, extra_offset=True)
 ```
 
-> **Note:** The Matlab `partition_options` object is replaced by keyword arguments in Python. No same configuration object exists in **PyEQSP**.
+> **Note:** The MATLAB `partition_options` object is replaced by keyword arguments in Python. No **equivalent** configuration object exists in **PyEQSP**.
 
-> **Python Exclusive:** The Python port introduces an `even_collars=True` boolean parameter to `eq_caps` (and downstream functions like `eq_regions` and `eq_point_set`). This forces the partition to have an even number of collars, ensuring the equatorial hyperplane cleanly splits the partition into two equal hemispheres. This parameter does not exist in the Matlab toolbox.
+> **Python Exclusive:** The Python port introduces an `even_collars=True` boolean parameter to `eq_caps` (and downstream functions like `eq_regions` and `eq_point_set`). This forces the partition to have an even number of collars, ensuring the equatorial hyperplane cleanly splits the partition into two equal hemispheres. This parameter does not exist in the MATLAB toolbox.
 
-Furthermore, some Python parameters are entirely new to **PyEQSP** and did not exist in the Matlab toolbox:
+Furthermore, some Python parameters are entirely new to **PyEQSP** and did not exist in the MATLAB toolbox:
 
 *   **`even_collars`**: A new boolean parameter passed to partition functions (e.g., `eq_caps(..., even_collars=True)`). This forces an even number of collars, ensuring the equatorial hyperplane perfectly aligns with a cap boundary. This allows for mathematically precise **S²** hemisphere splitting and **S³ → SO(3)** quaternion sampling (for more details see [Symmetric EQ Partitions](even_collar_partitions.md)).
 *   **Vectorized Properties**: All property evaluation functions (like `eq_min_dist`, `eq_energy_dist`, `eq_area_error`, and `eq_diam_coeff`) also accept the `even_collars` parameter to test symmetric partitions.
@@ -98,22 +78,22 @@ Furthermore, some Python parameters are entirely new to **PyEQSP** and did not e
 Some functions have been refactored to return consistent types, avoiding fragile dependence on the number of output arguments (`nargout`).
 
 *   **`eqsp.region_props.eq_diam_coeff`**: Always returns a tuple `(bound_coeff, vertex_coeff)`.
-    *   *Matlab*: Behaviour varied; often returned only one value if `nargout` was 1.
+    *   *MATLAB*: Behaviour varied; often returned only one value if `nargout` was 1.
     *   *Python*: Unpack the result: `bound, vertex = eq_diam_coeff(...)`.
 
 ### Coordinate Conventions
 *   **Spherical Coordinates**: `eqsp` uses `(phi, theta)` where:
     *   `phi`: Longitude in `[0, 2*pi)`.
     *   `theta`: Colatitude in `[0, pi]` (0 is North Pole).
-    *   This matches the standard mathematical convention used in the original paper and the Matlab toolbox.
+    *   This matches the standard mathematical convention used in the original paper and the MATLAB toolbox.
 
 ### Array Handling
 *   Input arrays are generally handled as Numpy arrays.
-*   Functions are vectorized where appropriate, as in Matlab.
+*   Functions are vectorized where appropriate, as in MATLAB.
 
 ### Indexing: 0-based vs 1-based
-Perhaps the most significant difference for Matlab users is that **Python uses 0-based indexing**.
-- **Matlab**: `A(1)` is the first element.
+Perhaps the most significant difference for MATLAB users is that **Python uses 0-based indexing**.
+- **MATLAB**: `A(1)` is the first element.
 - **Python**: `A[0]` is the first element.
 
 This impacts loops and range-based operations:
@@ -121,8 +101,8 @@ This impacts loops and range-based operations:
 - `A[0:k]` selects elements from index `0` up to (but not including) index `k`.
 
 ### Array Orientation and Shape
-Matlab and NumPy differ in their default memory layout (Column-major vs Row-major).
-- **Default Shape**: Most `eqsp` coordinate functions return arrays of shape **(d+1, N)**. This matches the original Matlab convention.
+MATLAB and NumPy differ in their default memory layout (Column-major vs Row-major).
+- **Default Shape**: Most `eqsp` coordinate functions return arrays of shape **(d+1, N)**. This matches the original MATLAB convention.
 - **Interoperability**: Many other Python libraries (like `scikit-learn` or `pandas`) expect data in "long" format: **(N, features)**.
 - **The Solution**: Use the transpose operator `.T` to swap axes efficiently:
   ```python
@@ -131,7 +111,7 @@ Matlab and NumPy differ in their default memory layout (Column-major vs Row-majo
   ```
 
 ### 3D Plotting: `illustrations` vs. `visualizations`
-The Python port uses two separate modules for plotting, unlike the single Matlab illustration module:
+The Python port uses two separate modules for plotting, unlike the single MATLAB illustration module:
 
 *   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`).
 *   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi.
@@ -164,17 +144,36 @@ Compared to the original MATLAB toolbox, **PyEQSP** provides some distinct advan
 
 - **Robustness**: 0.99.4 introduces **case-insensitive backend guards** and **environment isolation**, ensuring scripts run warning-free in both interactive and headless/CI environments.
 
-## Performance Features
+## Performance Features & Optimizations
 
-The Python port includes many algorithmic optimizations that were not included in the original Matlab toolbox:
+The Python port introduces several algorithmic optimizations and internal logic improvements compared to the original MATLAB toolbox:
 
-- **Min-Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
-- **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
+- **Index Rotation (Histogram Logic)**: Solving the longitude wrap-around issue involved the implementation of an **Index Rotation** (Domain Translation) step.
+    - a. Points and boundaries are shifted by the collar's first boundary ($\phi_0$) using a modulo $2\pi$ operation.
+    - b. The final boundary is explicitly set to $2\pi$ to ensure strict monotonicity.
+    - c. The legacy `lookup_table()` utility was removed in favor of this direct, domain-translated `np.searchsorted()` approach for 100% test coverage and better performance.
+- **Min-Distance Optimization**: Optimized to **O(N log N)** using **KDTrees**. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
+- **Riesz Energy**: Uses a **block-based symmetry-aware summation** ($d_{ij} = d_{ji}$). Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
+- **Precision Rounding**: Latitude (band) lookups include $10^{-12}$ rounding to prevent points on a boundary from jumping bands due to floating-point variance.
 - **Histogram Lookups**: Fully vectorized point-in-region assignment on **S²** for bulk processing of points.
 
-## Common Matlab-to-Python "Gotchas"
+## Performance Comparison (Baseline)
 
-| Feature | Matlab | Python / **eqsp** (Package) |
+The following benchmark demonstrates the significant performance improvements in the Python implementation when executed on the same hardware (**AMD Ryzen 7 8840HS**, 2.4 GHz).
+
+| Operation | Dimension | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
+| :--- | :---: | :--- | :---: | :---: | :---: |
+| **`eq_area_error`** | $S^2$ | 1,000,000 | 0.247 | 0.099 | **2.5x** |
+| **`sradius_of_cap`** | $S^3$ | 1,000,000 | 35.906 | 0.362 | **99x** |
+| **`eq_find_s2_region`** | $S^2$ | 2,000,000 | 28.322 | 0.220 | **129x** |
+| **`eq_min_dist`** | $S^2$ | 50,000 | 23.877 | 0.068 | **350x** |
+| **`eq_energy_dist`** | $S^2$ | 10,000 | 1.504 | 0.437 | **3.4x** |
+
+> **Note:** The dramatic speedups in `sradius_of_cap` (benchmarked on $S^3$) and `eq_min_dist` (benchmarked on $S^2$) are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
+
+## Common MATLAB-to-Python "Gotchas"
+
+| Feature | MATLAB | Python / **eqsp** (Package) |
 | :--- | :--- | :--- |
 | **Indexing** | 1, 2, 3… | 0, 1, 2… |
 | **Loops** | `for i=1:N` (inclusive) | `for i in range(N)` (exclusive of N) |
@@ -185,5 +184,5 @@ The Python port includes many algorithmic optimizations that were not included i
 
 ## Learning from Examples
 
-For a deep dive into how the Python API corresponds to the original Matlab implementation, see the [PhD Thesis Example Reproductions](phd-thesis-examples.md)
+For a deep dive into how the Python API corresponds to the original MATLAB implementation, see the [PhD Thesis Example Reproductions](phd-thesis-examples.md)
  document.
