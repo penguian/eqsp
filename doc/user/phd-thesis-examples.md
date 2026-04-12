@@ -1,6 +1,6 @@
 # Appendix E: Thesis Research Reproduction & Setup
 
-Each script uses the **PyEQSP** Python library (this repository) to reproduce results originally computed in Matlab using the EQ Sphere Partitioning Toolbox.
+Each script uses the **PyEQSP** Python library (this repository) to reproduce results originally computed in MATLAB using the EQ Sphere Partitioning Toolbox.
 
 > Paul Leopardi, *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*, UNSW, 2007.
 

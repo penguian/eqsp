@@ -10,7 +10,7 @@ The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard u
 
 1.  **Unit Tests (`tests/src/test_*.py`)**:
     *   Verify core mathematical logic using static assertions.
-    *   Compare results against known-good values from the original Matlab implementation.
+    *   Compare results against known-good values from the original MATLAB implementation.
 2.  **Mock Tests (`tests/src/*_mock.py`)**:
     *   Verify library interaction (e.g., Mayavi/Matplotlib) without needing a display.
     *   Check if the correct arguments are passed to the plotting engines.
@@ -109,7 +109,7 @@ The private testing suite includes:
 - **`tests/src/test_private_partitions.py`**: Bridge test for `eqsp._private._partitions` doctests.
 - **`tests/src/test_private_region_props.py`**: Bridge test for `eqsp._private._region_props` doctests.
 
-These tests ensure that internal mathematics optimizations (such as vectorized colatitude lookups) match the reference Matlab logic with high precision.
+These tests ensure that internal mathematics optimizations (such as vectorized colatitude lookups) match the reference MATLAB logic with high precision.
 
 ### Diagnostic Tool Validation
 
