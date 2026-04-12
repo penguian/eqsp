@@ -6,7 +6,7 @@ Each script uses the **PyEQSP** Python library (this repository) to reproduce re
 
 ## Script Inventory
 
-The following table maps the scripts in `examples/phd-thesis/` to the original thesis figures.
+The following table maps the scripts in `examples/phd-thesis/src/` to the original thesis figures.
 
 | Script | Thesis Figure | Backend | Description |
 |:-------|:-------------|:--------|:------------|
@@ -79,8 +79,7 @@ To run reproduction scripts on a server or in CI without a display:
 
 ```bash
 export HEADLESS=1
-python3 fig_3_4_max_diam_s2.py
+python3 examples/phd-thesis/src/fig_3_4_max_diam_s2.py
 ```
 
 Numerical scripts (Matplotlib `Agg` backend) will save PNGs directly. 3D scripts (Mayavi) will attempt to use an offscreen buffer if `xvfb` is available.
-is available.

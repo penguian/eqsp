@@ -4,16 +4,3 @@
     list-style: none !important;
     list-style-type: none !important;
 }
-
-/*
-   Hide synthesized duplicate sidebar captions.
-   This merges the separate toctree blocks (Guide, Appendices, References)
-   into a single sidebar volume entry while preserving their independent
-   internal numbering logic.
-*/
-.wy-menu-vertical p.caption:nth-of-type(2),
-.wy-menu-vertical p.caption:nth-of-type(3),
-.wy-menu-vertical p.caption:nth-of-type(5),
-.wy-menu-vertical p.caption:nth-of-type(6) {
-    display: none;
-}
