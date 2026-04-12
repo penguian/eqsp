@@ -1,4 +1,4 @@
-# SourceForge & TestPyPI Upload Guide
+# Appendix D: Upload Guide
 
 This guide details the procedures for uploading PyEQSP distributions and documentation to their respective hosting platforms using the project's automation suite.
 

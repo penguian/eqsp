@@ -43,7 +43,7 @@ For detailed plotting options, see the [Visualization & Illustration Guide](user
 ## Reproducing Research
 
 A primary goal of PyEQSP is the faithful reproduction of research results from the original PhD thesis [Leo07].
-- **Thesis Examples**: A dedicated guide to the [Thesis Reproduction Scripts](user/phd-thesis-examples.md) is available. For technical setup details, see the [Reproduction Setup](user/reproduction_setup.md) guide in Volume 2.
+- **Thesis Examples**: A dedicated guide to the [Thesis Reproduction Scripts](user/phd-thesis-examples.md) is available, which now includes technical setup and troubleshooting details.
 
 ## Executable Examples
 
@@ -55,12 +55,10 @@ Standalone Python scripts demonstrating these concepts are available in the [exa
 ## Appendices
 
 Technical reference material, setup details, and the migration bridge are available in the appendices:
-- **Appendix A**: [eqsp package API](api/modules.rst)
-- **Appendix B**: [Migration from MATLAB](user/migration_matlab.md)
-- **Appendix C**: [Installation & Requirements](user/installation.md)
+- **Appendix A**: [eqsp package API](api/eqsp.rst)
+- **Appendix B**: [Installation & Requirements](user/installation.md)
+- **Appendix C**: [Migration from MATLAB](user/migration_matlab.md)
 - **Appendix D**: [Performance Expectations](user/performance_expectations.md)
-- **Appendix E**: [Thesis Research Reproduction](user/phd-thesis-examples.md)
-- **Appendix F**: [System-Integrated Setup (venv_sys)](user/venv_sys_setup.md)
-- **Appendix G**: [Reproduction Setup & Troubleshooting](user/reproduction_setup.md)
+- **Appendix E**: [Thesis Research Reproduction & Setup](user/phd-thesis-examples.md)
 
 For the full list of scientific works cited in this volume, see the [References](user/references_vol1.md) chapter.

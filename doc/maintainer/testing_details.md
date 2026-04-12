@@ -1,4 +1,4 @@
-# Testing Guide: PyEQSP Verification
+# Appendix A: Technical Testing & Verification
 
 This guide outlines the testing strategy, dependencies, and instructions for verifying the **PyEQSP** project and the `eqsp` package.
 

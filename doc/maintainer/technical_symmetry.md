@@ -1,4 +1,4 @@
-# Symmetry & Parity Implementation
+# Appendix E: Mathematical Symmetry Derivations
 
 This document provides the mathematical justification and implementation details for the `even_collars` parameter in `eq_caps`.
 

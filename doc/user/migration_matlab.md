@@ -1,32 +1,12 @@
-# Migration from MATLAB
+# Appendix C: Migration from MATLAB
 
 This guide provides a technical bridge for users transitioning from the original MATLAB `eq_sphere_partitions` toolbox to the Python **PyEQSP** library. While the core mathematical algorithms for recursive partitioning remain identical, the implementation has been modernized to exploit NumPy's vectorization and Python's efficient memory management.
 
-## Performance Comparison (Baseline)
 
-The following benchmark demonstrates the significant performance improvements in the Python implementation when executed on the same hardware (**AMD Ryzen 7 8840HS**, 2.4 GHz).
 
-| Operation | Dimension | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
-| :--- | :---: | :--- | :---: | :---: | :---: |
-| **`eq_area_error`** | $S^2$ | 1,000,000 | 0.247 | 0.099 | **2.5x** |
-| **`sradius_of_cap`** | $S^3$ | 1,000,000 | 35.906 | 0.362 | **99x** |
-| **`eq_find_s2_region`** | $S^2$ | 2,000,000 | 28.322 | 0.220 | **129x** |
-| **`eq_min_dist`** | $S^2$ | 50,000 | 23.877 | 0.068 | **350x** |
-| **`eq_energy_dist`** | $S^2$ | 10,000 | 1.504 | 0.437 | **3.4x** |
 
-> **Note:** The dramatic speedups in `sradius_of_cap` (benchmarked on $S^3$) and `eq_min_dist` (benchmarked on $S^2$) are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
 
-## Performance Features & Optimizations
 
-The Python port introduces several algorithmic optimizations and internal logic improvements compared to the original MATLAB toolbox:
-
-- **Index Rotation (Histogram Logic)**: Solving the longitude wrap-around issue involved the implementation of an **Index Rotation** (Domain Translation) step.
-    - a. Points and boundaries are shifted by the collar's first boundary ($\phi_0$) using a modulo $2\pi$ operation.
-    - b. The final boundary is explicitly set to $2\pi$ to ensure strict monotonicity.
-    - c. The legacy `lookup_table()` utility was removed in favor of this direct, domain-translated `np.searchsorted()` approach for 100% test coverage and better performance.
-- **Min-Distance Optimization**: Optimized to **O(N log N)** using **KDTrees**. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
-- **Riesz Energy**: Uses a **block-based symmetry-aware summation** ($d_{ij} = d_{ji}$). Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
-- **Precision Rounding**: Latitude (band) lookups include $10^{-12}$ rounding to prevent points on a boundary from jumping bands due to floating-point variance.
 
 ## Quick Reference: Function Name Mapping
 
@@ -164,13 +144,32 @@ Compared to the original MATLAB toolbox, **PyEQSP** provides some distinct advan
 
 - **Robustness**: 0.99.4 introduces **case-insensitive backend guards** and **environment isolation**, ensuring scripts run warning-free in both interactive and headless/CI environments.
 
-## Performance Features
+## Performance Features & Optimizations
 
-The Python port includes many algorithmic optimizations that were not included in the original Matlab toolbox:
+The Python port introduces several algorithmic optimizations and internal logic improvements compared to the original MATLAB toolbox:
 
-- **Min-Distance**: Optimized to **O(N log N)** using KDTrees. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
-- **Riesz Energy**: Uses a **block-based symmetry-aware summation**. Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
+- **Index Rotation (Histogram Logic)**: Solving the longitude wrap-around issue involved the implementation of an **Index Rotation** (Domain Translation) step.
+    - a. Points and boundaries are shifted by the collar's first boundary ($\phi_0$) using a modulo $2\pi$ operation.
+    - b. The final boundary is explicitly set to $2\pi$ to ensure strict monotonicity.
+    - c. The legacy `lookup_table()` utility was removed in favor of this direct, domain-translated `np.searchsorted()` approach for 100% test coverage and better performance.
+- **Min-Distance Optimization**: Optimized to **O(N log N)** using **KDTrees**. Calculating **d_min** for **N=100,000** points is now nearly instantaneous.
+- **Riesz Energy**: Uses a **block-based symmetry-aware summation** ($d_{ij} = d_{ji}$). Peak memory remains **O(N)** and total work is halved compared to naive **O(N²)** implementations.
+- **Precision Rounding**: Latitude (band) lookups include $10^{-12}$ rounding to prevent points on a boundary from jumping bands due to floating-point variance.
 - **Histogram Lookups**: Fully vectorized point-in-region assignment on **S²** for bulk processing of points.
+
+## Performance Comparison (Baseline)
+
+The following benchmark demonstrates the significant performance improvements in the Python implementation when executed on the same hardware (**AMD Ryzen 7 8840HS**, 2.4 GHz).
+
+| Operation | Dimension | Scale ($N$ or points) | MATLAB (s) | Python (s) | Speedup |
+| :--- | :---: | :--- | :---: | :---: | :---: |
+| **`eq_area_error`** | $S^2$ | 1,000,000 | 0.247 | 0.099 | **2.5x** |
+| **`sradius_of_cap`** | $S^3$ | 1,000,000 | 35.906 | 0.362 | **99x** |
+| **`eq_find_s2_region`** | $S^2$ | 2,000,000 | 28.322 | 0.220 | **129x** |
+| **`eq_min_dist`** | $S^2$ | 50,000 | 23.877 | 0.068 | **350x** |
+| **`eq_energy_dist`** | $S^2$ | 10,000 | 1.504 | 0.437 | **3.4x** |
+
+> **Note:** The dramatic speedups in `sradius_of_cap` (benchmarked on $S^3$) and `eq_min_dist` (benchmarked on $S^2$) are due to the transition from MATLAB loops to vectorized Newton-Raphson solvers and KDTree-based spatial searches, respectively.
 
 ## Common Matlab-to-Python "Gotchas"
 

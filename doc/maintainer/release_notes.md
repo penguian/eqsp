@@ -1,4 +1,4 @@
-# Historical Release Notes
+# Appendix G: Historical Release Notes
 
 This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
 
