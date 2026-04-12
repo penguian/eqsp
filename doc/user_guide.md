@@ -55,7 +55,7 @@ Standalone Python scripts demonstrating these concepts are available in the [exa
 ## Appendices
 
 Technical reference material, setup details, and the migration bridge are available in the appendices:
-- **Appendix A**: [eqsp package API](api/eqsp.rst)
+- **Appendix A**: {doc}`api/eqsp`
 - **Appendix B**: [Installation & Requirements](user/installation.md)
 - **Appendix C**: [Migration from MATLAB](user/migration_matlab.md)
 - **Appendix D**: [Performance Expectations](user/performance_expectations.md)

@@ -44,7 +44,7 @@ python3 -m venv --system-site-packages VENV_SYS
 source VENV_SYS/bin/activate
 ```
 
-configuring Qt environment variables, and using virtual
+For details on configuring Qt environment variables and using virtual
 environments with Jupyter, see the [Installation Guide](doc/user/installation.md).
 
 ## 1. Installation from Source (Git Clone)

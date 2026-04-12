@@ -65,7 +65,7 @@ eq_point_set(2, 10, 'offset', 'extra')
 eq_point_set(2, 10, extra_offset=True)
 ```
 
-> **Note:** The MATLAB `partition_options` object is replaced by keyword arguments in Python. No same configuration object exists in **PyEQSP**.
+> **Note:** The MATLAB `partition_options` object is replaced by keyword arguments in Python. No **equivalent** configuration object exists in **PyEQSP**.
 
 > **Python Exclusive:** The Python port introduces an `even_collars=True` boolean parameter to `eq_caps` (and downstream functions like `eq_regions` and `eq_point_set`). This forces the partition to have an even number of collars, ensuring the equatorial hyperplane cleanly splits the partition into two equal hemispheres. This parameter does not exist in the MATLAB toolbox.
 

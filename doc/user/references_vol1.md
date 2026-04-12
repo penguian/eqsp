@@ -1,6 +1,6 @@
 # References
 
-This chapter lists all scientific works cited throughout the **User Guide (Volume 1)** and **Appendix A** ([eqsp package API](../api/eqsp.rst)).
+This chapter lists all scientific works cited throughout the **User Guide (Volume 1)** and **Appendix A** ({doc}`../api/eqsp`).
 
 ---
 
