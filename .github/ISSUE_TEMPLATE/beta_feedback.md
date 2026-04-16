@@ -7,6 +7,10 @@ assignees: ''
 
 ---
 
+> [!NOTE]
+> For specific bugs (errors, crashes, or incorrect mathematical results), please use the [Bug Report](https://github.com/penguian/pyeqsp/issues/new?template=bug_report.md) template instead.
+
+
 **What were you trying to do?**
 A brief description of your use case (e.g., "Visualizing S2 partitions for a climate model").
 
