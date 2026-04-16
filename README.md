@@ -32,11 +32,20 @@ including:
 
 For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/user/core_concepts.md).
 
-## Installation & Beta Status
+## Beta Testing & Community Feedback
 
-PyEQSP is currently in **Beta testing**. We welcome your feedback!
+PyEQSP is currently in **Open Beta**. We actively welcome feedback from researchers and developers to help us reach a stable 1.0 release.
 
-Requires **Python 3.11+**. We recommend installing **PyEQSP** within a virtual environment. See [INSTALL.md](INSTALL.md) for full instructions, including environment setup and optional dependencies.
+### How to Participate
+- **GitHub Discussions**: Visit our [Discussions tab](https://github.com/penguian/pyeqsp/discussions) to ask questions, share results, or suggest ideas.
+- **Beta Feedback Hub**: Share your quick verification reports or performance observations in our [pinned feedback issue #26](https://github.com/penguian/pyeqsp/issues/26).
+- **Report Detailed Bugs**: If you encounter a specific error, please [open a new issue](https://github.com/penguian/pyeqsp/issues/new/choose) using the **Beta Feedback** template.
+
+### Portability Notice
+
+While the core library is designed for cross-platform compatibility, it has been developed and tested exclusively on **Linux** to date. We recommend POSIX-compatible environments such as **Homebrew on macOS** or **WSL (Windows Subsystem for Linux) on Windows 11** as they are most likely to work "out of the box." However, we provide no guarantees for these platforms until they are properly tested. Specific documentation and fixes for macOS and Windows currently depend on **volunteer contributors**.
+
+For installation instructions and environment setup, see [INSTALL.md](INSTALL.md).
 
 ## Quick Start
 

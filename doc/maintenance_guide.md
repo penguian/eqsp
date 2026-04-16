@@ -2,6 +2,13 @@
 
 This guide is intended for developers, contributors, and project maintainers of the **PyEQSP** library. It covers the technical architecture, optimization strategies, and the release lifecycle.
 
+## System Requirements for Maintenance
+
+> [!IMPORTANT]
+> To date, all development and maintenance of PyEQSP has been performed exclusively on **Linux**.
+
+The maintenance infrastructure—including `verify_all.py`, the `release/` suite, and the documentation `Makefile`—currently assumes a **POSIX-compatible environment**. Developers using native Windows are encouraged to use **WSL (Windows Subsystem for Linux)** or manually adapt the scripts for their local environment. We provide no guarantees for non-POSIX platforms until they are formally verified by the community.
+
 ## Architecture & Design
 
 The `eqsp` package is designed as a vectorized Python port of the original MATLAB toolbox. The core logic resides in:

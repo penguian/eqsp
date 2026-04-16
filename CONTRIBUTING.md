@@ -20,6 +20,9 @@ To see the current development priorities and items currently under consideratio
 
 ## Technical Contributions
 
+> [!NOTE]
+> The PyEQSP maintenance environment (scripts, benchmarks, and doc builds) currently assumes a **POSIX-compatible** system (Linux, macOS, or WSL). We actively seek **volunteer maintainers** with experience in macOS and native Windows to help harden our cross-platform infrastructure.
+
 If you would like to contribute code fixes or improvements, please follow the forking workflow:
 
 1. **Fork the Repository**: Create your own copy of the `penguian/pyeqsp` repository on GitHub.
