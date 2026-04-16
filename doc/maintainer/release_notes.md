@@ -17,7 +17,7 @@ Release **1.0b1** (the "Open Beta Engagement" release) establishes the community
 ### Release Metadata
 - **Version**: 1.0b1
 - **Tag**: `release_1_0b1`
-- **Distribution**: PyPI, GitHub
+- **Distribution**: PyPI / GitHub
 - **Verification**: [PASSED] 100% Project-wide Coverage, 0 Ruff errors, 0 Sphinx warnings.
 
 ---
