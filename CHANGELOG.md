@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0b1] - 2026-04-16
+**Git Tag**: `release_1_0b1` | **Distribution**: `PyPI`
+
+### Added
+- **Open Beta Engagement**: Formalized the "Open Beta" cycle with dedicated infrastructure for tester feedback.
+- **Feedback Hub**: Integrated a sidebar CTA and global version warning into the documentation.
+- **Beta Feedback Template**: Added a specialized GitHub Issue template for verification and success reports.
+- **Portability Hardening**: Added explicit cross-platform caveats and maintenance environment documentation.
+- **Community Governance**: Adopted the Contributor Covenant Code of Conduct.
+- **Enhanced Issue Routing**: Refined the README and issue templates to clearly distinguish between general beta feedback and detailed bug reports.
+
+### Changed
+- **Metadata Synchronization**: Formally bumped project status to `Development Status :: 4 - Beta` and synchronized version counters across all documentation and README headers.
+- **Sphinx Optimization**: Added `sphinx-version-warning` to documentation dependencies for better version management on Read the Docs.
+
 ## [0.99.9] - 2026-04-09
 **Git Tag**: `release_0_99_9` | **Distribution**: `PyPI`
 

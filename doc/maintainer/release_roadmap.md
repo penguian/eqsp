@@ -74,20 +74,28 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
 - [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
-## Phase 4: 1.0 Release & Beyond
+## Phase 4: Open Beta & Community Engagement
 **Goal**: Finalize production-ready artifacts, incorporate community feedback, and establish a long-term strategic evolution.
+
+### 1.0b1 Open Beta: Feedback Hub & Community Infrastructure
+**Released: 2026-04-16** | **Git Tag: release_1_0b1** | **Distribution: GitHub**
+
+- [x] **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the documentation.
+- [x] **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
+- [x] **Code of Conduct**: Adopted the Contributor Covenant to foster a welcoming community.
+- [x] **Enhanced Issue Routing**: Clearly partitioned detailed bug reports from general beta testing observations.
+- [x] **Portability Audit**: Added explicit POSIX/Linux caveats for the maintenance environment.
+- [x] **Metadata Sync**: Formally bumped project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1).
 
 ### 1.0 General Release [PLANNED]
 
 - [ ] **User Feedback Audit**: Address final community feedback from the beta cycle.
 - [x] **Master ToC Refinement (index.rst)**: Redesigned the master Table of Contents to resolve appendix numbering conflicts and correctly sequence volume references.
-- [ ] **4-Tier Verification Structure**: Implement the structural separation of logic (Tier 1) and reproduction (Tier 3/4) to ensure CI agility.
 - [ ] **Visual Audit**: Final side-by-side verification of example figures vs. PhD Thesis PDF.
 - [ ] **Release Verification**: Verified 1.0 release artifacts and distribution.
 - [ ] **Final 1.0 Tag**: Canonical production release tag.
 
-### Post-1.0 [UNDER CONSIDERATION]
-
+## Phase 5: Post-1.0 [UNDER CONSIDERATION]
 
 #### Quality & Type Safety
 - [ ] **Gradual Typing**: Implement PEP 484 type hints for core package parameters (`dim`, `N`, `s`).

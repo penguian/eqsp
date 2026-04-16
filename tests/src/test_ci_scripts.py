@@ -60,7 +60,7 @@ def test_upload_sourceforge(tmp_path, monkeypatch):
 
     # 1. Mock pyproject.toml
     (tmp_path / "pyproject.toml").write_text(
-        '[project]\nname = "pyeqsp"\nversion = "0.99.9"\n', encoding="utf-8"
+        '[project]\nname = "pyeqsp"\nversion = "1.0b1"\n', encoding="utf-8"
     )
 
     monkeypatch.chdir(tmp_path)

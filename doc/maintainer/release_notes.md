@@ -2,6 +2,26 @@
 
 This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
 
+## 1.0b1
+**2026-04-16**
+
+Release **1.0b1** (the "Open Beta Engagement" release) establishes the community infrastructure for soliciting and managing tester feedback.
+
+### Key Features & Improvements
+- **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the Read the Docs documentation.
+- **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
+- **Governance**: Adopted the Contributor Covenant Code of Conduct and updated technical contribution guidelines.
+- **Issue Routing**: Clearly partitioned detailed bug reports (using the `Bug Report` template) from general beta testing observations (using the `Beta Feedback` template).
+- **Metadata Sync**: Shifted project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1) across all documentation and project headers.
+
+### Release Metadata
+- **Version**: 1.0b1
+- **Tag**: `release_1_0b1`
+- **Distribution**: PyPI, GitHub
+- **Verification**: [PASSED] 100% Project-wide Coverage, 0 Ruff errors, 0 Sphinx warnings.
+
+---
+
 ## 0.99.9
 **2026-04-09**
 
