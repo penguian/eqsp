@@ -78,5 +78,8 @@ git merge upstream/main
 
 For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/maintainer/documentation_maintenance.md).
 
-## Community Standards
-Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.
+## Code of Conduct
+
+PyEQSP is committed to fostering a welcoming and safe environment for all contributors. By participating in this project, you agree to abide by the terms of our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+Instances of unacceptable behavior may be reported to the project author at [paul.leopardi@gmail.com](mailto:paul.leopardi@gmail.com).
