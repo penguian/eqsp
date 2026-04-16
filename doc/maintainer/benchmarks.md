@@ -95,6 +95,10 @@ This allows for side-by-side performance comparison of the different partitionin
 
 For a detailed analysis of known bottlenecks and optimization opportunities, see the performance highlights in [Algorithmic Implementation & Optimizations](algorithmic_optimizations.md).
 
+:::{note} Beta Feedback Wanted
+We are specifically looking for performance data and algorithm scaling results across different Operating Systems and CPU architectures (e.g., Apple Silicon, Windows 11, different Linux distros). If you run these benchmarks, please consider sharing your results in our [GitHub Discussions](https://github.com/penguian/pyeqsp/discussions/categories/beta-testing).
+:::
+
 ## Future Optimization Opportunities
 
 ### Persistent Caching

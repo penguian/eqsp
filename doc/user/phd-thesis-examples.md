@@ -4,6 +4,10 @@ Each script uses the **PyEQSP** Python library (this repository) to reproduce re
 
 > Paul Leopardi, *"Distributing points on the sphere: Partitions, separation, quadrature and energy"*, UNSW, 2007.
 
+:::{note} Beta Feedback Wanted
+If you are running these thesis reproduction scripts on your local system, we would love to know if the results are consistent with your hardware. Please share a screenshot or report any numerical variances in our [Feedback Hub](https://github.com/penguian/pyeqsp/issues/26).
+:::
+
 ## Script Inventory
 
 The following table maps the scripts in `examples/phd-thesis/src/` to the original thesis figures.
