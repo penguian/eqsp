@@ -46,8 +46,8 @@ This roadmap outlines the development phases from the initial beta through the 1
 **Released: 2026-03-22** | **Git Tag: release_0_99_7** | **Distribution: PyPI**
 
 - [x] **Pre-commit Layer**: Formalized the first tier of "Defense in Depth" (Item 1-2).
-- [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `verify_all.py` to prevent documentation drift.
-- [x] **Environment Isolation**: Improved `verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
+- [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `validation/verify_all.py` to prevent documentation drift.
+- [x] **Environment Isolation**: Improved `validation/verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
 
 ### 0.99.8 Beta: Infrastructure Hardening
 **Released: 2026-04-03** | **Git Tag: release_0_99_8** | **Distribution: PyPI**
@@ -67,7 +67,7 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Higher-Dimension Robustness**: Verified recursive partitioning for $S^4$ and $S^5$, ensuring coordinate bounds and unit-norm properties hold for $dim \ge 4$.
 - [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox. Implemented binary scaling (1-2-5) for symmetric benchmarks.
 - [x] **Equatorial Symmetry Expansion**: Formalized `even_collars` support across the entire public API (including `eq_find_s2_region`).
-- [x] **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
+- [x] **Verification Hardening**: Implemented robust venv isolation in `validation/verify_all.py` and corrected `sradius` dimension logic.
 - [x] **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
 - [x] **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in and added `os.pathsep` portability.
 - [x] **Local Config & Environment Standardization**: Isolated AI assistant skills and standardized documentation with generic placeholders (`VENV`) for improved portability and privacy.
