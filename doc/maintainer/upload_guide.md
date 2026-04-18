@@ -3,52 +3,43 @@
 This guide details the procedures for uploading PyEQSP distributions and documentation to their respective hosting platforms using the project's automation suite.
 
 > [!IMPORTANT]
-> **Branch Assumption**: All release procedures (Step 1 onwards) assume you are starting from a clean and up-to-date **`main`** branch. Ensure all feature PRs have been merged before proceeding.
+> **Protected Branch Policy**: These procedures assume the **`main`** branch is protected. All changes, including version bumps, must be performed on a release branch and merged via Pull Request after verification.
 
 ## Release Distribution (PyPI / TestPyPI)
 
 To build and upload the package, use the scripts in the `release/` directory. These scripts ensure that all documentation links are converted to absolute GitHub URLs for correct rendering on project pages.
 
-1.  **Run Build with verification**:
-    ```bash
-    python3 release/upload_release.py --testpypi
-    ```
-    This script will:
-    *   Initialize the `release/pypi_readme_fix.py` logic to swap relative links.
-    *   Trigger `release/build_dist.py` for a clean `sdist` and `wheel` creation.
-    *   Verify the artifact using `twine check`.
-    *   Attempt an upload to the TestPyPI repository.
+### 1. Create Release Branch & Version Bump
+Start from an up-to-date `main` branch and create a dedicated staging area.
+```bash
+git checkout main
+git pull origin main
+git checkout -b release_branch_1_0b1
+```
+Edit `pyproject.toml` to set the new version (e.g., `1.0b1`).
 
-    > [!CAUTION]
-    > **TestPyPI Immutability**: If an upload to TestPyPI fails *after* a successful partial upload, or if you need to fix a bug discovered during the check, you **must** increment the version number (e.g., `1.0b1` to `1.0b1.post1` or `1.0b2`) in `pyproject.toml`. TestPyPI does not allow re-uploading the same version string.
+### 2. Run Build with verification (TestPyPI)
+From the **release branch**, run the pre-flight check:
+```bash
+python3 release/upload_release.py --testpypi
+```
+This script will:
+*   Initialize the `release/pypi_readme_fix.py` logic to swap relative links.
+*   Trigger `release/build_dist.py` for a clean `sdist` and `wheel` creation.
+*   Verify the artifact using `twine check`.
+*   Attempt an upload to the TestPyPI repository.
 
-2.  **Troubleshooting & Bug Fixes**:
-    If Step 1 (Build/Test) or Step 2 (Production) fails due to a code bug or metadata error:
-    1.  **Switch to a new fix branch** from `main`.
-    2.  Implement and verify the fix.
-    3.  Create a Pull Request, complete the review, and **merge back to `main`**.
-    4.  **Restart** the release process from Step 1 on the updated `main` branch.
-
-3.  **Confirm and Upload to Production**:
-    ```bash
-    python3 release/upload_release.py --pypi
-    ```
-
-Check the TestPyPI/PyPI project pages for the updated distribution.
+> [!CAUTION]
+> **TestPyPI Immutability**: If an upload to TestPyPI fails *after* a successful partial upload, or if you need to fix a bug discovered during the check, you **must** increment the version number (e.g., `1.0b1` to `1.0b2`) in `pyproject.toml`. TestPyPI does not allow re-uploading the same version string.
 
 ### 3. GitHub Synchronisation & CI Verification
-Once the TestPyPI rendering is confirmed, commit the changes and trigger a final CI run on GitHub:
+Once the TestPyPI rendering is confirmed, push your branch and open a PR.
 
-1. **Commit and Push**:
+1. **Push Branch**:
    ```bash
-   # Create and switch to a new release branch (-b) starting from main.
-   # This ensures the release is built on a stable, merged foundation.
-   git checkout main
-   git pull origin main
-   git checkout -b release_1_0b1
    git add .
    git commit -m "Release 1.0b1: Open Beta Engagement Infrastructure"
-   git push -u origin release_1_0b1
+   git push -u origin release_branch_1_0b1
    ```
 
 2. **Create Pull Request**:
@@ -57,11 +48,26 @@ Once the TestPyPI rendering is confirmed, commit the changes and trigger a final
 3. **Verify CI**:
    Ensure that the GitHub Actions "CI" and "Verify Distribution Build" workflows pass 100%. This serves as the final gatekeeper before the production upload.
 
-### 4. Production PyPI Upload
-Once the PR is approved and the CI has passed:
+### 4. Production PyPI Upload & Tagging
+Once the PR is approved and merged into `main`:
 ```bash
+# Switch to the updated main branch
+git checkout main
+git pull origin main
+
+# Perform production upload
 python3 release/upload_release.py --pypi
+
+# Create and push the release tag
+git tag release_1_0b1
+git push origin release_1_0b1
 ```
+
+> [!CAUTION]
+> **PyPI Immutability & Failure Recovery**: Like TestPyPI, production PyPI is strictly immutable. If the upload fails *after* any artifact (sdist or wheel) has been successfully accepted, you cannot re-upload to that version string. To recover:
+> 1. Fix the underlying issue (e.g., build error or metadata fix) on a new branch.
+> 2. **Increment the version** in `pyproject.toml` (e.g., `1.0b1` → `1.0b2`).
+> 3. Restart the entire release process from Step 1.
 
 ## SourceForge Documentation Upload
 

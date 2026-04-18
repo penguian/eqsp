@@ -2,6 +2,25 @@
 
 This guide is intended for developers, contributors, and project maintainers of the **PyEQSP** library. It covers the technical architecture, optimization strategies, and the release lifecycle.
 
+## Project Governance
+
+### Roles and Responsibilities
+
+| Role | Scope | Production Credential Access |
+|---|---|---|
+| **Owner** | Full admin of GitHub, SourceForge, PyPI | Yes (all) |
+| **Administrator** | CI secrets, API tokens, ReadTheDocs | Yes (scoped) |
+| **Maintainer** | PR review, merges into `main`, release tags | No |
+| **Contributor** | Forked PRs, bug reports, documentation | No |
+
+### Security & Credential Management
+
+Release operations to PyPI and SourceForge require owner or administrator credentials.
+- **PyPI**: Use API tokens rather than account passwords. Store tokens in `~/.pypirc` or provide them via the `TWINE_PASSWORD` environment variable (the standard for both tokens and passwords).
+- **SourceForge**: Managed via SSH keys. The `upload_sourceforge.py` script generates an `scp` command but does not execute it, allowing the maintainer to review and authenticate manually.
+
+Non-owners should never have access to production secrets. All automation is designed to be run from developers' local machines using their own credentials.
+
 ## System Requirements for Maintenance
 
 > [!IMPORTANT]
@@ -63,7 +82,7 @@ This layered approach is complemented by **Project-Specific Guardrails** that en
 | **Readability** | `validation/compute_readability.py` | Monitors Flesch-Kincaid and Gunning-Fog scores. |
 | **Link Check** | `validation/check_links.py` | Validates internal and external documentation URLs. |
 | **Quality Audit** | `validation/quality_check.py` | Enforces bibliography/citation consistency. |
-| **Packaging** | `release/build_dist.py` | Orchestrates link sanitisation and distribution build. |
+| **Packaging** | `release/build_dist.py` | Orchestrates link sanitization and distribution build. |
 | **Link Fix** | `release/pypi_readme_fix.py` | Converts relative GitHub links to absolute URLs for PyPI. |
 | **Upload** | `release/upload_release.py` | Manages authenticated uploads to PyPI/TestPyPI. |
 | **SourceForge** | `release/upload_sourceforge.py` | Generates the SCP command for website hosting. |
@@ -84,57 +103,34 @@ Documentation is managed using Sphinx and MyST-Parser.
 
 For standard operating procedures about building and hosting, see the [Documentation Maintenance Guide](maintainer/documentation_maintenance.md).
 
-## Project Governance
-
-### Roles and Responsibilities
-
-| Role | Scope | Production Credential Access |
-|---|---|---|
-| **Owner** | Full admin of GitHub, SourceForge, PyPI | Yes (all) |
-| **Administrator** | CI secrets, API tokens, ReadTheDocs | Yes (scoped) |
-| **Maintainer** | PR review, merges into `main`, release tags | No |
-| **Contributor** | Forked PRs, bug reports, documentation | No |
-
-### Security & Credential Management
-
-Release operations to PyPI and SourceForge require owner or administrator credentials.
-- **PyPI**: Use API tokens rather than account passwords. Store tokens in `~/.pypirc` or provide them via the `TWINE_PASSWORD` environment variable (the standard for both tokens and passwords).
-- **SourceForge**: Managed via SSH keys. The `upload_sourceforge.py` script generates an `scp` command but does not execute it, allowing the maintainer to review and authenticate manually.
-
-Non-owners should never have access to production secrets. All automation is designed to be run from developers' local machines using their own credentials.
-
 ## Release & Lifecycle
 
 ### Release Procedures
 
-Release 0.99.7 introduced a suite of automated scripts and strict quality guardrails to ensure consistency:
+PyEQSP uses a staging-based release workflow to protect the `main` branch from unverified distribution metadata:
 
-1. **Build and Check**: Use `release/build_dist.py` to generate the distribution and run `twine check`.
-2. **TestPyPI Upload**: Use `release/upload_release.py --testpypi` to verify documentation link rendering on the TestPyPI project page.
-3. **Internal Review**: Review the PyPI overview and confirm all relative links now point correctly to GitHub.
-4. **Production PyPI Upload**: Once the PR is approved and CI passes, use `release/upload_release.py --pypi` for the final deployment.
+1. **Staging & TestPyPI**: From a new **release branch**, use `release/upload_release.py --testpypi`. This automatically builds the distribution and uploads to TestPyPI for verification.
+2. **Internal Review**: Review the TestPyPI project page to confirm that documentation links correctly point to absolute GitHub URLs.
+3. **Integration & PR**: Push the release branch and open a PR to `main`. Once CI passes and the PR is merged, the authoritative `main` branch is ready for deployment.
+4. **Production PyPI Upload & Tagging**: From the updated `main` branch, use `release/upload_release.py --pypi` for the deployment, then create and push the version tag (e.g., `git tag release_1_0b1 && git push origin release_1_0b1`).
 5. **SourceForge Upload**: Use `release/upload_sourceforge.py` to host the Sphinx HTML documentation.
 
 For detailed instructions on these scripts, see **Appendix D**: [Upload Guide](maintainer/upload_guide.md).
 
-### Historical Release Notes
-Historical and current release details are tracked in the `doc/maintainer/` directory:
-- [Historical Release Notes](maintainer/release_notes.md)
-- [Release Roadmap](maintainer/release_roadmap.md)
-- [Maintenance Checklist](maintainer/maintenance_implementation_checklist.md)
+### Branching and Tagging Strategy
 
-## Appendices
+PyEQSP follows a strategy where the `main` branch serves as the authoritative record for all production releases.
 
-The following appendices provide detailed technical checklists, mathematical derivations, and historical data for project maintenance:
+| Phase | Branch | Action | Upload Target |
+| :--- | :--- | :--- | :--- |
+| **1. Staging** | `release_branch_1_0b1` | Create branch; Version bump; `upload_release.py --testpypi` | **TestPyPI** |
+| **2. Verification** | `release_branch_1_0b1` | Confirm rendering; Push PR to GitHub | *CI Only* |
+| **3. Integration** | `main` | **Merge** PR into `main` | — |
+| **4. Deployment** | `main` | `upload_release.py --pypi` | **Production PyPI** |
+| **5. Snapshot** | `main` | `git tag release_1_0b1` | **GitHub Tags** |
 
-- **Appendix A**: [Technical Testing & Verification](maintainer/testing_details.md)
-- **Appendix B**: [Maintenance Checklist](maintainer/maintenance_implementation_checklist.md)
-- **Appendix C**: [Pull Request Checklist](maintainer/pr_checklist.md)
-- **Appendix D**: [Upload Guide](maintainer/upload_guide.md)
-- **Appendix E**: [Mathematical Symmetry Derivations](maintainer/technical_symmetry.md)
-- **Appendix F**: [Algorithmic & Performance Details](maintainer/algorithmic_optimizations.md)
-- **Appendix G**: [Historical Release Notes](maintainer/release_notes.md)
-- **Appendix H**: [Release Roadmap](maintainer/release_roadmap.md)
+#### Commits and Tags
+Every release tag (e.g., `release_1_0b1`) is applied exclusively to the **merge commit** on the `main` branch. This ensures that the tag points to a state of the code that has been fully integrated, verified by CI, and matches the distribution uploaded to PyPI. Consequently, **tagged commits are always on the `main` branch**.
 
 ### Troubleshooting Release Issues
 
@@ -150,5 +146,32 @@ If you install from TestPyPI and see an older version (e.g., seeing 0.99.3 when 
    pip uninstall pyeqsp
    ```
 3. **Check Propagation**: TestPyPI may take a minute to propagate new uploads. If the mismatch persists, verify the version on the [TestPyPI project page](https://test.pypi.org/project/pyeqsp/).
+
+#### Production PyPI Upload Failure
+If an upload to the production PyPI repository fails, it is often due to PyPI's strict immutability rules.
+
+1.  **Check Immutability**: If any artifact (sdist or wheel) was successfully accepted before the failure, you **cannot** re-upload the same version string.
+2.  **Consult Failure Recovery**: For a detailed step-by-step recovery process, see the **PyPI Immutability & Failure Recovery** caution in the [Upload Guide](maintainer/upload_guide.md).
+3.  **Increment Version**: You must increment the version in `pyproject.toml` (e.g., to `1.0b2`) before restarting the release process.
+
+### Historical Release Notes
+Unlike the user-facing [CHANGELOG.md](https://github.com/penguian/pyeqsp/blob/main/CHANGELOG.md), which focuses on library features and API changes, the **Historical Release Notes** track the internal evolution of the project's infrastructure, CI/CD pipelines, and maintenance automation.
+
+Detailed logs and historical metadata are tracked in:
+- [Historical Release Notes](maintainer/release_notes.md): History of infrastructure changes and release-time quality metrics.
+- [Release Roadmap](maintainer/release_roadmap.md): Strategic development phases and planned milestones.
+
+## Appendices
+
+The following appendices provide detailed technical checklists, mathematical derivations, and historical data for project maintenance:
+
+- **Appendix A**: [Technical Testing & Verification](maintainer/testing_details.md)
+- **Appendix B**: [Maintenance Checklist](maintainer/maintenance_implementation_checklist.md)
+- **Appendix C**: [Pull Request Checklist](maintainer/pr_checklist.md)
+- **Appendix D**: [Upload Guide](maintainer/upload_guide.md)
+- **Appendix E**: [Mathematical Symmetry Derivations](maintainer/technical_symmetry.md)
+- **Appendix F**: [Algorithmic & Performance Details](maintainer/algorithmic_optimizations.md)
+- **Appendix G**: [Historical Release Notes](maintainer/release_notes.md)
+- **Appendix H**: [Release Roadmap](maintainer/release_roadmap.md)
 
 For the full list of mathematical foundations and technical resources cited in this volume, see the [References](maintainer/references_vol2.md) chapter.
