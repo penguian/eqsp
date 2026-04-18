@@ -3,13 +3,14 @@
  This document tracks the internal evolution of the PyEQSP maintenance ecosystem, including changes to CI/CD pipelines, release scripts, and historical quality metrics. For user-facing feature changes, see the [CHANGELOG.md](https://github.com/penguian/pyeqsp/blob/main/CHANGELOG.md).
 
  ## 1.0b1
- **2026-04-16**
+ **2026-04-19**
 
  Release **1.0b1** (the "Open Beta Engagement" release) establishes the community infrastructure for soliciting and managing tester feedback.
 
  ### Key Features & Improvements
  - **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the Read the Docs documentation.
  - **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
+ - **Maintenance Guide Hardening**: Restructured the Maintenance Guide (Volume 2) to prioritize project governance and establish a professional sequence for quality gates and release lifecycle.
  - **Governance**: Adopted the Contributor Covenant Code of Conduct and updated technical contribution guidelines.
  - **Issue Routing**: Clearly partitioned detailed bug reports (using the `Bug Report` template) from general beta testing observations (using the `Beta Feedback` template).
  - **Metadata Sync**: Shifted project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1) across all documentation and project headers.
