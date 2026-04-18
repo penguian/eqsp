@@ -29,6 +29,13 @@
     color: white !important;
 }
 
+.beta-cta-button:focus,
+.beta-cta-button:focus-visible {
+    outline: 2px solid #e67e22 !important;
+    outline-offset: 2px;
+    background-color: #3498db !important;
+}
+
 .beta-cta-button i {
     margin-right: 5px;
 }
