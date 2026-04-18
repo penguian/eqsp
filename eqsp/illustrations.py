@@ -299,7 +299,7 @@ def illustrate_eq_algorithm(
     plt.axis("off")
     plt.cla()
 
-    # Increase font size for lower-dim visualisations
+    # Increase font size for lower-dim visualizations
     proj_opts = opts.copy()
     proj_opts["fontsize"] = 16
     # Map proj options to illustration functions

@@ -32,7 +32,7 @@ This script will:
 > [!CAUTION]
 > **TestPyPI Immutability**: If an upload to TestPyPI fails *after* a successful partial upload, or if you need to fix a bug discovered during the check, you **must** increment the version number (e.g., `1.0b1` to `1.0b2`) in `pyproject.toml`. TestPyPI does not allow re-uploading the same version string.
 
-### 3. GitHub Synchronisation & CI Verification
+### 3. GitHub Synchronization & CI Verification
 Once the TestPyPI rendering is confirmed, push your branch and open a PR.
 
 1. **Push Branch**:

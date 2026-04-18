@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Release Automation**: Introduced `scripts/` to automate build orchestration and PyPI deployment.
-  - `pypi_readme_fix.py`: Sanitises documentation links by converting relative paths to absolute GitHub URLs (targeting the `main` branch).
+  - `pypi_readme_fix.py`: Sanitizes documentation links by converting relative paths to absolute GitHub URLs (targeting the `main` branch).
   - `build_dist.py`: Orchestrates the build cycle using a "swap-and-restore" mechanism for PyPI-ready READMEs.
   - `upload_release.py`: Manages authenticated uploads to PyPI and TestPyPI.
 - **Bibliography Consistency**: Enhanced `quality_check.py` to strictly enforce metadata parity across all reference documents (`AUTHORS.md`, `doc/references_vol*.md`).
