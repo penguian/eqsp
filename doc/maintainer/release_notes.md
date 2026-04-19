@@ -1,6 +1,27 @@
 # Appendix G: Historical Release Notes
 
-This document contains the historical configuration, changes, and checklists for PyEQSP beta releases prior to 1.0.
+This document tracks the internal evolution of the PyEQSP maintenance ecosystem, including changes to CI/CD pipelines, release scripts, and historical quality metrics. For user-facing feature changes, see the [CHANGELOG.md](https://github.com/penguian/pyeqsp/blob/main/CHANGELOG.md).
+
+## 1.0b1
+**2026-04-19**
+
+Release **1.0b1** (the "Open Beta Engagement" release) establishes the community infrastructure for soliciting and managing tester feedback.
+
+### Key Features & Improvements
+- **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the Read the Docs documentation.
+- **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
+- **Maintenance Guide Hardening**: Restructured the Maintenance Guide (Volume 2) to prioritize project governance and establish a professional sequence for quality gates and release lifecycle.
+- **Governance**: Adopted the Contributor Covenant Code of Conduct and updated technical contribution guidelines.
+- **Issue Routing**: Clearly partitioned detailed bug reports (using the `Bug Report` template) from general beta testing observations (using the `Beta Feedback` template).
+- **Metadata Sync**: Shifted project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1) across all documentation and project headers.
+
+### Release Metadata
+- **Version**: 1.0b1
+- **Tag**: `release_1_0b1`
+- **Distribution**: PyPI / GitHub
+- **Verification**: [PASSED] 100% Project-wide Coverage, 0 Ruff errors, 0 Sphinx warnings.
+
+---
 
 ## 0.99.9
 **2026-04-09**
@@ -12,10 +33,10 @@ Release **0.99.9** achieves **100% project-wide coverage** across both the core 
 - **Symmetric Benchmark Suite**: Added a full suite of even-collar benchmark runners (`run_benchmarks_even.py`) with 1-2-5 logarithmic scaling to verify performance parity.
 - **Robustness Testing**: Extended formalized testing to higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
 - **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
-- **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
+- **Verification Hardening**: Implemented robust venv isolation in `validation/verify_all.py` and corrected `sradius` dimension logic.
 - **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
 - **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in.
-- **Verification Suite**: Integrated the unified `verify_all.py` script and benchmark suite.
+- **Verification Suite**: Integrated the unified `validation/verify_all.py` script and benchmark suite.
 - **100% Coverage**: Reached 100% functional coverage across all maintenance and release tools.
 - **Release Metadata Sync**: Updated versioning and copyright dates for the 1.0 release.
 - **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
@@ -39,7 +60,7 @@ Release **0.99.8** establishes the definitive architectural layout for the PyEQS
 ### Key Features & Improvements
 - **Infrastructure Reorganization**: Redesigned the maintenance workspace into intent-based `release/` (distribution) and `validation/` (quality) directories.
 - **100% Automation Coverage**: Achieved full unit test coverage for the CI/CD suite via the `test_ci_scripts.py` framework.
-- **JOSS Submission**: Finalized the `paper.md` and `paper.bib` artifacts, harmonizing the project's scholarly identity with the 2007 PhD thesis (@Leo07) and 2024 JAS paper (@Leo24).
+- **JOSS Submission**: Finalized the `paper.md` and `paper.bib` artifacts, harmonizing the project's scholarly identity with the 2007 PhD thesis [Leo07] and 2024 JAS paper [Leo24-JAS].
 - **Quality Gate Stability**: Enhanced validation scripts with AST parsing to monitor paths inside Python `Usage:` blocks and enforced structural integrity in `index.rst`.
 - **Hemisphere Refinement**: Explicitly documented the `even_collars` implementation for $S^3 \to \text{SO}(3)$ sampling applications.
 
@@ -58,7 +79,7 @@ Release **0.99.7** is a critical infrastructure synchronization release focusing
 
 ### Key Features & Improvements
 - **CI Pipeline Hardening**: Implemented mocking for `mayavi` and `PyQt5` in Sphinx to allow 3D visualization doctests to pass in headless CI runners.
-- **Environment Isolation**: Improved `verify_all.py` to manage the execution `PATH` dynamically, resolving path-shadowing issues in complex virtual environments.
+- **Environment Isolation**: Improved `validation/verify_all.py` to manage the execution `PATH` dynamically, resolving path-shadowing issues in complex virtual environments.
 - **Legacy Compatibility**: Reverted `ruff.toml` to the flat-format configuration to support institutional environments using older toolchain versions (e.g., Ruff 0.0.291).
 - **Credential Logic**: Refined `upload_release.py` to correctly handle standard `TWINE_PASSWORD` and token authentication.
 
@@ -136,7 +157,7 @@ Initial Beta release for public testing, introducing symmetric partitioning and 
 ### Key Features & Improvements
 - **Symmetric Partitions**: Introduced the `even_collars` parameter to enable precise S² hemisphere splitting and S³ → SO(3) sampling.
 - **Sphinx Framework**: Initialized the multi-format documentation system with MyST-Parser and localized cross-references.
-- **CI Robustness**: Established the `verify_all.py` unified verification layer and GitHub Actions integration.
+- **CI Robustness**: Established the `validation/verify_all.py` unified verification layer and GitHub Actions integration.
 - **Docstring Audit**: Completed the first project-wide audit and standardization of NumPy-format docstrings.
 
 ### Release Metadata

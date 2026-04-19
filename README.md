@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 0.99.9** (2026-04-09): Copyright 2026 Paul Leopardi
+**Release 1.0b1** (2026-04-19): Copyright 2026 Paul Leopardi
 
 PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
@@ -8,7 +8,7 @@ An **EQ partition** divides Sᵈ (the unit sphere in ℝ<sup>d+1</sup>) into a f
 
 > **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
 
-Release **0.99.9** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
+Release **1.0b1** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
 
 The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N<sup>-1/d</sup>.
 
@@ -32,11 +32,20 @@ including:
 
 For a comprehensive overview, including mathematical background, detailed tutorials, and advanced use cases, please consult the [User Guide](doc/user_guide.md) and [Core Concepts](doc/user/core_concepts.md).
 
-## Installation & Beta Status
+## Beta Testing & Community Feedback
 
-PyEQSP is currently in **Beta testing**. We welcome your feedback!
+PyEQSP is currently in **Open Beta**. We actively welcome feedback from researchers and developers to help us reach a stable 1.0 release.
 
-Requires **Python 3.11+**. We recommend installing **PyEQSP** within a virtual environment. See [INSTALL.md](INSTALL.md) for full instructions, including environment setup and optional dependencies.
+### How to Participate
+- **GitHub Discussions**: Visit our [Discussions tab](https://github.com/penguian/pyeqsp/discussions) to ask questions, share results, or suggest ideas.
+- **Beta Feedback Hub**: Share your quick verification reports (successes!), environment screenshots, or performance observations in our [pinned feedback issue #26](https://github.com/penguian/pyeqsp/issues/26).
+- **Report Detailed Bugs**: If you encounter a specific reproducible error, crash, or mathematical discrepancy, please [open a new issue](https://github.com/penguian/pyeqsp/issues/new/choose) using the **Bug Report** template.
+
+### Portability Notice
+
+While the core library is designed for cross-platform compatibility, it has been developed and tested exclusively on **Linux** to date. For other platforms, we recommend environments such as **macOS** (using Homebrew, `coreutils`, and `bash --posix`) or **Windows 11** (via WSL - Windows Subsystem for Linux) as they are most likely to work "out of the box." However, we provide no guarantees for these platforms until they are properly tested. Specific documentation and fixes for macOS and Windows currently depend on **volunteer contributors**.
+
+For installation instructions and environment setup, see [INSTALL.md](INSTALL.md).
 
 ## Quick Start
 

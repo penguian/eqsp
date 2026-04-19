@@ -275,6 +275,10 @@ def check_orthography():
         r"(?<!\w)organise(?!\w)": "organize",
         r"(?<!\w)analyse(?!\w)": "analyze",
         r"(?<!\w)optimise(?!\w)": "optimize",
+        r"(?<!\w)sanitisation(?!\w)": "sanitization",
+        r"(?<!\w)visualisation(?!\w)": "visualization",
+        r"(?<!\w)synchronisation(?!\w)": "synchronization",
+        r"(?<!\w)sanitise(?!\w)": "sanitize",
     }
 
     files_to_check = list(REPO_ROOT.rglob("*.md"))

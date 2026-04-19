@@ -1,6 +1,41 @@
-/* Force remove bullets from the table of contents to standardize on numbers */
 .rst-content .toctree-wrapper ul,
 .rst-content .toctree-wrapper ul li {
     list-style: none !important;
     list-style-type: none !important;
+}
+
+/* Beta CTA Sidebar Button */
+.beta-cta-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.beta-cta-button {
+    display: block !important;
+    background-color: #2980b9 !important;
+    color: white !important;
+    text-align: center;
+    padding: 8px 5px !important;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease;
+}
+
+.beta-cta-button:hover {
+    background-color: #3498db !important;
+    color: white !important;
+}
+
+.beta-cta-button:focus,
+.beta-cta-button:focus-visible {
+    outline: 2px solid #e67e22 !important;
+    outline-offset: 2px;
+    background-color: #3498db !important;
+}
+
+.beta-cta-button i {
+    margin-right: 5px;
 }

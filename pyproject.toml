@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyeqsp"
-version = "0.99.9"
+version = "1.0b1"
 description = "Python Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
@@ -13,6 +13,9 @@ authors = [
 license = "MIT"
 license-files = ["LICENSE"]
 classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Mathematics",
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
@@ -33,6 +36,7 @@ docs = [
     "sphinx_rtd_theme",
     "myst_parser",
     "sphinxcontrib-mermaid",
+    "sphinx-version-warning",
 ]
 dev = [
     "ruff",
@@ -47,6 +51,7 @@ dev = [
 [project.urls]
 "Homepage" = "http://eqsp.sourceforge.net"
 "Repository" = "https://github.com/penguian/pyeqsp"
+"Beta Feedback" = "https://github.com/penguian/pyeqsp/discussions/categories/beta-testing"
 # NOTE: Update "Repository" if SourceForge becomes the primary repo.
 
 [tool.setuptools.packages.find]

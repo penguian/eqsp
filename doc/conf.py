@@ -48,6 +48,7 @@ extensions = [
     "myst_parser",
     "sphinx_rtd_theme",
     "sphinxcontrib.mermaid",
+    "versionwarning.extension",
 ]
 
 # When nitpicky mode is enabled it helps ensure that all internal
@@ -108,6 +109,24 @@ autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+# --- Beta Engagement Configurations ---
+
+# Version warning configuration
+version_warning_messages = {
+    "latest": (
+        f"You are viewing the {release} documentation. Please report your findings "
+        'in our <a href="https://github.com/penguian/pyeqsp/issues/26">'
+        "Feedback Hub</a>."
+    ),
+}
+
+# Sidebar Call to Action (via html_context for layout.html)
+html_context = {
+    "display_beta_cta": True,
+    "beta_cta_text": "Report Beta Feedback",
+    "beta_cta_link": "https://github.com/penguian/pyeqsp/issues/26",
+}
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]

@@ -46,13 +46,13 @@ This roadmap outlines the development phases from the initial beta through the 1
 **Released: 2026-03-22** | **Git Tag: release_0_99_7** | **Distribution: PyPI**
 
 - [x] **Pre-commit Layer**: Formalized the first tier of "Defense in Depth" (Item 1-2).
-- [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `verify_all.py` to prevent documentation drift.
-- [x] **Environment Isolation**: Improved `verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
+- [x] **Zero-Warning Policy**: Integrated `make html SPHINXOPTS="-W"` into `validation/verify_all.py` to prevent documentation drift.
+- [x] **Environment Isolation**: Improved `validation/verify_all.py` to manage PATH for subprocesses across diverse virtual environments.
 
 ### 0.99.8 Beta: Infrastructure Hardening
 **Released: 2026-04-03** | **Git Tag: release_0_99_8** | **Distribution: PyPI**
 
-- [x] **JOSS Submission**: Initiate the peer-review process by submitting the voice-modeled `paper.md` and `paper.bib` artifacts to the Journal of Open Source Software.
+- [x] **JOSS Submission**: Initiate the peer-review process by submitting the voice-modeled `paper.md` and `paper.bib` artifacts to the Journal of Open Source Software. This establishes the project's scholarly identity alongside the 2007 PhD thesis [Leo07] and 2024 JAS paper [Leo24-JAS].
 - [x] **Automation Coverage Plan**: Achieved 100% coverage on the script automation hub (`release/`, `validation/`) using modular refactoring and the `test_ci_scripts.py` suite.
 - [x] **Verified Deployment**: Confirmed stability of the `build_dist.py` atomic backup and robust `doc/conf.py` mocking across all CI runners.
 - [x] **Technical Symmetry Audit**: Reviewed historical and modern Sphinx configurations for project-wide consistency.
@@ -65,29 +65,37 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
 - [x] **Coverage Deep-Dive**: Reached 100% functional coverage in all core maintenance and release scripts (`release/`, `validation/`) and core algorithm edge cases (e.g., $dim=1$ scalar paths).
 - [x] **Higher-Dimension Robustness**: Verified recursive partitioning for $S^4$ and $S^5$, ensuring coordinate bounds and unit-norm properties hold for $dim \ge 4$.
-- [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox (Conversation 86f21121). Implemented binary scaling (1-2-5) for symmetric benchmarks.
+- [x] **Benchmark Alignment**: Synchronized Python benchmark logic, warm-up phases, and $N_{max}$ parameters with the original MATLAB EQSP Toolbox. Implemented binary scaling (1-2-5) for symmetric benchmarks.
 - [x] **Equatorial Symmetry Expansion**: Formalized `even_collars` support across the entire public API (including `eq_find_s2_region`).
-- [x] **Verification Hardening**: Implemented robust venv isolation in `verify_all.py` and corrected `sradius` dimension logic.
+- [x] **Verification Hardening**: Implemented robust venv isolation in `validation/verify_all.py` and corrected `sradius` dimension logic.
 - [x] **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
 - [x] **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in and added `os.pathsep` portability.
 - [x] **Local Config & Environment Standardization**: Isolated AI assistant skills and standardized documentation with generic placeholders (`VENV`) for improved portability and privacy.
 - [x] **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
 - [x] **Doc Re-organization**: Refactored guides to use alphabetical appendices and renamed the Migration Guide to "Migration from MATLAB" with integrated performance baselines.
 
-## Phase 4: 1.0 Release & Beyond
+## Phase 4: Open Beta & Community Engagement
 **Goal**: Finalize production-ready artifacts, incorporate community feedback, and establish a long-term strategic evolution.
+
+### 1.0b1 Open Beta: Feedback Hub & Community Infrastructure
+**Released: 2026-04-19** | **Git Tag: release_1_0b1** | **Distribution: PyPI / GitHub**
+
+- [x] **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the documentation.
+- [x] **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
+- [x] **Code of Conduct**: Adopted the Contributor Covenant to foster a welcoming community.
+- [x] **Enhanced Issue Routing**: Clearly partitioned detailed bug reports from general beta testing observations.
+- [x] **Portability Audit**: Added explicit POSIX/Linux caveats for the maintenance environment.
+- [x] **Metadata Sync**: Formally bumped project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1).
 
 ### 1.0 General Release [PLANNED]
 
 - [ ] **User Feedback Audit**: Address final community feedback from the beta cycle.
 - [x] **Master ToC Refinement (index.rst)**: Redesigned the master Table of Contents to resolve appendix numbering conflicts and correctly sequence volume references.
-- [ ] **4-Tier Verification Structure**: Implement the structural separation of logic (Tier 1) and reproduction (Tier 3/4) to ensure CI agility.
 - [ ] **Visual Audit**: Final side-by-side verification of example figures vs. PhD Thesis PDF.
 - [ ] **Release Verification**: Verified 1.0 release artifacts and distribution.
 - [ ] **Final 1.0 Tag**: Canonical production release tag.
 
-### Post-1.0 [UNDER CONSIDERATION]
-
+## Phase 5: Post-1.0 [UNDER CONSIDERATION]
 
 #### Quality & Type Safety
 - [ ] **Gradual Typing**: Implement PEP 484 type hints for core package parameters (`dim`, `N`, `s`).

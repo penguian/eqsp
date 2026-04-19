@@ -43,6 +43,10 @@ visualizations.show_s2_partition(100, show_points=True)
 
 ![S2 Partition 3d](../_static/images/s2_partition_3d.png)
 
+:::{note} Beta Feedback Wanted
+Visualization (especially 3D via Mayavi) is a primary focus of our Beta testing. If you encounter rendering issues, coordinate errors, or installation hurdles on your platform (macOS, Windows, or Linux), please let us know in the [Feedback Hub](https://github.com/penguian/pyeqsp/issues/26).
+:::
+
 ## Advanced Projections
 
 For specific research or mapping needs, the library also supports advanced projections via `eqsp.illustrations.project_s2_partition`.

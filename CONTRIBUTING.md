@@ -1,6 +1,6 @@
 # Contributing to PyEQSP
 
-**Release 0.99.9** (2026-04-09): Copyright 2026 Paul Leopardi
+**Release 1.0b1** (2026-04-19): Copyright 2026 Paul Leopardi
 
 Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (**PyEQSP**) library! This project is currently in Beta testing, and your feedback is invaluable.
 
@@ -19,6 +19,9 @@ We welcome ideas for new features or improvements to the partitioning algorithms
 To see the current development priorities and items currently under consideration for future releases, please consult the [Release Roadmap](doc/maintainer/release_roadmap.md).
 
 ## Technical Contributions
+
+> [!NOTE]
+> The PyEQSP maintenance environment (scripts, benchmarks, and doc builds) currently assumes a **POSIX-compatible** system (Linux, macOS, or WSL). We actively seek **volunteer maintainers** with experience in macOS and native Windows to help harden our cross-platform infrastructure.
 
 If you would like to contribute code fixes or improvements, please follow the forking workflow:
 
@@ -78,5 +81,8 @@ git merge upstream/main
 
 For advanced topics about releasing, governance, publishing, and documentation design, please consult the [Maintenance Guide](doc/maintenance_guide.md) and [Documentation Maintenance Guide](doc/maintainer/documentation_maintenance.md).
 
-## Community Standards
-Please be respectful and constructive in your feedback. Our goal is to build a robust and mathematically sound library for the sphere partitioning community.
+## Code of Conduct
+
+PyEQSP is committed to fostering a welcoming and safe environment for all contributors. By participating in this project, you agree to abide by the terms of our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+Instances of unacceptable behavior may be reported to the project author at [paul.leopardi@gmail.com](mailto:paul.leopardi@gmail.com).

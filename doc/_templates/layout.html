@@ -1,0 +1,13 @@
+{% extends "!layout.html" %}
+
+{% block sidebartitle %}
+  {{ super() }}
+
+  {% if display_beta_cta %}
+  <div class="beta-cta-container">
+    <a href="{{ beta_cta_link }}" class="btn btn-neutral beta-cta-button">
+      <i class="fa fa-comments" aria-hidden="true"></i> {{ beta_cta_text }}
+    </a>
+  </div>
+  {% endif %}
+{% endblock %}
