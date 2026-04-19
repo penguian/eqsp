@@ -60,7 +60,7 @@ def test_upload_sourceforge(tmp_path, monkeypatch):
 
     # 1. Mock pyproject.toml
     (tmp_path / "pyproject.toml").write_text(
-        '[project]\nname = "pyeqsp"\nversion = "1.0b1"\n', encoding="utf-8"
+        '[project]\nname = "pyeqsp"\nversion = "0.0.0"\n', encoding="utf-8"
     )
 
     monkeypatch.chdir(tmp_path)
@@ -418,15 +418,19 @@ def test_quality_check_orthography(tmp_path, monkeypatch):
     md_file = tmp_path / "manual.md"
 
     (eqsp_dir / "mod.py").write_text("def organise(): pass\n", encoding="utf-8")
-    md_file.write_text("We need to standardisation.\n", encoding="utf-8")
+    md_file.write_text(
+        "We need to standardisation, synchronisation and sanitise.\n", encoding="utf-8"
+    )
 
     (eqsp_dir / "results.0.md").write_text("analyse\n", encoding="utf-8")
 
     errors = quality_check.check_orthography()
-    assert len(errors) == 2
+    assert len(errors) == 4
     # The message contains the correction, not necessarily the typo
     assert any("organize" in e for e in errors)
     assert any("standardization" in e for e in errors)
+    assert any("synchronization" in e for e in errors)
+    assert any("sanitize" in e for e in errors)
 
 
 def test_quality_check_standalone_pragmas(tmp_path, monkeypatch):
