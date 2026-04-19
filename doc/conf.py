@@ -115,7 +115,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # Version warning configuration
 version_warning_messages = {
     "latest": (
-        "You are viewing the 1.0-Beta documentation. Please report your findings "
+        "You are viewing the 1.0b1 documentation. Please report your findings "
         'in our <a href="https://github.com/penguian/pyeqsp/issues/26">Feedback Hub</a>.'  # noqa: E501
     ),
 }
