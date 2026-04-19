@@ -1,167 +1,167 @@
 # Appendix G: Historical Release Notes
 
- This document tracks the internal evolution of the PyEQSP maintenance ecosystem, including changes to CI/CD pipelines, release scripts, and historical quality metrics. For user-facing feature changes, see the [CHANGELOG.md](https://github.com/penguian/pyeqsp/blob/main/CHANGELOG.md).
+This document tracks the internal evolution of the PyEQSP maintenance ecosystem, including changes to CI/CD pipelines, release scripts, and historical quality metrics. For user-facing feature changes, see the [CHANGELOG.md](https://github.com/penguian/pyeqsp/blob/main/CHANGELOG.md).
 
- ## 1.0b1
- **2026-04-19**
+## 1.0b1
+**2026-04-19**
 
- Release **1.0b1** (the "Open Beta Engagement" release) establishes the community infrastructure for soliciting and managing tester feedback.
+Release **1.0b1** (the "Open Beta Engagement" release) establishes the community infrastructure for soliciting and managing tester feedback.
 
- ### Key Features & Improvements
- - **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the Read the Docs documentation.
- - **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
- - **Maintenance Guide Hardening**: Restructured the Maintenance Guide (Volume 2) to prioritize project governance and establish a professional sequence for quality gates and release lifecycle.
- - **Governance**: Adopted the Contributor Covenant Code of Conduct and updated technical contribution guidelines.
- - **Issue Routing**: Clearly partitioned detailed bug reports (using the `Bug Report` template) from general beta testing observations (using the `Beta Feedback` template).
- - **Metadata Sync**: Shifted project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1) across all documentation and project headers.
+### Key Features & Improvements
+- **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the Read the Docs documentation.
+- **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
+- **Maintenance Guide Hardening**: Restructured the Maintenance Guide (Volume 2) to prioritize project governance and establish a professional sequence for quality gates and release lifecycle.
+- **Governance**: Adopted the Contributor Covenant Code of Conduct and updated technical contribution guidelines.
+- **Issue Routing**: Clearly partitioned detailed bug reports (using the `Bug Report` template) from general beta testing observations (using the `Beta Feedback` template).
+- **Metadata Sync**: Shifted project status to `Development Status :: 4 - Beta` and synchronized version counters (1.0b1) across all documentation and project headers.
 
- ### Release Metadata
- - **Version**: 1.0b1
- - **Tag**: `release_1_0b1`
- - **Distribution**: PyPI / GitHub
- - **Verification**: [PASSED] 100% Project-wide Coverage, 0 Ruff errors, 0 Sphinx warnings.
+### Release Metadata
+- **Version**: 1.0b1
+- **Tag**: `release_1_0b1`
+- **Distribution**: PyPI / GitHub
+- **Verification**: [PASSED] 100% Project-wide Coverage, 0 Ruff errors, 0 Sphinx warnings.
 
- ---
+---
 
- ## 0.99.9
- **2026-04-09**
+## 0.99.9
+**2026-04-09**
 
- Release **0.99.9** achieves **100% project-wide coverage** across both the core library and the entire maintenance ecosystem. It finalizes the dimensional robustness and equatorial symmetry features for the stable 1.0 release.
+Release **0.99.9** achieves **100% project-wide coverage** across both the core library and the entire maintenance ecosystem. It finalizes the dimensional robustness and equatorial symmetry features for the stable 1.0 release.
 
- ### Key Features & Improvements
- - **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API (`eq_regions`, `eq_point_set`, `eq_find_s2_region`, etc.) to ensure partitions align perfectly with the equatorial hyperplane.
- - **Symmetric Benchmark Suite**: Added a full suite of even-collar benchmark runners (`run_benchmarks_even.py`) with 1-2-5 logarithmic scaling to verify performance parity.
- - **Robustness Testing**: Extended formalized testing to higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
- - **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
- - **Verification Hardening**: Implemented robust venv isolation in `validation/verify_all.py` and corrected `sradius` dimension logic.
- - **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
- - **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in.
- - **Verification Suite**: Integrated the unified `validation/verify_all.py` script and benchmark suite.
- - **100% Coverage**: Reached 100% functional coverage across all maintenance and release tools.
- - **Release Metadata Sync**: Updated versioning and copyright dates for the 1.0 release.
- - **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
- - **Master ToC Refinement**: Redesigned the master Table of Contents (`index.rst`) to resolve appendix numbering conflicts and correctly sequence volume references.
- - **Local Config Isolation**: Isolated AI assistant skills and standardized virtual environment documentation with generic placeholders (`VENV`) for improved portability and privacy.
- - **Environment Support**: Formalized the requirement for Mayavi-enabled environments for 3D visualization documentation builds.
+### Key Features & Improvements
+- **Equatorial Symmetry**: Expanded the `even_collars` parameter across the core API (`eq_regions`, `eq_point_set`, `eq_find_s2_region`, etc.) to ensure partitions align perfectly with the equatorial hyperplane.
+- **Symmetric Benchmark Suite**: Added a full suite of even-collar benchmark runners (`run_benchmarks_even.py`) with 1-2-5 logarithmic scaling to verify performance parity.
+- **Robustness Testing**: Extended formalized testing to higher dimensions ($S^4$ and $S^5$), verifying the recursive algorithm's mathematical stability for $dim \ge 4$.
+- **Histogram Logic Alignment**: Back-ported "Index Rotation" (longitude lookup fix) into `eqsp/histograms.py` and implemented high-$N$ wrap-around tests. Removed legacy `lookup_table()` in favor of domain-translated `np.searchsorted()` for 100% coverage.
+- **Verification Hardening**: Implemented robust venv isolation in `validation/verify_all.py` and corrected `sradius` dimension logic.
+- **Histogram Boundary Safety**: Added index clamping to `lookup_s2_region` to prevent `IndexError` at poles.
+- **CLI Standardization**: Refined `--even-collars` flag logic for intuitive explicit opt-in.
+- **Verification Suite**: Integrated the unified `validation/verify_all.py` script and benchmark suite.
+- **100% Coverage**: Reached 100% functional coverage across all maintenance and release tools.
+- **Release Metadata Sync**: Updated versioning and copyright dates for the 1.0 release.
+- **Documentation Parity**: Conducted a thorough audit of the benchmark suite documentation to ensure $S^2$ and $S^3$ default dimensions are explicitly noted across the User and Maintenance guides.
+- **Master ToC Refinement**: Redesigned the master Table of Contents (`index.rst`) to resolve appendix numbering conflicts and correctly sequence volume references.
+- **Local Config Isolation**: Isolated AI assistant skills and standardized virtual environment documentation with generic placeholders (`VENV`) for improved portability and privacy.
+- **Environment Support**: Formalized the requirement for Mayavi-enabled environments for 3D visualization documentation builds.
 
- ### Release Metadata
- - **Version**: 0.99.9
- - **Tag**: `release_0_99_9`
- - **Distribution**: PyPI, SourceForge
- - **Verification**: [PASSED] 100% Core Coverage, 0 Ruff errors, 0 Sphinx warnings.
+### Release Metadata
+- **Version**: 0.99.9
+- **Tag**: `release_0_99_9`
+- **Distribution**: PyPI, SourceForge
+- **Verification**: [PASSED] 100% Core Coverage, 0 Ruff errors, 0 Sphinx warnings.
 
- ---
+---
 
- ## 0.99.8
- **2026-04-03**
+## 0.99.8
+**2026-04-03**
 
- Release **0.99.8** establishes the definitive architectural layout for the PyEQSP maintenance ecosystem and finalizes the JOSS submission artifacts.
+Release **0.99.8** establishes the definitive architectural layout for the PyEQSP maintenance ecosystem and finalizes the JOSS submission artifacts.
 
- ### Key Features & Improvements
- - **Infrastructure Reorganization**: Redesigned the maintenance workspace into intent-based `release/` (distribution) and `validation/` (quality) directories.
- - **100% Automation Coverage**: Achieved full unit test coverage for the CI/CD suite via the `test_ci_scripts.py` framework.
- - **JOSS Submission**: Finalized the `paper.md` and `paper.bib` artifacts, harmonizing the project's scholarly identity with the 2007 PhD thesis [Leo07] and 2024 JAS paper [Leo24-JAS].
- - **Quality Gate Stability**: Enhanced validation scripts with AST parsing to monitor paths inside Python `Usage:` blocks and enforced structural integrity in `index.rst`.
- - **Hemisphere Refinement**: Explicitly documented the `even_collars` implementation for $S^3 \to \text{SO}(3)$ sampling applications.
+### Key Features & Improvements
+- **Infrastructure Reorganization**: Redesigned the maintenance workspace into intent-based `release/` (distribution) and `validation/` (quality) directories.
+- **100% Automation Coverage**: Achieved full unit test coverage for the CI/CD suite via the `test_ci_scripts.py` framework.
+- **JOSS Submission**: Finalized the `paper.md` and `paper.bib` artifacts, harmonizing the project's scholarly identity with the 2007 PhD thesis [Leo07] and 2024 JAS paper [Leo24-JAS].
+- **Quality Gate Stability**: Enhanced validation scripts with AST parsing to monitor paths inside Python `Usage:` blocks and enforced structural integrity in `index.rst`.
+- **Hemisphere Refinement**: Explicitly documented the `even_collars` implementation for $S^3 \to \text{SO}(3)$ sampling applications.
 
- ### Release Metadata
- - **Version**: 0.99.8
- - **Tag**: `release_0_99_8`
- - **Distribution**: PyPI
- - **Verification**: [PASSED] 100% Core Coverage, 10.00/10 Pylint, 0 Sphinx warnings.
+### Release Metadata
+- **Version**: 0.99.8
+- **Tag**: `release_0_99_8`
+- **Distribution**: PyPI
+- **Verification**: [PASSED] 100% Core Coverage, 10.00/10 Pylint, 0 Sphinx warnings.
 
- ---
+---
 
- ## 0.99.7
- **2026-03-22**
+## 0.99.7
+**2026-03-22**
 
- Release **0.99.7** is a critical infrastructure synchronization release focusing on headless CI support and across-environment compatibility.
+Release **0.99.7** is a critical infrastructure synchronization release focusing on headless CI support and across-environment compatibility.
 
- ### Key Features & Improvements
- - **CI Pipeline Hardening**: Implemented mocking for `mayavi` and `PyQt5` in Sphinx to allow 3D visualization doctests to pass in headless CI runners.
- - **Environment Isolation**: Improved `validation/verify_all.py` to manage the execution `PATH` dynamically, resolving path-shadowing issues in complex virtual environments.
- - **Legacy Compatibility**: Reverted `ruff.toml` to the flat-format configuration to support institutional environments using older toolchain versions (e.g., Ruff 0.0.291).
- - **Credential Logic**: Refined `upload_release.py` to correctly handle standard `TWINE_PASSWORD` and token authentication.
+### Key Features & Improvements
+- **CI Pipeline Hardening**: Implemented mocking for `mayavi` and `PyQt5` in Sphinx to allow 3D visualization doctests to pass in headless CI runners.
+- **Environment Isolation**: Improved `validation/verify_all.py` to manage the execution `PATH` dynamically, resolving path-shadowing issues in complex virtual environments.
+- **Legacy Compatibility**: Reverted `ruff.toml` to the flat-format configuration to support institutional environments using older toolchain versions (e.g., Ruff 0.0.291).
+- **Credential Logic**: Refined `upload_release.py` to correctly handle standard `TWINE_PASSWORD` and token authentication.
 
- ### Release Metadata
- - **Version**: 0.99.7
- - **Tag**: `release_0_99_7`
- - **Distribution**: PyPI
- - **Verification**: [PASSED] 100% Core Coverage, 0 Ruff errors (legacy-mode), 0 Sphinx warnings.
+### Release Metadata
+- **Version**: 0.99.7
+- **Tag**: `release_0_99_7`
+- **Distribution**: PyPI
+- **Verification**: [PASSED] 100% Core Coverage, 0 Ruff errors (legacy-mode), 0 Sphinx warnings.
 
- ---
+---
 
- ## 0.99.6
- **2026-03-21**
+## 0.99.6
+**2026-03-21**
 
- Release **0.99.6** establishes the final infrastructure for automated PyPI deployment and formalizes project governance standards.
+Release **0.99.6** establishes the final infrastructure for automated PyPI deployment and formalizes project governance standards.
 
- ### Key Features & Improvements
- - **Release Automation**: Introduced the `release/` suite (`build_dist.py`, `pypi_readme_fix.py`) to automate the clean-build-upload cycle.
- - **Prose & Tonal Audit**: Standardized on an active, professional voice across the User Guide and README, verified against Flesch-Kincaid readability baselines.
- - **Bibliography Parity**: Conducted a manual audit to align all citation keys across `AUTHORS.md` and documentation with canonical PhD thesis keys.
- - **Governance**: Added a Roles and Responsibilities matrix and credential management policies to the Maintenance Guide.
+### Key Features & Improvements
+- **Release Automation**: Introduced the `release/` suite (`build_dist.py`, `pypi_readme_fix.py`) to automate the clean-build-upload cycle.
+- **Prose & Tonal Audit**: Standardized on an active, professional voice across the User Guide and README, verified against Flesch-Kincaid readability baselines.
+- **Bibliography Parity**: Conducted a manual audit to align all citation keys across `AUTHORS.md` and documentation with canonical PhD thesis keys.
+- **Governance**: Added a Roles and Responsibilities matrix and credential management policies to the Maintenance Guide.
 
- ### Release Metadata
- - **Version**: 0.99.6
- - **Tag**: `release_0_99_6`
- - **Distribution**: PyPI
- - **Verification**: [PASSED] 100% Core Coverage, 10.00/10 Pylint, 0 Sphinx warnings.
+### Release Metadata
+- **Version**: 0.99.6
+- **Tag**: `release_0_99_6`
+- **Distribution**: PyPI
+- **Verification**: [PASSED] 100% Core Coverage, 10.00/10 Pylint, 0 Sphinx warnings.
 
- ---
+---
 
- ## 0.99.4
- **2026-03-17**
+## 0.99.4
+**2026-03-17**
 
- Release **0.99.4** bifurcates the documentation suite and introduces automated orthography enforcement.
+Release **0.99.4** bifurcates the documentation suite and introduces automated orthography enforcement.
 
- ### Key Features & Improvements
- - **Two-Volume Documentation**: Split the documentation into a dedicated User Guide (Vol 1) and Maintenance Guide (Vol 2).
- - **Orthography Enforcement**: Introduced automated project-wide enforcement of **Australian -ize English** (Oxford spelling).
- - **Shell Compatibility**: Standardized on quoted `pip install` extras for improved cross-platform reliability.
- - **Visualization Cleanup**: Removed legacy illustration stubs in favor of the specialized `eqsp.visualizations` module.
- - **Infrastructure**: Transitioned to flat-format linter configurations and enforced `sys.path` isolation for all documentation diagnostic tools.
+### Key Features & Improvements
+- **Two-Volume Documentation**: Split the documentation into a dedicated User Guide (Vol 1) and Maintenance Guide (Vol 2).
+- **Orthography Enforcement**: Introduced automated project-wide enforcement of **Australian -ize English** (Oxford spelling).
+- **Shell Compatibility**: Standardized on quoted `pip install` extras for improved cross-platform reliability.
+- **Visualization Cleanup**: Removed legacy illustration stubs in favor of the specialized `eqsp.visualizations` module.
+- **Infrastructure**: Transitioned to flat-format linter configurations and enforced `sys.path` isolation for all documentation diagnostic tools.
 
- ### Release Metadata
- - **Version**: 0.99.4
- - **Tag**: `release_0_99_4`
- - **Distribution**: PyPI, TestPyPI
- - **Verification**: [PASSED] 100% coverage, 10.00/10 Pylint, 0 Sphinx warnings.
+### Release Metadata
+- **Version**: 0.99.4
+- **Tag**: `release_0_99_4`
+- **Distribution**: PyPI, TestPyPI
+- **Verification**: [PASSED] 100% coverage, 10.00/10 Pylint, 0 Sphinx warnings.
 
- ---
+---
 
- ## 0.99.3
- **2026-03-14**
+## 0.99.3
+**2026-03-14**
 
- Release **0.99.3** standardizes project branding and enhances mathematical notation for distribution platforms.
+Release **0.99.3** standardizes project branding and enhances mathematical notation for distribution platforms.
 
- ### Key Features & Improvements
- - **PyEQSP Branding**: Standardized the project identity as **PyEQSP** across all documentation, metadata, and benchmark artifacts.
- - **Unicode Mathematics**: Converted inline LaTeX to Unicode (S², S³, O(N)) in top-level Markdown for better rendering on PyPI and SourceForge.
- - **Terminology Alignment**: Replaced "legacy" terminology with "original Matlab toolbox" across the internal documentation.
- - **Scaling Parity**: Verified $O(N^{0.6})$ scaling parity with the original thesis benchmarks.
+### Key Features & Improvements
+- **PyEQSP Branding**: Standardized the project identity as **PyEQSP** across all documentation, metadata, and benchmark artifacts.
+- **Unicode Mathematics**: Converted inline LaTeX to Unicode (S², S³, O(N)) in top-level Markdown for better rendering on PyPI and SourceForge.
+- **Terminology Alignment**: Replaced "legacy" terminology with "original Matlab toolbox" across the internal documentation.
+- **Scaling Parity**: Verified $O(N^{0.6})$ scaling parity with the original thesis benchmarks.
 
- ### Release Metadata
- - **Version**: 0.99.3
- - **Tag**: `release_0_99_3`
- - **Distribution**: PyPI, TestPyPI
- - **Verification**: [PASSED] 100% coverage, 0 Ruff errors.
+### Release Metadata
+- **Version**: 0.99.3
+- **Tag**: `release_0_99_3`
+- **Distribution**: PyPI, TestPyPI
+- **Verification**: [PASSED] 100% coverage, 0 Ruff errors.
 
- ---
+---
 
- ## 0.99.0
- **2026-03-08**
+## 0.99.0
+**2026-03-08**
 
- Initial Beta release for public testing, introducing symmetric partitioning and the Sphinx documentation framework.
+Initial Beta release for public testing, introducing symmetric partitioning and the Sphinx documentation framework.
 
- ### Key Features & Improvements
- - **Symmetric Partitions**: Introduced the `even_collars` parameter to enable precise S² hemisphere splitting and S³ → SO(3) sampling.
- - **Sphinx Framework**: Initialized the multi-format documentation system with MyST-Parser and localized cross-references.
- - **CI Robustness**: Established the `validation/verify_all.py` unified verification layer and GitHub Actions integration.
- - **Docstring Audit**: Completed the first project-wide audit and standardization of NumPy-format docstrings.
+### Key Features & Improvements
+- **Symmetric Partitions**: Introduced the `even_collars` parameter to enable precise S² hemisphere splitting and S³ → SO(3) sampling.
+- **Sphinx Framework**: Initialized the multi-format documentation system with MyST-Parser and localized cross-references.
+- **CI Robustness**: Established the `validation/verify_all.py` unified verification layer and GitHub Actions integration.
+- **Docstring Audit**: Completed the first project-wide audit and standardization of NumPy-format docstrings.
 
- ### Release Metadata
- - **Version**: 0.99.0
- - **Tag**: `release_0_99_0`
- - **Distribution**: PyPI
- - **Verification**: [PASSED] Initial project-wide quality baseline met.
+### Release Metadata
+- **Version**: 0.99.0
+- **Tag**: `release_0_99_0`
+- **Distribution**: PyPI
+- **Verification**: [PASSED] Initial project-wide quality baseline met.
