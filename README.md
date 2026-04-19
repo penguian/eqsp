@@ -43,7 +43,7 @@ PyEQSP is currently in **Open Beta**. We actively welcome feedback from research
 
 ### Portability Notice
 
-While the core library is designed for cross-platform compatibility, it has been developed and tested exclusively on **Linux** to date. We recommend POSIX-compatible environments such as **Homebrew on macOS** or **WSL (Windows Subsystem for Linux) on Windows 11** as they are most likely to work "out of the box." However, we provide no guarantees for these platforms until they are properly tested. Specific documentation and fixes for macOS and Windows currently depend on **volunteer contributors**.
+While the core library is designed for cross-platform compatibility, it has been developed and tested exclusively on **Linux** to date. For other platforms, we recommend environments such as **macOS** (using Homebrew, `coreutils`, and `bash --posix`) or **Windows 11** (via WSL - Windows Subsystem for Linux) as they are most likely to work "out of the box." However, we provide no guarantees for these platforms until they are properly tested. Specific documentation and fixes for macOS and Windows currently depend on **volunteer contributors**.
 
 For installation instructions and environment setup, see [INSTALL.md](INSTALL.md).
 
