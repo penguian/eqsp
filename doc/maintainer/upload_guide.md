@@ -2,7 +2,7 @@
 
 This guide details the procedures for uploading PyEQSP distributions and documentation to their respective hosting platforms using the project's automation suite.
 
-:::important
+:::{important}
 **Protected Branch Policy**: These procedures assume the **`main`** branch is protected. All changes, including version bumps, must be performed on a release branch and merged via Pull Request after verification.
 :::
 
@@ -30,7 +30,7 @@ This script will:
 *   Verify the artifact using `twine check`.
 *   Attempt an upload to the TestPyPI repository.
 
-:::caution
+:::{caution}
 **TestPyPI Immutability**: If an upload to TestPyPI fails *after* a successful partial upload, or if you need to fix a bug discovered during the check, you **must** increment the version number (e.g., `1.0b1` to `1.0b2`) in `pyproject.toml`. TestPyPI does not allow re-uploading the same version string.
 :::
 
@@ -65,7 +65,7 @@ git tag release_1_0b1
 git push origin release_1_0b1
 ```
 
-:::caution
+:::{caution}
 **PyPI Immutability & Failure Recovery**: Like TestPyPI, production PyPI is strictly immutable. If the upload fails *after* any artifact (sdist or wheel) has been successfully accepted, you cannot re-upload to that version string. To recover:
 1. Fix the underlying issue (e.g., build error or metadata fix) on a new branch.
 2. **Increment the version** in `pyproject.toml` (e.g., `1.0b1` → `1.0b2`).

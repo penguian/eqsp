@@ -169,7 +169,7 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 - **Modern Ruff** (0.15.x+) in the main `.venv`.
 - **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
 
-:::important
+:::{important}
 Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
 :::
 

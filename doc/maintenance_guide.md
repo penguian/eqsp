@@ -23,7 +23,7 @@ Non-owners should never have access to production secrets. All automation is des
 
 ## System Requirements for Maintenance
 
-:::important
+:::{important}
 To date, all development and maintenance of PyEQSP has been performed exclusively on **Linux**.
 :::
 

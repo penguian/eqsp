@@ -19,7 +19,7 @@ illustrations.project_s2_partition(100, proj='stereo', show_points=True)
 plt.show()
 ```
 
-:::tip
+:::{tip}
 For a clean, executable version of this plot, see [examples/user-guide/src/example_visualize_2d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_2d.py).
 :::
 
@@ -39,7 +39,7 @@ from eqsp import visualizations
 visualizations.show_s2_partition(100, show_points=True)
 ```
 
-:::tip
+:::{tip}
 The interactive 3D script, including environment checks for Mayavi, is available at [examples/user-guide/src/example_visualize_3d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_3d.py).
 :::
 
