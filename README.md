@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 1.0b1** (2026-04-19): Copyright 2026 Paul Leopardi
+**Release 1.0b1** (2026-04-21): Copyright 2026 Paul Leopardi
 
 PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
@@ -230,5 +230,6 @@ constructions, see:
 This software is released under the **MIT License**. See the
 `LICENSE` file for details.
 
-The original Matlab implementation can be found at:
-http://eqsp.sourceforge.net
+The MATLAB implementation can be found at:
+https://github.com/penguian/eq_sphere_partitions with a mirror at
+https://sourceforge.net/projects/eqsp

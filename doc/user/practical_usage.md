@@ -40,8 +40,9 @@ energy, _ = eqsp.point_set_energy_dist(points, s=2)
 print(f"Riesz s-energy: {energy}")
 ```
 
-> [!TIP]
-> A complete standalone version of this workflow can be found in [examples/user-guide/src/example_quick_start.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_quick_start.py).
+:::{tip}
+A complete standalone version of this workflow can be found in [examples/user-guide/src/example_quick_start.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_quick_start.py).
+:::
 
 ## Step 3: Advanced Partitioning ($S^3$ and SO(3))
 

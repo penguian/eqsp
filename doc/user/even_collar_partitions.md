@@ -20,11 +20,13 @@ from eqsp.partitions import eq_regions
 regions = eq_regions(dim=2, N=100, even_collars=True)
 ```
 
-> [!TIP]
-> See [examples/user-guide/src/example_symmetric_partitions.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_symmetric_partitions.py) for a complete example including symmetry verification.
+:::{tip}
+See [examples/user-guide/src/example_symmetric_partitions.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_symmetric_partitions.py) for a complete example including symmetry verification.
+:::
 
-> [!IMPORTANT]
-> If $N$ is odd, setting `even_collars=True` will raise a `ValueError`. This is because for odd $N$, no single hyperplane can perfectly divide the partition into two equal hemispheres.
+:::{important}
+If $N$ is odd, setting `even_collars=True` will raise a `ValueError`. This is because for odd $N$, no single hyperplane can perfectly divide the partition into two equal hemispheres.
+:::
 
 ## Effectiveness and Research Basis
 

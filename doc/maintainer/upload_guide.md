@@ -2,8 +2,9 @@
 
 This guide details the procedures for uploading PyEQSP distributions and documentation to their respective hosting platforms using the project's automation suite.
 
-> [!IMPORTANT]
-> **Protected Branch Policy**: These procedures assume the **`main`** branch is protected. All changes, including version bumps, must be performed on a release branch and merged via Pull Request after verification.
+:::{important}
+**Protected Branch Policy**: These procedures assume the **`main`** branch is protected. All changes, including version bumps, must be performed on a release branch and merged via Pull Request after verification.
+:::
 
 ## Release Distribution (PyPI / TestPyPI)
 
@@ -29,8 +30,9 @@ This script will:
 *   Verify the artifact using `twine check`.
 *   Attempt an upload to the TestPyPI repository.
 
-> [!CAUTION]
-> **TestPyPI Immutability**: If an upload to TestPyPI fails *after* a successful partial upload, or if you need to fix a bug discovered during the check, you **must** increment the version number (e.g., `1.0b1` to `1.0b2`) in `pyproject.toml`. TestPyPI does not allow re-uploading the same version string.
+:::{caution}
+**TestPyPI Immutability**: If an upload to TestPyPI fails *after* a successful partial upload, or if you need to fix a bug discovered during the check, you **must** increment the version number (e.g., `1.0b1` to `1.0b2`) in `pyproject.toml`. TestPyPI does not allow re-uploading the same version string.
+:::
 
 ### 3. GitHub Synchronization & CI Verification
 Once the TestPyPI rendering is confirmed, push your branch and open a PR.
@@ -63,15 +65,16 @@ git tag release_1_0b1
 git push origin release_1_0b1
 ```
 
-> [!CAUTION]
-> **PyPI Immutability & Failure Recovery**: Like TestPyPI, production PyPI is strictly immutable. If the upload fails *after* any artifact (sdist or wheel) has been successfully accepted, you cannot re-upload to that version string. To recover:
-> 1. Fix the underlying issue (e.g., build error or metadata fix) on a new branch.
-> 2. **Increment the version** in `pyproject.toml` (e.g., `1.0b1` → `1.0b2`).
-> 3. Restart the entire release process from Step 1.
+:::{caution}
+**PyPI Immutability & Failure Recovery**: Like TestPyPI, production PyPI is strictly immutable. If the upload fails *after* any artifact (sdist or wheel) has been successfully accepted, you cannot re-upload to that version string. To recover:
+1. Fix the underlying issue (e.g., build error or metadata fix) on a new branch.
+2. **Increment the version** in `pyproject.toml` (e.g., `1.0b1` → `1.0b2`).
+3. Restart the entire release process from Step 1.
+:::
 
-## SourceForge Documentation Upload
+## SourceForge Documentation Mirror Upload
 
-To update the project website at `http://eqsp.sourceforge.net`:
+To update the project documentation mirror at `http://pyeqsp.sourceforge.io`:
 
 ### 1. Generate & Upload
 The documentation upload is semi-automated via the `release/upload_sourceforge.py` script.
@@ -82,4 +85,4 @@ python3 release/upload_sourceforge.py
 After reviewing the generated command, execute it to upload the `doc/_build/html` contents to your SourceForge `htdocs` directory.
 
 ### 2. Verify Web Rendering
-Check [http://eqsp.sourceforge.net](http://eqsp.sourceforge.net) to ensure all Markdown, mathematics symbols, and navigation elements render correctly.
+Check [http://pyeqsp.sourceforge.io](http://pyeqsp.sourceforge.io) to ensure all Markdown, mathematics symbols, and navigation elements render correctly.

@@ -23,8 +23,9 @@ Non-owners should never have access to production secrets. All automation is des
 
 ## System Requirements for Maintenance
 
-> [!IMPORTANT]
-> To date, all development and maintenance of PyEQSP has been performed exclusively on **Linux**.
+:::{important}
+To date, all development and maintenance of PyEQSP has been performed exclusively on **Linux**.
+:::
 
 The maintenance infrastructure—including `verify_all.py`, the `release/` suite, and the documentation `Makefile`—currently assumes a **POSIX-compatible environment**. Developers using native Windows are encouraged to use **WSL (Windows Subsystem for Linux)** or manually adapt the scripts for their local environment. We provide no guarantees for non-POSIX platforms until they are formally verified by the community.
 
@@ -113,7 +114,7 @@ PyEQSP uses a staging-based release workflow to protect the `main` branch from u
 2. **Internal Review**: Review the TestPyPI project page to confirm that documentation links correctly point to absolute GitHub URLs.
 3. **Integration & PR**: Push the release branch and open a PR to `main`. Once CI passes and the PR is merged, the authoritative `main` branch is ready for deployment.
 4. **Production PyPI Upload & Tagging**: From the updated `main` branch, use `release/upload_release.py --pypi` for the deployment, then create and push the version tag (e.g., `git tag release_1_0b1 && git push origin release_1_0b1`).
-5. **SourceForge Upload**: Use `release/upload_sourceforge.py` to host the Sphinx HTML documentation.
+5. **SourceForge Upload**: Use `release/upload_sourceforge.py` to host the mirror of the Sphinx HTML documentation. Note: the primary Sphinx HTML documentation is uploaded to [`readthedocs.io`](https://readthedocs.io) automatically.
 
 For detailed instructions on these scripts, see **Appendix D**: [Upload Guide](maintainer/upload_guide.md).
 
