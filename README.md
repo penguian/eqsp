@@ -230,5 +230,6 @@ constructions, see:
 This software is released under the **MIT License**. See the
 `LICENSE` file for details.
 
-The original Matlab implementation can be found at:
-http://eqsp.sourceforge.net
+The MATLAB implementation can be found at:
+https://github.com/penguian/eq_sphere_partitions with a mirror at
+https://sourceforge.net/projects/eqsp
