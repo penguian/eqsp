@@ -3,7 +3,7 @@
 This document tracks the internal evolution of the PyEQSP maintenance ecosystem, including changes to CI/CD pipelines, release scripts, and historical quality metrics. For user-facing feature changes, see the [CHANGELOG.md](https://github.com/penguian/pyeqsp/blob/main/CHANGELOG.md).
 
 ## 1.0b1
-**2026-04-19**
+**2026-04-21**
 
 Release **1.0b1** (the "Open Beta Engagement" release) establishes the community infrastructure for soliciting and managing tester feedback.
 

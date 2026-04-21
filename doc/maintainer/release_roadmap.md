@@ -78,7 +78,7 @@ This roadmap outlines the development phases from the initial beta through the 1
 **Goal**: Finalize production-ready artifacts, incorporate community feedback, and establish a long-term strategic evolution.
 
 ### 1.0b1 Open Beta: Feedback Hub & Community Infrastructure
-**Released: 2026-04-19** | **Git Tag: release_1_0b1** | **Distribution: PyPI / GitHub**
+**Released: 2026-04-21** | **Git Tag: release_1_0b1** | **Distribution: PyPI / GitHub**
 
 - [x] **Feedback Hub**: Integrated a sidebar CTA and global version warning banner into the documentation.
 - [x] **Beta Feedback Channel**: Added a specialized GitHub Issue template for verification reports and success stories.
