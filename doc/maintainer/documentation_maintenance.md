@@ -69,8 +69,8 @@ To ensure stability across CI/CD and diverse local environments, these scripts a
 - **Volume 1 (User)**: Should be updated whenever a new public feature or visualization method is added.
 - **Volume 2 (Maintenance)**: Should be updated when internal architecture changes (e.g., transitioning from Mayavi to a new 3D engine) or when benchmarks are re-run.
 
-### Automated Sourceforge Upload
-The project includes a utility script to automate the Sphinx build and print the exact transfer command for the Sourceforge mirror:
+### Automated SourceForge Upload
+The project includes a utility script to automate the Sphinx build and print the exact transfer command for the SourceForge mirror:
 ```bash
 python release/upload_sourceforge.py
 ```
