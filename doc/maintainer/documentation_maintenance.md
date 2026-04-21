@@ -34,6 +34,10 @@ The project is configured with GitHub webhooks.
 - **Automation**: Every push to `main` triggers a build of the "Latest" version.
 - **Versioning**: Branch tags (e.g., `release_0_99_4`) can be specifically enabled on the RTD dashboard to preserve documentation for older releases.
 
+## SourceForge Mirroring
+
+While **ReadTheDocs** is our primary documentation host, we maintain a secondary mirror on **SourceForge** to ensure high-availability and persistence for research citations.
+
 ## Automated Quality Safeguards
 
 To prevent documentation drift and common technical errors, PyEQSP includes a suite of automated checks integrated into `verify_all.py`:
@@ -65,12 +69,8 @@ To ensure stability across CI/CD and diverse local environments, these scripts a
 - **Volume 1 (User)**: Should be updated whenever a new public feature or visualization method is added.
 - **Volume 2 (Maintenance)**: Should be updated when internal architecture changes (e.g., transitioning from Mayavi to a new 3D engine) or when benchmarks are re-run.
 
-## SourceForge Hosting
-
-While **ReadTheDocs** is our primary documentation host, we maintain a secondary mirror on **SourceForge** to ensure high-availability and persistence for research citations.
-
-### Automated Upload
-The project includes a utility script to automate the Sphinx build and print the exact transfer command:
+### Automated Sourceforge Upload
+The project includes a utility script to automate the Sphinx build and print the exact transfer command for the Sourceforge mirror:
 ```bash
 python release/upload_sourceforge.py
 ```
@@ -88,4 +88,4 @@ If you need to manually push a documentation update, follow these steps:
    scp -r doc/_build/html/* USER@web.sourceforge.net:/home/project-web/pyeqsp/htdocs/
    ```
 
-3. **Verify**: The documentation will be instantly live at `http://pyeqsp.sourceforge.net`.
+3. **Verify**: The documentation will be instantly live at `http://pyeqsp.sourceforge.io`.

@@ -97,22 +97,22 @@ This roadmap outlines the development phases from the initial beta through the 1
 
 ## Phase 5: Post-1.0 [UNDER CONSIDERATION]
 
-#### Quality & Type Safety
+### Quality & Type Safety
 - [ ] **Gradual Typing**: Implement PEP 484 type hints for core package parameters (`dim`, `N`, `s`).
 - [ ] **Validation Hardening**: Update `check_links.py` to verify inline code snippet paths.
 - [ ] **Centralized Task Runner**: Evaluate `nox` or a unified `Makefile` for task orchestration.
 - [ ] **Doctest Hardening**: Fully automate the verification of all documentation code snippets.
 
-#### Performance & Optimization
+### Performance & Optimization
 - [ ] **Cut-down Performance Regression (Tier 2)**: Formalize automated performance gating against a baseline JSON.
 - [ ] **Dot Product Energy Optimization**: Evaluate faster $2(1 - X^T X)$ dot-product approach for points on the unit sphere.
 - [ ] **Vectorized Area Calculations**: Update `eq_area_error` to calculate area once per collar and broadcast.
 - [ ] **Acceleration Research**: Evaluate `Numba` or `Cython` for core recursive partitioning loops.
 
-#### Maintenance & Automation
+### Maintenance & Automation
 - [ ] **Maintenance Consolidation**: Full Pylint-audit and refactor of all legacy benchmark and profiling scripts.
 - [ ] **Vale Full Automation**: Integrate `vale` project-wide to enforce Australian English.
 - [ ] **Lychee Integration**: Transition to the `Lychee` link checker for deep markdown analysis.
 
-#### Research & Dimensionality
+### Research & Dimensionality
 - [ ] **Dimensionality Expansion**: Establish reference baselines and mathematical invariant tests for $d \ge 4$.

@@ -63,8 +63,9 @@ export QT_API="pyqt5"
 export QT_QPA_PLATFORM="xcb"
 ```
 
-> [!IMPORTANT]
-> This specific calibration was validated on **Kubuntu Linux 25.10**. Other distributions may require `offscreen` backends for CI or different `QT_API` targets.
+:::important
+This specific calibration was validated on **Kubuntu Linux 25.10**. Other distributions may require `offscreen` backends for CI or different `QT_API` targets.
+:::
 
 ## Jupyter Notebook Integration
 

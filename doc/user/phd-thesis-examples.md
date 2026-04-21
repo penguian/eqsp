@@ -67,8 +67,9 @@ export QT_API="pyqt5"
 export QT_QPA_PLATFORM="xcb"
 ```
 
-> [!WARNING]
-> Without these exports, Mayavi may fail to initialize a window or crash with a `Segmentation Fault` when attempting to rasterize GREAT CIRCLE edges.
+:::warning
+Without these exports, Mayavi may fail to initialize a window or crash with a `Segmentation Fault` when attempting to rasterize GREAT CIRCLE edges.
+:::
 
 ### Bitwise Reproducibility
 

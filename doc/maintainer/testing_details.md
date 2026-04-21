@@ -169,8 +169,9 @@ The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]`
 - **Modern Ruff** (0.15.x+) in the main `.venv`.
 - **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
 
-> [!IMPORTANT]
-> Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
+:::important
+Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
+:::
 
 ### Pylint (Deep Static Analysis)
 Pylint is used for deep semantic analysis. The configuration is refined to allow standard mathematical notation (including variable names like `N_values`, `Ns`, `Phi`) while enforcing strict code quality across the entire repository. The project baseline is a **10.00/10** rating:
