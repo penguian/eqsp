@@ -36,7 +36,7 @@ For step-by-step examples, see the [Practical Usage Guide](user/practical_usage.
 
 PyEQSP supports both 2D and 3D visualizations:
 - **2D Projections**: Matplotlib-based schematics.
-- **3D Interactive Graphics**: High-fidelity rendering using Mayavi and VTK.
+- **3D Interactive Graphics**: High-fidelity rendering using PyVista.
 
 For detailed plotting options, see the [Visualization & Illustration Guide](user/visualization_guide.md).
 

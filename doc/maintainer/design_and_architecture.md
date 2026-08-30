@@ -9,7 +9,7 @@ The library is organized to separate performance-critical mathematics logic from
 ### Public API (`eqsp.*`)
 - **`partitions.py`**: The core of the EQ algorithm. Contains `eq_regions` and `eq_point_set`.
 - **`point_set_props.py`**: Modules for measuring distance, energy, and density.
-- **`visualizations.py`**: High-level wrappers for Matplotlib and Mayavi.
+- **`visualizations.py`**: High-level wrappers for Matplotlib and PyVista.
 - **`utilities.py`**: Coordinate system transformations.
 
 ```{mermaid}
@@ -38,7 +38,7 @@ Modules prefixed with an underscore are intended for internal use and may change
 
 PyEQSP uses a "composite" visualization strategy:
 1. **Matplotlib** is used for 2D projections and publishing-quality PDF/EPS output.
-2. **Mayavi/VTK** is used for real-time 3D interaction.
+2. **PyVista** is used for real-time 3D interaction and off-screen rendering.
 The `visualizations` module acts as a bridge, choosing the best backend for the requested manifold ($S^2$ vs $S^3$).
 
 ```{mermaid}
@@ -46,12 +46,12 @@ graph LR
     User([User Call]) --> V[visualizations.py]
 
     V -->|Manifold = S^2, 2D| MAT[Matplotlib]
-    V -->|Manifold = S^2, 3D| MAY[Mayavi/VTK]
-    V -->|Manifold = S^3| MAY
+    V -->|Manifold = S^2, 3D| PV[PyVista]
+    V -->|Manifold = S^3| PV
 
     subgraph Backends ["Plotting Engines"]
         MAT
-        MAY
+        PV
     end
 
     style User fill:#d4edda,stroke:#28a745

@@ -1,6 +1,6 @@
 # Contributing to PyEQSP
 
-**Release 1.0b2** (2026-06-07): Copyright 2026 Paul Leopardi
+**Release 1.0b3** (2026-08-30): Copyright 2026 Paul Leopardi
 
 Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (**PyEQSP**) library! This project is currently in Beta testing, and your feedback is invaluable.
 

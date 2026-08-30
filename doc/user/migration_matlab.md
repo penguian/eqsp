@@ -45,8 +45,8 @@ Most core functions keep their names. The main differences are in coordinate con
 | `project_s2_partition` | `illustrations.project_s2_partition` | Matplotlib, 2D projection. |
 | `project_point_set` | `illustrations.project_point_set` | Matplotlib, 2D projection. |
 | **3D Visualizations** | | |
-| `plot_s2_partition` | `visualizations.show_s2_partition` | Mayavi (optional). |
-| `project_s3_partition` | `visualizations.project_s3_partition` | Mayavi (optional). |
+| `plot_s2_partition` | `visualizations.show_s2_partition` | PyVista (optional). |
+| `project_s3_partition` | `visualizations.project_s3_partition` | PyVista (optional). |
 
 > **Note:** Internal-only utilities from the original MATLAB code (like `fatcurve`) are not exposed in the public Python API.
 
@@ -114,7 +114,7 @@ MATLAB and NumPy differ in their default memory layout (Column-major vs Row-majo
 The Python port uses two separate modules for plotting, unlike the single MATLAB illustration module:
 
 *   **`eqsp.illustrations`** (Matplotlib, always available): Handles 2D projections (`project_s2_partition`) and algorithm step diagrams (`illustrate_eq_algorithm`).
-*   **`eqsp.visualizations`** (Mayavi, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires Mayavi.
+*   **`eqsp.visualizations`** (PyVista, optional): Handles all 3D interactive rendering — `show_s2_partition`, `project_s3_partition`, `show_r3_point_set`, etc. Requires PyVista.
 
 ### Documentation Philosophy: Two Volumes
 Starting with 0.99.4, the documentation is divided into a **User Guide (Volume 1)** for researchers and a **Maintenance Guide (Volume 2)** for developers. This ensures that technical implementation details (like CI setup or release procedures) do not clutter the practical usage guides.
@@ -128,7 +128,7 @@ The package is organized into logical modules:
 *   `eqsp.point_set_props`: Properties of point sets (energy, distance).
 *   `eqsp.histograms`: Point-in-region lookup and counting for S^2.
 *   `eqsp.illustrations`: 2D Matplotlib plotting and algorithm diagrams.
-*   `eqsp.visualizations`: 3D Mayavi visualizations (optional dependency).
+*   `eqsp.visualizations`: 3D PyVista visualizations (optional dependency).
 
 
 

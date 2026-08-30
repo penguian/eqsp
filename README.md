@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 1.0b2** (2026-06-07): Copyright 2026 Paul Leopardi
+**Release 1.0b3** (2026-08-30): Copyright 2026 Paul Leopardi
 
 PyEQSP is a Python library that implements the **Recursive Zonal Equal Area (EQ) Sphere Partitioning** algorithm, originally developed as a Matlab toolbox by Paul Leopardi.
 
@@ -8,7 +8,7 @@ An **EQ partition** divides Sᵈ (the unit sphere in ℝ<sup>d+1</sup>) into a f
 
 > **Naming Distinction**: While the project and GitHub repository share the name **PyEQSP** (or **pyeqsp** on PyPI), you import the package as **eqsp**.
 
-Release **1.0b2** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
+Release **1.0b3** achieves **100% project-wide coverage** for both the core library and the entire maintenance ecosystem.
 
 The **diameter** of a region is the maximum distance between any two of its points (formally the supremum of the Euclidean distance). EQ partitions produce regions with small diameter; specifically, there exists a constant C(d) such that the greatest diameter for an N-region partition of Sᵈ is bounded by C(d)·N<sup>-1/d</sup>.
 
@@ -97,7 +97,7 @@ energy, min_dist = eq_energy_dist(dim, [N], s)
 ```
 
 ### Step 3: Produce Illustrations
-PyEQSP provides both Matplotlib-based 2D projections and interactive 3D renderings via Mayavi:
+PyEQSP provides both Matplotlib-based 2D projections and interactive 3D renderings via PyVista:
 
 #### 2D Illustrations (Matplotlib)
 
@@ -122,7 +122,7 @@ illustrate_eq_algorithm(3, 10)
 plt.show()
 ```
 
-#### 3D Visualizations (Mayavi)
+#### 3D Visualizations (PyVista)
 
 Display a 3D rendering of the EQ partition of S² into N
 regions:
@@ -131,7 +131,7 @@ regions:
 from eqsp.visualizations import show_s2_partition
 
 show_s2_partition(10)
-# Opens a native Mayavi GUI window.
+# Opens an interactive PyVista rendering window.
 ```
 
 Display a 3D stereographic projection of the EQ partition of
@@ -185,9 +185,9 @@ large `N`, the functions may be slow or memory-intensive.
 - `illustrations.illustrate_eq_algorithm(dim, N)`:
   Step-by-step visualization (Matplotlib).
 - `visualizations.show_s2_partition(N)`:
-  3D plot of S² partition (Mayavi).
+  3D plot of S² partition (PyVista).
 - `visualizations.project_s3_partition(N, proj=...)`:
-  3D projection of S³ partition (Mayavi).
+  3D projection of S³ partition (PyVista).
 
 See the docstrings for more details (e.g.
 `help(eqsp.visualizations.show_s2_partition)`).
@@ -203,7 +203,7 @@ See the docstrings for more details (e.g.
 - `eqsp.region_props`: Properties of regions
   (diameter, vertex max dist).
 - `eqsp.illustrations`: 2D visualizations (Matplotlib).
-- `eqsp.visualizations`: 3D visualizations (Mayavi).
+- `eqsp.visualizations`: 3D visualizations (PyVista).
 
 ## Reporting Bugs & Contributing
 

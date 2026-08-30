@@ -12,7 +12,7 @@ The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard u
     *   Verify core mathematical logic using static assertions.
     *   Compare results against known-good values from the original MATLAB implementation.
 2.  **Mock Tests (`tests/src/*_mock.py`)**:
-    *   Verify library interaction (e.g., Mayavi/Matplotlib) without needing a display.
+    *   Verify library interaction (e.g., PyVista/Matplotlib) without needing a display.
     *   Check if the correct arguments are passed to the plotting engines.
 3.  **Extra Tests (`tests/src/*_extra.py`)**:
     *   Introspective integration tests.
@@ -76,7 +76,7 @@ cd examples/phd-thesis
 # Run a numerical plot (Agg backend, saves PNG)
 python3 fig_4_2_min_dist_s2.py --upper-bound 5000
 
-> **Note:** The virtual environment configuration (`VENV`) used for automated and manual testing was specific to a standardized Linux build (e.g. Kubuntu 25.10). For full 3D functionality, ensure that your environment has **Mayavi** and its dependencies installed.
+> **Note:** The virtual environment configuration (`VENV`) used for automated and manual testing was specific to a standardized Linux build (e.g. Kubuntu 25.10). For full 3D functionality, ensure that your environment has **PyVista** and its dependencies installed.
 
 For instructions on running these scripts and a full mapping of scripts to thesis figures, see [Thesis Research Reproduction](../user/phd-thesis-examples.md).
 

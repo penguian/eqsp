@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 1.0b2** (2026-06-07): Copyright 2026 Paul Leopardi
+**Release 1.0b3** (2026-08-30): Copyright 2026 Paul Leopardi
 
 # Installation
 
@@ -16,8 +16,7 @@ The package depends on:
 -   `numpy`
 -   `scipy`
 -   `matplotlib`
--   `mayavi` (optional)
--   `PyQt5` (optional)
+-   `pyvista` (optional)
 
 Installing **PyEQSP** via `pip` automatically installs these dependencies.
 
@@ -36,7 +35,7 @@ python3 -m venv VENV
 source VENV/bin/activate
 ```
 
-If you need to use system-installed packages such as Mayavi, create
+If you need to use system-installed packages such as PyVista, create
 the environment with the `--system-site-packages` flag instead:
 
 ```bash
@@ -72,9 +71,9 @@ To install the package:
 pip install .
 ```
 
-To install with Mayavi support:
+To install with PyVista support:
 ```bash
-pip install ".[mayavi]"
+pip install ".[pyvista]"
 ```
 
 ### Step 3: Install in Editable Mode (For Developers)

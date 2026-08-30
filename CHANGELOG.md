@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0b3] - 2026-08-30
+**Git Tag**: `release_1_0b3` | **Distribution**: `PyPI / GitHub`
+
+### Added
+- **PyVista Visualization Backend**: Transitioned 3D visualization subsystem from MayaVi to PyVista (`pyvista`), providing cross-platform rendering stability (Wayland / Fedora Asahi Remix) and alignment with PyClical and GluCat.
+- **Off-Screen Rendering Support**: Enabled `off_screen=True` execution for headless CI environments, Sphinx doc generation, and unit testing.
+
+### Changed
+- **Metadata Synchronization**: Bumped project version to `1.0b3`.
+- **Dependency Removal**: Completely removed MayaVi (`mayavi`) and PyQt5 optional dependencies in favor of PyVista (`pyvista`).
+- **Test Suite Modernization**: Refactored `tests/src/test_visualizations_mock.py` and `tests/run_coverage.py` to mock and verify PyVista off-screen plotting, preserving 100.00% test coverage.
+
 ## [1.0b2] - 2026-06-07
 **Git Tag**: `release_1_0b2` | **Distribution**: `PyPI / GitHub`
 

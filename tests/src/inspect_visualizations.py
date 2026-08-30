@@ -28,19 +28,19 @@ def run(save=False):
     ----------
     save : bool
         If True, pass a save_file path to each visualization function so
-        Mayavi writes a PNG snapshot before showing the scene.
+        PyVista writes a PNG snapshot before showing the scene.
         If False, display each scene interactively.
     """
     try:
-        from mayavi import mlab
+        import pyvista as pv
 
         from eqsp import visualizations
     except ImportError:
-        print("Mayavi not installed; skipping 3D visualizations.")
+        print("PyVista not installed; skipping 3D visualizations.")
         return
 
-    if os.environ.get("HEADLESS") or save:
-        mlab.options.offscreen = True
+    if os.environ.get("HEADLESS") or os.environ.get("PYVISTA_OFF_SCREEN") or save:
+        pv.OFF_SCREEN = True
 
     if save:
         print("Save mode: figures will be written to the current directory.")
@@ -70,7 +70,6 @@ def run(save=False):
 
     # --- project_point_set ---
     print("Testing project_point_set(points, proj='stereo') for S^3...")
-    mlab.clf()
     points = eq_point_set(3, 120)
     save_file = "inspect_project_point_set_stereo.png" if save else None
     visualizations.project_point_set(
@@ -84,7 +83,7 @@ def run(save=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Visual inspection of eqsp.visualizations (Mayavi)."
+        description="Visual inspection of eqsp.visualizations (PyVista)."
     )
     parser.add_argument(
         "--save",

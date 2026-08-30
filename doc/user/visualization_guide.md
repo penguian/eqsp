@@ -27,7 +27,7 @@ For a clean, executable version of this plot, see [examples/user-guide/src/examp
 
 ## Interactive 3D Visualizations
 
-To truly understand the geometry of a partition or to inspect point sets on $S^2$ and $S^3$, PyEQSP leverages **Mayavi** for interactive 3D rendering.
+To truly understand the geometry of a partition or to inspect point sets on $S^2$ and $S^3$, PyEQSP leverages **PyVista** for interactive 3D rendering.
 
 ### Partitioned Spheres
 You can rotate, zoom, and inspect the individual regions of a partition in 3D space.
@@ -40,13 +40,13 @@ visualizations.show_s2_partition(100, show_points=True)
 ```
 
 :::{tip}
-The interactive 3D script, including environment checks for Mayavi, is available at [examples/user-guide/src/example_visualize_3d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_3d.py).
+The interactive 3D script, including environment checks for PyVista, is available at [examples/user-guide/src/example_visualize_3d.py](https://github.com/penguian/pyeqsp/blob/main/examples/user-guide/src/example_visualize_3d.py).
 :::
 
 ![S2 Partition 3d](../_static/images/s2_partition_3d.png)
 
 :::{note} Beta Feedback Wanted
-Visualization (especially 3D via Mayavi) is a primary focus of our Beta testing. If you encounter rendering issues, coordinate errors, or installation hurdles on your platform (macOS, Windows, or Linux), please let us know in the [Feedback Hub](https://github.com/penguian/pyeqsp/issues/26).
+Visualization (especially 3D via PyVista) is a primary focus of our Beta testing. If you encounter rendering issues, coordinate errors, or installation hurdles on your platform (macOS, Windows, or Linux), please let us know in the [Feedback Hub](https://github.com/penguian/pyeqsp/issues/26).
 :::
 
 ## Advanced Projections
@@ -61,4 +61,4 @@ For specific research or mapping needs, the library also supports advanced proje
 
 PyEQSP is designed to work seamlessly in Jupyter Notebooks.
 - **Inline Matplotlib**: Use `%matplotlib inline` for static plots.
-- **Interactive Widgets**: Use `%matplotlib widget` for interactive research. Mayavi can be configured via `mlab.init_notebook()`.
+- **Interactive Widgets**: Use `%matplotlib widget` for interactive research. PyVista plots can be embedded interactively or statically via `trame` or PyVista Jupyter backends.

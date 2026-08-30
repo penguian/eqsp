@@ -5,17 +5,16 @@ Figure 4.1: EQ code EQP(2, 33), showing the partition EQ(2, 33).
 33 EQ code points (region centers) shown in red.
 As in Figure 4.1 of the PhD thesis.
 
-Requires Mayavi. Run with venv_sys:
-    ../venv_sys/bin/python fig_4_1_eqp_s2_33.py
+Requires PyVista.
 """
 
-import os
+# pylint: disable=wrong-import-position,import-error
+
 import argparse
+import os
 
 import matplotlib.pyplot as plt
-from mayavi import mlab
-
-# pylint: disable=wrong-import-position,import-error
+import pyvista as pv
 
 from eqsp.visualizations import show_s2_partition
 
@@ -28,9 +27,9 @@ def main():
     )
     args = parser.parse_args()
     N = 33
-    mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
+    pv.OFF_SCREEN = True
     # show_points=True (default) shows the EQ code points in red
-    show_s2_partition(
+    pl = show_s2_partition(
         N,
         show_points=True,
         title="none",
@@ -38,7 +37,7 @@ def main():
     )
     # Save the raw 3D scene
     raw_file = "fig_4_1_eqp_s2_33_raw.png"
-    mlab.savefig(raw_file)
+    pl.screenshot(raw_file)
 
     # Use Matplotlib to add the LaTeX title
     img = plt.imread(raw_file)
