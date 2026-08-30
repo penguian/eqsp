@@ -21,7 +21,8 @@ try:
     import pyvista as pv
 except ImportError as exc:  # pragma: no cover
     raise ImportError(
-        "PyVista is not installed. Please install it with: pip install 'eqsp[pyvista]'"
+        "PyVista is not installed. "
+        "Please install it with: pip install 'pyeqsp[pyvista]'"
     ) from exc
 
 PROJ_NAME = {"eqarea": "equal area", "stereo": "stereographic"}
@@ -245,7 +246,7 @@ def project_point_set(
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default 'stereo'.
     scale_factor : float, optional
-        Scale factor for points. Default 0.1.
+        Scale factor for points. Default None (dynamically calculated as 0.4 / sqrt(N)).
     color : tuple, optional
         Colour of points in RGB format (0 to 1). Default (1, 0, 0).
     show : bool, optional
@@ -364,7 +365,18 @@ def project_s3_partition(
     else:
         raise ValueError("proj must be 'stereo' or 'eqarea'")
 
-    show_title = title != "none"
+    title_text = None
+    if title == "none":
+        show_title = False
+    else:
+        show_title = True
+        if title == "long":
+            title_text = f"EQ(3,{N}) {PROJ_NAME.get(proj, proj)} projection"
+        elif title == "short":
+            title_text = f"EQ(3,{N})"
+        else:
+            title_text = title
+
     pl = _get_plotter(plotter)
     dim = 3
 
@@ -433,7 +445,6 @@ def project_s3_partition(
         )
 
     if show_title:
-        title_text = f"EQ(3,{N}) {PROJ_NAME.get(proj, proj)} projection"
         win_x = int(0.2 * pl.window_size[0])
         win_y = int(0.9 * pl.window_size[1])
         pl.add_text(title_text, position=(win_x, win_y), font_size=12, color="black")

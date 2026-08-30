@@ -16,11 +16,15 @@ import numpy as np
 
 def test_doctests():
     """Test function test_doctests."""
-    with patch.dict(sys.modules, {"pyvista": MagicMock()}):
+    mock_pv = MagicMock()
+    mock_plotter = MagicMock()
+    mock_plotter.window_size = (1024, 768)
+    mock_pv.Plotter.return_value = mock_plotter
+    with patch.dict(sys.modules, {"pyvista": mock_pv}):
         try:
             from eqsp import visualizations
 
-            with patch("eqsp.visualizations.pv"):
+            with patch("eqsp.visualizations.pv", mock_pv):
                 results = doctest.testmod(visualizations)
                 assert results.failed == 0
         finally:
@@ -33,6 +37,9 @@ class TestVisualizationsSetup(unittest.TestCase):
     def setUp(self):
         self.mock_pv = MagicMock()
         self.mock_pv.OFF_SCREEN = True
+        mock_plotter = MagicMock()
+        mock_plotter.window_size = (1024, 768)
+        self.mock_pv.Plotter.return_value = mock_plotter
         self.modules_patcher = patch.dict(
             sys.modules,
             {"pyvista": self.mock_pv},
@@ -231,6 +238,19 @@ class TestProjectS3Partition(TestVisualizationsSetup):
         vis = self._import_vis()
         pl = vis.project_s3_partition(4, show=False, save_file="s3.png")
         pl.screenshot.assert_called_once_with("s3.png")
+
+    def test_title_options(self):
+        """Test function test_title_options."""
+        vis = self._import_vis()
+        pl_short = vis.project_s3_partition(4, title="short", show=False)
+        self.assertTrue(pl_short.add_text.called)
+
+        pl_custom = vis.project_s3_partition(4, title="Custom Title", show=False)
+        self.assertTrue(pl_custom.add_text.called)
+
+        pl_short.add_text.reset_mock()
+        pl_none = vis.project_s3_partition(4, title="none", show=False)
+        self.assertFalse(pl_none.add_text.called)
 
 
 if __name__ == "__main__":
