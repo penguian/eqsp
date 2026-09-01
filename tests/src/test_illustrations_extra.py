@@ -147,3 +147,22 @@ def test_indexing_steps_6_7():
     val = int(m.group(1))
     assert val == expected_m1, f"m_1 value {val} mismatch expected {expected_m1}"
     plt.close()
+
+
+def test_project_s2_partition_titles():
+    """Test title variants for project_s2_partition."""
+    plt.switch_backend("Agg")
+    ax_long = ill.project_s2_partition(10, proj="stereo", title="long", show=False)
+    assert "Stereographic projection of recursive zonal" in ax_long.get_title()
+
+    ax_short = ill.project_s2_partition(10, proj="stereo", title="short", show=False)
+    assert ax_short.get_title() == "EQ(2, 10)"
+
+    ax_none = ill.project_s2_partition(10, proj="stereo", title="none", show=False)
+    assert ax_none.get_title() == ""
+
+    ax_custom = ill.project_s2_partition(
+        10, proj="stereo", title="Custom Title", show=False
+    )
+    assert ax_custom.get_title() == "Custom Title"
+    plt.close()

@@ -136,11 +136,10 @@ def show_s2_partition(
     show_points=True,
     show_sphere=True,
     title="long",
-    title_pos=(0.2, 0.85),
+    title_pos=(0.25, 0.90),
     show=True,
     save_file=None,
     plotter=None,
-    **_kwargs,
 ):
     """
     3D illustration of an EQ partition of S^2 into N regions.
@@ -156,14 +155,14 @@ def show_s2_partition(
     show_sphere : bool, optional
         Show unit sphere. Default True.
     title : str, optional
-        Title text. Special values: 'long', 'short', 'none'.
-        'long' uses a default multi-line description.
+        Title text. Special values: 'long', 'short', 'none'. Default 'long'.
+        'long' uses a multi-line description matching MATLAB.
         'short' uses 'EQ(2, N)'.
         'none' shows no title.
         Any other string is used as the title text.
     title_pos : tuple, optional
         (x, y) position of the title in figure coordinates (0 to 1).
-        Default is (0.2, 0.85).
+        Default is (0.25, 0.90).
     show : bool, optional
         Display rendering window. Default True.
     save_file : str, optional
@@ -189,8 +188,12 @@ def show_s2_partition(
     else:
         show_title = True
         if title == "long":
+            point_str = (
+                ", showing the center point of each region." if show_points else "."
+            )
             title_text = (
-                f"Recursive zonal equal area partition of S^2\ninto {N} regions."
+                f"Recursive zonal equal area partition of S^2\n"
+                f"into {N} regions{point_str}"
             )
         elif title == "short":
             title_text = f"EQ(2, {N})"
@@ -312,6 +315,7 @@ def project_s3_partition(
     *,
     extra_offset=False,
     title="long",
+    title_pos=(0.25, 0.90),
     proj="stereo",
     show_points=True,
     show_surfaces=True,
@@ -329,8 +333,15 @@ def project_s3_partition(
         Number of regions.
     extra_offset : bool, optional
         Use extra offsets. Default False.
-    title : {'long', 'short', 'none'}, optional
-        Title format. Default 'long'.
+    title : str, optional
+        Title text. Special values: 'long', 'short', 'none'. Default 'long'.
+        'long' uses a multi-line description matching MATLAB.
+        'short' uses 'EQ(3, N)'.
+        'none' shows no title.
+        Any other string is used as the title text.
+    title_pos : tuple, optional
+        (x, y) position of the title in figure coordinates (0 to 1).
+        Default is (0.25, 0.90).
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default 'stereo'.
     show_points : bool, optional
@@ -371,9 +382,16 @@ def project_s3_partition(
     else:
         show_title = True
         if title == "long":
-            title_text = f"EQ(3,{N}) {PROJ_NAME.get(proj, proj)} projection"
+            proj_name = "Stereographic" if proj == "stereo" else "Equal volume"
+            point_str = (
+                ", showing the center point of each region." if show_points else "."
+            )
+            title_text = (
+                f"{proj_name} projection of recursive zonal "
+                f"equal area partition of S^3\ninto {N} regions{point_str}"
+            )
         elif title == "short":
-            title_text = f"EQ(3,{N})"
+            title_text = f"EQ(3, {N})"
         else:
             title_text = title
 
@@ -445,8 +463,8 @@ def project_s3_partition(
         )
 
     if show_title:
-        win_x = int(0.2 * pl.window_size[0])
-        win_y = int(0.9 * pl.window_size[1])
+        win_x = int(title_pos[0] * pl.window_size[0])
+        win_y = int(title_pos[1] * pl.window_size[1])
         pl.add_text(title_text, position=(win_x, win_y), font_size=12, color="black")
 
     if save_file:

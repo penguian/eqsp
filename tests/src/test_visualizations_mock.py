@@ -240,17 +240,26 @@ class TestProjectS3Partition(TestVisualizationsSetup):
         pl.screenshot.assert_called_once_with("s3.png")
 
     def test_title_options(self):
-        """Test function test_title_options."""
+        """Test title option variants for project_s3_partition and show_s2_partition."""
         vis = self._import_vis()
         pl_short = vis.project_s3_partition(4, title="short", show=False)
         self.assertTrue(pl_short.add_text.called)
+        self.assertIn("EQ(3, 4)", pl_short.add_text.call_args[0][0])
 
         pl_custom = vis.project_s3_partition(4, title="Custom Title", show=False)
         self.assertTrue(pl_custom.add_text.called)
+        self.assertEqual("Custom Title", pl_custom.add_text.call_args[0][0])
 
         pl_short.add_text.reset_mock()
         pl_none = vis.project_s3_partition(4, title="none", show=False)
         self.assertFalse(pl_none.add_text.called)
+
+    def test_show_s2_partition_rejects_invalid_kwargs(self):
+        """Test that show_s2_partition rejects unexpected keyword arguments."""
+        # pylint: disable=unexpected-keyword-arg
+        vis = self._import_vis()
+        with self.assertRaises(TypeError):
+            vis.show_s2_partition(4, invalid_kwarg=True, show=False)
 
 
 if __name__ == "__main__":

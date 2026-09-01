@@ -128,8 +128,12 @@ def project_s2_partition(
         Use extra offsets. Default False.
     fontsize : int, optional
         Font size for title. Default 16.
-    title : {'long', 'short', 'none'}, optional
-        Title mode. Default 'long'.
+    title : str, optional
+        Title text. Special values: 'long', 'short', 'none'. Default 'long'.
+        'long' uses a multi-line description matching MATLAB.
+        'short' uses 'EQ(2, N)'.
+        'none' shows no title.
+        Any other string is used as the title text.
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default 'stereo'.
     show_points : bool, optional
@@ -155,8 +159,6 @@ def project_s2_partition(
     >>> ax.get_title()  # doctest: +SKIP
     ''
     """
-    show_title = title != "none"
-
     if proj == "stereo":
         projector = x2stereo
     elif proj == "eqarea":
@@ -221,8 +223,20 @@ def project_s2_partition(
         points = eq_point_set(dim, N, extra_offset)
         project_point_set(points, ax=ax, proj=proj, color=None, **_kwargs)
 
-    if show_title:
-        title_text = f"EQ(2,{N}) {proj} projection"
+    if title != "none":
+        if title == "long":
+            proj_name = "Stereographic" if proj == "stereo" else "Equal area"
+            point_str = (
+                ", showing the center point of each region." if show_points else "."
+            )
+            title_text = (
+                f"{proj_name} projection of recursive zonal "
+                f"equal area partition of S^2\ninto {N} regions{point_str}"
+            )
+        elif title == "short":
+            title_text = f"EQ(2, {N})"
+        else:
+            title_text = title
         ax.set_title(title_text, fontsize=fontsize, color="k")
 
     if show is True or (show is None and ax is None):

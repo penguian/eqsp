@@ -15,6 +15,9 @@ try:
 except Exception:
     mock_pyvista = MagicMock()
     mock_pyvista.OFF_SCREEN = True
+    mock_plotter = MagicMock()
+    mock_plotter.window_size = (1024, 768)
+    mock_pyvista.Plotter.return_value = mock_plotter
     sys.modules["pyvista"] = mock_pyvista
 
 from importlib.metadata import PackageNotFoundError
