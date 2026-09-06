@@ -69,9 +69,21 @@ PyEQSP aims for identical numerical results to the original thesis. But users sh
 
 To run reproduction scripts on a server or in CI without a display:
 
+**Matplotlib scripts** (numerical plots, e.g., `fig_3_4_max_diam_s2.py`) save PNGs
+directly via the `Agg` backend and do not require a display:
+
 ```bash
-export PYVISTA_OFF_SCREEN=true
 python3 examples/phd-thesis/src/fig_3_4_max_diam_s2.py
 ```
 
-Numerical scripts (Matplotlib `Agg` backend) will save PNGs directly. 3D scripts (PyVista) will render off-screen if `PYVISTA_OFF_SCREEN=true` is set.
+**3D PyVista scripts** (e.g., `fig_3_1_partition_s2_33.py`) set `pv.OFF_SCREEN = True`
+internally and save screenshots directly; no display or environment variable is required:
+
+```bash
+python3 examples/phd-thesis/src/fig_3_1_partition_s2_33.py
+```
+
+> [!NOTE]
+> The `PYVISTA_OFF_SCREEN` shell environment variable is **not** read by the `eqsp`
+> visualization library. Off-screen mode in 3D scripts is controlled by the Python
+> attribute `pv.OFF_SCREEN = True`, which the thesis scripts set directly.

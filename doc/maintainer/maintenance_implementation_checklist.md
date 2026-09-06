@@ -3,9 +3,9 @@
 This checklist provides the canonical project-wide quality gates to be consulted when modifying maintenance code, infrastructure scripts, or the core maintenance documentation.
 
 ## 1. Local Verification (Defense Layer 1)
-- [ ] **Pre-commit Synchronization**: Run `pre-commit install` and `pre-commit run --all-files`.
+- [ ] **Pre-commit Synchronization**: Activate the virtual environment (`source VENV/bin/activate`, where `VENV` is your virtual environment directory; see the [Installation Guide](../user/installation.md)), then run `pre-commit install` and `pre-commit run --all-files`. The `documentation-quality` hook imports `eqsp` at runtime and requires project dependencies — running outside the venv will fail with `ModuleNotFoundError: No module named 'numpy'`.
 - [ ] **Typo Monitoring**: Run `validation/quality_check.py` to ensure roadmap and documentation prose do not trigger literal typo matches (e.g., use `2`-`rd`, `3`-`th`).
-- [ ] **Environment Parity**: Confirm that tools work in both the standard `.venv` and the system-integrated `.venv_sys`.
+- [ ] **Environment Parity**: Confirm that tools work in both `VENV` (the standard isolated environment) and `VENV_SYS` (`VENV_SYS` denotes a virtual environment created with `--system-site-packages`; see the [Installation Guide](../user/installation.md)).
 
 ## 2. Infrastructure & Orchestration (Defense Layer 2)
 - [ ] **Verification Script**: If `validation/verify_all.py` was modified, ensure it correctly manages the `PATH` environment variable for subprocesses (`os.environ["PATH"]`).

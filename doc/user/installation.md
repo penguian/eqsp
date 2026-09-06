@@ -21,6 +21,9 @@ pip install --pre "pyeqsp[dev]"
 ## Creating a Virtual Environment
 
 Using a virtual environment prevents version conflicts between your scientific projects.
+In the commands below, `.venvs/.venv` is the project's conventional path
+(see `INSTALL.md` in the repository root for background on virtual environments;
+you may use any path that suits your setup).
 
 ```bash
 # Create a hidden environment directory
@@ -32,6 +35,11 @@ source .venvs/.venv/bin/activate
 # Install PyEQSP in the environment
 pip install --pre pyeqsp
 ```
+
+> [!NOTE]
+> `.venvs/.venv` is the project's conventional virtual environment path.
+> Replace it with your preferred location if you are using a different layout.
+
 
 (venv-sys-setup)=
 ## 3D Plotting & Visualizations Setup
@@ -46,11 +54,20 @@ pip install --pre "pyeqsp[pyvista]"
 
 ### 2. Display Calibration & Off-Screen Rendering
 
-PyVista supports both interactive GUI windows and headless off-screen rendering for CI environments or Jupyter notebooks:
+PyVista supports both interactive GUI windows and headless off-screen rendering for CI
+environments or Jupyter notebooks.
 
-```bash
-export PYVISTA_OFF_SCREEN=true
+Off-screen rendering is controlled in Python by setting:
+
+```python
+import pyvista as pv
+pv.OFF_SCREEN = True
 ```
+
+> [!NOTE]
+> The `eqsp.visualizations` module manages `pv.OFF_SCREEN` internally. The
+> `PYVISTA_OFF_SCREEN` shell environment variable is **not** read by Python library
+> calls to `pyvista.Plotter` and does not make `eqsp` functions headless.
 
 ## Jupyter Notebook Integration
 
@@ -63,5 +80,5 @@ pip install trame ipywidgets
 ## Troubleshooting
 
 If PyVista fails to open a window:
-1. Verify `echo $DISPLAY` is set (or set `export PYVISTA_OFF_SCREEN=true` for headless environments).
+1. Verify `echo $DISPLAY` is set, or enable off-screen mode via `import pyvista as pv; pv.OFF_SCREEN = True` in your script.
 2. Try running `python3 tests/src/inspect_visualizations.py` to verify PyVista rendering.
