@@ -3,10 +3,10 @@
 ## 1.0b3
 **2026-08-30**
 
-Release **1.0b3** completes the migration of the PyEQSP 3D visualization subsystem from MayaVi to PyVista (`pyvista`), resolving cross-platform GUI and Wayland/Fedora Asahi Remix compatibility issues and aligning visualization infrastructure with PyClical and GluCat.
+Release **1.0b3** completes the migration of the PyEQSP 3D visualization subsystem from Mayavi to PyVista (`pyvista`), resolving cross-platform GUI and Wayland/Fedora Asahi Remix compatibility issues and aligning visualization infrastructure with PyClical and GluCat.
 
 ### Key Changes
-- **PyVista 3D Visualization Backend**: Replaced MayaVi with PyVista in `eqsp/visualizations.py`, offering clean cross-platform rendering for $S^2$ and $S^3$ partitions.
+- **PyVista 3D Visualization Backend**: Replaced Mayavi with PyVista in `eqsp/visualizations.py`, offering clean cross-platform rendering for $S^2$ and $S^3$ partitions.
 - **Off-Screen Rendering Support**: Configured headless off-screen plotting via `pv.OFF_SCREEN = True` to support automated unit testing, Sphinx doc generation, and CI environments.
 - **Zero Backwards Compatibility**: Completely removed legacy `mayavi` and `PyQt5` optional dependencies across installation configuration (`pyproject.toml`, `INSTALL.md`, `README.md`) and scripts.
 - **Metadata Sync**: Bumped project version to `1.0b3` and synchronized version counters across all documentation and project headers.

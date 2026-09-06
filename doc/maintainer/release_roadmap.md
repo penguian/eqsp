@@ -96,9 +96,9 @@ This roadmap outlines the development phases from the initial beta through the 1
 ### 1.0b3 Open Beta: PyVista Visualization Backend
 **Target: 2026-08-30** | **Git Tag: release_1_0b3** | **Distribution: PyPI / GitHub**
 
-- [x] **PyVista Backend Migration**: Replaced MayaVi with PyVista (`pyvista`) for 3D sphere partition rendering and stereographic projections.
+- [x] **PyVista Backend Migration**: Replaced Mayavi with PyVista (`pyvista`) for 3D sphere partition rendering and stereographic projections.
 - [x] **Off-Screen Rendering**: Configured PyVista off-screen rendering for headless CI environments, doctests, and Sphinx builds.
-- [x] **Zero Backwards Compatibility**: Completely removed legacy MayaVi and PyQt5 dependencies across configuration and build scripts.
+- [x] **Zero Backwards Compatibility**: Completely removed legacy Mayavi and PyQt5 dependencies across configuration and build scripts.
 - [x] **Metadata Sync**: Bumped project version to `1.0b3` and synchronized version counters across all documentation and project headers.
 
 ### 1.0 General Release [PLANNED]
