@@ -25,8 +25,6 @@ except ImportError as exc:  # pragma: no cover
         "Please install it with: pip install 'pyeqsp[pyvista]'"
     ) from exc
 
-PROJ_NAME = {"eqarea": "equal area", "stereo": "stereographic"}
-
 
 def _get_plotter(plotter=None):
     """
