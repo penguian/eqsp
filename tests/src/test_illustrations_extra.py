@@ -165,4 +165,4 @@ def test_project_s2_partition_titles():
         10, proj="stereo", title="Custom Title", show=False
     )
     assert ax_custom.get_title() == "Custom Title"
-    plt.close()
+    plt.close("all")

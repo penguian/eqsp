@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **PyVista Visualization Backend**: Transitioned 3D visualization subsystem from MayaVi to PyVista (`pyvista`), providing cross-platform rendering stability (Wayland / Fedora Asahi Remix) and alignment with PyClical and GluCat.
-- **Off-Screen Rendering Support**: Enabled `off_screen=True` execution for headless CI environments, Sphinx doc generation, and unit testing.
+- **Off-Screen Rendering Support**: Enabled headless execution via `pv.OFF_SCREEN = True` for CI environments, Sphinx doc generation, and unit testing.
 
 ### Changed
 - **Metadata Synchronization**: Bumped project version to `1.0b3`.

@@ -65,9 +65,10 @@ pv.OFF_SCREEN = True
 ```
 
 > [!NOTE]
-> The `eqsp.visualizations` module manages `pv.OFF_SCREEN` internally. The
-> `PYVISTA_OFF_SCREEN` shell environment variable is **not** read by Python library
-> calls to `pyvista.Plotter` and does not make `eqsp` functions headless.
+> `eqsp.visualizations` does not set `pv.OFF_SCREEN` automatically; set it in your
+> script (e.g. `pv.OFF_SCREEN = True`) before calling 3D functions. The helper script
+> `tests/src/inspect_visualizations.py` also honors `PYVISTA_OFF_SCREEN` by setting
+> `pv.OFF_SCREEN` before running.
 
 ## Jupyter Notebook Integration
 
