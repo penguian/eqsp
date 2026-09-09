@@ -48,9 +48,21 @@ While 2D illustrations work with standard Matplotlib, **3D interactive visualiza
 
 ### 1. Install PyVista
 
+To install with PyVista support in a standard `VENV` environment:
+
 ```bash
 pip install --pre "pyeqsp[pyvista]"
 ```
+
+#### Using System VTK (`VENV_SYS` Path)
+
+If you are using a `VENV_SYS` environment (required on ARM64 / Fedora Asahi Remix; optional on x86-64), install the system `python3-vtk` package first (see `INSTALL.md` in the repository root), then:
+
+```bash
+pip install --no-deps pyvista
+```
+
+This uses the system VTK rather than downloading the PyPI wheel.
 
 ### 2. Display Calibration & Off-Screen Rendering
 
@@ -83,3 +95,5 @@ pip install trame ipywidgets
 If PyVista fails to open a window:
 1. Verify `echo $DISPLAY` is set, or enable off-screen mode via `import pyvista as pv; pv.OFF_SCREEN = True` in your script.
 2. Try running `python3 tests/src/inspect_visualizations.py` to verify PyVista rendering.
+3. **ARM64 segfault on PyVista import**: The PyPI `vtk` wheel is built for 4 KB page alignment and is incompatible with ARM64 / Fedora Asahi Remix (which requires 16 KB page alignment). Use the `VENV_SYS` install path described in `INSTALL.md`.
+4. **Interactive window fails on Wayland**: Try setting `QT_QPA_PLATFORM=wayland` or `QT_QPA_PLATFORM=xcb` (XWayland fallback). Not needed for automated testing or headless scripts (`pv.OFF_SCREEN = True`).
