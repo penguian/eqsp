@@ -38,6 +38,7 @@ def main():
     # Save the raw 3D scene
     raw_file = "fig_4_1_eqp_s2_33_raw.png"
     pl.screenshot(raw_file)
+    pl.close()
 
     # Use Matplotlib to add the LaTeX title
     img = plt.imread(raw_file)

@@ -168,13 +168,20 @@ def show_s2_partition(
     plotter : pv.Plotter, optional
         Existing PyVista plotter instance.
 
+    Returns
+    -------
+    pl : pv.Plotter
+        PyVista Plotter instance. Call ``pl.close()`` when finished to cleanly
+        release VTK resources.
+
     Examples
     --------
     >>> from eqsp.visualizations import show_s2_partition
     >>> import pyvista as pv
     >>> pv.OFF_SCREEN = True
     >>> try:
-    ...     _ = show_s2_partition(4, title='short', show_points=False, show=False)
+    ...     pl = show_s2_partition(4, title='short', show_points=False, show=False)
+    ...     _ = pl.close()
     ...     print("Success")
     ... except ImportError:
     ...     print("PyVista not installed")
@@ -257,6 +264,12 @@ def project_point_set(
     plotter : pv.Plotter, optional
         Existing PyVista plotter instance.
 
+    Returns
+    -------
+    pl : pv.Plotter
+        PyVista Plotter instance. Call ``pl.close()`` when finished to cleanly
+        release VTK resources.
+
     Examples
     --------
     >>> from eqsp.visualizations import project_point_set
@@ -265,7 +278,8 @@ def project_point_set(
     >>> pv.OFF_SCREEN = True
     >>> points = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).T
     >>> try:
-    ...     _ = project_point_set(points, proj='eqarea', show=False)
+    ...     pl = project_point_set(points, proj='eqarea', show=False)
+    ...     _ = pl.close()
     ...     print("Success")
     ... except ImportError:
     ...     print("PyVista not installed")
@@ -353,15 +367,22 @@ def project_s3_partition(
     plotter : pv.Plotter, optional
         Existing PyVista plotter instance.
 
+    Returns
+    -------
+    pl : pv.Plotter
+        PyVista Plotter instance. Call ``pl.close()`` when finished to cleanly
+        release VTK resources.
+
     Examples
     --------
     >>> from eqsp.visualizations import project_s3_partition
     >>> import pyvista as pv
     >>> pv.OFF_SCREEN = True
     >>> try:
-    ...     _ = project_s3_partition(
+    ...     pl = project_s3_partition(
     ...         4, proj='stereo', show_points=True, show_surfaces=False, show=False
     ...     )
+    ...     _ = pl.close()
     ...     print("Success")
     ... except ImportError:
     ...     print("PyVista not installed")

@@ -48,16 +48,17 @@ def run(save=False):
     # --- show_s2_partition ---
     print("Testing show_s2_partition(20)...")
     save_file = "inspect_show_s2_partition_20.png" if save else None
-    visualizations.show_s2_partition(
+    pl = visualizations.show_s2_partition(
         20, show_points=True, show_sphere=True, show=not save, save_file=save_file
     )
     if save:
         print(f"  Saved to {save_file}")
+    pl.close()
 
     # --- project_s3_partition ---
     print("Testing project_s3_partition(120, proj='stereo')...")
     save_file = "inspect_project_s3_partition_120.png" if save else None
-    visualizations.project_s3_partition(
+    pl = visualizations.project_s3_partition(
         120,
         proj="stereo",
         show_points=True,
@@ -67,16 +68,18 @@ def run(save=False):
     )
     if save:
         print(f"  Saved to {save_file}")
+    pl.close()
 
     # --- project_point_set ---
     print("Testing project_point_set(points, proj='stereo') for S^3...")
     points = eq_point_set(3, 120)
     save_file = "inspect_project_point_set_stereo.png" if save else None
-    visualizations.project_point_set(
+    pl = visualizations.project_point_set(
         points, proj="stereo", show=not save, save_file=save_file
     )
     if save:
         print(f"  Saved to {save_file}")
+    pl.close()
 
     print("3D Visualizations inspection complete.")
 
