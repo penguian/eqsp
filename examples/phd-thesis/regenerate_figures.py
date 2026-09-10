@@ -4,7 +4,7 @@ Regenerate all PhD thesis figures for the PyEQSP package.
 
 This script scans the 'src' directory for fig_*.py scripts and executes them
 to produce PNG files in the 'results' directory. It automatically handles
-the environment requirements for 3D Mayavi plots.
+the environment requirements for 3D PyVista plots.
 
 Usage:
     python3 examples/phd-thesis/regenerate_figures.py [--two-d-only] [--force]
@@ -38,10 +38,10 @@ def format_duration(seconds):
 
 
 def is_3d_script(script_path):
-    """Check if a script imports Mayavi."""
+    """Check if a script imports PyVista or visualizations."""
     try:
         content = script_path.read_text(encoding="utf-8")
-        return "mayavi" in content or "mlab" in content
+        return "pyvista" in content or "visualizations" in content
     except (OSError, UnicodeDecodeError):
         return False
 
@@ -71,10 +71,10 @@ def run_one_script(script, config, args):
             run_env.update(QT_ENV)
             mode_label = "[3D] (venv_sys)"
         else:
-            # Fallback to current interpreter if it has mayavi
+            # Fallback to current interpreter if it has pyvista
             try:
                 subprocess.run(
-                    [sys.executable, "-c", "import mayavi"],
+                    [sys.executable, "-c", "import pyvista"],
                     capture_output=True,
                     check=True,
                 )
@@ -83,7 +83,7 @@ def run_one_script(script, config, args):
             except subprocess.CalledProcessError:
                 msg = (
                     f"{script.name:40s} : FAILED "
-                    f"(venv_sys not found and mayavi unavailable in sys)"
+                    f"(venv_sys not found and pyvista unavailable in sys)"
                 )
                 print(msg)
                 return "fail"
@@ -150,7 +150,7 @@ def main():
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument(
-        "--two-d-only", action="store_true", help="Skip 3D Mayavi plots"
+        "--two-d-only", action="store_true", help="Skip 3D PyVista plots"
     )
     parser.add_argument(
         "--force", action="store_true", help="Overwrite existing PNG files"

@@ -6,18 +6,19 @@ sys.path.insert(0, os.path.abspath(".."))
 from unittest.mock import MagicMock
 
 # Mock optional dependencies for headless doctest environments.
-# We catch all exceptions because some libraries (like mayavi/vtk) may be
+# We catch all exceptions because some libraries (like pyvista/vtk) may be
 # installed but fail to initialize in headless CI runners.
 try:
-    import mayavi  # noqa: F401
-    import PyQt5  # noqa: F401
+    import pyvista  # noqa: F401
+
+    pyvista.OFF_SCREEN = True
 except Exception:
-    mock_mayavi = MagicMock()
-    sys.modules["mayavi"] = mock_mayavi
-    sys.modules["mayavi.mlab"] = mock_mayavi
-    sys.modules["PyQt5"] = MagicMock()
-    sys.modules["PyQt5.QtWidgets"] = MagicMock()
-    sys.modules["PyQt5.QtCore"] = MagicMock()
+    mock_pyvista = MagicMock()
+    mock_pyvista.OFF_SCREEN = True
+    mock_plotter = MagicMock()
+    mock_plotter.window_size = (1024, 768)
+    mock_pyvista.Plotter.return_value = mock_plotter
+    sys.modules["pyvista"] = mock_pyvista
 
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _pkg_version
@@ -109,7 +110,7 @@ myst_enable_extensions = [
 ]
 myst_heading_anchors = 3
 
-autodoc_mock_imports = ["mayavi", "mayavi.mlab", "PyQt5"]
+autodoc_mock_imports = ["pyvista"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

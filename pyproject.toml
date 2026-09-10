@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyeqsp"
-version = "1.0b2"
+version = "1.0b3"
 description = "Python Equal Area Sphere Partitioning Library"
 readme = "README.md"
 authors = [
@@ -27,9 +27,8 @@ dependencies = [
 requires-python = ">=3.11"
 
 [project.optional-dependencies]
-mayavi = [
-    "mayavi",
-    "PyQt5",
+pyvista = [
+    "pyvista",
 ]
 docs = [
     "sphinx>=5.0",

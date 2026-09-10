@@ -6,23 +6,21 @@ scipy.spatial.SphericalVoronoi, then draws each Voronoi edge as a great circle
 arc via spherical linear interpolation (SLERP). This correctly represents Voronoi
 cell edges, which are great circle arcs, not straight lines.
 
-Requires Mayavi. Run with venv_sys:
-    ../venv_sys/bin/python fig_4_10_eqp_voronoi_s2_33.py
+Requires PyVista.
 """
-
-from pathlib import Path
-import os
-import argparse
-
-import matplotlib.pyplot as plt
-from mayavi import mlab
-from scipy.spatial import SphericalVoronoi
-import numpy as np
 
 # pylint: disable=wrong-import-position,import-error
 
-from eqsp.visualizations import show_s2_partition, show_r3_point_set
+import argparse
+import os
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pyvista as pv
+from scipy.spatial import SphericalVoronoi
+
 import eqsp
+from eqsp.visualizations import show_r3_point_set, show_s2_partition
 
 
 def main():
@@ -36,6 +34,7 @@ def main():
     dim = 2
     SAMPLES = 80  # points per great circle arc
     TUBE_R = np.sqrt(1.0 / N) / 12.0  # matches tube radius used by show_s2_region
+    pv.OFF_SCREEN = True
     # ---------------------------------------------------------------
     # Step 1: Get EQP(2, 33) code points on the unit sphere.
     # ---------------------------------------------------------------
@@ -73,10 +72,9 @@ def main():
         return arc
 
     # ---------------------------------------------------------------
-    # Step 5: Set up Mayavi scene with EQ partition regions (blue) and sphere.
+    # Step 5: Set up PyVista scene with EQ partition regions (blue) and sphere.
     # ---------------------------------------------------------------
-    mlab.figure(bgcolor=(1, 1, 1), size=(900, 900))
-    show_s2_partition(
+    pl = show_s2_partition(
         N,
         show_sphere=True,
         show_points=False,
@@ -92,25 +90,28 @@ def main():
         arc = great_circle_arc(pa, pb)
         if arc is None:
             continue
-        mlab.plot3d(
-            arc[:, 0],
-            arc[:, 1],
-            arc[:, 2],
-            color=(1.0, 0.6, 0.0),
-            tube_radius=TUBE_R,
-            opacity=1.0,
+        poly = pv.PolyData(arc)
+        lines = np.column_stack(
+            [
+                np.full(len(arc) - 1, 2, dtype=int),
+                np.arange(len(arc) - 1),
+                np.arange(1, len(arc)),
+            ]
         )
+        poly.lines = lines
+        tube = poly.tube(radius=TUBE_R)
+        pl.add_mesh(tube, color=(1.0, 0.6, 0.0), opacity=1.0, ambient=0.5)
     # ---------------------------------------------------------------
     # Step 7: Draw the EQ code points (red spheres).
     # ---------------------------------------------------------------
-    show_r3_point_set(points_3d, show_sphere=False, scale_factor=0.06)
+    show_r3_point_set(points_3d, show_sphere=False, plotter=pl)
 
-    results_dir = Path(__file__).resolve().parent.parent / "results"
-    raw_file = results_dir / "fig_4_10_eqp_voronoi_s2_33_raw.png"
-    mlab.savefig(str(raw_file))
+    raw_file = "fig_4_10_eqp_voronoi_s2_33_raw.png"
+    pl.screenshot(raw_file)
+    pl.close()
 
     # Use Matplotlib to add the LaTeX title
-    img = plt.imread(str(raw_file))
+    img = plt.imread(raw_file)
     fig_overlay, ax = plt.subplots(figsize=(9, 9), dpi=100)
     ax.imshow(img)
     ax.axis("off")
@@ -126,7 +127,7 @@ def main():
     )
     fig_overlay.text(0.5, 0.05, title_text, ha="center", fontsize=12)
     plt.savefig(
-        str(results_dir / "fig_4_10_eqp_voronoi_s2_33.png"),
+        "fig_4_10_eqp_voronoi_s2_33.png",
         bbox_inches="tight",
         pad_inches=0,
     )

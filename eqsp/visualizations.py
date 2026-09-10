@@ -1,9 +1,9 @@
 """
 PyEQSP Visualizations module.
-3D visualizations using Mayavi.
+3D visualizations using PyVista.
 
 Copyright 2026 Paul Leopardi.
-For licensing, see COPYING.
+For licensing, see LICENSE.
 """
 
 import matplotlib.pyplot as plt
@@ -18,58 +18,72 @@ from .utilities import (
 )
 
 try:
-    from mayavi import mlab
+    import pyvista as pv
 except ImportError as exc:  # pragma: no cover
     raise ImportError(
-        "Mayavi is not installed. Please install it with: pip install 'eqsp[mayavi]'"
+        "PyVista is not installed. "
+        "Please install it with: pip install 'pyeqsp[pyvista]'"
     ) from exc
 
-PROJ_NAME = {"eqarea": "equal area", "stereo": "stereographic"}
+
+def _get_plotter(plotter=None):
+    """
+    Return an active PyVista Plotter instance or create a new one.
+    """
+    if plotter is not None:
+        return plotter
+    pl = pv.Plotter(lighting="light_kit")
+    pl.set_background("white")
+    return pl
 
 
-def show_s2_sphere(opacity=0.95, color=(0, 1, 0)):
+def show_s2_sphere(opacity=0.95, color=(0.1, 0.85, 0.3), plotter=None):
     """
     Illustrate the unit sphere S^2.
     """
-    u, v = np.mgrid[0:TAU:50j, 0 : np.pi : 50j]
-    x = np.cos(u) * np.sin(v)
-    y = np.sin(u) * np.sin(v)
-    z = np.cos(v)
-
-    mlab.mesh(x, y, z, color=color, opacity=opacity)
+    pl = _get_plotter(plotter)
+    sphere = pv.Sphere(radius=1.0, theta_resolution=60, phi_resolution=60)
+    pl.add_mesh(sphere, color=color, opacity=opacity, ambient=0.5, smooth_shading=True)
+    return pl
 
 
 def show_r3_point_set(
     points,
+    *,
     show_sphere=False,
-    scale_factor=0.1,
+    scale_factor=None,
+    color=(1.0, 0.0, 0.0),
+    opacity=1.0,
     save_file=None,
+    plotter=None,
     **kwargs,
 ):
     """
     3D illustration of a point set.
     """
+    pl = _get_plotter(plotter)
     if show_sphere:
-        show_s2_sphere()
+        show_s2_sphere(plotter=pl)
 
-    # Mayavi points3d expects x, y, z, s (scalar) - s is optional
-    mlab.points3d(
-        points[0, :],
-        points[1, :],
-        points[2, :],
-        scale_factor=scale_factor,
-        color=(1, 0, 0),
-        **kwargs,
-    )
+    if scale_factor is None:
+        num_points = points.shape[1]
+        scale_factor = 0.4 / np.sqrt(num_points)
+
+    poly = pv.PolyData(points.T)
+    glyphs = poly.glyph(geom=pv.Sphere(radius=scale_factor), scale=False, orient=False)
+    glyphs.active_scalars_name = None
+    pl.add_mesh(glyphs, color=color, opacity=opacity, ambient=0.5, **kwargs)
 
     if save_file:
-        mlab.savefig(save_file)
+        pl.screenshot(save_file)
+    return pl
 
 
-def show_s2_region(region, N, fidelity=32):
+def show_s2_region(region, N, fidelity=32, opacity=1.0, plotter=None):
     """
     Illustrate a region of S^2.
     """
+    pl = _get_plotter(plotter)
     # pylint: disable=no-member
     tol = np.finfo(float).eps * 32
     dim = region.shape[0]
@@ -99,8 +113,18 @@ def show_s2_region(region, N, fidelity=32):
 
         x_curve = polar2cart(s_curve)
 
-        # Mayavi plot3d for tube plotting
-        mlab.plot3d(x_curve[0], x_curve[1], x_curve[2], tube_radius=r, color=(0, 0, 1))
+        poly = pv.PolyData(x_curve.T)
+        lines = np.column_stack(
+            [
+                np.full(fidelity - 1, 2, dtype=int),
+                np.arange(fidelity - 1),
+                np.arange(1, fidelity),
+            ]
+        )
+        poly.lines = lines
+        tube = poly.tube(radius=r)
+        pl.add_mesh(tube, color=(0, 0.4, 0.9), opacity=opacity, ambient=0.5)
+    return pl
 
 
 def show_s2_partition(
@@ -110,10 +134,10 @@ def show_s2_partition(
     show_points=True,
     show_sphere=True,
     title="long",
-    title_pos=(0.2, 0.85),
+    title_pos=(0.25, 0.90),
     show=True,
     save_file=None,
-    **_kwargs,
+    plotter=None,
 ):
     """
     3D illustration of an EQ partition of S^2 into N regions.
@@ -129,27 +153,38 @@ def show_s2_partition(
     show_sphere : bool, optional
         Show unit sphere. Default True.
     title : str, optional
-        Title text. Special values: 'long', 'short', 'none'.
-        'long' uses a default multi-line description.
+        Title text. Special values: 'long', 'short', 'none'. Default 'long'.
+        'long' uses a multi-line description matching MATLAB.
         'short' uses 'EQ(2, N)'.
         'none' shows no title.
         Any other string is used as the title text.
     title_pos : tuple, optional
         (x, y) position of the title in figure coordinates (0 to 1).
-        Default is (0.2, 0.85).
-    **kwargs
-        Passed to Mayavi functions.
+        Default is (0.25, 0.90).
+    show : bool, optional
+        Display rendering window. Default True.
+    save_file : str, optional
+        Filename to save screenshot. Default None.
+    plotter : pv.Plotter, optional
+        Existing PyVista plotter instance.
+
+    Returns
+    -------
+    pl : pv.Plotter
+        PyVista Plotter instance. Call ``pl.close()`` when finished to cleanly
+        release VTK resources.
 
     Examples
     --------
     >>> from eqsp.visualizations import show_s2_partition
-    >>> from mayavi import mlab
-    >>> mlab.options.offscreen = True
+    >>> import pyvista as pv
+    >>> pv.OFF_SCREEN = True
     >>> try:
-    ...     show_s2_partition(4, title='short', show_points=False)
-    ...     print("Success") # Crude check as Mayavi is hard to doctest
+    ...     pl = show_s2_partition(4, title='short', show_points=False, show=False)
+    ...     _ = pl.close()
+    ...     print("Success")
     ... except ImportError:
-    ...     print("Mayavi not installed")
+    ...     print("PyVista not installed")
     Success
     """
     title_text = None
@@ -158,47 +193,54 @@ def show_s2_partition(
     else:
         show_title = True
         if title == "long":
+            point_str = (
+                ", showing the center point of each region." if show_points else "."
+            )
             title_text = (
-                f"Recursive zonal equal area partition of S^2\ninto {N} regions."
+                f"Recursive zonal equal area partition of S^2\n"
+                f"into {N} regions{point_str}"
             )
         elif title == "short":
             title_text = f"EQ(2, {N})"
         else:
             title_text = title
 
-    # Set default figure size if none exists
-    if mlab.get_engine().current_scene is None:
-        mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
+    pl = _get_plotter(plotter)
 
     if show_sphere:
-        show_s2_sphere(opacity=0.95)
+        show_s2_sphere(opacity=0.95, plotter=pl)
 
     R = eq_regions(2, N, extra_offset)
     for i in range(N - 1, 0, -1):
-        show_s2_region(R[:, :, i], N)
+        show_s2_region(R[:, :, i], N, plotter=pl)
 
     if show_points:
         points = eq_point_set(2, N, extra_offset)
-        show_r3_point_set(points, show_sphere=False)
+        show_r3_point_set(points, show_sphere=False, plotter=pl)
 
     if show_title:
-        # Use mlab.text for precise control over size and position
-        mlab.text(title_pos[0], title_pos[1], title_text, width=0.6, color=(0, 0, 0))
+        # Convert title_pos to window coordinates (pixel offsets from bottom-left)
+        win_x = int(title_pos[0] * pl.window_size[0])
+        win_y = int(title_pos[1] * pl.window_size[1])
+        pl.add_text(title_text, position=(win_x, win_y), font_size=12, color="black")
 
     if save_file:
-        mlab.savefig(save_file)
+        pl.screenshot(save_file)
 
-    if show:
-        mlab.show()
+    if show and not pv.OFF_SCREEN:
+        pl.show()
+    return pl
 
 
 def project_point_set(
     points,
+    *,
     proj="stereo",
-    scale_factor=0.1,
-    color=(1, 0, 0),
+    scale_factor=None,
+    color=(1.0, 0.0, 0.0),
     show=True,
     save_file=None,
+    plotter=None,
     **kwargs,
 ):
     """
@@ -212,24 +254,35 @@ def project_point_set(
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default 'stereo'.
     scale_factor : float, optional
-        Scale factor for points. Default 0.1.
+        Scale factor for points. Default None (dynamically calculated as 0.4 / sqrt(N)).
     color : tuple, optional
         Colour of points in RGB format (0 to 1). Default (1, 0, 0).
-    **kwargs
-        Passed to Mayavi plotting functions.
+    show : bool, optional
+        Display rendering window. Default True.
+    save_file : str, optional
+        Filename to save screenshot. Default None.
+    plotter : pv.Plotter, optional
+        Existing PyVista plotter instance.
+
+    Returns
+    -------
+    pl : pv.Plotter
+        PyVista Plotter instance. Call ``pl.close()`` when finished to cleanly
+        release VTK resources.
 
     Examples
     --------
     >>> from eqsp.visualizations import project_point_set
     >>> import numpy as np
-    >>> from mayavi import mlab
-    >>> mlab.options.offscreen = True
+    >>> import pyvista as pv
+    >>> pv.OFF_SCREEN = True
     >>> points = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]]).T
     >>> try:
-    ...     project_point_set(points, proj='eqarea')
+    ...     pl = project_point_set(points, proj='eqarea', show=False)
+    ...     _ = pl.close()
     ...     print("Success")
     ... except ImportError:
-    ...     print("Mayavi not installed")
+    ...     print("PyVista not installed")
     Success
     """
     points = np.asarray(points)
@@ -244,38 +297,29 @@ def project_point_set(
     else:
         raise ValueError("proj must be 'stereo' or 'eqarea'")
 
-    # Set default figure size if none exists
-    if mlab.get_engine().current_scene is None:
-        mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
+    if scale_factor is None:
+        num_points = points.shape[1]
+        scale_factor = 0.4 / np.sqrt(num_points)
 
+    pl = _get_plotter(plotter)
     t = projector(points)
 
-    # Mayavi points3d
-    # scale_factor and color are explicit arguments now, but kwargs can override?
-    # Actually explicit args take precedence in this implementation, assume user passes
-    # them.
-
     if dim == 2:
-        # Project to z=0 for S^2 -> R^2
-        mlab.points3d(
-            t[0, :],
-            t[1, :],
-            np.zeros_like(t[0, :]),
-            scale_factor=scale_factor,
-            color=color,
-            **kwargs,
-        )
-    elif dim == 3:
-        # S^3 -> R^3
-        mlab.points3d(
-            t[0, :], t[1, :], t[2, :], scale_factor=scale_factor, color=color, **kwargs
-        )
+        proj_pts = np.vstack([t[0, :], t[1, :], np.zeros_like(t[0, :])])
+    else:
+        proj_pts = t[:3, :]
+
+    poly = pv.PolyData(proj_pts.T)
+    glyphs = poly.glyph(geom=pv.Sphere(radius=scale_factor), scale=False, orient=False)
+    glyphs.active_scalars_name = None
+    pl.add_mesh(glyphs, color=color, ambient=0.5, **kwargs)
 
     if save_file:
-        mlab.savefig(save_file)
+        pl.screenshot(save_file)
 
-    if show:
-        mlab.show()
+    if show and not pv.OFF_SCREEN:
+        pl.show()
+    return pl
 
 
 def project_s3_partition(
@@ -283,11 +327,13 @@ def project_s3_partition(
     *,
     extra_offset=False,
     title="long",
+    title_pos=(0.25, 0.90),
     proj="stereo",
     show_points=True,
     show_surfaces=True,
     show=True,
     save_file=None,
+    plotter=None,
     **kwargs,
 ):
     """
@@ -299,29 +345,47 @@ def project_s3_partition(
         Number of regions.
     extra_offset : bool, optional
         Use extra offsets. Default False.
-    title : {'long', 'short', 'none'}, optional
-        Title format. Default 'long'.
+    title : str, optional
+        Title text. Special values: 'long', 'short', 'none'. Default 'long'.
+        'long' uses a multi-line description matching MATLAB.
+        'short' uses 'EQ(3, N)'.
+        'none' shows no title.
+        Any other string is used as the title text.
+    title_pos : tuple, optional
+        (x, y) position of the title in figure coordinates (0 to 1).
+        Default is (0.25, 0.90).
     proj : {'stereo', 'eqarea'}, optional
         Projection type. Default 'stereo'.
     show_points : bool, optional
         Show center points. Default True.
     show_surfaces : bool, optional
         Show region surfaces. Default True.
-    **kwargs
-        Passed to Mayavi plotting functions.
+    show : bool, optional
+        Display rendering window. Default True.
+    save_file : str, optional
+        Filename to save screenshot. Default None.
+    plotter : pv.Plotter, optional
+        Existing PyVista plotter instance.
+
+    Returns
+    -------
+    pl : pv.Plotter
+        PyVista Plotter instance. Call ``pl.close()`` when finished to cleanly
+        release VTK resources.
 
     Examples
     --------
     >>> from eqsp.visualizations import project_s3_partition
-    >>> from mayavi import mlab
-    >>> mlab.options.offscreen = True
+    >>> import pyvista as pv
+    >>> pv.OFF_SCREEN = True
     >>> try:
-    ...     project_s3_partition(
-    ...         4, proj='stereo', show_points=True, show_surfaces=False
+    ...     pl = project_s3_partition(
+    ...         4, proj='stereo', show_points=True, show_surfaces=False, show=False
     ...     )
+    ...     _ = pl.close()
     ...     print("Success")
     ... except ImportError:
-    ...     print("Mayavi not installed")
+    ...     print("PyVista not installed")
     Success
     """
     if proj == "stereo":
@@ -331,17 +395,29 @@ def project_s3_partition(
     else:
         raise ValueError("proj must be 'stereo' or 'eqarea'")
 
-    show_title = title != "none"
+    title_text = None
+    if title == "none":
+        show_title = False
+    else:
+        show_title = True
+        if title == "long":
+            proj_name = "Stereographic" if proj == "stereo" else "Equal volume"
+            point_str = (
+                ", showing the center point of each region." if show_points else "."
+            )
+            title_text = (
+                f"{proj_name} projection of recursive zonal "
+                f"equal area partition of S^3\ninto {N} regions{point_str}"
+            )
+        elif title == "short":
+            title_text = f"EQ(3, {N})"
+        else:
+            title_text = title
 
-    # Set default figure size if none exists
-    if mlab.get_engine().current_scene is None:
-        mlab.figure(bgcolor=(1, 1, 1), size=(800, 800))
-
+    pl = _get_plotter(plotter)
     dim = 3
 
     if show_surfaces:
-        # Note: Extra offsets for Dim 3 not fully ported
-        # (needs rotation matrices return from eq_regions)
         R = eq_regions(dim, N, extra_offset)
 
         for i in range(1, N):
@@ -381,33 +457,38 @@ def project_s3_partition(
                 PY = p_flat[1, :].reshape(10, 10)
                 PZ = p_flat[2, :].reshape(10, 10)
 
-                # Check for NaNs (e.g. projection to infinity)
                 if np.any(np.isnan(PX)):
                     continue  # pragma: no cover
 
-                # Mimic Matlab: color based on t[2] (jet), opacity = (t[2]/pi)/2
                 cmap = plt.get_cmap("jet")
                 c_val = t[2] / np.pi
                 rgba = cmap(c_val)
                 color = rgba[:3]
                 opacity = (t[2] / np.pi) / 2.0
 
-                mlab.mesh(PX, PY, PZ, opacity=opacity, color=color)
+                grid = pv.StructuredGrid(PX, PY, PZ)
+                pl.add_mesh(grid, opacity=opacity, color=color)
 
     if show_points:
         points = eq_point_set(dim, N, extra_offset)
         project_point_set(
-            points, proj=proj, color=(1, 0, 0), scale_factor=0.1, show=False, **kwargs
+            points,
+            proj=proj,
+            color=(1, 0, 0),
+            scale_factor=0.1,
+            show=False,
+            plotter=pl,
+            **kwargs,
         )
 
     if show_title:
-        title_text = f"EQ(3,{N}) {PROJ_NAME.get(proj, proj)} projection"
-        # width=0.6 gives a reasonable size for this longer string
-        # x = 0.5 - 0.6/2 = 0.2, y = 0.9
-        mlab.text(0.2, 0.9, title_text, width=0.6, color=(0, 0, 0))
+        win_x = int(title_pos[0] * pl.window_size[0])
+        win_y = int(title_pos[1] * pl.window_size[1])
+        pl.add_text(title_text, position=(win_x, win_y), font_size=12, color="black")
 
     if save_file:
-        mlab.savefig(save_file)
+        pl.screenshot(save_file)
 
-    if show:
-        mlab.show()
+    if show and not pv.OFF_SCREEN:
+        pl.show()
+    return pl

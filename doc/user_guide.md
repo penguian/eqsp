@@ -5,7 +5,7 @@ This guide enables researchers and scientists to set up **PyEQSP** and reproduce
 ## Introduction & Setup
 
 PyEQSP requires Python 3.11 or later. We recommend using a virtual environment to manage dependencies like NumPy, SciPy, and Matplotlib.
-- **Environment Management**: See the [Installation Guide](user/installation.md) for strategy details (e.g., `venv` vs `venv_sys`).
+- **Environment Management**: See the [Installation Guide](user/installation.md) for strategy details (e.g., `VENV` vs `VENV_SYS`, where `VENV` and `VENV_SYS` are placeholders for virtual environment directories).
 
 ## Use Cases & Applicability
 
@@ -36,7 +36,7 @@ For step-by-step examples, see the [Practical Usage Guide](user/practical_usage.
 
 PyEQSP supports both 2D and 3D visualizations:
 - **2D Projections**: Matplotlib-based schematics.
-- **3D Interactive Graphics**: High-fidelity rendering using Mayavi and VTK.
+- **3D Interactive Graphics**: High-fidelity rendering using PyVista.
 
 For detailed plotting options, see the [Visualization & Illustration Guide](user/visualization_guide.md).
 

@@ -93,6 +93,14 @@ This roadmap outlines the development phases from the initial beta through the 1
 - [x] **Maintenance Guide Expansion**: Formalize the "Technical Rationale" for the Defense in Depth strategy, detailing the local/remote distinction for Git hooks and security implications.
 - [x] **Accumulating Changes**: Track community feedback and bug fixes for the next beta release.
 
+### 1.0b3 Open Beta: PyVista Visualization Backend
+**Target: 2026-08-30** | **Git Tag: release_1_0b3** | **Distribution: PyPI / GitHub**
+
+- [x] **PyVista Backend Migration**: Replaced Mayavi with PyVista (`pyvista`) for 3D sphere partition rendering and stereographic projections.
+- [x] **Off-Screen Rendering**: Configured PyVista off-screen rendering for headless CI environments, doctests, and Sphinx builds.
+- [x] **Zero Backwards Compatibility**: Completely removed legacy Mayavi and PyQt5 dependencies across configuration and build scripts.
+- [x] **Metadata Sync**: Bumped project version to `1.0b3` and synchronized version counters across all documentation and project headers.
+
 ### 1.0 General Release [PLANNED]
 
 - [ ] **User Feedback Audit**: Address final community feedback from the beta cycle.

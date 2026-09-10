@@ -1,6 +1,6 @@
 # PyEQSP: Python Equal Area Sphere Partitioning Library
 
-**Release 1.0b2** (2026-06-07): Copyright 2026 Paul Leopardi
+**Release 1.0b3** (2026-08-30): Copyright 2026 Paul Leopardi
 
 # Authors and Acknowledgements
 

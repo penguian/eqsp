@@ -10,7 +10,7 @@ Ensure you have installed the package and its dependencies:
 pip install pyeqsp
 
 # For 3D visualizations
-pip install 'pyeqsp[mayavi]'
+pip install 'pyeqsp[pyvista]'
 ```
 
 ### 1. Basic Usage
@@ -18,7 +18,7 @@ pip install 'pyeqsp[mayavi]'
 
 ### 2. Visualization
 - **[src/example_visualize_2d.py](src/example_visualize_2d.py)**: Generates 2D illustrations of the EQ algorithm using Matplotlib.
-- **[src/example_visualize_3d.py](src/example_visualize_3d.py)**: Launches interactive 3D renderings using Mayavi.
+- **[src/example_visualize_3d.py](src/example_visualize_3d.py)**: Launches interactive 3D renderings using PyVista.
 
 ### 3. Advanced Features
 - **[src/example_symmetric_partitions.py](src/example_symmetric_partitions.py)**: Demonstrates how to use the `even_collars` parameter to force partitions to align with the sphere's equator.

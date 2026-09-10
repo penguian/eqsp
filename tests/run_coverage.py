@@ -51,9 +51,9 @@ def main():
     pytest_opts = ["--doctest-modules", "--ignore=eqsp/_private"]
 
     omit_opts = []
-    if importlib.util.find_spec("mayavi") is None:
+    if importlib.util.find_spec("pyvista") is None:
         print(
-            "Mayavi not found — skipping eqsp/visualizations.py doctests and coverage."
+            "PyVista not found — skipping eqsp/visualizations.py doctests and coverage."
         )
         pytest_opts.append("--ignore=eqsp/visualizations.py")
         omit_opts.append("--omit=eqsp/visualizations.py")

@@ -1,6 +1,6 @@
 # Contributing to PyEQSP
 
-**Release 1.0b2** (2026-06-07): Copyright 2026 Paul Leopardi
+**Release 1.0b3** (2026-08-30): Copyright 2026 Paul Leopardi
 
 Thank you for helping us refine the Recursive Zonal Equal Area Sphere Partitioning (**PyEQSP**) library! This project is currently in Beta testing, and your feedback is invaluable.
 
@@ -30,7 +30,7 @@ If you would like to contribute code fixes or improvements, please follow the fo
    We recommend using a **virtual environment** to avoid dependency conflicts:
    ```bash
    # Create and activate a virtual environment
-   python3 -m venv .venvs/.venv
+   python3 -m venv .venvs/.venv  # project convention; any path works
    source .venvs/.venv/bin/activate  # On Windows use `.venvs\.venv\Scripts\activate`
 
    # Clone your fork
@@ -43,6 +43,23 @@ If you would like to contribute code fixes or improvements, please follow the fo
    # Install the git hooks
    pre-commit install
    ```
+
+   > [!IMPORTANT]
+   > The `git commit` command and `pre-commit run` **must be executed inside the activated
+   > virtual environment**. The `documentation-quality` pre-commit hook imports `eqsp` at
+   > runtime and requires `numpy` and other project dependencies to be available.
+   >
+   > Here `VENV` is a placeholder for your virtual environment directory
+   > (the project convention is `.venvs/.venv`; see [INSTALL.md](INSTALL.md)).
+   >
+   > Always activate the virtual environment before committing:
+   > ```bash
+   > source VENV/bin/activate
+   > git commit ...
+   > ```
+   > Running `git commit` from a Git GUI or IDE that does not inherit the active shell
+   > environment will fail with `ModuleNotFoundError: No module named 'numpy'`.
+
    > **What is "editable" mode (`-e`)?** This creates a link between your local code and your Python environment. Any changes you make to the code in this folder will take effect immediately without needing to reinstall. The `[dev]` extra installs linting and testing tools (`ruff`, `pylint`, `pytest`, `coverage`).
 
 3. **Troubleshooting Installation**:

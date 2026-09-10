@@ -12,7 +12,7 @@ The `eqsp` package uses a **Hybrid Testing Approach** that integrates standard u
     *   Verify core mathematical logic using static assertions.
     *   Compare results against known-good values from the original MATLAB implementation.
 2.  **Mock Tests (`tests/src/*_mock.py`)**:
-    *   Verify library interaction (e.g., Mayavi/Matplotlib) without needing a display.
+    *   Verify library interaction (e.g., PyVista/Matplotlib) without needing a display.
     *   Check if the correct arguments are passed to the plotting engines.
 3.  **Extra Tests (`tests/src/*_extra.py`)**:
     *   Introspective integration tests.
@@ -40,6 +40,20 @@ We use a two-tier automated verification system:
     pre-commit install  # Run once to set up
     pre-commit run --all-files  # Run manually to verify everything
     ```
+
+    > [!WARNING]
+    > Pre-commit hooks must run inside the activated project virtual environment.
+    > Here `VENV` is a placeholder for your virtual environment directory
+    > (the project convention is `.venvs/.venv`; see [Installation Guide](../user/installation.md)).
+    > The `Documentation Quality Check` hook (`validation/quality_check.py`) imports
+    > `eqsp` at runtime, which requires `numpy` and other runtime dependencies. Running
+    > `git commit` or `pre-commit run` with system `python3` (outside the venv) will
+    > fail with `ModuleNotFoundError: No module named 'numpy'`.
+    >
+    > Always activate the environment first:
+    > ```bash
+    > source VENV/bin/activate
+    > ```
 2.  **Unified Verification Script (Global)**: The `verify_all.py` script (located in `validation/`) is the definitive project-wide entry point.
     *   **Pull Requests**: Every PR must pass all pre-commit hooks and `python3 validation/verify_all.py` (Ruff, Pylint, Pytest).
     *   **Environment Orchestration**: Use `--venv DIR` to activate a specific environment and `--uninstall` to remove any existing `pyeqsp` package before running the suite. This prevents local source shadowing by stale `site-packages`.
@@ -76,7 +90,7 @@ cd examples/phd-thesis
 # Run a numerical plot (Agg backend, saves PNG)
 python3 fig_4_2_min_dist_s2.py --upper-bound 5000
 
-> **Note:** The virtual environment configuration (`VENV`) used for automated and manual testing was specific to a standardized Linux build (e.g. Kubuntu 25.10). For full 3D functionality, ensure that your environment has **Mayavi** and its dependencies installed.
+> **Note:** The virtual environment configuration (`VENV`) used for automated and manual testing was specific to a standardized Linux build (e.g. Kubuntu 25.10). For full 3D functionality, ensure that your environment has **PyVista** and its dependencies installed.
 
 For instructions on running these scripts and a full mapping of scripts to thesis figures, see [Thesis Research Reproduction](../user/phd-thesis-examples.md).
 
@@ -166,8 +180,8 @@ ruff format .
 (configuration-compatibility)=
 ### Configuration Compatibility
 The `ruff.toml` file uses a **flat configuration format** (omitting the `[lint]` section) to ensure compatibility across all project environments. This allows the same configuration to be parsed by both:
-- **Modern Ruff** (0.15.x+) in the main `.venv`.
-- **Legacy Ruff** (0.0.291) in specialized environments like `.venv_sys`, where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
+- **Modern Ruff** (0.15.x+) in the main `VENV`.
+- **Legacy Ruff** (0.0.291) in specialized environments like `VENV_SYS` (`VENV_SYS` denotes a virtual environment created with `--system-site-packages`; see [Installation Guide](../user/installation.md)), where version constraints are imposed by system-managed plugins (e.g., `python-lsp-ruff`).
 
 :::{important}
 Newer Ruff versions will issue a deprecation warning about top-level settings, but they remain functional. This approach avoids breaking IDE integration in restricted environments.
