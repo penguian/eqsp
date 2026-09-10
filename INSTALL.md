@@ -103,8 +103,12 @@ without its bundled VTK:
 python3 -m venv --system-site-packages VENV_SYS
 source VENV_SYS/bin/activate
 pip install --no-deps pyvista
+pip install pyvista-validation scooby pillow pooch cyclopts
 pip install -e ".[dev]"
 ```
+
+> [!NOTE]
+> Because `--no-deps` is used to prevent pip from downloading the incompatible PyPI `vtk` wheel on ARM64, PyVista's non-VTK Python dependencies (`pyvista-validation`, `scooby`, `pillow`, `pooch`, `cyclopts`) are installed explicitly.
 
 ##### Note on ARM64 / Fedora Asahi Remix (Apple Silicon)
 

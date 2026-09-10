@@ -56,10 +56,11 @@ pip install --pre "pyeqsp[pyvista]"
 
 #### Using System VTK (`VENV_SYS` Path)
 
-If you are using a `VENV_SYS` environment (required on ARM64 / Fedora Asahi Remix; optional on x86-64), install the system `python3-vtk` package first (see `INSTALL.md` in the repository root), then:
+If you are using a `VENV_SYS` environment (required on ARM64 / Fedora Asahi Remix; optional on x86-64), install the system `python3-vtk` package first (see `INSTALL.md` in the repository root), then install PyVista and its Python dependencies without bundled VTK:
 
 ```bash
 pip install --no-deps pyvista
+pip install pyvista-validation scooby pillow pooch cyclopts
 ```
 
 This uses the system VTK rather than downloading the PyPI wheel.
